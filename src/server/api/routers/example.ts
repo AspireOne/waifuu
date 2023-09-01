@@ -45,8 +45,7 @@ export const exampleRouter = createTRPCRouter({
           }
         }
       )
-      console.log(output);
-      return JSON.stringify(output);
+      return (output as []).join("");
     }),
 
   getSecretMessage: protectedProcedure.query(() => {
