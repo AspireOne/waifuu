@@ -45,7 +45,7 @@ function Chat(props: {}) {
 
   const responseMutation = api.example.genAiResponse.useMutation({
     onSuccess: (data) => {
-      setMessages([...messages, {isUser: false, text: data}]);
+      setMessages([...messages, {isUser: false, text: data.trim()}]);
     },
 
     onError: (error) => {
@@ -61,7 +61,7 @@ function Chat(props: {}) {
   function handleSubmit() {
     console.log("submitting");
     setSubmitting(true);
-    const newMessages = [...messages, {isUser: true, text: input}];
+    const newMessages = [...messages, {isUser: true, text: input.trim()}];
     setMessages(newMessages);
     setInput("");
 
@@ -83,8 +83,15 @@ function Chat(props: {}) {
       </CardHeader>
       <CardBody>
         {
-          messages.map((message, index) =>
-            <Textarea key={index} isReadOnly value={message.text} className={"" && (message.isUser && "bg-blue-300")}/>
+          messages.map((message, index) => {
+              const color = message.isUser ? "bg-gray-200" : (message.isError ? "bg-red-200" : "bg-blue-100");
+              console.log(message.isUser);
+              return (
+                <div className={"rounded-2xl p-4 my-2 " + color}>
+                  {formatText(message.text)}
+                </div>
+              )
+            }
           )
         }
       </CardBody>
@@ -93,4 +100,22 @@ function Chat(props: {}) {
       </CardFooter>
     </Card>
   )
+}
+
+function formatText(text: string): React.ReactNode[] {
+  return text.split('*').map((part, index) => {
+    // Every second piece of text (starting from 0) is outside of the asterisks
+    if (index % 2 === 0) {
+      return part;
+    } else {
+      // Add newline characters before and after the italic text
+      return (
+        <>
+
+          <div className="italic my-[4px]">*{part}*</div>
+
+        </>
+      );
+    }
+  });
 }
