@@ -1,10 +1,11 @@
 import {signIn, signOut, useSession} from "next-auth/react";
 import Head from "next/head";
 import {api} from "~/utils/api";
-import React from "react";
+import React, {useRef} from "react";
 import Replicate from "replicate";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {Textarea} from "@nextui-org/input";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 
 type Message = {
@@ -42,6 +43,7 @@ function Chat(props: {}) {
   const [input, setInput] = React.useState<string>("")
   const [messages, setMessages] = React.useState<Message[]>([]);
   const [submitting, setSubmitting] = React.useState<boolean>(false);
+  const [animationParent] = useAutoAnimate()
 
   const responseMutation = api.example.genAiResponse.useMutation({
     onSuccess: (data) => {
@@ -82,18 +84,20 @@ function Chat(props: {}) {
         Here you can try our chat!
       </CardHeader>
       <CardBody>
-        {
-          messages.map((message, index) => {
-              const color = message.isUser ? "bg-gray-200" : (message.isError ? "bg-red-200" : "bg-blue-100");
-              console.log(message.isUser);
-              return (
-                <div className={"rounded-2xl p-4 my-2 " + color}>
-                  {formatText(message.text)}
-                </div>
-              )
-            }
-          )
-        }
+        <div ref={animationParent}>
+          {
+            messages.map((message, index) => {
+                const color = message.isUser ? "bg-gray-200" : (message.isError ? "bg-red-200" : "bg-blue-100");
+                console.log(message.isUser);
+                return (
+                  <div className={"rounded-2xl p-4 my-2 " + color}>
+                    {formatText(message.text)}
+                  </div>
+                )
+              }
+            )
+          }
+        </div>
       </CardBody>
       <CardFooter className={"flex flex-row gap-4 items-end"}>
         <Textarea value={input} onValueChange={setInput} onKeyDown={onKeyDown} variant={"faded"}/>
