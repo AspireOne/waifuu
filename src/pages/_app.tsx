@@ -5,6 +5,7 @@ import {NextUIProvider} from "@nextui-org/react";
 import {api} from "~/utils/api";
 import "~/styles/globals.css";
 import React from "react";
+import {ToastContainer} from "react-toastify";
 
 const MyApp: AppType<{ session: Session | null }> = ({Component, pageProps: {session, ...pageProps}}) => {
   return (
@@ -12,6 +13,7 @@ const MyApp: AppType<{ session: Session | null }> = ({Component, pageProps: {ses
       <NextUIProvider>
         <Component {...pageProps} />
       </NextUIProvider>
+      <ToastContainer />
     </SessionProvider>
   );
 };

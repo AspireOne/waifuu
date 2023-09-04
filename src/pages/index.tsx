@@ -6,6 +6,7 @@ import Replicate from "replicate";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {Textarea} from "@nextui-org/input";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
+import Page from "~/components/Page";
 
 
 type Message = {
@@ -25,17 +26,12 @@ export default function Home() {
   const hello = api.example.hello.useQuery({text: "from tRPC"});*/
 
   return (
-    <>
-      <Head>
-        <title>Companion</title>
-        <meta name="description" content=""/>
-        <link rel="icon" href="/favicon.ico"/>
-      </Head>
+    <Page metaTitle={"Main Page"} protected={true}>
 
       <div>
         <Chat></Chat>
       </div>
-    </>
+    </Page>
   );
 }
 
