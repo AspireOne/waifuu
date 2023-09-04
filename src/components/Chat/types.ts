@@ -6,3 +6,9 @@ export type ChatMessageProps = {
         name: string;
     };
 }
+
+export type ChatHeaderProps = {
+    avatarPath: string;
+    name: string;
+    userName: string;
+};

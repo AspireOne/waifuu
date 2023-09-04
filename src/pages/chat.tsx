@@ -24,20 +24,19 @@ const Chat = () => {
       />
       <div className="fixed left-0 top-0 z-20 h-full w-full bg-gradient-to-b from-transparent via-black/40 to-black" />
 
-      <ChatHeader />
-
-      <ChatMessage
-        author={{ avatar: "Pepe", name: "", bot: false }}
-        message={"Hello world!"}
-      />
+      <div className="fixed z-30 w-full">
+        <ChatHeader
+          name="Fauna"
+          userName="fauna"
+          avatarPath="/assets/defaultuser.jpg"
+        />
+      </div>
 
       <div className="p-3">
         <div className="fixed bottom-0 z-30 flex flex-col gap-6">
           <ChatMessage
             author={{ avatar: "Nevim", name: "Nejaka loli waifu", bot: false }}
-            message={
-              "je mi to fakt jedno1!!!1! LOL XD *vytahne ar-15*"
-            }
+            message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
           />
 
           <ChatMessage
@@ -46,7 +45,9 @@ const Chat = () => {
               name: "Jdidopcice",
               bot: true,
             }}
-            message={"AHA LOL TAK DOBRY VOLE, POJDME VYKROPIT NEJAKY DAV XOOXOXO 20!"}
+            message={
+              "AHA LOL TAK DOBRY VOLE, POJDME VYKROPIT NEJAKY DAV XOOXOXO 20!"
+            }
           />
 
           <ChatInput />
