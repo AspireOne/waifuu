@@ -16,21 +16,14 @@ type Message = {
 }
 
 export default function Home() {
-  /*const {data: sessionData} = useSession();
+  const {data: sessionData} = useSession();
 
-  const {data: secretMessage} = api.example.getSecretMessage.useQuery(
-    undefined,
-    {enabled: sessionData?.user !== undefined}
-  );
-
-  const hello = api.example.hello.useQuery({text: "from tRPC"});*/
+  const {data: chatbots} = api.general.getChatbots.useQuery();
+  console.log(chatbots);
 
   return (
     <Page metaTitle={"Main Page"} protected={true}>
-
-      <div>
-        <Chat></Chat>
-      </div>
+      <Chat></Chat>
     </Page>
   );
 }
@@ -41,7 +34,7 @@ function Chat(props: {}) {
   const [submitting, setSubmitting] = React.useState<boolean>(false);
   const [animationParent] = useAutoAnimate()
 
-  const responseMutation = api.example.genAiResponse.useMutation({
+  const responseMutation = api.general.genAiResponse.useMutation({
     onSuccess: (data) => {
       setMessages([...messages, {isUser: false, text: data.trim()}]);
     },

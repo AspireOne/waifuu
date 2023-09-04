@@ -12,7 +12,7 @@ const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
 });
 
-export const exampleRouter = createTRPCRouter({
+export const generalRouter = createTRPCRouter({
   hello: publicProcedure
     .input(z.object({text: z.string()}))
     .query(({input}) => {
@@ -21,9 +21,10 @@ export const exampleRouter = createTRPCRouter({
       };
     }),
 
-  getAll: publicProcedure.query(({ctx}) => {
-    return ctx.prisma.example.findMany();
-  }),
+  getChatbots: publicProcedure
+    .query(async ({input, ctx}) => {
+      return await ctx.prisma.chatbot.findMany();
+    }),
 
   genAiResponse: publicProcedure
     .input(

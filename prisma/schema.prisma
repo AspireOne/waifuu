@@ -55,6 +55,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  chats         Chat[]    @relation("UserChats")
+  Message       Message[]
 }
 
 model VerificationToken {
@@ -63,4 +65,49 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Chat {
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  users       User[]       @relation("UserChats")
+  messages    Message[]
+  chatbot     Chatbot?     @relation(fields: [chatbotId], references: [id])
+  chatbotType ChatbotType? @default(ROLEPLAY)
+  chatbotId   Int?
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  chatbotId Int?
+  chatbot   Chatbot? @relation(fields: [chatbotId], references: [id])
+
+  chatId Int
+  chat   Chat @relation(fields: [chatId], references: [id])
+}
+
+model Chatbot {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  // The image will be dynamic in the future. Perhaps some variants based on mood?
+  img         String    @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Chat        Chat[]
+  Message     Message[]
+}
+
+enum ChatbotType {
+  ROLEPLAY
+  ADVENTURE
+  CHAT
 }
