@@ -2,6 +2,14 @@ import { useMemo } from "react";
 import { ChatMessageProps } from "./types";
 import Image from "next/image";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
 
 const ChatMessage = ({ author, message }: ChatMessageProps) => {
   const formattedMessage = useMemo(() => {
@@ -15,10 +23,24 @@ const ChatMessage = ({ author, message }: ChatMessageProps) => {
       .replace(/```(.*?)```/g, "<pre>$1</pre>");
   }, [message]);
   return (
-    <div className={`flex ${author.bot ? "ml-0" : "mr-0 flex-row"} mx-auto w-fit gap-2`}>
-      <div>
-        <BsThreeDotsVertical size={24} color="white" />
-      </div>
+    <div
+      className={`flex ${
+        author.bot ? "ml-0" : "mr-0 flex-row"
+      } mx-auto w-fit gap-2`}
+    >
+      <Dropdown className="flex-none">
+        <DropdownTrigger>
+          <button>
+            <BsThreeDotsVertical size={24} color="white" />
+          </button>
+        </DropdownTrigger>
+        <DropdownMenu aria-label="Static Actions">
+          <DropdownItem key="edit">Edit</DropdownItem>
+          <DropdownItem key="delete" className="text-danger" color="danger">
+            Delete
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
 
       <p
         className={`${
@@ -27,15 +49,13 @@ const ChatMessage = ({ author, message }: ChatMessageProps) => {
         dangerouslySetInnerHTML={{ __html: formattedMessage }}
       />
 
-      <div>
-        <Image
-          src="/assets/defaultuser.jpg"
-          alt="profile-picture"
-          height={50}
-          width={50}
-          className="h-10 w-10 rounded-full"
-        />
-      </div>
+      <Image
+        src="/assets/defaultuser.jpg"
+        alt="profile-picture"
+        height={50}
+        width={50}
+        className="h-10 w-10 rounded-full"
+      />
     </div>
   );
 };
