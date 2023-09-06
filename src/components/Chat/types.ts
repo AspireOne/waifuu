@@ -5,10 +5,4 @@ export type ChatMessageProps = {
         avatar: string;
         name: string;
     };
-}
-
-export type ChatHeaderProps = {
-    avatarPath: string;
-    name: string;
-    userName: string;
 };
