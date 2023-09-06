@@ -6,11 +6,13 @@ import {api} from "~/utils/api";
 import "~/styles/globals.css";
 import React from "react";
 import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const MyApp: AppType<{ session: Session | null }> = ({Component, pageProps: {session, ...pageProps}}) => {
   return (
     <SessionProvider session={session}>
       <NextUIProvider>
+        <ToastContainer/>
         <Component {...pageProps} />
       </NextUIProvider>
       <ToastContainer />

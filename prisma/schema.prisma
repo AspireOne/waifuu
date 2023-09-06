@@ -14,12 +14,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -47,18 +41,6 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  chats         Chat[]    @relation("UserChats")
-  Message       Message[]
-}
-
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -67,47 +49,56 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Chat {
-  id          Int          @id @default(autoincrement())
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  users       User[]       @relation("UserChats")
-  messages    Message[]
-  chatbot     Chatbot?     @relation(fields: [chatbotId], references: [id])
-  chatbotType ChatbotType? @default(ROLEPLAY)
-  chatbotId   Int?
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String?      @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  BotMessage    BotMessage[]
 }
 
-model Message {
-  id        Int      @id @default(autoincrement())
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model BotMessage {
+  id        Int         @id @default(autoincrement())
+  content   String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  userId    String
+  botId     String
+  botMode   BotMode
+  role      ChatbotRole
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id])
-
-  chatbotId Int?
-  chatbot   Chatbot? @relation(fields: [chatbotId], references: [id])
-
-  chatId Int
-  chat   Chat @relation(fields: [chatId], references: [id])
+  bot  Bot  @relation(fields: [botId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
 
-model Chatbot {
-  id          Int       @id @default(autoincrement())
+model Bot {
+  id          String    @id @default(cuid())
+  source      BotSource @default(OFFICIAL)
   name        String
   description String
   // The image will be dynamic in the future. Perhaps some variants based on mood?
   img         String    @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  Chat        Chat[]
-  Message     Message[]
+
+  messages BotMessage[]
 }
 
-enum ChatbotType {
+enum ChatbotRole {
+  USER
+  BOT
+}
+
+enum BotMode {
   ROLEPLAY
   ADVENTURE
   CHAT
+}
+
+enum BotSource {
+  OFFICIAL
+  COMMUNITY
 }

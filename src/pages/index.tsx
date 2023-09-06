@@ -7,62 +7,34 @@ import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {Textarea} from "@nextui-org/input";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import Page from "~/components/Page";
-
-
-type Message = {
-  isUser?: boolean,
-  isError?: boolean,
-  text: string
-}
+import useBotChat from "~/use_hooks/useBotChat";
+import {Button} from "@nextui-org/react";
 
 export default function Home() {
-  const {data: sessionData} = useSession();
-
-  const {data: chatbots} = api.general.getChatbots.useQuery();
-  console.log(chatbots);
+  const {data: session} = useSession();
+  //const {data: bots} = api.bots.getBots.useQuery();
 
   return (
     <Page metaTitle={"Main Page"} protected={true}>
-      <Chat></Chat>
+      <Chat/>
     </Page>
   );
 }
 
 function Chat(props: {}) {
-  const [input, setInput] = React.useState<string>("")
-  const [messages, setMessages] = React.useState<Message[]>([]);
-  const [submitting, setSubmitting] = React.useState<boolean>(false);
+  const [input, setInput] = React.useState<string>("");
+  const chat = useBotChat("sakura-bot", "ROLEPLAY");
   const [animationParent] = useAutoAnimate()
 
-  const responseMutation = api.general.genAiResponse.useMutation({
-    onSuccess: (data) => {
-      setMessages([...messages, {isUser: false, text: data.trim()}]);
-    },
-
-    onError: (error) => {
-      setMessages([...messages, {isUser: false, text: "Something went wrong.", isError: true}]);
-      console.log(error);
-    },
-
-    onSettled: (data, error, variables, context) => {
-      setSubmitting(false);
-    }
-  });
-
   function handleSubmit() {
-    console.log("submitting");
-    setSubmitting(true);
-    const newMessages = [...messages, {isUser: true, text: input.trim()}];
-    setMessages(newMessages);
+    chat.postMessage(input);
     setInput("");
-
-    responseMutation.mutate(newMessages);
   }
 
   async function onKeyDown(e: any) {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (!submitting) handleSubmit();
+      if (!chat.loadingReply) handleSubmit();
       return;
     }
   }
@@ -73,14 +45,17 @@ function Chat(props: {}) {
         Here you can try our chat!
       </CardHeader>
       <CardBody>
+        <Button isDisabled={chat.loadingMore} isLoading={chat.loadingMore} onClick={() => chat.loadMore()}>
+          Load more
+        </Button>
         <div ref={animationParent}>
           {
-            messages.map((message, index) => {
-                const color = message.isUser ? "bg-gray-200" : (message.isError ? "bg-red-200" : "bg-blue-100");
-                console.log(message.isUser);
+            chat.messages.reverse().map((message, index) => {
+                const color = message.role === "USER" ? "bg-gray-200" : (message.error ? "bg-red-200" : "bg-blue-100");
                 return (
-                  <div className={"rounded-2xl p-4 my-2 " + color}>
-                    {formatText(message.text)}
+                  // todo: key by message id.
+                  <div className={"rounded-2xl p-4 my-2 " + color} key={message.id}>
+                    {formatText(message.content)}
                   </div>
                 )
               }
