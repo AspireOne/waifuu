@@ -6,9 +6,7 @@ import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
-  DropdownSection,
   DropdownItem,
-  Button,
 } from "@nextui-org/react";
 
 const ChatMessage = ({ author, message }: ChatMessageProps) => {
@@ -35,19 +33,19 @@ const ChatMessage = ({ author, message }: ChatMessageProps) => {
           </button>
         </DropdownTrigger>
         <DropdownMenu aria-label="Static Actions">
-          <DropdownItem key="edit">Edit</DropdownItem>
+          <DropdownItem className="text-white" key="edit">Edit</DropdownItem>
           <DropdownItem key="delete" className="text-danger" color="danger">
             Delete
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
 
-      <p
-        className={`${
+      <div className={`${
           author.bot ? "bg-white" : "bg-white bg-opacity-20 text-white"
-        } max-w-[70%] rounded-lg p-3`}
-        dangerouslySetInnerHTML={{ __html: formattedMessage }}
-      />
+        } max-w-[70%] rounded-lg p-3`}>
+          <p className={`${author.bot ? "text-gray-400" : "text-gray-300"} text-sm mb-1`}>{author.name}</p>
+          <p dangerouslySetInnerHTML={{ __html: formattedMessage }} />
+      </div>
 
       <Image
         src="/assets/defaultuser.jpg"

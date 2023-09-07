@@ -1,6 +1,8 @@
 @tailwind base;
-/*body {
-    @apply bg-gray-700
-}*/
+
+/* body {
+    @apply bg-black
+} */
+
 @tailwind components;
 @tailwind utilities;

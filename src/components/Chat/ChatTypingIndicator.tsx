@@ -14,6 +14,7 @@ const ChatTypingIndicator = () => {
                 repeat: Infinity,
                 duration: 1,
                 delay,
+                repeatDelay: 0.60,
               },
             }}
             className="h-[11px] w-[11px] rounded-full bg-white"
