@@ -77,7 +77,11 @@ export const botsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ctx, input}) => {
-      // Add the message.
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to generate a reply.",
+      });
+
       const userMsg = await ctx.prisma.botMessage.create({
         data: {
           userId: ctx.session.user.id,
@@ -102,7 +106,6 @@ export const botsRouter = createTRPCRouter({
       const _messages = messages.map((message) => {
         return {user: message.role === "USER", content: message.content}
       });
-
 
       const processedMessages = processMessages(_messages);
 

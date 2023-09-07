@@ -4,6 +4,7 @@ import {api} from "~/utils/api";
 import {useQueryClient} from "@tanstack/react-query";
 import generateUUID from "~/utils/utils";
 import {toast} from "react-toastify";
+import {produce} from "immer";
 
 type MessageType = "error" | "temp";
 export type Message = { role: "USER" | "BOT", content: string, type?: MessageType, id: number };
@@ -29,7 +30,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
   }, [shouldLoadMore]);
 
   function addMessages(newMessages: Message[]) {
-    // Concat, sort and remove duplicates.
+    // Concat, sort, and remove duplicates and keep the newer message data.
     const combinedArr = messages
       .concat(newMessages)
       .sort((a, b) => a.id - b.id)
@@ -38,12 +39,6 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
       .reverse();
 
     setMessages(() => combinedArr);
-  }
-
-  function removeMessage(id: number) {
-    const updatedMessages = messages.filter(message => message.id !== id);
-    setMessages(updatedMessages);
-    return updatedMessages;
   }
 
   const fetchMore = api.bots.infiniteMessages.useMutation({
@@ -59,8 +54,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
 
   const replyMutation = api.bots.genReply.useMutation({
       onMutate: async (variables) => {
-        // Add a placeholder message.
-        addMessages([{role: "USER", content: variables.message, id: 1000000000}]);
+        addMessages([{role: "USER", type: "temp", content: variables.message, id: Number.MAX_SAFE_INTEGER}]);
       },
 
       onError: (error) => {
@@ -69,22 +63,26 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
           type: "error",
         });
         console.error(error);
+
+        /*setMessages(prevMessages => {
+          return produce(prevMessages, draft => {
+
+            if (draft.length === 0) return;
+            const lastMessage = draft[draft.length - 1];
+            lastMessage!.type = "error";
+          });
+        });*/
       },
 
-      onSettled: async (data) => {
-        if (!data) return;
-        console.log(data.userMessage);
-        console.log("VVVVVV");
-
-        const updatedMessages = messages.filter(message => message.id !== 1000000000)
+      onSuccess: (data, variables, context) => {
+        const updatedMessages = messages
+          .filter(message => message.id !== Number.MAX_SAFE_INTEGER)
           .concat([data.userMessage, data.botMessage])
           .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
           .sort((a, b) => a.id - b.id);
 
-        //removeMessage(1000000000);
         setMessages(updatedMessages)
-        //setTimeout(() => setMessages(updatedMessages), 1000);
-      },
+      }
     }
   )
 
