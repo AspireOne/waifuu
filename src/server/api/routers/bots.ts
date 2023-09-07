@@ -108,6 +108,7 @@ export const botsRouter = createTRPCRouter({
 
       let output;
       try {
+        await delay(1000);
         output = ["[Mock Output From a bot]"];/*await replicate.run(
         "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
         {
@@ -157,6 +158,10 @@ export const botsRouter = createTRPCRouter({
     return "you can now see this secret message!";
   }),
 });
+
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 /**
  * Processes the messages to put it as a prompt for a bot.

@@ -5,7 +5,8 @@ import {useQueryClient} from "@tanstack/react-query";
 import generateUUID from "~/utils/utils";
 import {toast} from "react-toastify";
 
-export type Message = { role: "USER" | "BOT", content: string, error?: boolean, id: number };
+type MessageType = "error" | "temp";
+export type Message = { role: "USER" | "BOT", content: string, type?: MessageType, id: number };
 // Create a map that will hold a cache of chat messages with cursor.
 const chatCache = new Map<string, Message[]>();
 
@@ -31,20 +32,18 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
     // Concat, sort and remove duplicates.
     const combinedArr = messages
       .concat(newMessages)
+      .sort((a, b) => a.id - b.id)
+      .reverse()
       .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
-      .sort((a, b) => a.id - b.id);
+      .reverse();
 
     setMessages(() => combinedArr);
   }
 
-  function replaceLastMessage(message?: Message) {
-    if (!message) {
-      setMessages((messages) => messages.slice(0, messages.length - 1));
-    } else {
-      setMessages((messages) => {
-        return messages.slice(0, messages.length - 1).concat([message]);
-      });
-    }
+  function removeMessage(id: number) {
+    const updatedMessages = messages.filter(message => message.id !== id);
+    setMessages(updatedMessages);
+    return updatedMessages;
   }
 
   const fetchMore = api.bots.infiniteMessages.useMutation({
@@ -61,7 +60,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
   const replyMutation = api.bots.genReply.useMutation({
       onMutate: async (variables) => {
         // Add a placeholder message.
-        addMessages([{role: "USER", content: variables.message, id: -1}]);
+        addMessages([{role: "USER", content: variables.message, id: 1000000000}]);
       },
 
       onError: (error) => {
@@ -73,10 +72,18 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
       },
 
       onSettled: async (data) => {
-        // remove the placeholder message.
-        replaceLastMessage();
         if (!data) return;
-        addMessages([data.userMessage, data.botMessage]);
+        console.log(data.userMessage);
+        console.log("VVVVVV");
+
+        const updatedMessages = messages.filter(message => message.id !== 1000000000)
+          .concat([data.userMessage, data.botMessage])
+          .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
+          .sort((a, b) => a.id - b.id);
+
+        //removeMessage(1000000000);
+        setMessages(updatedMessages)
+        //setTimeout(() => setMessages(updatedMessages), 1000);
       },
     }
   )

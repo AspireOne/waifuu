@@ -51,12 +51,14 @@ function Chat(props: {}) {
         <div ref={animationParent}>
           {
             chat.messages.reverse().map((message, index) => {
-                const color = message.role === "USER" ? "bg-gray-200" : (message.error ? "bg-red-200" : "bg-blue-100");
+                //const color = message.role === "USER" ? "bg-gray-200" : (message.error ? "bg-red-200" : "bg-blue-100");
                 return (
                   // todo: key by message id.
-                  <div className={"rounded-2xl p-4 my-2 " + color} key={message.id}>
-                    {formatText(message.content)}
-                  </div>
+                  <Card className={"my-2"} key={message.id}>
+                    <CardBody>
+                      {formatText(message.content)}
+                    </CardBody>
+                  </Card>
                 )
               }
             )
