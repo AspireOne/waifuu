@@ -58,6 +58,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   BotMessage    BotMessage[]
+  Bot           Bot[]
 }
 
 model BotMessage {
@@ -68,26 +69,28 @@ model BotMessage {
   userId    String
   botId     String
   botMode   BotMode
-  role      ChatbotRole
+  role      BotChatRole
 
   bot  Bot  @relation(fields: [botId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Bot {
-  id          String    @id @default(cuid())
-  source      BotSource @default(OFFICIAL)
+  id          String       @id @default(cuid())
   name        String
   description String
+  public      Boolean
+  creatorId   String?
   // The image will be dynamic in the future. Perhaps some variants based on mood?
-  img         String    @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  messages BotMessage[]
+  // TODO: Remove the image as a default :D
+  img         String       @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  messages    BotMessage[]
+  creator     User?        @relation(fields: [creatorId], references: [id])
 }
 
-enum ChatbotRole {
+enum BotChatRole {
   USER
   BOT
 }
@@ -96,9 +99,4 @@ enum BotMode {
   ROLEPLAY
   ADVENTURE
   CHAT
-}
-
-enum BotSource {
-  OFFICIAL
-  COMMUNITY
 }

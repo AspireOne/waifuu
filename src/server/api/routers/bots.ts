@@ -9,6 +9,8 @@ import Replicate from "replicate";
 import {env} from "~/server/env";
 import {TRPCError} from "@trpc/server";
 import {Prisma} from "@prisma/client";
+import { BotMode } from '@prisma/client'
+
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
@@ -17,23 +19,29 @@ const replicate = new Replicate({
 export const botsRouter = createTRPCRouter({
   getBots: publicProcedure
     .input(z.object({
-      source: z.enum(["COMMUNITY", "OFFICIAL"]).optional(), // TODO: Take it from prisma enum type.
-      // todo: add pagination
+      source: z.enum(["COMMUNITY", "OFFICIAL", "USER"]).nullish(),
+      includePrivate: z.boolean().nullish().default(false),
+      limit: z.number().min(1).nullish(),
+      userId: z.string().nullish(),
     }).optional())
     .query(async ({input, ctx}) => {
       return await ctx.prisma.bot.findMany({
-        take: 50, // TODO: remove hardcoded limit (add pagination).
+        take: input?.limit || undefined,
         where: {
-          source: input?.source,
-        },
+          public: input?.includePrivate ? undefined : true,
+          creatorId: {
+            equals: input?.userId || undefined,
+            not: input?.source === "USER" ? undefined : null,
+          },
+        }
       })
     }),
 
-  infiniteMessages: protectedProcedure
+  messages: protectedProcedure
     .input(
       z.object({
         botId: z.string(),
-        botMode: z.enum(["ROLEPLAY", "ADVENTURE", "CHAT"]),
+        botMode: z.nativeEnum(BotMode),
         limit: z.number().min(1).max(100).nullish(),
         cursor: z.number().nullish(),
       })
@@ -72,16 +80,11 @@ export const botsRouter = createTRPCRouter({
     .input(
       z.object({
         botId: z.string(),
-        botMode: z.enum(["ROLEPLAY", "ADVENTURE", "CHAT"]),
+        botMode: z.nativeEnum(BotMode),
         message: z.string(),
       })
     )
     .mutation(async ({ctx, input}) => {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to generate a reply.",
-      });
-
       const userMsg = await ctx.prisma.botMessage.create({
         data: {
           userId: ctx.session.user.id,

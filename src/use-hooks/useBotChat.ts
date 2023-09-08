@@ -41,7 +41,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
     setMessages(() => combinedArr);
   }
 
-  const fetchMore = api.bots.infiniteMessages.useMutation({
+  const fetchMore = api.bots.messages.useMutation({
     onSuccess: async (data) => {
       setCursor(data.nextCursor);
       addMessages(data.messages);

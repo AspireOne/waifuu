@@ -7,8 +7,9 @@ import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {Textarea} from "@nextui-org/input";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import Page from "~/components/Page";
-import useBotChat from "~/use_hooks/useBotChat";
+import useBotChat from "~/use-hooks/useBotChat";
 import {Button} from "@nextui-org/react";
+import { BotMode } from '@prisma/client'
 
 export default function Home() {
   const {data: session} = useSession();
@@ -23,7 +24,7 @@ export default function Home() {
 
 function Chat(props: {}) {
   const [input, setInput] = React.useState<string>("");
-  const chat = useBotChat("sakura-bot", "ROLEPLAY");
+  const chat = useBotChat("official-public", BotMode.ROLEPLAY);
   const [animationParent] = useAutoAnimate()
 
   function handleSubmit() {

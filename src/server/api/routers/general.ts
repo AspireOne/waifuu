@@ -13,8 +13,20 @@ const replicate = new Replicate({
 });
 
 export const generalRouter = createTRPCRouter({
+  health: publicProcedure
+    .meta({openapi: {method: 'GET', path: '/health'}})
+    .query(() => {
+      return "ok";
+    }),
+
+  protectedHealth: protectedProcedure
+    .meta({openapi: {method: 'GET', path: '/protected-health'}})
+    .query(() => {
+      return "ok";
+    }),
+
   hello: publicProcedure
-    .meta({openapi: {method: 'GET', path: '/hello '}})
+    .meta({openapi: {method: 'GET', path: '/hello'}})
     .input(z.object({text: z.string()}))
     .query(({input}) => {
       return {
