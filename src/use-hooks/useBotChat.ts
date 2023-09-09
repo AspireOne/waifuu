@@ -11,6 +11,14 @@ export type Message = { role: BotChatRole, content: string, type?: MessageStatus
 // Create a map that will hold a cache of chat messages with cursor.
 const chatCache = new Map<string, Message[]>();
 
+
+/**
+ * Allows interaction with a chatbot.
+ *
+ * @param {boolean} [enabled=true] - Flag indicating whether this is at all active. Can be used to postpone
+ * querying or loading before the botId or botMode is available.
+ * @returns {Object} An object containing chat messages and functions to interact with the chat.
+ */
 export default function useBotChat(botId: string | undefined, botMode: BotMode | undefined, enabled: boolean = true) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);

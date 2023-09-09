@@ -23,6 +23,7 @@ import Skeleton from "react-loading-skeleton";
 
 /**
  * Custom hook that fetches the specified bot and redirects if the bot or mode is invalid.
+ * @param enabled Whether the query should be enabled. Can be used to postpone the query until botId or mode is ready.
  */
 const useBot = (botId: string | undefined, mode: string | undefined, enabled: boolean = true) => {
   const router = useRouter();
@@ -42,7 +43,7 @@ const useBot = (botId: string | undefined, mode: string | undefined, enabled: bo
     }
   }, [mode, bot.isLoading, bot.data, botId, router]);
 
-  return bot.data;
+  return bot;
 }
 
 const Chat = () => {
@@ -52,7 +53,7 @@ const Chat = () => {
 
   const {data: session} = useSession();
 
-  const bot = useBot(botId, mode, router.isReady);
+  const {data: bot} = useBot(botId, mode, router.isReady);
   const chat = useBotChat(botId, mode as BotMode, router.isReady);
 
   return (
