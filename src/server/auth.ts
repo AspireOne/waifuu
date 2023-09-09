@@ -1,14 +1,16 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
-  getServerSession,
   type DefaultSession,
+  DefaultUser,
+  getServerSession,
   type NextAuthOptions,
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 import { prisma } from "~/server/db";
 import { env } from "~/server/env";
+import { generateUniqueUsername } from "~/server/utils/utils";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -21,9 +23,14 @@ declare module "next-auth" {
     user: DefaultSession["user"] & {
       id: string;
       image: string;
+      username?: string;
       // ...other properties
       // role: UserRole;
     };
+  }
+
+  interface User extends DefaultUser {
+    username?: string;
   }
 
   // interface User {
@@ -39,12 +46,20 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session: ({ session, user }) => ({
+    async signIn({ user, account, profile, email, credentials }) {
+      if (!user.username) {
+        user.username = await generateUniqueUsername(user);
+      }
+      return true;
+    },
+    // nextAuth callback to add custom properties to the user when they first sign in.
+    session: ({ session, user, newSession, trigger }) => ({
       ...session,
       user: {
         ...session.user,
         id: user.id,
-        image: session.user?.image ?? "/assets/default_user.jpg", // DEFAULT IMAGE.
+        image: user.image ?? "/assets/default_user.jpg", // DEFAULT IMAGE.
+        username: user.username,
       },
     }),
   },
