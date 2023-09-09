@@ -76,21 +76,21 @@ describe("test tRPC endpoint to get bots", () => {
   ]
 
   const ctx = getMockedProtectedTrpcContext({
-    user: user,
+    user: {...user, image: "/assets/default_user.jpg"},
     expires: "1"
   });
 
   const caller = appRouter.createCaller({...ctx, prisma: prismaMock});
   type Input = inferProcedureInput<AppRouter["bots"]["getAllBots"]>;
 
-/*  test("test if it returns all bots", async () => {
-    const input: Input = undefined;
+  /*  test("test if it returns all bots", async () => {
+      const input: Input = undefined;
 
-    const response = await caller.bots.getBots(input);
-    console.log(response);
+      const response = await caller.bots.getBots(input);
+      console.log(response);
 
-    assert(response.length === 2);
-  });*/
+      assert(response.length === 2);
+    });*/
 
   /*test("test if it returns only public bots", async () => {
     const input: Input = {
