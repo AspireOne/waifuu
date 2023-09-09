@@ -104,10 +104,10 @@ const Chat = () => {
                 </button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
-                <DropdownItem className="text-white" key="edit">
+                <DropdownItem className="text-white" key="remove">
                   Remove chat
                 </DropdownItem>
-                <DropdownItem className="text-white" key="edit">
+                <DropdownItem className="text-white" key="settings">
                   Settings
                 </DropdownItem>
               </DropdownMenu>
