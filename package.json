@@ -6,14 +6,17 @@
     "build": "next build && prisma migrate deploy",
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "prettify": "pnpm exec prettier . --write",
+    "lint": "prettier . --write",
     "start": "next start",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "prepare": "husky install"
+    "prepare": "pnpm dlx husky install"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -65,8 +68,5 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.19.0"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
   }
 }

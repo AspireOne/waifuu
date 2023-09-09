@@ -14,3 +14,5 @@ public
 next-env.d.ts
 pnpm-lock.yaml
 tsconfig.tsbuildinfo
+generated/
+*.generated.*
