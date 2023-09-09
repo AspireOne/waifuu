@@ -20,6 +20,7 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
+      image: string;
       // ...other properties
       // role: UserRole;
     };
@@ -43,6 +44,7 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        image: session.user?.image ?? "/assets/default_user.jpg", // DEFAULT IMAGE.
       },
     }),
   },

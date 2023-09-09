@@ -48,7 +48,7 @@ const ChatMessage = ({ author, message }: ChatMessageProps) => {
       </div>
 
       <Image
-        src="/assets/defaultuser.jpg"
+        src="/assets/defaul_tuser.jpg"
         alt="profile-picture"
         height={50}
         width={50}
