@@ -1,6 +1,8 @@
+import {BotMode} from "@prisma/client";
+
 export default {
   index: "/",
-  bulletin: "/nastenka",
-  exercises: "/cviceni",
-  profile: "/profil",
+  explore: "/explore",
+  botChatMainMenu: (botId: string) => `/chat/${botId}`,
+  botChat: (botId: string, botMode: BotMode) => `/chat/${botId}/${botMode}`,
 }

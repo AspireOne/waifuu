@@ -1,5 +1,5 @@
-import { ChatMessage } from "~/components/Chat/ChatMessage";
-import { ChatTypingIndicator } from "~/components/Chat/ChatTypingIndicator";
+import {ChatMessage} from "~/components/Chat/ChatMessage";
+import {ChatTypingIndicator} from "~/components/Chat/ChatTypingIndicator";
 import {
   Dropdown,
   DropdownItem,
@@ -8,8 +8,8 @@ import {
   Image,
   ScrollShadow,
 } from "@nextui-org/react";
-import { BsShareFill, BsThreeDotsVertical } from "react-icons/bs";
-import { RiSendPlane2Fill } from "react-icons/ri";
+import {BsShareFill, BsThreeDotsVertical} from "react-icons/bs";
+import {RiSendPlane2Fill} from "react-icons/ri";
 
 const Chat = () => {
   return (
@@ -30,7 +30,7 @@ const Chat = () => {
         width={1920}
         height={1080}
       />
-      <div className="fixed left-0 top-0 z-20 h-full w-full bg-gradient-to-b from-transparent via-black/70 to-black" />
+      <div className="fixed left-0 top-0 z-20 h-full w-full bg-gradient-to-b from-transparent via-black/70 to-black"/>
 
       <div className="fixed z-30 w-full">
         <div className="mx-auto mt-5 flex w-[75%] flex-row rounded-lg bg-black bg-opacity-80 p-3">
@@ -53,7 +53,7 @@ const Chat = () => {
             <Dropdown className="flex-none">
               <DropdownTrigger>
                 <button>
-                  <BsThreeDotsVertical size={25} color="white" />
+                  <BsThreeDotsVertical size={25} color="white"/>
                 </button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
@@ -69,7 +69,7 @@ const Chat = () => {
             <Dropdown className="flex-none">
               <DropdownTrigger>
                 <button>
-                  <BsShareFill size={25} color="white" />
+                  <BsShareFill size={25} color="white"/>
                 </button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
@@ -173,7 +173,7 @@ const Chat = () => {
               }}
               message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
             />
-            <ChatTypingIndicator />
+            <ChatTypingIndicator/>
           </ScrollShadow>
 
           <div className="mx-auto w-full">
@@ -185,7 +185,7 @@ const Chat = () => {
               />
 
               <button className="w-13 h-13 rounded-lg bg-white p-2">
-                <RiSendPlane2Fill size={30} color="black" />
+                <RiSendPlane2Fill size={30} color="black"/>
               </button>
             </div>
           </div>
