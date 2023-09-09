@@ -59,6 +59,27 @@ export const botsRouter = createTRPCRouter({
       })
     }),
 
+  create: protectedProcedure
+    .input(z.object({
+      name: z.string(),
+      description: z.string(),
+      visibility: z.nativeEnum(Visibility),
+      img: z.string().url().optional(),
+    }))
+    .mutation(async ({input, ctx}) => {
+      const bot = await ctx.prisma.bot.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          visibility: input.visibility,
+          creatorId: ctx.session.user.id,
+          source: BotSource.COMMUNITY,
+          img: input.img,
+        }
+      })
+      return bot;
+    }),
+
   /**
    * Retrieves messages with a bot.
    */
