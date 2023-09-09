@@ -7,16 +7,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
+import { ChatMessageProps } from "./types";
 
-type Author = {
-  bot: boolean;
-  avatar: string;
-  name: string;
-};
-
-const ChatMessage = (props: { message: string; key: any; author: Author }) => {
+const ChatMessage = ({ author, message, key }: ChatMessageProps) => {
   const formattedMessage = useMemo(() => {
-    return props.message
+    return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
       .replace(/\*(.*?)\*/g, "<em>$1</em>")
       .replace(/__(.*?)__/g, "<strong>$1</strong>")
@@ -24,12 +19,13 @@ const ChatMessage = (props: { message: string; key: any; author: Author }) => {
       .replace(/~~(.*?)~~/g, "<s>$1</s>")
       .replace(/`(.*?)`/g, "<code>$1</code>")
       .replace(/```(.*?)```/g, "<pre>$1</pre>");
-  }, [props.message]);
+  }, [message]);
+
   return (
     <div
-      key={props.key}
+      key={key}
       className={`flex ${
-        props.author.bot ? "ml-0" : "mr-0 flex-row"
+        author.bot ? "ml-0" : "mr-0 flex-row"
       } mx-auto w-fit gap-2`}
     >
       <Dropdown className="flex-none">
@@ -50,21 +46,21 @@ const ChatMessage = (props: { message: string; key: any; author: Author }) => {
 
       <div
         className={`${
-          props.author.bot ? "bg-white" : "bg-white bg-opacity-20 text-white"
+          author.bot ? "bg-white" : "bg-white bg-opacity-20 text-white"
         } max-w-[70%] rounded-lg p-3`}
       >
         <p
           className={`${
-            props.author.bot ? "text-gray-400" : "text-gray-300"
+            author.bot ? "text-gray-400" : "text-gray-300"
           } mb-1 text-sm`}
         >
-          {props.author.name}
+          {author.name}
         </p>
         <p dangerouslySetInnerHTML={{ __html: formattedMessage }} />
       </div>
 
       <Image
-        src="/assets/defaul_tuser.jpg"
+        src="/assets/default_user.jpg"
         alt="profile-picture"
         height={50}
         width={50}

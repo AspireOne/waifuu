@@ -3,11 +3,14 @@ import Image from "next/image";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { Navbar } from "~/components/Navbar";
+import { FaCompass, FaTag } from "react-icons/fa";
 
 const Discover = () => {
   return (
     <div className="bg-black">
-      <div className="h-[350px] overflow-hidden">
+      <Navbar />
+      <div className="hidden h-[350px] overflow-hidden sm:block">
         <Image
           alt="background"
           loading="eager"
@@ -16,7 +19,7 @@ const Discover = () => {
           width={1920}
           height={1080}
         />
-        <div className="absolute left-0 top-0 flex h-[350px] h-full w-full flex-row">
+        <div className="absolute left-0 top-[64px] flex h-[350px] h-full w-full flex-row">
           <div className="clear-both">
             <BiChevronLeft
               color="white"
@@ -25,7 +28,7 @@ const Discover = () => {
             />
           </div>
 
-          <div className="align-center mx-auto flex w-fit flex-row">
+          <div className="align-center absolute mx-auto flex w-fit flex-row sm:relative">
             <Image
               alt="background"
               loading="eager"
@@ -56,7 +59,28 @@ const Discover = () => {
 
       <div className="mx-auto w-[70%] p-5">
         <div className="mb-10 mt-7">
-          <h3 className="mb-3 text-4xl text-white">Popular tags</h3>
+          <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
+            <FaCompass /> Active chats
+          </h3>
+        </div>
+
+        <div className="flex scrollbar overflow-scroll scrollbar-thumb-gray-700 scrollbar-track-transparent overflow-x-visible w-full flex-row gap-5">
+          <CharacterCard />
+          <CharacterCard />
+          <CharacterCard />
+          <CharacterCard />
+          <CharacterCard />
+          <CharacterCard />
+          <CharacterCard />
+          <CharacterCard />
+        </div>
+      </div>
+
+      <div className="mx-auto w-[70%] p-5">
+        <div className="mb-10 mt-7">
+          <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
+            <FaTag /> Popular tags
+          </h3>
           <div className="flex flex-wrap gap-3">
             {[
               "Bordered",
@@ -71,7 +95,7 @@ const Discover = () => {
               "Bordered",
             ].map((tag) => {
               return (
-                <Chip size="lg" color="default" variant="solid">
+                <Chip size="lg" color="default" variant="bordered">
                   Bordered
                 </Chip>
               );

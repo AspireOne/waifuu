@@ -47,6 +47,7 @@
     "replicate": "^0.16.1",
     "superjson": "^1.13.1",
     "tailwind-merge": "^1.14.0",
+    "tailwind-scrollbar": "^3.0.5",
     "trpc-openapi": "^1.2.0",
     "vite-tsconfig-paths": "^4.2.0",
     "zod": "^3.22.2",
