@@ -16,7 +16,9 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
