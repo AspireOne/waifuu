@@ -77,7 +77,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
       onSuccess: (data, variables, context) => {
         const updatedMessages = messages
           .filter(message => message.id !== Number.MAX_SAFE_INTEGER)
-          .concat([data.userMessage, data.botMessage])
+          .concat([data.userMessage, data.botChatMessage])
           .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
           .sort((a, b) => a.id - b.id);
 

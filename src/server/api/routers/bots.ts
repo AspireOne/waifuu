@@ -20,7 +20,7 @@ const replicate = new Replicate({
 export const botsRouter = createTRPCRouter({
   /**
    * Returns all public bots.
-  * */
+   * */
   getAll: publicProcedure
     .input(z.object({
       sourceFilter: z.nativeEnum(BotSource).nullish(),
@@ -39,7 +39,7 @@ export const botsRouter = createTRPCRouter({
   /**
    * Returns all bots that the user has access to (public and private for the user making the request, public for bots
    * of other users).
-  * */
+   * */
   getUserBots: protectedProcedure
     .input(z.object({
       limit: z.number().min(1).nullish(),
@@ -72,7 +72,7 @@ export const botsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({input, ctx}) => {
-      const messages = await ctx.prisma.botMessage.findMany({
+      const messages = await ctx.prisma.botChatMessage.findMany({
         // Take one more item that we will use as the cursor.
         take: input.limit + 1,
         cursor: input.cursor ? {id: input.cursor} : undefined,
@@ -107,7 +107,7 @@ export const botsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ctx, input}) => {
-      const userMsg = await ctx.prisma.botMessage.create({
+      const userMsg = await ctx.prisma.botChatMessage.create({
         data: {
           userId: ctx.session.user.id,
           botId: input.botId,
@@ -118,7 +118,7 @@ export const botsRouter = createTRPCRouter({
       });
 
       // TODO: Messages will have to implement some indexing, metadata, context... For long term memory.
-      const messages = await ctx.prisma.botMessage.findMany({
+      const messages = await ctx.prisma.botChatMessage.findMany({
         where: {
           botId: input.botId,
           userId: ctx.session.user.id,
@@ -150,7 +150,7 @@ export const botsRouter = createTRPCRouter({
       )*/
       } catch (e) {
         // remove the user message from db.
-        await ctx.prisma.botMessage.delete({
+        await ctx.prisma.botChatMessage.delete({
           where: {
             id: userMsg.id,
           }
@@ -166,7 +166,7 @@ export const botsRouter = createTRPCRouter({
       const outputStr = (output as []).join("");
 
       // save the output to db.
-      const botMsg = await ctx.prisma.botMessage.create({
+      const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
           userId: ctx.session.user.id,
           botId: input.botId,
@@ -177,7 +177,7 @@ export const botsRouter = createTRPCRouter({
       });
 
       return {
-        botMessage: botMsg,
+        botChatMessage: botMsg,
         userMessage: userMsg,
       }
     }),

@@ -50,18 +50,38 @@ model VerificationToken {
 }
 
 model User {
-  id            String       @id @default(cuid())
+  id            String           @id @default(cuid())
   name          String?
-  email         String?      @unique
+  email         String?          @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  BotMessage    BotMessage[]
+  BotMessage    BotChatMessage[]
   Bot           Bot[]
+
+  ChatMessage ChatMessage[]
+  Chat        Chat[]
 }
 
-model BotMessage {
+// TODO: Tags
+model Bot {
+  id          String           @id @default(cuid())
+  name        String
+  description String
+  visibility  Visibility
+  creatorId   String?
+  source      BotSource
+  // The image will be dynamic in the future. Perhaps some variants based on mood?
+  // TODO: Remove the image as a default :D
+  img         String           @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  messages    BotChatMessage[]
+  creator     User?            @relation(fields: [creatorId], references: [id])
+}
+
+model BotChatMessage {
   id        Int         @id @default(autoincrement())
   content   String
   createdAt DateTime    @default(now())
@@ -75,21 +95,22 @@ model BotMessage {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// TODO: Tags
-model Bot {
-  id          String       @id @default(cuid())
-  name        String
-  description String
-  visibility  Visibility
-  creatorId   String?
-  source      BotSource
-  // The image will be dynamic in the future. Perhaps some variants based on mood?
-  // TODO: Remove the image as a default :D
-  img         String       @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  messages    BotMessage[]
-  creator     User?        @relation(fields: [creatorId], references: [id])
+model Chat {
+  id       String        @id @default(cuid())
+  users    User[]
+  messages ChatMessage[]
+}
+
+model ChatMessage {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  chatId    String
+
+  chat Chat @relation(fields: [chatId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Visibility {
