@@ -7,7 +7,9 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -39,6 +41,7 @@
     "superjson": "^1.13.1",
     "tailwind-merge": "^1.14.0",
     "trpc-openapi": "^1.2.0",
+    "vite-tsconfig-paths": "^4.2.0",
     "zod": "^3.22.2",
     "zustand": "^4.4.1"
   },
@@ -46,13 +49,17 @@
     "@types/node": "^18.16.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
+    "@vitest/ui": "^0.34.4",
     "autoprefixer": "^10.4.14",
+    "jsdom": "^22.1.0",
     "postcss": "^8.4.27",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.5.1",
     "prisma": "^5.1.1",
     "tailwindcss": "^3.3.3",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.4",
+    "vitest-mock-extended": "^1.2.1"
   },
   "ct3aMetadata": {
     "initVersion": "7.19.0"

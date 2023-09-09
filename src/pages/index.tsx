@@ -1,14 +1,15 @@
 import {signIn, signOut, useSession} from "next-auth/react";
 import Head from "next/head";
 import {api} from "~/utils/api";
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import Replicate from "replicate";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {Textarea} from "@nextui-org/input";
 import {useAutoAnimate} from "@formkit/auto-animate/react";
 import Page from "~/components/Page";
-import useBotChat from "~/use_hooks/useBotChat";
+import useBotChat from "~/use-hooks/useBotChat";
 import {Button} from "@nextui-org/react";
+import { BotMode } from '@prisma/client'
 
 export default function Home() {
   const {data: session} = useSession();
@@ -23,8 +24,13 @@ export default function Home() {
 
 function Chat(props: {}) {
   const [input, setInput] = React.useState<string>("");
-  const chat = useBotChat("sakura-bot", "ROLEPLAY");
+  const chat = useBotChat("official-public", BotMode.ROLEPLAY);
+  const bots = api.bots.getAll.useQuery();
   const [animationParent] = useAutoAnimate()
+
+  useEffect(() => {
+    console.log("XXX", bots.data, "XXX");
+  }, [bots]);
 
   function handleSubmit() {
     chat.postMessage(input);
@@ -53,7 +59,6 @@ function Chat(props: {}) {
             chat.messages.reverse().map((message, index) => {
                 //const color = message.role === "USER" ? "bg-gray-200" : (message.error ? "bg-red-200" : "bg-blue-100");
                 return (
-                  // todo: key by message id.
                   <Card className={"my-2"} key={message.id}>
                     <CardBody>
                       {formatText(message.content)}
@@ -81,9 +86,7 @@ function formatText(text: string): React.ReactNode[] {
       // Add newline characters before and after the italic text
       return (
         <>
-
           <div className="italic my-[4px]">*{part}*</div>
-
         </>
       );
     }

@@ -41,7 +41,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
     setMessages(() => combinedArr);
   }
 
-  const fetchMore = api.bots.infiniteMessages.useMutation({
+  const fetchMore = api.bots.messages.useMutation({
     onSuccess: async (data) => {
       setCursor(data.nextCursor);
       addMessages(data.messages);
@@ -77,7 +77,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
       onSuccess: (data, variables, context) => {
         const updatedMessages = messages
           .filter(message => message.id !== Number.MAX_SAFE_INTEGER)
-          .concat([data.userMessage, data.botMessage])
+          .concat([data.userMessage, data.botChatMessage])
           .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
           .sort((a, b) => a.id - b.id);
 

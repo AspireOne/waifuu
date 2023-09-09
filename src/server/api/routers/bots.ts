@@ -9,42 +9,93 @@ import Replicate from "replicate";
 import {env} from "~/server/env";
 import {TRPCError} from "@trpc/server";
 import {Prisma} from "@prisma/client";
+import {BotMode} from '@prisma/client'
+import {BotSource, Visibility} from '@prisma/client'
+
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
 });
 
 export const botsRouter = createTRPCRouter({
-  getBots: publicProcedure
+  /**
+   * Returns all public bots.
+   * */
+  getAll: publicProcedure
     .input(z.object({
-      source: z.enum(["COMMUNITY", "OFFICIAL"]).optional(), // TODO: Take it from prisma enum type.
-      // todo: add pagination
+      sourceFilter: z.nativeEnum(BotSource).nullish(),
+      limit: z.number().min(1).nullish(),
     }).optional())
     .query(async ({input, ctx}) => {
       return await ctx.prisma.bot.findMany({
-        take: 50, // TODO: remove hardcoded limit (add pagination).
+        take: input?.limit || undefined,
         where: {
-          source: input?.source,
-        },
+          visibility: Visibility.PUBLIC,
+          source: input?.sourceFilter ?? undefined,
+        }
       })
     }),
 
-  infiniteMessages: protectedProcedure
+  /**
+   * Returns all bots that the user has access to (public and private for the user making the request, public for bots
+   * of other users).
+   * */
+  getUserBots: protectedProcedure
+    .input(z.object({
+      limit: z.number().min(1).nullish(),
+      userId: z.string().nullish(),
+    }).optional())
+    .query(async ({input, ctx}) => {
+      const visibility = (!input?.userId || input.userId === ctx.session.user.id)
+        ? undefined
+        : Visibility.PUBLIC;
+
+      return await ctx.prisma.bot.findMany({
+        take: input?.limit || undefined,
+        where: {
+          creatorId: input?.userId ?? ctx.session.user.id,
+          visibility: visibility,
+        }
+      })
+    }),
+
+  create: protectedProcedure
+    .input(z.object({
+      name: z.string(),
+      description: z.string(),
+      visibility: z.nativeEnum(Visibility),
+      img: z.string().url().optional(),
+    }))
+    .mutation(async ({input, ctx}) => {
+      const bot = await ctx.prisma.bot.create({
+        data: {
+          name: input.name,
+          description: input.description,
+          visibility: input.visibility,
+          creatorId: ctx.session.user.id,
+          source: BotSource.COMMUNITY,
+          img: input.img,
+        }
+      })
+      return bot;
+    }),
+
+  /**
+   * Retrieves messages with a bot.
+   */
+  messages: protectedProcedure
     .input(
       z.object({
         botId: z.string(),
-        botMode: z.enum(["ROLEPLAY", "ADVENTURE", "CHAT"]),
-        limit: z.number().min(1).max(100).nullish(),
+        botMode: z.nativeEnum(BotMode),
+        limit: z.number().min(1).max(100).default(15),
         cursor: z.number().nullish(),
       })
     )
     .mutation(async ({input, ctx}) => {
-      const limit = input.limit ?? 15;
-
-      // TODO: Error when 0 messages.
-      const messages = await ctx.prisma.botMessage.findMany({
+      const messages = await ctx.prisma.botChatMessage.findMany({
         // Take one more item that we will use as the cursor.
-        take: limit + 1,
+        take: input.limit + 1,
         cursor: input.cursor ? {id: input.cursor} : undefined,
         orderBy: {id: "desc"},
         where: {
@@ -57,7 +108,7 @@ export const botsRouter = createTRPCRouter({
       let nextCursor: typeof input.cursor | undefined = undefined;
       // If there is more messages (signalised by the limit + 1), pop the last item and use it as the next cursor.
 
-      if (messages.length > limit) {
+      if (messages.length > input.limit) {
         const nextItem = messages.pop();
         nextCursor = nextItem!.id;
       }
@@ -72,17 +123,12 @@ export const botsRouter = createTRPCRouter({
     .input(
       z.object({
         botId: z.string(),
-        botMode: z.enum(["ROLEPLAY", "ADVENTURE", "CHAT"]),
+        botMode: z.nativeEnum(BotMode),
         message: z.string(),
       })
     )
     .mutation(async ({ctx, input}) => {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to generate a reply.",
-      });
-
-      const userMsg = await ctx.prisma.botMessage.create({
+      const userMsg = await ctx.prisma.botChatMessage.create({
         data: {
           userId: ctx.session.user.id,
           botId: input.botId,
@@ -93,7 +139,7 @@ export const botsRouter = createTRPCRouter({
       });
 
       // TODO: Messages will have to implement some indexing, metadata, context... For long term memory.
-      const messages = await ctx.prisma.botMessage.findMany({
+      const messages = await ctx.prisma.botChatMessage.findMany({
         where: {
           botId: input.botId,
           userId: ctx.session.user.id,
@@ -125,7 +171,7 @@ export const botsRouter = createTRPCRouter({
       )*/
       } catch (e) {
         // remove the user message from db.
-        await ctx.prisma.botMessage.delete({
+        await ctx.prisma.botChatMessage.delete({
           where: {
             id: userMsg.id,
           }
@@ -141,7 +187,7 @@ export const botsRouter = createTRPCRouter({
       const outputStr = (output as []).join("");
 
       // save the output to db.
-      const botMsg = await ctx.prisma.botMessage.create({
+      const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
           userId: ctx.session.user.id,
           botId: input.botId,
@@ -152,7 +198,7 @@ export const botsRouter = createTRPCRouter({
       });
 
       return {
-        botMessage: botMsg,
+        botChatMessage: botMsg,
         userMessage: userMsg,
       }
     }),
@@ -169,7 +215,10 @@ function delay(ms: number) {
 /**
  * Processes the messages to put it as a prompt for a bot.
  * */
-const processMessages = (messages: { user: boolean, content: string }[]) => {
+const processMessages = (messages: {
+  user: boolean,
+  content: string
+}[]) => {
   // In the future, the prompt will have to be altered to account for the following:
   // 1. ! The messages will have to be somehow truncated to fit into context window.
   // 2. Account for loss of context between messages (vector db / embeddings / extrahování důležitých věcí a dosazení do promptu jako kontext).
