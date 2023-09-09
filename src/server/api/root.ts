@@ -1,6 +1,6 @@
 import { generalRouter } from "~/server/api/routers/general";
 import { createTRPCRouter } from "~/server/api/trpc";
-import {botsRouter} from "~/server/api/routers/bots";
+import { botsRouter } from "~/server/api/routers/bots";
 
 /**
  * This is the primary router for your server.

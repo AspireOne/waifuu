@@ -1,49 +1,57 @@
-import {AnimatePresence, motion} from 'framer-motion';
-import React, {FormEvent, PropsWithChildren, useEffect} from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { FormEvent, PropsWithChildren, useEffect } from "react";
 import PageHead from "~/components/PageHead";
 import Navbar from "~/components/Navbar";
-import {twMerge} from "tailwind-merge";
-import {signIn, useSession} from "next-auth/react";
-import {FaSpinner} from "react-icons/fa";
-import {AiOutlineLock} from "react-icons/ai";
-import {toast} from "react-toastify";
+import { twMerge } from "tailwind-merge";
+import { signIn, useSession } from "next-auth/react";
+import { FaSpinner } from "react-icons/fa";
+import { AiOutlineLock } from "react-icons/ai";
+import { toast } from "react-toastify";
 import SignInModal from "~/components/SignInModal";
 
 // Your existing Page component
 let hasPrev = false;
 
-function Page(props: PropsWithChildren<{
-  className?: string,
-  metaTitle: string,
-  metaDesc?: string,
-  protected?: boolean,
-}>) {
-  const {data: session, status} = useSession();
+function Page(
+  props: PropsWithChildren<{
+    className?: string;
+    metaTitle: string;
+    metaDesc?: string;
+    protected?: boolean;
+  }>,
+) {
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     hasPrev = true;
-  }, [props.children])
+  }, [props.children]);
 
   return (
     <div>
-      <PageHead title={props.metaTitle} description={props.metaDesc}/>
+      <PageHead title={props.metaTitle} description={props.metaDesc} />
       {/*TODO: Navbar / sidebar*/}
       {/*<Navbar/>*/}
 
       <AnimatePresence>
         <motion.section
-          initial={{y: hasPrev ? -5 : 0, opacity: 1}}
-          animate={{y: 0, opacity: 1}}
+          initial={{ y: hasPrev ? -5 : 0, opacity: 1 }}
+          animate={{ y: 0, opacity: 1 }}
           // change animation movement to be fast at the start and slow at the end.
-          transition={{type: "spring", stiffness: 100, damping: 20, duration: 0.1}}
-          exit={{y: 5, opacity: 0}}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            duration: 0.1,
+          }}
+          exit={{ y: 5, opacity: 0 }}
         >
-          <div className={twMerge(
-            "p-4 px-4 sm:px-8 md:px-14 lg:px-14 pt-0 relative min-h-[70vh] max-w-[1500px] mx-auto",
-            props.className,
-          )}
+          <div
+            className={twMerge(
+              "relative mx-auto min-h-[70vh] max-w-[1500px] p-4 px-4 pt-0 sm:px-8 md:px-14 lg:px-14",
+              props.className,
+            )}
           >
-            {props.protected && status === "unauthenticated" && <SignInModal/>}
+            {props.protected && status === "unauthenticated" && <SignInModal />}
             {props.children}
           </div>
         </motion.section>
@@ -52,7 +60,7 @@ function Page(props: PropsWithChildren<{
       {/*TODO: Footer*/}
       {/*<Footer/>*/}
     </div>
-  )
+  );
 }
 
 export default Page;

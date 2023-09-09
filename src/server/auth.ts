@@ -8,7 +8,7 @@ import {
 import GoogleProvider from "next-auth/providers/google";
 
 import { prisma } from "~/server/db";
-import {env} from "~/server/env";
+import { env } from "~/server/env";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

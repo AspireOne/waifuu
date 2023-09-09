@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 import {
   createTRPCRouter,
@@ -6,7 +6,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import Replicate from "replicate";
-import {env} from "~/server/env";
+import { env } from "~/server/env";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
@@ -14,21 +14,21 @@ const replicate = new Replicate({
 
 export const generalRouter = createTRPCRouter({
   health: publicProcedure
-    .meta({openapi: {method: 'GET', path: '/health'}})
+    .meta({ openapi: { method: "GET", path: "/health" } })
     .query(() => {
       return "ok";
     }),
 
   protectedHealth: protectedProcedure
-    .meta({openapi: {method: 'GET', path: '/protected-health'}})
+    .meta({ openapi: { method: "GET", path: "/protected-health" } })
     .query(() => {
       return "ok";
     }),
 
   hello: publicProcedure
-    .meta({openapi: {method: 'GET', path: '/hello'}})
-    .input(z.object({text: z.string()}))
-    .query(({input}) => {
+    .meta({ openapi: { method: "GET", path: "/hello" } })
+    .input(z.object({ text: z.string() }))
+    .query(({ input }) => {
       return {
         greeting: `Hello ${input.text}`,
       };

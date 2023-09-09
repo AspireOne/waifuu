@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 import {
   createTRPCRouter,
@@ -6,12 +6,11 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import Replicate from "replicate";
-import {env} from "~/server/env";
-import {TRPCError} from "@trpc/server";
-import {Prisma} from "@prisma/client";
-import {BotMode} from '@prisma/client'
-import {BotSource, Visibility} from '@prisma/client'
-
+import { env } from "~/server/env";
+import { TRPCError } from "@trpc/server";
+import { Prisma } from "@prisma/client";
+import { BotMode } from "@prisma/client";
+import { BotSource, Visibility } from "@prisma/client";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
@@ -22,30 +21,36 @@ export const botsRouter = createTRPCRouter({
    * Returns all public bots.
    * */
   getAllBots: publicProcedure
-    .input(z.object({
-      sourceFilter: z.nativeEnum(BotSource).nullish(),
-      limit: z.number().min(1).nullish(),
-    }).optional())
-    .query(async ({input, ctx}) => {
+    .input(
+      z
+        .object({
+          sourceFilter: z.nativeEnum(BotSource).nullish(),
+          limit: z.number().min(1).nullish(),
+        })
+        .optional(),
+    )
+    .query(async ({ input, ctx }) => {
       return await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         where: {
           visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
-        }
-      })
+        },
+      });
     }),
 
   getBot: publicProcedure
-    .input(z.object({
-      botId: z.string(),
-    }))
-    .query(async ({input, ctx}) => {
+    .input(
+      z.object({
+        botId: z.string(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
       return await ctx.prisma.bot.findUnique({
         where: {
           id: input.botId,
-        }
-      })
+        },
+      });
     }),
 
   /**
@@ -53,32 +58,39 @@ export const botsRouter = createTRPCRouter({
    * of other users).
    * */
   getUserBots: protectedProcedure
-    .input(z.object({
-      limit: z.number().min(1).nullish(),
-      userId: z.string().nullish(),
-    }).optional())
-    .query(async ({input, ctx}) => {
-      const visibility = (!input?.userId || input.userId === ctx.session.user.id)
-        ? undefined
-        : Visibility.PUBLIC;
+    .input(
+      z
+        .object({
+          limit: z.number().min(1).nullish(),
+          userId: z.string().nullish(),
+        })
+        .optional(),
+    )
+    .query(async ({ input, ctx }) => {
+      const visibility =
+        !input?.userId || input.userId === ctx.session.user.id
+          ? undefined
+          : Visibility.PUBLIC;
 
       return await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         where: {
           creatorId: input?.userId ?? ctx.session.user.id,
           visibility: visibility,
-        }
-      })
+        },
+      });
     }),
 
   create: protectedProcedure
-    .input(z.object({
-      name: z.string(),
-      description: z.string(),
-      visibility: z.nativeEnum(Visibility),
-      img: z.string().url().optional(),
-    }))
-    .mutation(async ({input, ctx}) => {
+    .input(
+      z.object({
+        name: z.string(),
+        description: z.string(),
+        visibility: z.nativeEnum(Visibility),
+        img: z.string().url().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
       const bot = await ctx.prisma.bot.create({
         data: {
           name: input.name,
@@ -87,8 +99,8 @@ export const botsRouter = createTRPCRouter({
           creatorId: ctx.session.user.id,
           source: BotSource.COMMUNITY,
           img: input.img,
-        }
-      })
+        },
+      });
       return bot;
     }),
 
@@ -102,14 +114,14 @@ export const botsRouter = createTRPCRouter({
         botMode: z.nativeEnum(BotMode),
         limit: z.number().min(1).max(100).default(15),
         cursor: z.number().nullish(),
-      })
+      }),
     )
-    .mutation(async ({input, ctx}) => {
+    .mutation(async ({ input, ctx }) => {
       const messages = await ctx.prisma.botChatMessage.findMany({
         // Take one more item that we will use as the cursor.
         take: input.limit + 1,
-        cursor: input.cursor ? {id: input.cursor} : undefined,
-        orderBy: {id: "desc"},
+        cursor: input.cursor ? { id: input.cursor } : undefined,
+        orderBy: { id: "desc" },
         where: {
           botId: input.botId,
           botMode: input.botMode,
@@ -137,9 +149,9 @@ export const botsRouter = createTRPCRouter({
         botId: z.string(),
         botMode: z.nativeEnum(BotMode),
         message: z.string(),
-      })
+      }),
     )
-    .mutation(async ({ctx, input}) => {
+    .mutation(async ({ ctx, input }) => {
       const userMsg = await ctx.prisma.botChatMessage.create({
         data: {
           userId: ctx.session.user.id,
@@ -147,7 +159,7 @@ export const botsRouter = createTRPCRouter({
           botMode: input.botMode,
           content: input.message,
           role: "USER", // TODO: Do not hardcode.
-        }
+        },
       });
 
       // TODO: Messages will have to implement some indexing, metadata, context... For long term memory.
@@ -162,7 +174,7 @@ export const botsRouter = createTRPCRouter({
 
       // todo: pass the messages as a whole (i cannot get the prisma type on the other side).
       const _messages = messages.map((message) => {
-        return {user: message.role === "USER", content: message.content}
+        return { user: message.role === "USER", content: message.content };
       });
 
       const processedMessages = processMessages(_messages);
@@ -170,7 +182,7 @@ export const botsRouter = createTRPCRouter({
       let output;
       try {
         await delay(1000);
-        output = ["[Mock Output From a bot]"];/*await replicate.run(
+        output = ["[Mock Output From a bot]"]; /*await replicate.run(
         "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
         {
           input: {
@@ -186,7 +198,7 @@ export const botsRouter = createTRPCRouter({
         await ctx.prisma.botChatMessage.delete({
           where: {
             id: userMsg.id,
-          }
+          },
         });
 
         throw new TRPCError({
@@ -206,13 +218,13 @@ export const botsRouter = createTRPCRouter({
           botMode: input.botMode,
           content: outputStr,
           role: "BOT", // TODO: Do not hardcode.
-        }
+        },
       });
 
       return {
         botChatMessage: botMsg,
         userMessage: userMsg,
-      }
+      };
     }),
 
   getSecretMessage: protectedProcedure.query(() => {
@@ -221,16 +233,18 @@ export const botsRouter = createTRPCRouter({
 });
 
 function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
  * Processes the messages to put it as a prompt for a bot.
  * */
-const processMessages = (messages: {
-  user: boolean,
-  content: string
-}[]) => {
+const processMessages = (
+  messages: {
+    user: boolean;
+    content: string;
+  }[],
+) => {
   // In the future, the prompt will have to be altered to account for the following:
   // 1. ! The messages will have to be somehow truncated to fit into context window.
   // 2. Account for loss of context between messages (vector db / embeddings / extrahování důležitých věcí a dosazení do promptu jako kontext).
@@ -238,9 +252,7 @@ const processMessages = (messages: {
   // 4. Account for images.
   return messages
     .map((message) =>
-      message.user
-        ? `[INST] ${message.content} [/INST]`
-        : `${message.content}`
+      message.user ? `[INST] ${message.content} [/INST]` : `${message.content}`,
     )
     .join("\n");
 };

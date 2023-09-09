@@ -1,0 +1,16 @@
+# Ignore artifacts:
+build
+coverage
+dist
+node_modules
+package-lock.json
+package.json
+tsconfig.json
+tsconfig.build.json
+.husky
+.next
+public
+.npmrc
+next-env.d.ts
+pnpm-lock.yaml
+tsconfig.tsbuildinfo

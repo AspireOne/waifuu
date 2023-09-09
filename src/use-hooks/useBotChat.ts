@@ -1,16 +1,20 @@
-import {useEffect, useState} from "react";
-import { BotMode, BotChatRole } from '@prisma/client'
-import {api} from "~/utils/api";
-import {useQueryClient} from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { BotMode, BotChatRole } from "@prisma/client";
+import { api } from "~/utils/api";
+import { useQueryClient } from "@tanstack/react-query";
 import generateUUID from "~/utils/utils";
-import {toast} from "react-toastify";
-import {produce} from "immer";
+import { toast } from "react-toastify";
+import { produce } from "immer";
 
 type MessageStatus = "error" | "temp";
-export type Message = { role: BotChatRole, content: string, type?: MessageStatus, id: number };
+export type Message = {
+  role: BotChatRole;
+  content: string;
+  type?: MessageStatus;
+  id: number;
+};
 // Create a map that will hold a cache of chat messages with cursor.
 const chatCache = new Map<string, Message[]>();
-
 
 /**
  * Allows interaction with a chatbot.
@@ -19,7 +23,11 @@ const chatCache = new Map<string, Message[]>();
  * querying or loading before the botId or botMode is available.
  * @returns {Object} An object containing chat messages and functions to interact with the chat.
  */
-export default function useBotChat(botId: string | undefined, botMode: BotMode | undefined, enabled: boolean = true) {
+export default function useBotChat(
+  botId: string | undefined,
+  botMode: BotMode | undefined,
+  enabled: boolean = true,
+) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
   const [cursor, setCursor] = useState<number | undefined>(undefined);
@@ -32,7 +40,7 @@ export default function useBotChat(botId: string | undefined, botMode: BotMode |
 
     onSettled: async () => {
       setShouldLoadMore(false);
-    }
+    },
   });
 
   useEffect(() => {
@@ -42,24 +50,37 @@ export default function useBotChat(botId: string | undefined, botMode: BotMode |
   }, [botId, botMode]);
 
   useEffect(() => {
-    if (shouldLoadMore && !fetchMore.isLoading && !!botId && !!botMode && enabled) {
-      fetchMore.mutate({botId, botMode, cursor});
+    if (
+      shouldLoadMore &&
+      !fetchMore.isLoading &&
+      !!botId &&
+      !!botMode &&
+      enabled
+    ) {
+      fetchMore.mutate({ botId, botMode, cursor });
     }
   }, [shouldLoadMore, fetchMore.isLoading]);
 
   const replyMutation = api.bots.genReply.useMutation({
-      onMutate: async (variables) => {
-        addMessages([{role: "USER", type: "temp", content: variables.message, id: Number.MAX_SAFE_INTEGER}]);
-      },
+    onMutate: async (variables) => {
+      addMessages([
+        {
+          role: "USER",
+          type: "temp",
+          content: variables.message,
+          id: Number.MAX_SAFE_INTEGER,
+        },
+      ]);
+    },
 
-      onError: (error) => {
-        toast("Something went wrong.", {
-          position: "top-center",
-          type: "error",
-        });
-        console.error(error);
+    onError: (error) => {
+      toast("Something went wrong.", {
+        position: "top-center",
+        type: "error",
+      });
+      console.error(error);
 
-        /*setMessages(prevMessages => {
+      /*setMessages(prevMessages => {
           return produce(prevMessages, draft => {
 
             if (draft.length === 0) return;
@@ -67,19 +88,21 @@ export default function useBotChat(botId: string | undefined, botMode: BotMode |
             lastMessage!.type = "error";
           });
         });*/
-      },
+    },
 
-      onSuccess: (data, variables, context) => {
-        const updatedMessages = messages
-          .filter(message => message.id !== Number.MAX_SAFE_INTEGER)
-          .concat([data.userMessage, data.botChatMessage])
-          .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
-          .sort((a, b) => a.id - b.id);
+    onSuccess: (data, variables, context) => {
+      const updatedMessages = messages
+        .filter((message) => message.id !== Number.MAX_SAFE_INTEGER)
+        .concat([data.userMessage, data.botChatMessage])
+        .filter(
+          (value, index, self) =>
+            self.findIndex((m) => m.id === value.id) === index,
+        )
+        .sort((a, b) => a.id - b.id);
 
-        setMessages(updatedMessages)
-      }
-    }
-  )
+      setMessages(updatedMessages);
+    },
+  });
 
   function addMessages(newMessages: Message[]) {
     // Concat, sort, and remove duplicates and keep the newer message data.
@@ -87,7 +110,10 @@ export default function useBotChat(botId: string | undefined, botMode: BotMode |
       .concat(newMessages)
       .sort((a, b) => a.id - b.id)
       .reverse()
-      .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
+      .filter(
+        (value, index, self) =>
+          self.findIndex((m) => m.id === value.id) === index,
+      )
       .reverse();
 
     setMessages(() => combinedArr);
@@ -98,7 +124,7 @@ export default function useBotChat(botId: string | undefined, botMode: BotMode |
 
     postMessage: (message: string) => {
       if (!enabled || !botId || !botMode) return;
-      replyMutation.mutate({botId, botMode, message})
+      replyMutation.mutate({ botId, botMode, message });
     },
     loadingReply: replyMutation.isLoading,
 

@@ -1,5 +1,5 @@
-import {ChatMessage} from "~/components/Chat/ChatMessage";
-import {ChatTypingIndicator} from "~/components/Chat/ChatTypingIndicator";
+import { ChatMessage } from "~/components/Chat/ChatMessage";
+import { ChatTypingIndicator } from "~/components/Chat/ChatTypingIndicator";
 import {
   Dropdown,
   DropdownItem,
@@ -8,27 +8,30 @@ import {
   Image,
   ScrollShadow,
 } from "@nextui-org/react";
-import {BsShareFill, BsThreeDotsVertical} from "react-icons/bs";
-import {RiSendPlane2Fill} from "react-icons/ri";
-import {api} from "~/utils/api";
-import {useRouter} from "next/router";
-import {useSession} from "next-auth/react";
+import { BsShareFill, BsThreeDotsVertical } from "react-icons/bs";
+import { RiSendPlane2Fill } from "react-icons/ri";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import useBotChat from "~/use-hooks/useBotChat";
-import {BotMode} from "@prisma/client";
-import {useEffect} from "react";
+import { BotMode } from "@prisma/client";
+import { useEffect } from "react";
 import paths from "~/utils/paths";
 import Page from "~/components/Page";
 import Skeleton from "react-loading-skeleton";
-import {useAutoAnimate} from "@formkit/auto-animate/react";
-
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 /**
  * Custom hook that fetches the specified bot and redirects if the bot or mode is invalid.
  * @param enabled Whether the query should be enabled. Can be used to postpone the query until botId or mode is ready.
  */
-const useBot = (botId: string | undefined, mode: string | undefined, enabled: boolean = true) => {
+const useBot = (
+  botId: string | undefined,
+  mode: string | undefined,
+  enabled: boolean = true,
+) => {
   const router = useRouter();
-  const bot = api.bots.getBot.useQuery({botId: botId!}, {enabled: enabled});
+  const bot = api.bots.getBot.useQuery({ botId: botId! }, { enabled: enabled });
 
   useEffect(() => {
     if (!enabled) return;
@@ -45,19 +48,19 @@ const useBot = (botId: string | undefined, mode: string | undefined, enabled: bo
   }, [mode, bot.isLoading, bot.data, botId, router]);
 
   return bot;
-}
+};
 
 const Chat = () => {
   const router = useRouter();
   const botId = router.query.botId as string | undefined;
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
-  const {data: session} = useSession();
+  const { data: session } = useSession();
 
-  const {data: bot} = useBot(botId, mode, router.isReady);
+  const { data: bot } = useBot(botId, mode, router.isReady);
   const chat = useBotChat(botId, mode as BotMode, router.isReady);
 
-  const [chatParent] = useAutoAnimate()
+  const [chatParent] = useAutoAnimate();
 
   return (
     <Page protected={true} metaTitle={bot?.name || "Loading..."}>
@@ -77,7 +80,7 @@ const Chat = () => {
         width={1920}
         height={1080}
       />
-      <div className="fixed left-0 top-0 z-20 h-full w-full bg-gradient-to-b from-transparent via-black/70 to-black"/>
+      <div className="fixed left-0 top-0 z-20 h-full w-full bg-gradient-to-b from-transparent via-black/70 to-black" />
 
       <div className="fixed z-30 w-full">
         <div className="mx-auto mt-5 flex w-[75%] flex-row rounded-lg bg-black bg-opacity-80 p-3">
@@ -92,7 +95,7 @@ const Chat = () => {
           </div>
 
           <div className="ml-3">
-            <h3 className="text-white">{bot?.name || <Skeleton/>}</h3>
+            <h3 className="text-white">{bot?.name || <Skeleton />}</h3>
             <h6 className="text-gray-400">@fauna_fyi</h6>
           </div>
 
@@ -100,7 +103,7 @@ const Chat = () => {
             <Dropdown className="flex-none">
               <DropdownTrigger>
                 <button>
-                  <BsThreeDotsVertical size={25} color="white"/>
+                  <BsThreeDotsVertical size={25} color="white" />
                 </button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
@@ -116,7 +119,7 @@ const Chat = () => {
             <Dropdown className="flex-none">
               <DropdownTrigger>
                 <button>
-                  <BsShareFill size={25} color="white"/>
+                  <BsShareFill size={25} color="white" />
                 </button>
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
@@ -139,27 +142,24 @@ const Chat = () => {
         <div className="fixed bottom-6 z-30 flex flex-col gap-6 md:left-[50%] md:translate-x-[-50%]">
           <ScrollShadow className="flex h-[55vh] flex-col gap-7 overflow-scroll overflow-x-visible">
             <div ref={chatParent}>
-              {
-                chat.messages.map((message, index) => {
-                  const botName = bot?.name || "Them";
-                  const userName = session?.user?.name || "You";
+              {chat.messages.map((message, index) => {
+                const botName = bot?.name || "Them";
+                const userName = session?.user?.name || "You";
 
-                  return (
-                    <ChatMessage
-                      key={message.id}
-                      author={{
-                        bot: message.role === "BOT",
-                        name: message.role === "BOT" ? botName : userName,
-                        avatar: "/assets/default_user.jpg"
-                      }}
-                      message={message.content}
-                    />
-                  );
-                })
-              }
-
+                return (
+                  <ChatMessage
+                    key={message.id}
+                    author={{
+                      bot: message.role === "BOT",
+                      name: message.role === "BOT" ? botName : userName,
+                      avatar: "/assets/default_user.jpg",
+                    }}
+                    message={message.content}
+                  />
+                );
+              })}
             </div>
-            {chat.loadingReply && <ChatTypingIndicator/>}
+            {chat.loadingReply && <ChatTypingIndicator />}
           </ScrollShadow>
 
           <div className="mx-auto w-full">
@@ -171,7 +171,7 @@ const Chat = () => {
               />
 
               <button className="w-13 h-13 rounded-lg bg-white p-2">
-                <RiSendPlane2Fill size={30} color="black"/>
+                <RiSendPlane2Fill size={30} color="black" />
               </button>
             </div>
           </div>

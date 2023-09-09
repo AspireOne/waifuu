@@ -84,7 +84,7 @@ const Discover = () => {
             <FaMagnifyingGlass color="white" fontSize={20} />
             <p className="text-white">Search</p>
           </div>
-          <Input className="rounded-lg text-white w-fit" type="text" />
+          <Input className="w-fit rounded-lg text-white" type="text" />
         </div>
 
         <div className="flex flex-wrap gap-5">

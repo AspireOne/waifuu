@@ -1,3 +1,1 @@
-export type CharacterProps = {
-    
-}
+export type CharacterProps = {};

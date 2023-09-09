@@ -6,7 +6,7 @@ const CharacterCard = () => {
       <Image
         src={"/assets/character.png"}
         alt="character"
-        className="opacity-100 mt-[-14px]"
+        className="mt-[-14px] opacity-100"
         width={300}
         height={350}
       />

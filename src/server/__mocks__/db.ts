@@ -1,14 +1,14 @@
-import {PrismaClient} from '@prisma/client'
-import {beforeEach} from 'vitest'
-import {mockDeep, mockReset} from 'vitest-mock-extended'
+import { PrismaClient } from "@prisma/client";
+import { beforeEach } from "vitest";
+import { mockDeep, mockReset } from "vitest-mock-extended";
 
 beforeEach(() => {
-  mockReset(prisma)
-})
+  mockReset(prisma);
+});
 
 beforeEach(() => {
-  vi.restoreAllMocks()
-})
+  vi.restoreAllMocks();
+});
 
-const prisma = mockDeep<PrismaClient>()
-export default prisma
+const prisma = mockDeep<PrismaClient>();
+export default prisma;
