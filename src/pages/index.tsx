@@ -25,12 +25,8 @@ export default function Home() {
 function Chat(props: {}) {
   const [input, setInput] = React.useState<string>("");
   const chat = useBotChat("official-public", BotMode.ROLEPLAY);
-  const bots = api.bots.getAll.useQuery();
+  const bots = api.bots.getAllBots.useQuery();
   const [animationParent] = useAutoAnimate()
-
-  useEffect(() => {
-    console.log("XXX", bots.data, "XXX");
-  }, [bots]);
 
   function handleSubmit() {
     chat.postMessage(input);

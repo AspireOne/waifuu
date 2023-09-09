@@ -21,7 +21,7 @@ export const botsRouter = createTRPCRouter({
   /**
    * Returns all public bots.
    * */
-  getAll: publicProcedure
+  getAllBots: publicProcedure
     .input(z.object({
       sourceFilter: z.nativeEnum(BotSource).nullish(),
       limit: z.number().min(1).nullish(),
@@ -32,6 +32,18 @@ export const botsRouter = createTRPCRouter({
         where: {
           visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
+        }
+      })
+    }),
+
+  getBot: publicProcedure
+    .input(z.object({
+      botId: z.string(),
+    }))
+    .query(async ({input, ctx}) => {
+      return await ctx.prisma.bot.findUnique({
+        where: {
+          id: input.botId,
         }
       })
     }),
