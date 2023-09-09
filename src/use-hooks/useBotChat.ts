@@ -1,33 +1,20 @@
 import {useEffect, useState} from "react";
-import {$Enums as enums} from '@prisma/client'
+import { BotMode, BotChatRole } from '@prisma/client'
 import {api} from "~/utils/api";
 import {useQueryClient} from "@tanstack/react-query";
 import generateUUID from "~/utils/utils";
 import {toast} from "react-toastify";
 import {produce} from "immer";
 
-type MessageType = "error" | "temp";
-export type Message = { role: "USER" | "BOT", content: string, type?: MessageType, id: number };
+type MessageStatus = "error" | "temp";
+export type Message = { role: BotChatRole, content: string, type?: MessageStatus, id: number };
 // Create a map that will hold a cache of chat messages with cursor.
 const chatCache = new Map<string, Message[]>();
 
-// TODO: Change botType to enum from prisma. Currently it checks out, but it is hardcoded.
-export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTURE" | "CHAT") {
+export default function useBotChat(botId: string | undefined, botMode: BotMode | undefined, enabled: boolean = true) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
   const [cursor, setCursor] = useState<number | undefined>(undefined);
-
-  function addMessages(newMessages: Message[]) {
-    // Concat, sort, and remove duplicates and keep the newer message data.
-    const combinedArr = messages
-      .concat(newMessages)
-      .sort((a, b) => a.id - b.id)
-      .reverse()
-      .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
-      .reverse();
-
-    setMessages(() => combinedArr);
-  }
 
   const fetchMore = api.bots.messages.useMutation({
     onSuccess: async (data) => {
@@ -47,7 +34,7 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
   }, [botId, botMode]);
 
   useEffect(() => {
-    if (shouldLoadMore && !fetchMore.isLoading) {
+    if (shouldLoadMore && !fetchMore.isLoading && !!botId && !!botMode && enabled) {
       fetchMore.mutate({botId, botMode, cursor});
     }
   }, [shouldLoadMore, fetchMore.isLoading]);
@@ -86,10 +73,25 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
     }
   )
 
+  function addMessages(newMessages: Message[]) {
+    // Concat, sort, and remove duplicates and keep the newer message data.
+    const combinedArr = messages
+      .concat(newMessages)
+      .sort((a, b) => a.id - b.id)
+      .reverse()
+      .filter((value, index, self) => self.findIndex(m => m.id === value.id) === index)
+      .reverse();
+
+    setMessages(() => combinedArr);
+  }
+
   return {
     messages,
 
-    postMessage: (message: string) => replyMutation.mutate({botId, botMode, message}),
+    postMessage: (message: string) => {
+      if (!enabled || !botId || !botMode) return;
+      replyMutation.mutate({botId, botMode, message})
+    },
     loadingReply: replyMutation.isLoading,
 
     loadMore: () => setShouldLoadMore(true),

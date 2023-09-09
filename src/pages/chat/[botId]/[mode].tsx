@@ -10,10 +10,53 @@ import {
 } from "@nextui-org/react";
 import {BsShareFill, BsThreeDotsVertical} from "react-icons/bs";
 import {RiSendPlane2Fill} from "react-icons/ri";
+import {api} from "~/utils/api";
+import {useRouter} from "next/router";
+import {useSession} from "next-auth/react";
+import useBotChat from "~/use-hooks/useBotChat";
+import {BotMode} from "@prisma/client";
+import {useEffect} from "react";
+import paths from "~/utils/paths";
+import Page from "~/components/Page";
+import Skeleton from "react-loading-skeleton";
+
+
+/**
+ * Custom hook that fetches the specified bot and redirects if the bot or mode is invalid.
+ */
+const useBot = (botId: string | undefined, mode: string | undefined, enabled: boolean = true) => {
+  const router = useRouter();
+  const bot = api.bots.getBot.useQuery({botId: botId!}, {enabled: enabled});
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    // If the bot does not exist, redirect to explore page.
+    if (!bot.isLoading && !bot.data) {
+      router.push(paths.explore);
+    }
+
+    // If mode does not exist, redirect to the bot main menu.
+    if (!Object.values(BotMode).includes(mode as BotMode)) {
+      router.push(paths.botChatMainMenu(botId!));
+    }
+  }, [mode, bot.isLoading, bot.data, botId, router]);
+
+  return bot.data;
+}
 
 const Chat = () => {
+  const router = useRouter();
+  const botId = router.query.botId as string | undefined;
+  const mode = (router.query.mode as string | undefined)?.toUpperCase();
+
+  const {data: session} = useSession();
+
+  const bot = useBot(botId, mode, router.isReady);
+  const chat = useBotChat(botId, mode as BotMode, router.isReady);
+
   return (
-    <div>
+    <Page protected={true} metaTitle={bot?.name || "Loading..."}>
       <Image
         alt="background"
         loading="eager"
@@ -39,13 +82,13 @@ const Chat = () => {
               height={50}
               width={50}
               loading="eager"
-              src={"/assets/defaultuser.jpg"}
+              src={"/assets/default_user.jpg"}
               alt="botavatar"
             />
           </div>
 
           <div className="ml-3">
-            <h3 className="text-white">Fauna</h3>
+            <h3 className="text-white">{bot?.name || <Skeleton/>}</h3>
             <h6 className="text-gray-400">@fauna_fyi</h6>
           </div>
 
@@ -58,7 +101,7 @@ const Chat = () => {
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem className="text-white" key="edit">
-                  Remove chat with Fauna
+                  Remove chat
                 </DropdownItem>
                 <DropdownItem className="text-white" key="edit">
                   Settings
@@ -91,89 +134,25 @@ const Chat = () => {
       <div className="p-3">
         <div className="fixed bottom-6 z-30 flex flex-col gap-6 md:left-[50%] md:translate-x-[-50%]">
           <ScrollShadow className="flex h-[55vh] flex-col gap-7 overflow-scroll overflow-x-visible">
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />
-            <ChatMessage
-              author={{
-                avatar: "Pepe",
-                name: "Jdidopcice",
-                bot: true,
-              }}
-              message={
-                "AHA LOL TAK DOBRY VOLE, POJDME VYKROPIT NEJAKY DAV XOOXOXO 20!"
-              }
-            />
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />{" "}
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />{" "}
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />{" "}
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />{" "}
-            <ChatMessage
-              author={{
-                avatar: "Nevim",
-                name: "Nejaka loli waifu",
-                bot: false,
-              }}
-              message={"je mi to **fakt jedno**1!!!1! LOL XD *vytahne ar-15*"}
-            />
-            <ChatTypingIndicator/>
+            {
+              chat.messages.map((message, index) => {
+                const botName = bot?.name || "Them";
+                const userName = session?.user?.name || "You";
+
+                return (
+                  <ChatMessage
+                    key={message.id}
+                    author={{
+                      bot: message.role === "BOT",
+                      name: message.role === "BOT" ? botName : userName,
+                      avatar: "/assets/default_user.jpg"
+                    }}
+                    message={message.content}
+                  />
+                );
+              })
+            }
+            {chat.loadingReply && <ChatTypingIndicator/>}
           </ScrollShadow>
 
           <div className="mx-auto w-full">
@@ -191,7 +170,7 @@ const Chat = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 

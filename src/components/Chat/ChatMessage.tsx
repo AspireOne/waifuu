@@ -9,7 +9,7 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 
-const ChatMessage = ({ author, message }: ChatMessageProps) => {
+const ChatMessage = ({ author, message, key }: ChatMessageProps) => {
   const formattedMessage = useMemo(() => {
     return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
@@ -22,6 +22,7 @@ const ChatMessage = ({ author, message }: ChatMessageProps) => {
   }, [message]);
   return (
     <div
+      key={key}
       className={`flex ${
         author.bot ? "ml-0" : "mr-0 flex-row"
       } mx-auto w-fit gap-2`}
