@@ -1,54 +1,18 @@
 import { ChatMessage } from "~/components/Chat/ChatMessage";
 import { ChatTypingIndicator } from "~/components/Chat/ChatTypingIndicator";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Image,
-  ScrollShadow,
-} from "@nextui-org/react";
-import { BsShareFill, BsThreeDotsVertical } from "react-icons/bs";
+import { Image, ScrollShadow } from "@nextui-org/react";
 import { RiSendPlane2Fill } from "react-icons/ri";
-import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import useBotChat from "~/use-hooks/useBotChat";
 import { BotMode } from "@prisma/client";
-import { useEffect } from "react";
-import paths from "~/utils/paths";
 import Page from "~/components/Page";
 import Skeleton from "react-loading-skeleton";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-
-/**
- * Custom hook that fetches the specified bot and redirects if the bot or mode is invalid.
- * @param enabled Whether the query should be enabled. Can be used to postpone the query until botId or mode is ready.
- */
-const useBot = (
-  botId: string | undefined,
-  mode: string | undefined,
-  enabled: boolean = true,
-) => {
-  const router = useRouter();
-  const bot = api.bots.getBot.useQuery({ botId: botId! }, { enabled: enabled });
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    // If the bot does not exist, redirect to explore page.
-    if (!bot.isLoading && !bot.data) {
-      router.push(paths.explore);
-    }
-
-    // If mode does not exist, redirect to the bot main menu.
-    if (!Object.values(BotMode).includes(mode as BotMode)) {
-      router.push(paths.botChatMainMenu(botId!));
-    }
-  }, [mode, bot.isLoading, bot.data, botId, router]);
-
-  return bot;
-};
+import { ShareDropdown } from "~/components/Chat/ShareDropdown";
+import { SettingsDropdown } from "~/components/Chat/SettingsDropdown";
+import { useBot } from "~/use-hooks/useBot";
+import { useMemo } from "react";
 
 const Chat = () => {
   const router = useRouter();
@@ -56,13 +20,29 @@ const Chat = () => {
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
   const { data: session } = useSession();
-
   const { data: bot } = useBot(botId, mode, router.isReady);
   const chat = useBotChat(botId, mode as BotMode, router.isReady);
 
   const [chatParent] = useAutoAnimate();
 
-  // TODO: .
+  const chatMessages = useMemo(() => {
+    return chat.messages.map((message, index) => {
+      const botName = bot?.name || "Them";
+      const userName = session?.user?.name || "You";
+
+      return (
+        <ChatMessage
+          key={message.id}
+          author={{
+            bot: message.role === "BOT",
+            name: message.role === "BOT" ? botName : userName,
+            avatar: "/assets/default_user.jpg",
+          }}
+          message={message.content}
+        />
+      );
+    });
+  }, [chat, bot, session]);
 
   return (
     <Page protected={true} metaTitle={bot?.name || "Loading..."}>
@@ -102,80 +82,30 @@ const Chat = () => {
           </div>
 
           <div className="align-center mx-auto mr-2 flex flex-row gap-2">
-            <Dropdown className="flex-none">
-              <DropdownTrigger>
-                <button>
-                  <BsThreeDotsVertical size={25} color="white" />
-                </button>
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Static Actions">
-                <DropdownItem className="text-white" key="remove">
-                  Remove chat
-                </DropdownItem>
-                <DropdownItem className="text-white" key="settings">
-                  Settings
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-
-            <Dropdown className="flex-none">
-              <DropdownTrigger>
-                <button>
-                  <BsShareFill size={25} color="white" />
-                </button>
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Static Actions">
-                <DropdownItem className="text-white" key="edit">
-                  Share on Twitter
-                </DropdownItem>
-                <DropdownItem className="text-white" key="edit">
-                  Share on Instagram
-                </DropdownItem>
-                <DropdownItem className="text-white" key="edit">
-                  Share on Facebook
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            <SettingsDropdown />
+            <ShareDropdown />
           </div>
         </div>
       </div>
 
       <div className="p-3">
-        <div className="fixed bottom-6 z-30 flex flex-col gap-6 md:left-[50%] md:translate-x-[-50%]">
-          <ScrollShadow className="flex h-[55vh] flex-col gap-7 overflow-scroll overflow-x-visible">
-            <div ref={chatParent}>
-              {chat.messages.map((message, index) => {
-                const botName = bot?.name || "Them";
-                const userName = session?.user?.name || "You";
+        <div className="fixed bottom-6 left-[50%] z-30 flex translate-x-[-50%] flex-col gap-6">
+          <ScrollShadow className="scrollbar scrollbar-thumb-gray-700 scrollbar-track-transparent flex h-32 flex-col gap-7 overflow-scroll overflow-x-visible">
+            <div ref={chatParent}>{chatMessages}</div>
 
-                return (
-                  <ChatMessage
-                    key={message.id}
-                    author={{
-                      bot: message.role === "BOT",
-                      name: message.role === "BOT" ? botName : userName,
-                      avatar: "/assets/default_user.jpg",
-                    }}
-                    message={message.content}
-                  />
-                );
-              })}
-            </div>
             {chat.loadingReply && <ChatTypingIndicator />}
           </ScrollShadow>
 
-          <div className="mx-auto w-full">
-            <div className="mx-auto flex w-fit w-full flex-row gap-2">
-              <input
-                placeholder="Your message..."
-                className="w-[90%] rounded-lg border-1 border-white bg-transparent p-3 text-white outline-none"
-                type="text"
-              />
+          <div className="mx-auto flex w-[310px] flex-row gap-2 sm:w-[400px] md:w-[500px] lg:w-[700px]">
+            <input
+              placeholder="Your message..."
+              className="w-full rounded-lg border-1 border-white bg-transparent p-3 text-white outline-none"
+              type="text"
+            />
 
-              <button className="w-13 h-13 rounded-lg bg-white p-2">
-                <RiSendPlane2Fill size={30} color="black" />
-              </button>
-            </div>
+            <button className="w-13 h-13 rounded-lg bg-white p-2">
+              <RiSendPlane2Fill size={30} color="black" />
+            </button>
           </div>
         </div>
       </div>

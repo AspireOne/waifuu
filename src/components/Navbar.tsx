@@ -1,41 +1,54 @@
-import { useDrawerStore } from "~/stores";
-import React, { useState } from "react";
-import { AiOutlineUser } from "react-icons/ai";
-import Link from "next/link";
-import { Button } from "@nextui-org/react";
+import Image from "next/image";
+import { FaBell } from "react-icons/fa";
 
-export default function Navbar() {
-  const drawer = useDrawerStore();
-  const [expanded, setExpanded] = useState();
-
+const Navbar = () => {
   return (
-    <nav className="bg-brand-200/50 fixed left-4 right-4 top-4 flex items-center justify-between rounded-xl border-[1px] border-gray-300 px-6 py-4 shadow-md backdrop-blur-lg">
-      <div className={"flex items-center gap-4"}>
-        <img
-          className={"h-auto w-8"}
-          src={
-            "https://user-images.githubusercontent.com/57546404/264742549-7be355b8-4bfe-4c9c-9bd7-539892224db8.png"
-          }
-        />
-        <p className={"text-lg font-semibold text-gray-700"}>Pepe - Demo</p>
-      </div>
+    <nav className="bg-transparent">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          <Image
+            className="h-20 w-auto"
+            src="/assets/logo.png"
+            width={100}
+            height={50}
+            alt="Your Company"
+          />
 
-      <div className={"flex items-center gap-3"}>
-        <Item href={"/"} title={"Domov"} />
-        <Item href={"/"} title={"Cvičení"} />
-      </div>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div className="flex flex-row gap-5">
+              <button
+                type="button"
+                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                id="user-menu-button"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <FaBell color="white" fontSize={30} />
+              </button>
 
-      <div>
-        <AiOutlineUser size={24} />
+              <button
+                type="button"
+                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                id="user-menu-button"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <span className="absolute -inset-1.5"></span>
+                <span className="sr-only">Open user menu</span>
+                <Image
+                  className="h-8 w-8 rounded-full"
+                  src="/assets/default_user.jpg"
+                  height={50}
+                  width={100}
+                  alt=""
+                />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );
-}
+};
 
-function Item(props: { href: string; title: string }) {
-  return (
-    <Button variant={"light"} className={"text-lg font-semibold"}>
-      <Link href={props.href}>{props.title}</Link>
-    </Button>
-  );
-}
+export { Navbar };

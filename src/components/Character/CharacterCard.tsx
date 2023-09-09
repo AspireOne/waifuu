@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const CharacterCard = () => {
   return (
-    <div className="w-[160px] rounded-lg border-1 border-gray-500 p-3">
+    <div className="min-w-[160px] w-[160px] rounded-lg border-1 border-gray-500 p-3">
       <Image
         src={"/assets/character.png"}
         alt="character"
