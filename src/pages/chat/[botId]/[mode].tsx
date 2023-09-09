@@ -19,6 +19,7 @@ import {useEffect} from "react";
 import paths from "~/utils/paths";
 import Page from "~/components/Page";
 import Skeleton from "react-loading-skeleton";
+import {useAutoAnimate} from "@formkit/auto-animate/react";
 
 
 /**
@@ -55,6 +56,8 @@ const Chat = () => {
 
   const {data: bot} = useBot(botId, mode, router.isReady);
   const chat = useBotChat(botId, mode as BotMode, router.isReady);
+
+  const [chatParent] = useAutoAnimate()
 
   return (
     <Page protected={true} metaTitle={bot?.name || "Loading..."}>
@@ -135,24 +138,27 @@ const Chat = () => {
       <div className="p-3">
         <div className="fixed bottom-6 z-30 flex flex-col gap-6 md:left-[50%] md:translate-x-[-50%]">
           <ScrollShadow className="flex h-[55vh] flex-col gap-7 overflow-scroll overflow-x-visible">
-            {
-              chat.messages.map((message, index) => {
-                const botName = bot?.name || "Them";
-                const userName = session?.user?.name || "You";
+            <div ref={chatParent}>
+              {
+                chat.messages.map((message, index) => {
+                  const botName = bot?.name || "Them";
+                  const userName = session?.user?.name || "You";
 
-                return (
-                  <ChatMessage
-                    key={message.id}
-                    author={{
-                      bot: message.role === "BOT",
-                      name: message.role === "BOT" ? botName : userName,
-                      avatar: "/assets/default_user.jpg"
-                    }}
-                    message={message.content}
-                  />
-                );
-              })
-            }
+                  return (
+                    <ChatMessage
+                      key={message.id}
+                      author={{
+                        bot: message.role === "BOT",
+                        name: message.role === "BOT" ? botName : userName,
+                        avatar: "/assets/default_user.jpg"
+                      }}
+                      message={message.content}
+                    />
+                  );
+                })
+              }
+
+            </div>
             {chat.loadingReply && <ChatTypingIndicator/>}
           </ScrollShadow>
 
