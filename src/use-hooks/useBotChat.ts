@@ -17,18 +17,6 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
   const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
   const [cursor, setCursor] = useState<number | undefined>(undefined);
 
-  useEffect(() => {
-    setMessages([]);
-    setCursor(undefined);
-    setShouldLoadMore(true);
-  }, [botId, botMode]);
-
-  useEffect(() => {
-    if (shouldLoadMore && !fetchMore.isLoading) {
-      fetchMore.mutate({botId, botMode, cursor});
-    }
-  }, [shouldLoadMore]);
-
   function addMessages(newMessages: Message[]) {
     // Concat, sort, and remove duplicates and keep the newer message data.
     const combinedArr = messages
@@ -51,6 +39,18 @@ export default function useBotChat(botId: string, botMode: "ROLEPLAY" | "ADVENTU
       setShouldLoadMore(false);
     }
   });
+
+  useEffect(() => {
+    setMessages([]);
+    setCursor(undefined);
+    setShouldLoadMore(true);
+  }, [botId, botMode]);
+
+  useEffect(() => {
+    if (shouldLoadMore && !fetchMore.isLoading) {
+      fetchMore.mutate({botId, botMode, cursor});
+    }
+  }, [shouldLoadMore, fetchMore.isLoading]);
 
   const replyMutation = api.bots.genReply.useMutation({
       onMutate: async (variables) => {
