@@ -10,7 +10,7 @@ async function main() {
     create: {
       id: "official-public",
       source: BotSource.OFFICIAL,
-      public: true,
+      visibility: "PUBLIC",
       name: "Aqua",
       description: "Meet Aqua, the adorable anime character who stole the hearts of viewers with her irresistible charm. aqua is a petite girl with a lively personality that radiates warmth and joy. Her big, expressive eyes shimmer with innocence and curiosity, drawing people in with their captivating sparkle.\n" +
         "\n" +
@@ -24,7 +24,7 @@ async function main() {
     create: {
       id: "official-private",
       source: BotSource.OFFICIAL,
-      public: false,
+      visibility: "PRIVATE",
       name: "Official Private David-kun",
       description: "You are david-kun.",
     },
@@ -36,7 +36,7 @@ async function main() {
     create: {
       id: "user-public",
       source: BotSource.COMMUNITY,
-      public: true,
+      visibility: "PUBLIC",
       name: "User Public Lisa",
       //userId: ,
       description: "You are Lisa.",
@@ -49,7 +49,7 @@ async function main() {
     create: {
       id: "user-private",
       source: BotSource.COMMUNITY,
-      public: false,
+      visibility: "PRIVATE",
       name: "User Public Lisa",
       //userId: ,
       description: "You are Lisa.",

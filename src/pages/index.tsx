@@ -25,7 +25,7 @@ export default function Home() {
 function Chat(props: {}) {
   const [input, setInput] = React.useState<string>("");
   const chat = useBotChat("official-public", BotMode.ROLEPLAY);
-  const bots = api.bots.getBots.useQuery();
+  const bots = api.bots.getAll.useQuery();
   const [animationParent] = useAutoAnimate()
 
   useEffect(() => {
@@ -59,7 +59,6 @@ function Chat(props: {}) {
             chat.messages.reverse().map((message, index) => {
                 //const color = message.role === "USER" ? "bg-gray-200" : (message.error ? "bg-red-200" : "bg-blue-100");
                 return (
-                  // todo: key by message id.
                   <Card className={"my-2"} key={message.id}>
                     <CardBody>
                       {formatText(message.content)}
@@ -87,9 +86,7 @@ function formatText(text: string): React.ReactNode[] {
       // Add newline characters before and after the italic text
       return (
         <>
-
           <div className="italic my-[4px]">*{part}*</div>
-
         </>
       );
     }

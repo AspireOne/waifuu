@@ -9,8 +9,8 @@ import Replicate from "replicate";
 import {env} from "~/server/env";
 import {TRPCError} from "@trpc/server";
 import {Prisma} from "@prisma/client";
-import { BotMode } from '@prisma/client'
-import { BotSource } from '@prisma/client'
+import {BotMode} from '@prisma/client'
+import {BotSource, Visibility} from '@prisma/client'
 
 
 const replicate = new Replicate({
@@ -18,7 +18,10 @@ const replicate = new Replicate({
 });
 
 export const botsRouter = createTRPCRouter({
-  getBots: publicProcedure
+  /**
+   * Returns all public bots.
+  * */
+  getAll: publicProcedure
     .input(z.object({
       sourceFilter: z.nativeEnum(BotSource).nullish(),
       limit: z.number().min(1).nullish(),
@@ -27,41 +30,51 @@ export const botsRouter = createTRPCRouter({
       return await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         where: {
-          public: true,
+          visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
         }
       })
     }),
 
+  /**
+   * Returns all bots that the user has access to (public and private for the user making the request, public for bots
+   * of other users).
+  * */
   getUserBots: protectedProcedure
     .input(z.object({
       limit: z.number().min(1).nullish(),
+      userId: z.string().nullish(),
     }).optional())
     .query(async ({input, ctx}) => {
+      const visibility = (!input?.userId || input.userId === ctx.session.user.id)
+        ? undefined
+        : Visibility.PUBLIC;
+
       return await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         where: {
-          creatorId: ctx.session.user.id,
+          creatorId: input?.userId ?? ctx.session.user.id,
+          visibility: visibility,
         }
       })
     }),
 
+  /**
+   * Retrieves messages with a bot.
+   */
   messages: protectedProcedure
     .input(
       z.object({
         botId: z.string(),
         botMode: z.nativeEnum(BotMode),
-        limit: z.number().min(1).max(100).nullish(),
+        limit: z.number().min(1).max(100).default(15),
         cursor: z.number().nullish(),
       })
     )
     .mutation(async ({input, ctx}) => {
-      const limit = input.limit ?? 15;
-
-      // TODO: Error when 0 messages.
       const messages = await ctx.prisma.botMessage.findMany({
         // Take one more item that we will use as the cursor.
-        take: limit + 1,
+        take: input.limit + 1,
         cursor: input.cursor ? {id: input.cursor} : undefined,
         orderBy: {id: "desc"},
         where: {
@@ -74,7 +87,7 @@ export const botsRouter = createTRPCRouter({
       let nextCursor: typeof input.cursor | undefined = undefined;
       // If there is more messages (signalised by the limit + 1), pop the last item and use it as the next cursor.
 
-      if (messages.length > limit) {
+      if (messages.length > input.limit) {
         const nextItem = messages.pop();
         nextCursor = nextItem!.id;
       }
@@ -181,7 +194,10 @@ function delay(ms: number) {
 /**
  * Processes the messages to put it as a prompt for a bot.
  * */
-const processMessages = (messages: { user: boolean, content: string }[]) => {
+const processMessages = (messages: {
+  user: boolean,
+  content: string
+}[]) => {
   // In the future, the prompt will have to be altered to account for the following:
   // 1. ! The messages will have to be somehow truncated to fit into context window.
   // 2. Account for loss of context between messages (vector db / embeddings / extrahování důležitých věcí a dosazení do promptu jako kontext).

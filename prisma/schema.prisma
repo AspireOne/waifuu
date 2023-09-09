@@ -80,7 +80,7 @@ model Bot {
   id          String       @id @default(cuid())
   name        String
   description String
-  public      Boolean
+  visibility  Visibility
   creatorId   String?
   source      BotSource
   // The image will be dynamic in the future. Perhaps some variants based on mood?
@@ -90,6 +90,12 @@ model Bot {
   updatedAt   DateTime     @updatedAt
   messages    BotMessage[]
   creator     User?        @relation(fields: [creatorId], references: [id])
+}
+
+enum Visibility {
+  PUBLIC
+  LINK
+  PRIVATE
 }
 
 enum BotSource {

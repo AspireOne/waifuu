@@ -81,7 +81,7 @@ describe("test tRPC endpoint to get bots", () => {
   });
 
   const caller = appRouter.createCaller({...ctx, prisma: prismaMock});
-  type Input = inferProcedureInput<AppRouter["bots"]["getBots"]>;
+  type Input = inferProcedureInput<AppRouter["bots"]["getAll"]>;
 
 /*  test("test if it returns all bots", async () => {
     const input: Input = undefined;
