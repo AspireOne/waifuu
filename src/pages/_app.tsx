@@ -7,13 +7,16 @@ import "~/styles/globals.css";
 import React from "react";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import {SkeletonTheme} from "react-loading-skeleton";
 
 const MyApp: AppType<{ session: Session | null }> = ({Component, pageProps: {session, ...pageProps}}) => {
   return (
     <SessionProvider session={session}>
       <NextUIProvider>
-        <ToastContainer/>
-        <Component {...pageProps} />
+        <SkeletonTheme baseColor={"rgba(255, 255, 255, 0.05)"} highlightColor={"rgba(255, 255, 255, 0.4)"}>
+          <ToastContainer/>
+          <Component {...pageProps} />
+        </SkeletonTheme>
       </NextUIProvider>
       <ToastContainer />
     </SessionProvider>
