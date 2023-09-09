@@ -4,7 +4,7 @@ import { Session } from "next-auth";
 export function getMockedProtectedTrpcContext(session?: Session) {
   return createInnerTRPCContext({
     session: session ?? {
-      user: { id: "123", name: "John Doe" },
+      user: { id: "123", name: "John Doe", image: "/assets/default_user.jpg" },
       expires: "1",
     },
   });
