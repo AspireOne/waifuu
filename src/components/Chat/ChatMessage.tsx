@@ -1,17 +1,22 @@
 import { useMemo } from "react";
-import { ChatMessageProps } from "./types";
 import Image from "next/image";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {
   Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
 } from "@nextui-org/react";
 
-const ChatMessage = ({ author, message, key }: ChatMessageProps) => {
+type Author = {
+  bot: boolean;
+  avatar: string;
+  name: string;
+};
+
+const ChatMessage = (props: { message: string; key: any; author: Author }) => {
   const formattedMessage = useMemo(() => {
-    return message
+    return props.message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
       .replace(/\*(.*?)\*/g, "<em>$1</em>")
       .replace(/__(.*?)__/g, "<strong>$1</strong>")
@@ -19,12 +24,12 @@ const ChatMessage = ({ author, message, key }: ChatMessageProps) => {
       .replace(/~~(.*?)~~/g, "<s>$1</s>")
       .replace(/`(.*?)`/g, "<code>$1</code>")
       .replace(/```(.*?)```/g, "<pre>$1</pre>");
-  }, [message]);
+  }, [props.message]);
   return (
     <div
-      key={key}
+      key={props.key}
       className={`flex ${
-        author.bot ? "ml-0" : "mr-0 flex-row"
+        props.author.bot ? "ml-0" : "mr-0 flex-row"
       } mx-auto w-fit gap-2`}
     >
       <Dropdown className="flex-none">
@@ -45,15 +50,15 @@ const ChatMessage = ({ author, message, key }: ChatMessageProps) => {
 
       <div
         className={`${
-          author.bot ? "bg-white" : "bg-white bg-opacity-20 text-white"
+          props.author.bot ? "bg-white" : "bg-white bg-opacity-20 text-white"
         } max-w-[70%] rounded-lg p-3`}
       >
         <p
           className={`${
-            author.bot ? "text-gray-400" : "text-gray-300"
+            props.author.bot ? "text-gray-400" : "text-gray-300"
           } mb-1 text-sm`}
         >
-          {author.name}
+          {props.author.name}
         </p>
         <p dangerouslySetInnerHTML={{ __html: formattedMessage }} />
       </div>
