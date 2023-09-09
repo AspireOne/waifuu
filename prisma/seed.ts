@@ -1,4 +1,5 @@
 import {PrismaClient} from '@prisma/client'
+import { BotSource } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -8,6 +9,7 @@ async function main() {
     update: {},
     create: {
       id: "official-public",
+      source: BotSource.OFFICIAL,
       public: true,
       name: "Aqua",
       description: "Meet Aqua, the adorable anime character who stole the hearts of viewers with her irresistible charm. aqua is a petite girl with a lively personality that radiates warmth and joy. Her big, expressive eyes shimmer with innocence and curiosity, drawing people in with their captivating sparkle.\n" +
@@ -21,6 +23,7 @@ async function main() {
     update: {},
     create: {
       id: "official-private",
+      source: BotSource.OFFICIAL,
       public: false,
       name: "Official Private David-kun",
       description: "You are david-kun.",
@@ -32,6 +35,7 @@ async function main() {
     update: {},
     create: {
       id: "user-public",
+      source: BotSource.COMMUNITY,
       public: true,
       name: "User Public Lisa",
       //userId: ,
@@ -44,6 +48,7 @@ async function main() {
     update: {},
     create: {
       id: "user-private",
+      source: BotSource.COMMUNITY,
       public: false,
       name: "User Public Lisa",
       //userId: ,

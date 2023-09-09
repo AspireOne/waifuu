@@ -75,12 +75,14 @@ model BotMessage {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// TODO: Tags
 model Bot {
   id          String       @id @default(cuid())
   name        String
   description String
   public      Boolean
   creatorId   String?
+  source      BotSource
   // The image will be dynamic in the future. Perhaps some variants based on mood?
   // TODO: Remove the image as a default :D
   img         String       @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
@@ -88,6 +90,11 @@ model Bot {
   updatedAt   DateTime     @updatedAt
   messages    BotMessage[]
   creator     User?        @relation(fields: [creatorId], references: [id])
+}
+
+enum BotSource {
+  OFFICIAL
+  COMMUNITY
 }
 
 enum BotChatRole {

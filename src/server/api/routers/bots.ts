@@ -10,6 +10,7 @@ import {env} from "~/server/env";
 import {TRPCError} from "@trpc/server";
 import {Prisma} from "@prisma/client";
 import { BotMode } from '@prisma/client'
+import { BotSource } from '@prisma/client'
 
 
 const replicate = new Replicate({
@@ -19,20 +20,28 @@ const replicate = new Replicate({
 export const botsRouter = createTRPCRouter({
   getBots: publicProcedure
     .input(z.object({
-      source: z.enum(["COMMUNITY", "OFFICIAL", "USER"]).nullish(),
-      includePrivate: z.boolean().nullish().default(false),
+      sourceFilter: z.nativeEnum(BotSource).nullish(),
       limit: z.number().min(1).nullish(),
-      userId: z.string().nullish(),
     }).optional())
     .query(async ({input, ctx}) => {
       return await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         where: {
-          public: input?.includePrivate ? undefined : true,
-          creatorId: {
-            equals: input?.userId || undefined,
-            not: input?.source === "USER" ? undefined : null,
-          },
+          public: true,
+          source: input?.sourceFilter ?? undefined,
+        }
+      })
+    }),
+
+  getUserBots: protectedProcedure
+    .input(z.object({
+      limit: z.number().min(1).nullish(),
+    }).optional())
+    .query(async ({input, ctx}) => {
+      return await ctx.prisma.bot.findMany({
+        take: input?.limit || undefined,
+        where: {
+          creatorId: ctx.session.user.id,
         }
       })
     }),

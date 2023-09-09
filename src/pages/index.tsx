@@ -1,7 +1,7 @@
 import {signIn, signOut, useSession} from "next-auth/react";
 import Head from "next/head";
 import {api} from "~/utils/api";
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import Replicate from "replicate";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {Textarea} from "@nextui-org/input";
@@ -25,7 +25,12 @@ export default function Home() {
 function Chat(props: {}) {
   const [input, setInput] = React.useState<string>("");
   const chat = useBotChat("official-public", BotMode.ROLEPLAY);
+  const bots = api.bots.getBots.useQuery();
   const [animationParent] = useAutoAnimate()
+
+  useEffect(() => {
+    console.log("XXX", bots.data, "XXX");
+  }, [bots]);
 
   function handleSubmit() {
     chat.postMessage(input);
