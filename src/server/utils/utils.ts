@@ -38,14 +38,23 @@ export async function generateUniqueUsername(user: User | AdapterUser) {
   let username;
 
   if (user.name) {
-    username = user.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    username = user.name;
   } else if (user.email) {
     username = user.email.split("@")[0]!;
   } else {
     username = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
   }
 
-  username = username.replace(/[^a-z0-9]/g, "");
+  // Convert all non-ASCII characters to their closest ASCII equivalent (diacritics etc.)
+  // and leave only simple alphanumeric characters (both upper and lower case) and numbers.
+  username = username
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9]/g, "");
+
+  if (username.length < 3) {
+    username = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
+  }
 
   let unique;
   let suffix = undefined;
