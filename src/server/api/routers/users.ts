@@ -37,7 +37,7 @@ export const usersRouter = createTRPCRouter({
         },
       });
 
-      if (!user) return undefined;
+      if (!user) return null;
 
       // Hand-pick the returned properties, so we don't leak sensitive information.
       return {
@@ -45,6 +45,8 @@ export const usersRouter = createTRPCRouter({
         name: user.name,
         image: user.image,
         bots: user.Bot,
+        username: user.username,
+        bio: user.bio,
       };
     }),
 });
