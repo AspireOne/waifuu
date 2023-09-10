@@ -16,15 +16,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <NextUIProvider>
-        <SkeletonTheme
-          baseColor={"rgba(255, 255, 255, 0.05)"}
-          highlightColor={"rgba(255, 255, 255, 0.4)"}
-        >
-          <ToastContainer />
-          <Component {...pageProps} />
-        </SkeletonTheme>
-      </NextUIProvider>
+      <SkeletonTheme
+        baseColor={"rgba(255, 255, 255, 0.05)"}
+        highlightColor={"rgba(255, 255, 255, 0.4)"}
+      >
+        <NextUIProvider>
+          <main className={"bg-background text-foreground dark"}>
+            <ToastContainer />
+            <Component {...pageProps} />
+          </main>
+        </NextUIProvider>
+      </SkeletonTheme>
       <ToastContainer />
     </SessionProvider>
   );

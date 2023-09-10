@@ -10,15 +10,35 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        brandBg: "#1E1E1E",
-      },
+      colors: {},
     },
   },
-  /*darkMode: "class",*/
+  darkMode: "class",
   plugins: [
     require("@tailwindcss/typography"),
     require("tailwind-scrollbar"),
-    nextui(),
+    // https://nextui.org/docs/customization/theme
+    nextui({
+      prefix: "nextui", // prefix for themes variables
+      addCommonColors: true, // override common colors (e.g. "blue", "green", "pink").
+      defaultTheme: "dark", // default theme from the themes object
+      defaultExtendTheme: "dark", // default theme to extend on custom themes
+      layout: {}, // common layout tokens (applied to all themes)
+      themes: {
+        light: {
+          layout: {},
+          colors: {},
+        },
+        dark: {
+          layout: {
+            //radius: "0.75rem",
+          },
+          colors: {
+            primary: {},
+          },
+        },
+        // ... custom themes
+      },
+    }),
   ],
 } satisfies Config;
