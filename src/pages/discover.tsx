@@ -5,10 +5,11 @@ import { CharacterCard } from "~/components/Character/CharacterCard";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { Navbar } from "~/components/Navbar";
 import { FaCompass, FaTag } from "react-icons/fa";
+import Page from "~/components/Page";
 
 const Discover = () => {
   return (
-    <div className="bg-black">
+    <Page metaTitle="Discover characters">
       <Navbar />
       <div className="hidden h-[350px] overflow-hidden sm:block">
         <Image
@@ -122,7 +123,7 @@ const Discover = () => {
           <CharacterCard />
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 
