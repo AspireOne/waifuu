@@ -43,7 +43,7 @@ function Content(props: { username?: string }) {
   // If user does not exist, redirect.
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push(paths.explore);
+      router.push(paths.discover);
       return;
     }
   }, [username, user, router.isReady]);

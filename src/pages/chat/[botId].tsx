@@ -1,10 +1,3 @@
-import { ChatMessage } from "~/components/Chat/ChatMessage";
-import { ChatTypingIndicator } from "~/components/Chat/ChatTypingIndicator";
-import { Image } from "@nextui-org/react";
-import { BsShareFill, BsThreeDotsVertical } from "react-icons/bs";
-import { RiSendPlane2Fill } from "react-icons/ri";
-import useBotChat from "~/use-hooks/useBotChat";
-import { BotMode } from "@prisma/client";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { useEffect } from "react";
@@ -18,7 +11,7 @@ const ChatMainMenu = () => {
 
   useEffect(() => {
     if (!bot.isLoading && !bot.data) {
-      router.push(paths.explore);
+      router.push(paths.discover);
     }
   }, [bot.isLoading, bot.data]);
 

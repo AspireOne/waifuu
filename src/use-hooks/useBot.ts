@@ -19,9 +19,9 @@ const useBot = (
   useEffect(() => {
     if (!enabled) return;
 
-    // If the bot does not exist, redirect to explore page.
+    // If the bot does not exist, redirect to discover page.
     if (!bot.isLoading && !bot.data) {
-      router.push(paths.explore);
+      router.push(paths.discover);
     }
 
     // If mode does not exist, redirect to the bot main menu.
