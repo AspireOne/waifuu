@@ -17,8 +17,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <SkeletonTheme
-        baseColor={"rgba(255, 255, 255, 0.05)"}
-        highlightColor={"rgba(255, 255, 255, 0.4)"}
+        baseColor={"rgba(255, 255, 255, 0.06)"}
+        highlightColor={"rgba(255, 255, 255, 0.5)"}
+        borderRadius={"0.7rem"} // matches the default NextUI borderRadius.
       >
         <NextUIProvider>
           <main className={"bg-background text-foreground dark"}>

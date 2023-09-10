@@ -11,7 +11,7 @@ const ChatMainMenu = () => {
 
   useEffect(() => {
     if (!bot.isLoading && !bot.data) {
-      router.push(paths.discover);
+      router.replace(paths.discover);
     }
   }, [bot.isLoading, bot.data]);
 

@@ -43,7 +43,10 @@ function Content(props: { username?: string }) {
   // If user does not exist, redirect.
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push(paths.discover);
+      // TODO: Remove it from history.
+      router.replace(paths.discover);
+      // remove it from history.
+
       return;
     }
   }, [username, user, router.isReady]);
