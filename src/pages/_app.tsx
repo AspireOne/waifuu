@@ -8,6 +8,7 @@ import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
