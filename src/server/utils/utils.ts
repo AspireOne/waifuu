@@ -45,7 +45,7 @@ export async function generateUniqueUsername(user: User | AdapterUser) {
     username = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
   }
 
-  username = username.toLowerCase().replace(/[^a-z0-9]/g, "");
+  username = username.replace(/[^a-z0-9]/g, "");
 
   let unique;
   let suffix = undefined;
@@ -59,6 +59,13 @@ export async function generateUniqueUsername(user: User | AdapterUser) {
 }
 
 async function isUsernameUnique(username: string) {
-  const count = await prisma.user.count({ where: { username } });
+  const count = await prisma.user.count({
+    where: {
+      username: {
+        equals: username,
+        mode: "insensitive",
+      },
+    },
+  });
   return count === 0;
 }
