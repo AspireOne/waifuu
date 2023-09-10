@@ -1,4 +1,5 @@
 import { type Config } from "tailwindcss";
+
 const { nextui } = require("@nextui-org/react");
 
 export default {
@@ -9,7 +10,9 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {},
+      colors: {
+        brandBg: "#1E1E1E",
+      },
     },
   },
   /*darkMode: "class",*/
