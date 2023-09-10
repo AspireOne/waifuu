@@ -1,32 +1,24 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-  // Further reading:
-  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
   url      = env("DATABASE_URL")
 }
 
-// Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? // @db.Text
+  id_token          String?
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -52,34 +44,31 @@ model VerificationToken {
 model User {
   id            String           @id @default(cuid())
   name          String?
-  username      String?          @unique
   email         String?          @unique
   emailVerified DateTime?
   image         String?
+  username      String?          @unique
+  bio           String?
   accounts      Account[]
-  sessions      Session[]
-  BotMessage    BotChatMessage[]
   Bot           Bot[]
-
-  ChatMessage ChatMessage[]
-  Chat        Chat[]
+  BotMessage    BotChatMessage[]
+  ChatMessage   ChatMessage[]
+  sessions      Session[]
+  Chat          Chat[]           @relation("ChatToUser")
 }
 
-// TODO: Tags
 model Bot {
   id          String           @id @default(cuid())
   name        String
   description String
-  visibility  Visibility
-  creatorId   String?
-  source      BotSource
-  // The image will be dynamic in the future. Perhaps some variants based on mood?
-  // TODO: Remove the image as a default :D
   img         String           @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
-  messages    BotChatMessage[]
+  creatorId   String?
+  source      BotSource
+  visibility  Visibility
   creator     User?            @relation(fields: [creatorId], references: [id])
+  messages    BotChatMessage[]
 }
 
 model BotChatMessage {
@@ -91,15 +80,14 @@ model BotChatMessage {
   botId     String
   botMode   BotMode
   role      BotChatRole
-
-  bot  Bot  @relation(fields: [botId], references: [id])
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bot       Bot         @relation(fields: [botId], references: [id])
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Chat {
   id       String        @id @default(cuid())
-  users    User[]
   messages ChatMessage[]
+  users    User[]        @relation("ChatToUser")
 }
 
 model ChatMessage {
@@ -109,9 +97,8 @@ model ChatMessage {
   updatedAt DateTime @updatedAt
   userId    String
   chatId    String
-
-  chat Chat @relation(fields: [chatId], references: [id])
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Visibility {
