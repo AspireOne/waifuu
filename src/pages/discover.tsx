@@ -3,14 +3,12 @@ import Image from "next/image";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { Navbar } from "~/components/Navbar";
 import { FaCompass, FaTag } from "react-icons/fa";
 import Page from "~/components/Page";
 
 const Discover = () => {
   return (
     <Page metaTitle="Discover characters">
-      <Navbar />
       <div className="hidden h-[350px] overflow-hidden sm:block">
         <Image
           alt="background"
@@ -65,7 +63,7 @@ const Discover = () => {
           </h3>
         </div>
 
-        <div className="flex scrollbar overflow-scroll scrollbar-thumb-gray-700 scrollbar-track-transparent overflow-x-visible w-full flex-row gap-5">
+        <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible scrollbar scrollbar-track-transparent scrollbar-thumb-gray-700">
           <CharacterCard />
           <CharacterCard />
           <CharacterCard />

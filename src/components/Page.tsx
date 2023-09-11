@@ -1,12 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { FormEvent, PropsWithChildren, useEffect } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import PageHead from "~/components/PageHead";
-import Navbar from "~/components/Navbar";
 import { twMerge } from "tailwind-merge";
-import { signIn, useSession } from "next-auth/react";
-import { FaSpinner } from "react-icons/fa";
-import { AiOutlineLock } from "react-icons/ai";
-import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 import SignInModal from "~/components/SignInModal";
 
 // Your existing Page component

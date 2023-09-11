@@ -12,7 +12,6 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import { useState } from "react";
-import { Navbar } from "~/components/Navbar";
 import Page from "~/components/Page";
 import { TbRating18Plus } from "react-icons/tb";
 
@@ -24,7 +23,6 @@ const CreateChatPage = () => {
 
   return (
     <Page metaTitle="Create chat with character">
-      <Navbar />
       <div className="top-15 absolute left-0 h-[370px] w-full overflow-hidden sm:block">
         <Image
           alt="background"
