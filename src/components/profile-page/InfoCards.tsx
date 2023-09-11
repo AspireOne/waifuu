@@ -34,6 +34,8 @@ export default function InfoCards(props: { username?: string }) {
     { enabled: !!props.username },
   );
 
+  const hasBots = user?.bots && user.bots.length > 0;
+
   return (
     <>
       <InfoCard isLoaded={!isInitialLoading} title={"Bio"} className={"mt-20"}>
@@ -43,8 +45,8 @@ export default function InfoCards(props: { username?: string }) {
       </InfoCard>
 
       <InfoCard isLoaded={!isInitialLoading} title={"Characters"}>
-        {user?.bots && <BotList bots={user.bots} />}
-        {!user?.bots && <p>This user has not created any characters yet :(</p>}
+        {hasBots && <BotList bots={user!.bots} />}
+        {!hasBots && <p>This user has not created any characters yet :(</p>}
       </InfoCard>
     </>
   );
