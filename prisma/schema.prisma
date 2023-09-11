@@ -55,6 +55,9 @@ model User {
   ChatMessage   ChatMessage[]
   sessions      Session[]
   Chat          Chat[]           @relation("ChatToUser")
+  BotLikes      BotLike[]
+  BotDislikes   BotDislike[]
+  BotShares     BotShares[]
 }
 
 model Bot {
@@ -69,6 +72,36 @@ model Bot {
   visibility  Visibility
   creator     User?            @relation(fields: [creatorId], references: [id])
   messages    BotChatMessage[]
+  botLikes    BotLike[]
+  botDislikes BotDislike[]
+  BotShares   BotShares[]
+}
+
+model BotLike {
+  id        String   @id @default(cuid())
+  botId     String
+  userId    String
+  bot       Bot      @relation(fields: [botId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model BotDislike {
+  id        String   @id @default(cuid())
+  botId     String
+  userId    String
+  bot       Bot      @relation(fields: [botId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model BotShares {
+  id        String   @id @default(cuid())
+  botId     String
+  userId    String
+  bot       Bot      @relation(fields: [botId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model BotChatMessage {
