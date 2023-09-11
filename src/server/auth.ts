@@ -11,6 +11,10 @@ import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "~/server/db";
 import { env } from "~/server/env";
 import { generateUniqueUsername } from "~/server/utils/utils";
+import { NodeHTTPCreateContextFnOptions } from "@trpc/server/dist/adapters/node-http";
+import { IncomingMessage } from "http";
+import ws from "ws";
+import { PrismaClient } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -91,4 +95,29 @@ export const getServerAuthSession = (ctx: {
   res: GetServerSidePropsContext["res"];
 }) => {
   return getServerSession(ctx.req, ctx.res, authOptions);
+};
+
+export const getWsAuthSession = async (
+  opts: NodeHTTPCreateContextFnOptions<IncomingMessage, ws>,
+  prisma: PrismaClient,
+) => {
+  const { req, res } = opts;
+
+  const sessionToken = req.headers.cookie
+    ?.split(";")
+    ?.find((c) => c.trim().startsWith("next-auth.session-token="))
+    ?.split("=")[1];
+
+  if (!sessionToken) return null;
+
+  // Find session token in db.
+  const session = await prisma.session.findUnique({
+    where: {
+      sessionToken: sessionToken,
+    },
+    include: {
+      user: true,
+    },
+  });
+  return session || null;
 };

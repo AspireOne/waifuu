@@ -16,6 +16,10 @@ import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
 import { OpenApiMeta } from "trpc-openapi";
+import type { NodeHTTPCreateContextFnOptions } from "@trpc/server/dist/adapters/node-http";
+import type { IncomingMessage } from "http";
+import type ws from "ws";
+import { EventEmitter } from "events";
 
 /**
  * 1. CONTEXT
@@ -63,6 +67,26 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   });
 };
 
+// CreateHTTPContextOptions | CreateWSSContextFnOptions
+export const createWsContext = async (
+  opts: NodeHTTPCreateContextFnOptions<IncomingMessage, ws>,
+) => {
+  const { req, res } = opts;
+
+  // Do not get the session from db yet - It might be making a request every time a user connects.
+  /*const session = await getWsAuthSession(opts, prisma);
+  if (session === null) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }*/
+
+  return {
+    session: null,
+    req,
+    res,
+    prisma,
+  };
+};
+
 /**
  * 2. INITIALIZATION
  *
@@ -70,6 +94,9 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
+
+// create a global event emitter (could be replaced by redis, etc)
+export const ee = new EventEmitter();
 
 const t = initTRPC
   .meta<OpenApiMeta>()
