@@ -21,6 +21,11 @@ services:
       SOKETI_SSL_KEY: ''
       SOKETI_SSL_PASS: ''
       SOKETI_SSL_CA: ''
+      # Driver configuration
+      SOKETI_APP_MANAGER_DRIVER: array
+      SOKETI_DEFAULT_APP_ID: app-id
+      SOKETI_DEFAULT_APP_KEY: app-key
+      SOKETI_DEFAULT_APP_SECRET: app-secret
     ports:
       - "6001:6001"
     depends_on:

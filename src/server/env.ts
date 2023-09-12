@@ -13,11 +13,11 @@ export const envSchema = z.object({
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
 
-  PUSHER_APP_ID: z.string(),
-  PUSHER_SECRET: z.string(),
-  NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
-  NEXT_PUBLIC_PUSHER_CLUSTER: z.string(),
-  NEXT_PUBLIC_PUSHER_HOST: z.string(),
+  // PUSHER_APP_ID: z.string(),
+  // PUSHER_SECRET: z.string(),
+  // NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
+  // NEXT_PUBLIC_PUSHER_CLUSTER: z.string(),
+  // NEXT_PUBLIC_PUSHER_HOST: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
