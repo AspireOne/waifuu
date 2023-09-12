@@ -10,3 +10,18 @@ services:
       POSTGRES_DB: mydb
     ports:
       - "5432:5432"
+
+  soketi:
+    image: quay.io/soketi/soketi:latest
+    container_name: soketi_websocket_client
+    environment:
+      SOKETI_DEBUG: 1
+      # Only required on production
+      SOKETI_SSL_CERT: ''
+      SOKETI_SSL_KEY: ''
+      SOKETI_SSL_PASS: ''
+      SOKETI_SSL_CA: ''
+    ports:
+      - "6001:6001"
+    depends_on:
+      - postgres
