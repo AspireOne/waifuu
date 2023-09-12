@@ -1,8 +1,6 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
+import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import React, { useEffect, useRef } from "react";
-import Replicate from "replicate";
+import React, { useEffect } from "react";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Textarea } from "@nextui-org/input";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
@@ -10,10 +8,19 @@ import Page from "~/components/Page";
 import useBotChat from "~/use-hooks/useBotChat";
 import { Button } from "@nextui-org/react";
 import { BotMode } from "@prisma/client";
+import useOmegleChat from "~/use-hooks/useOmegleChat";
 
 export default function Home() {
   const { data: session } = useSession();
   //const {data: bots} = api.bots.getBots.useQuery();
+  const chat = useOmegleChat("some-user-id-lmao");
+  const mutation = api.general.triggerChatMatch.useMutation();
+
+  useEffect(() => {
+    setInterval(() => {
+      mutation.mutate();
+    }, 1000);
+  }, []);
 
   return (
     <Page metaTitle={"Main Page"} protected={true}>

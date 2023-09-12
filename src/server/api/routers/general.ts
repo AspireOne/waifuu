@@ -6,6 +6,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import Replicate from "replicate";
+import pusherServer from "~/server/lib/pusherServer";
 import { env } from "~/server/env";
 
 const replicate = new Replicate({
@@ -36,5 +37,12 @@ export const generalRouter = createTRPCRouter({
 
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
+  }),
+
+  triggerChatMatch: protectedProcedure.mutation(async () => {
+    await pusherServer.trigger(`lobby`, "room_matched", {
+      roomId: "123",
+      topic: "test test",
+    });
   }),
 });

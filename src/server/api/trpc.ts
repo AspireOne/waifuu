@@ -13,8 +13,8 @@ import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { getServerAuthSession } from "~/server/auth";
-import { prisma } from "~/server/db";
+import { getServerAuthSession } from "~/server/lib/auth";
+import { prisma } from "~/server/lib/db";
 import { OpenApiMeta } from "trpc-openapi";
 
 /**

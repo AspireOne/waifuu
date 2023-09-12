@@ -2,7 +2,7 @@
 // if neither are present. The username should be checked using prisma for uniqueness.
 import { User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
-import { prisma } from "~/server/db";
+import { prisma } from "~/server/lib/db";
 
 // prettier-ignore
 const usernameBases: string[] = [

@@ -8,9 +8,9 @@ import {
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-import { prisma } from "~/server/db";
+import { prisma } from "~/server/lib/db";
+import { generateUniqueUsername } from "~/server/lib/utils";
 import { env } from "~/server/env";
-import { generateUniqueUsername } from "~/server/utils/utils";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
