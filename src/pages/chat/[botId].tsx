@@ -3,6 +3,8 @@ import { api } from "~/utils/api";
 import { useEffect } from "react";
 import paths from "~/utils/paths";
 
+// This page shows when the url is not followed by /[mode] (e.g. /adventure, /roleplay etc. - it is the
+// index page / main menu of the character.)
 const ChatMainMenu = () => {
   const router = useRouter();
   const { botId, mode } = router.query;

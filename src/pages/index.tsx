@@ -1,16 +1,12 @@
-import { useSession } from "next-auth/react";
-import { api } from "~/utils/api";
 import React, { useEffect } from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import Page from "~/components/Page";
 import { useOmegleChatConnection } from "~/use-hooks/useOmegleChatConnection";
 import { Button } from "@nextui-org/react";
 import useOmegleChatMessages from "~/use-hooks/useOmegleChatMessages";
-import { ChannelData } from "~/server/api/routers/omegleChat";
+import useOmegleChatSearch from "~/use-hooks/useOmegleChatSearch";
 
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
     <Page metaTitle={"Main Page"} protected={true}>
       <Chat />
@@ -19,26 +15,18 @@ export default function Home() {
 }
 
 function Chat(props: {}) {
-  const [channelData, setChannelData] = React.useState<ChannelData | null>(
-    null,
-  );
+  const {
+    search,
+    channelData,
+    channelDataRef,
+    resetChannelData,
+    status: searchStatus,
+  } = useOmegleChatSearch();
   const [textStatus, setTextStatus] = React.useState<string | null>();
-  const { status: connStatus, channel } = useOmegleChatConnection(
-    channelData?.name,
-  );
-  const { messages, clearMessages, sendMessage } =
-    useOmegleChatMessages(channel);
-
-  // This is here so that I can setTimeout (to check member connection) and use fresh data.
-  let channelDataRef = React.useRef(channelData);
-  let connStatusRef = React.useRef(connStatus);
-  React.useEffect(() => {
-    channelDataRef.current = channelData;
-  }, [channelData]);
-
-  React.useEffect(() => {
-    connStatusRef.current = connStatus;
-  }, [connStatus]);
+  // prettier-ignore
+  const {status: connStatus, statusRef: connStatusRef, channel} = useOmegleChatConnection(channelData?.name);
+  // prettier-ignore
+  const {messages, clearMessages, sendMessage} = useOmegleChatMessages(channel);
 
   useEffect(() => {
     if (connStatus === "subscribing") {
@@ -47,7 +35,7 @@ function Chat(props: {}) {
 
     if (connStatus === "subscribe-failed") {
       setTextStatus("Failed to subscribe - Channel: " + channelData);
-      setChannelData(null);
+      endChat();
     }
 
     if (connStatus === "subscribed-no-user") {
@@ -64,49 +52,30 @@ function Chat(props: {}) {
     }
   }, [connStatus]);
 
-  function endChat() {
-    setChannelData(null);
-  }
-
-  const searchUserMutation = api.omegleChat.searchUser.useMutation({
-    onMutate: () => {
-      setChannelData(null);
-      setTextStatus("Searching...");
-    },
-    onSuccess: async (channelData) => {
-      if (!channelData) {
-        setTextStatus("Not found.");
-        return;
-      } else {
-        setTextStatus("Found channel. Connecting to: " + channelData.name);
-      }
-
-      setChannelData(channelData);
+  useEffect(() => {
+    if (searchStatus === "found") {
       const _channelName = channelData?.name;
-
       setTimeout(() => {
         if (
           channelDataRef.current?.name === _channelName &&
           connStatusRef.current === "subscribed-no-user"
         ) {
           console.log("No user connected. Reverting.");
-          setTextStatus("No user connected.");
-          setChannelData(null);
+          setTextStatus("No user has connected.");
+          endChat();
         }
-      }, 2200);
-    },
-    onError: (error) => {
-      setTextStatus("Error finding channel: " + error.message);
-      setChannelData(null);
-    },
-  });
+      }, 2000);
+    }
+  }, [searchStatus]);
+
+  function endChat() {
+    resetChannelData();
+  }
 
   return (
     <Card className={"mx-auto mt-6 max-w-xl"}>
       <div className={"flex flex-col gap-4"}>
-        <Button onClick={() => searchUserMutation.mutate()}>
-          test search user
-        </Button>
+        <Button onClick={search}>test search user</Button>
         <Button
           onClick={() => {
             if (!channelData) {
