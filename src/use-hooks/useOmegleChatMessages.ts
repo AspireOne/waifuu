@@ -1,19 +1,23 @@
-import { PresenceChannel } from "pusher-js";
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
 
 export type OmegleChatMessage = {
   content: string;
+  id: number;
   user: any;
 };
 
-export default function useOmegleChatMessages(channel: PresenceChannel | null) {
+export default function useOmegleChatMessages(
+  channelName: string | null,
+  bindEvent: ((ev: string, callback: (e: string) => void) => void) | null,
+) {
   const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
   const [messages, setMessages] = useState<OmegleChatMessage[]>([]);
 
   const sendMsgMutation = api.omegleChat.sendMessage.useMutation({
     onMutate: () => {
-      console.log("Sending Message - Channel: " + channel?.name);
+      // Check the ID of the last message, and add this message with an id one number higher.
+      console.log("Sending Message - Channel: " + channelName);
     },
     onSuccess: (data) => {
       console.log("Message sent.");
@@ -26,7 +30,7 @@ export default function useOmegleChatMessages(channel: PresenceChannel | null) {
 
   function sendMessage(content: string) {
     content = content.trim();
-    if (!channel?.name) {
+    if (!channelName) {
       console.error("Attempted to send a message with no channel specified.");
       return;
     }
@@ -35,26 +39,30 @@ export default function useOmegleChatMessages(channel: PresenceChannel | null) {
       return;
     }
 
-    sendMsgMutation.mutate({ channel: channel.name, message: content });
+    sendMsgMutation.mutate({ channel: channelName, message: content });
   }
 
   function clearMessages() {
     setMessages([]);
   }
 
-  // TODO: Odepsat bertovi.
   useEffect(() => {
-    if (!channel) return;
-    if (prevChannelName === channel.name) return;
+    if (!channelName) return;
+    if (prevChannelName === channelName) return;
 
-    setPrevChannelName(channel.name);
+    setPrevChannelName(channelName);
     setMessages([]);
 
-    channel.bind("message", (data: any) => {
+    if (!bindEvent)
+      throw new Error(
+        "Channel name supplied, but bind event not. This should not happen.",
+      );
+    bindEvent("message", (data: any) => {
+      // add id to the message.
       console.log(data);
       console.log(JSON.stringify(data));
     });
-  }, [channel]);
+  }, [channelName]);
 
   return { messages, sendMessage, clearMessages };
 }

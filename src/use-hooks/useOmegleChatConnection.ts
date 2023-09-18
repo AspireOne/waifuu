@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { pusherClient } from "~/lib/pusherClient";
-import { useSession } from "next-auth/react";
 import { PresenceChannel } from "pusher-js";
 
 type ChatStatus =
@@ -13,7 +12,6 @@ type ChatStatus =
 
 let channel: PresenceChannel | null = null;
 const useOmegleChatConnection = (channelName?: string | null) => {
-  const session = useSession();
   const [status, setStatus] = useState<ChatStatus>("no-channel");
 
   useEffect(() => {
@@ -61,7 +59,7 @@ const useOmegleChatConnection = (channelName?: string | null) => {
       });
     }
   }, [channelName]);
-  return { status };
+  return { status, bindEvent: channel?.bind ?? null };
 };
 
 export { useOmegleChatConnection };
