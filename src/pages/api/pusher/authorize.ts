@@ -34,7 +34,7 @@ export default async function handler(
 
   const presenceData = {
     user_id: user.id,
-    user_info: { username: user.username, bio: user.bio, image: user.image },
+    user_info: { username: user.username!, bio: user.bio, image: user.image },
   };
 
   const authResponse = pusher.authorizeChannel(socketId, channel, presenceData);

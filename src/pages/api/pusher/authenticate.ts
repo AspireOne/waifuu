@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import pusher from "~/server/lib/pusherServer";
 import { getUser } from "~/pages/api/utils";
+import PresenceChannelMember from "~/server/types/presenceChannelMember";
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,10 +15,10 @@ export default async function handler(
     return;
   }
 
-  const userData = {
+  const userData: PresenceChannelMember = {
     id: user.id,
-    user_info: {
-      username: user.username,
+    info: {
+      username: user.username!,
       image: user.image,
       bio: user.bio,
     },

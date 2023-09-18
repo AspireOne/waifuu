@@ -59,7 +59,7 @@ const useOmegleChatConnection = (channelName?: string | null) => {
       });
     }
   }, [channelName]);
-  return { status, bindEvent: channel?.bind ?? null };
+  return { status, channel };
 };
 
 export { useOmegleChatConnection };

@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import React, { useEffect } from "react";
-import { Card } from "@nextui-org/card";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import Page from "~/components/Page";
 import { useOmegleChatConnection } from "~/use-hooks/useOmegleChatConnection";
 import { Button } from "@nextui-org/react";
@@ -20,12 +20,19 @@ export default function Home() {
 function Chat(props: {}) {
   const [channelName, setChannelName] = React.useState<string | null>(null);
   const [textStatus, setTextStatus] = React.useState<string | null>();
-  const { status: connStatus, bindEvent } =
-    useOmegleChatConnection(channelName);
-  const { messages, clearMessages, sendMessage } = useOmegleChatMessages(
-    channelName,
-    bindEvent,
-  );
+  const { status: connStatus, channel } = useOmegleChatConnection(channelName);
+  const { messages, clearMessages, sendMessage } =
+    useOmegleChatMessages(channel);
+
+  let channelNameRef = React.useRef(channelName);
+  let connStatusRef = React.useRef(connStatus);
+  React.useEffect(() => {
+    channelNameRef.current = channelName;
+  }, [channelName]);
+
+  React.useEffect(() => {
+    connStatusRef.current = connStatus;
+  }, [connStatus]);
 
   useEffect(() => {
     if (connStatus === "subscribing") {
@@ -60,7 +67,7 @@ function Chat(props: {}) {
       setChannelName(null);
       setTextStatus("Searching...");
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (!data?.channel) {
         setTextStatus("Not found.");
         return;
@@ -71,11 +78,12 @@ function Chat(props: {}) {
       setChannelName(data?.channel);
       const _channelName = data?.channel;
 
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       setTimeout(() => {
-        console.log("set timeout triggered, " + connStatus);
         if (
-          channelName === _channelName &&
-          connStatus === "subscribed-no-user"
+          channelNameRef.current === _channelName &&
+          connStatusRef.current === "subscribed-no-user"
         ) {
           console.log("No user connected. Reverting.");
           setTextStatus("No user connected.");
@@ -106,6 +114,15 @@ function Chat(props: {}) {
         >
           test send message
         </Button>
+
+        {messages.map((message) => {
+          return (
+            <Card key={message.id}>
+              <CardHeader>{message.user.info.username}</CardHeader>
+              <CardBody>{message.content}</CardBody>
+            </Card>
+          );
+        })}
 
         <div>Status: {textStatus}</div>
       </div>

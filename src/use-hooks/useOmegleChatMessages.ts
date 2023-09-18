@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import { api } from "~/utils/api";
+import { PresenceChannel } from "pusher-js";
+import PresenceChannelMember from "~/server/types/presenceChannelMember";
 
 export type OmegleChatMessage = {
   content: string;
   id: number;
-  user: any;
+  user: PresenceChannelMember;
 };
 
-export default function useOmegleChatMessages(
-  channelName: string | null,
-  bindEvent: ((ev: string, callback: (e: string) => void) => void) | null,
-) {
+let msgId = 0;
+
+export default function useOmegleChatMessages(channel: PresenceChannel | null) {
   const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
   const [messages, setMessages] = useState<OmegleChatMessage[]>([]);
 
   const sendMsgMutation = api.omegleChat.sendMessage.useMutation({
     onMutate: () => {
       // Check the ID of the last message, and add this message with an id one number higher.
-      console.log("Sending Message - Channel: " + channelName);
+      console.log("Sending Message - Channel: " + channel?.name);
     },
     onSuccess: (data) => {
       console.log("Message sent.");
@@ -28,18 +29,31 @@ export default function useOmegleChatMessages(
     },
   });
 
+  function addMessage(content: string, user: PresenceChannelMember) {
+    setMessages((prev) => [
+      ...prev,
+      {
+        content: content,
+        id: msgId++,
+        user: user,
+      },
+    ]);
+  }
+
   function sendMessage(content: string) {
     content = content.trim();
-    if (!channelName) {
+    if (!channel?.name) {
       console.error("Attempted to send a message with no channel specified.");
       return;
     }
+
     if (!content) {
       console.error("Attempted to send an empty message.");
       return;
     }
 
-    sendMsgMutation.mutate({ channel: channelName, message: content });
+    addMessage(content, channel.members.me);
+    sendMsgMutation.mutate({ channel: channel.name, message: content });
   }
 
   function clearMessages() {
@@ -47,22 +61,23 @@ export default function useOmegleChatMessages(
   }
 
   useEffect(() => {
-    if (!channelName) return;
-    if (prevChannelName === channelName) return;
+    if (!channel?.name) return;
+    if (prevChannelName === channel.name) return;
 
-    setPrevChannelName(channelName);
+    setPrevChannelName(channel.name);
     setMessages([]);
 
-    if (!bindEvent)
-      throw new Error(
-        "Channel name supplied, but bind event not. This should not happen.",
-      );
-    bindEvent("message", (data: any) => {
-      // add id to the message.
-      console.log(data);
+    channel.bind("message", (data: any) => {
+      const user: PresenceChannelMember = channel.members.get(data.from);
+      const me: PresenceChannelMember = channel.members.me;
+
+      if (me.id === user.id) return;
+
       console.log(JSON.stringify(data));
+
+      addMessage(data.message, user);
     });
-  }, [channelName]);
+  }, [channel]);
 
   return { messages, sendMessage, clearMessages };
 }
