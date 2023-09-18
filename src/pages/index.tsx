@@ -3,7 +3,7 @@ import { api } from "~/utils/api";
 import React, { useEffect } from "react";
 import { Card } from "@nextui-org/card";
 import Page from "~/components/Page";
-import { useWsChat } from "~/use-hooks/useChat";
+import { useOmegleChat } from "~/use-hooks/useOmegleChat";
 import { Button } from "@nextui-org/react";
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
 function Chat(props: {}) {
   const [channelName, setChannelName] = React.useState<string | null>(null);
   const [textStatus, setTextStatus] = React.useState<string | null>();
-  const { status: chatStatus } = useWsChat(channelName);
+  const { status: chatStatus } = useOmegleChat(channelName);
 
   useEffect(() => {
     if (chatStatus === "subscribing") {
