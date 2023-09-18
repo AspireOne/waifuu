@@ -12,7 +12,7 @@ type ChatStatus =
   | "subscribed-user-left";
 
 let channel: PresenceChannel | null = null;
-const useOmegleChat = (channelName?: string | null) => {
+const useOmegleChatConnection = (channelName?: string | null) => {
   const session = useSession();
   const [status, setStatus] = useState<ChatStatus>("no-channel");
 
@@ -71,4 +71,4 @@ const useOmegleChat = (channelName?: string | null) => {
   return { status };
 };
 
-export { useOmegleChat };
+export { useOmegleChatConnection };
