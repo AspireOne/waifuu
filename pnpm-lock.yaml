@@ -41,6 +41,9 @@ dependencies:
   '@trpc/server':
     specifier: ^10.38.0
     version: 10.38.0
+  '@types/uuid':
+    specifier: ^9.0.3
+    version: 9.0.3
   fastify:
     specifier: ^4.22.2
     version: 4.22.2
@@ -95,6 +98,9 @@ dependencies:
   trpc-openapi:
     specifier: ^1.2.0
     version: 1.2.0(@trpc/server@10.38.0)(zod@3.22.2)
+  uuid:
+    specifier: ^9.0.1
+    version: 9.0.1
   vite-tsconfig-paths:
     specifier: ^4.2.0
     version: 4.2.0(typescript@5.2.2)
@@ -4156,6 +4162,10 @@ packages:
     resolution: {integrity: sha512-n4sx2bqL0mW1tvDf/loQ+aMX7GQD3lc3fkCMC55VFNDu/vBOabO+LTIeXKM14xK0ppk5TUGcWRjiSpIlUpghKw==}
     dev: false
 
+  /@types/uuid@9.0.3:
+    resolution: {integrity: sha512-taHQQH/3ZyI3zP8M/puluDEIEvtQHVYcC6y3N8ijFtAd28+Ey/G4sg1u2gB01S8MwybLOKAp9/yCMu/uR5l3Ug==}
+    dev: false
+
   /@vitest/expect@0.34.4:
     resolution: {integrity: sha512-XlMKX8HyYUqB8dsY8Xxrc64J2Qs9pKMt2Z8vFTL4mBWXJsg4yoALHzJfDWi8h5nkO4Zua4zjqtapQ/IluVkSnA==}
     dependencies:
@@ -7749,6 +7759,11 @@ packages:
 
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
+    hasBin: true
+    dev: false
+
+  /uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
     dev: false
 

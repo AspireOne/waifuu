@@ -72,6 +72,7 @@ async function isUserPolling(db: PrismaClient, userId: string) {
 // Poll for x seconds, checking every 1 second if a channel has been assigned to this user.
 async function pollForChannel(db: PrismaClient, userId: string) {
   for (let i = 0; i < 5; i++) {
+    // Here we are checking if this user (the one in queue) has been assigned a channel.
     const poll = await db.omegleChatQueue.findFirst({
       where: {
         userId: userId,
@@ -160,5 +161,5 @@ async function findUserInQueue(db: PrismaClient, userId: string) {
 }
 
 export function generateOmegleChannel(): string {
-  return "room_" + uuidv4();
+  return "presence-room-" + uuidv4();
 }

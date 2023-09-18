@@ -42,22 +42,23 @@ model VerificationToken {
 }
 
 model User {
-  id            String           @id @default(cuid())
-  name          String?
-  email         String?          @unique
-  emailVerified DateTime?
-  image         String?
-  username      String?          @unique
-  bio           String?
-  accounts      Account[]
-  Bot           Bot[]
-  BotMessage    BotChatMessage[]
-  ChatMessage   ChatMessage[]
-  sessions      Session[]
-  Chat          Chat[]           @relation("ChatToUser")
-  BotLikes      BotLike[]
-  BotDislikes   BotDislike[]
-  BotShares     BotShares[]
+  id                   String            @id @default(cuid())
+  name                 String?
+  email                String?           @unique
+  emailVerified        DateTime?
+  image                String?
+  username             String?           @unique
+  bio                  String?
+  accounts             Account[]
+  Bot                  Bot[]
+  BotMessage           BotChatMessage[]
+  ChatMessage          ChatMessage[]
+  sessions             Session[]
+  Chat                 Chat[]            @relation("ChatToUser")
+  BotLikes             BotLike[]
+  BotDislikes          BotDislike[]
+  BotShares            BotShares[]
+  OmegleAvailableUsers OmegleChatQueue[]
 }
 
 model Bot {
@@ -132,6 +133,20 @@ model ChatMessage {
   chatId    String
   chat      Chat     @relation(fields: [chatId], references: [id])
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// -> starts searching
+// -> if someone already exists, remove him and assign them to a chat. Return ChatId.
+// -> if no one exists, add to the db and start polling.
+// -> If assigned to a chat during search, it will be polled. Return chatID.
+// -> If not assigned to a chat, remove from the db and return null.
+
+model OmegleChatQueue {
+  userId    String   @id
+  channel   String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Visibility {

@@ -1,27 +1,13 @@
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import React, { useEffect } from "react";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
-import { Textarea } from "@nextui-org/input";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { Card } from "@nextui-org/card";
 import Page from "~/components/Page";
-import useBotChat from "~/use-hooks/useBotChat";
+import { useWsChat } from "~/use-hooks/useChat";
 import { Button } from "@nextui-org/react";
-import { BotMode } from "@prisma/client";
-import useOmegleChat from "~/use-hooks/useOmegleChat";
-import { useLobby } from "~/use-hooks/useLobby";
 
 export default function Home() {
   const { data: session } = useSession();
-  //const {data: bots} = api.bots.getBots.useQuery();
-  // const chat = useOmegleChat("some-user-id-lmao");
-  // const mutation = api.general.triggerChatMatch.useMutation();
-
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     mutation.mutate();
-  //   }, 1000);
-  // }, []);
 
   return (
     <Page metaTitle={"Main Page"} protected={true}>
@@ -31,78 +17,103 @@ export default function Home() {
 }
 
 function Chat(props: {}) {
-  // const [input, setInput] = React.useState<string>("");
-  // const chat = useBotChat("official-public", BotMode.ROLEPLAY);
-  // const [animationParent] = useAutoAnimate();
+  const [channelName, setChannelName] = React.useState<string | null>(null);
+  const [textStatus, setTextStatus] = React.useState<string | null>();
+  const { status: chatStatus } = useWsChat(channelName);
 
-  const lobby = useLobby();
-  const triggerChatMessage = api.general.triggerChatMatch.useMutation();
+  useEffect(() => {
+    if (chatStatus === "subscribing") {
+      setTextStatus("Subscribing - Channel: " + channelName);
+    }
 
-  // function handleSubmit() {
-  //   chat.postMessage(input);
-  //   setInput("");
-  // }
+    if (chatStatus === "subscribe-failed") {
+      setTextStatus("Failed to subscribe - Channel: " + channelName);
+      setChannelName(null);
+    }
 
-  // async function onKeyDown(e: any) {
-  //   if (e.key === "Enter" && !e.shiftKey) {
-  //     e.preventDefault();
-  //     if (!chat.loadingReply) handleSubmit();
-  //     return;
-  //   }
-  // }
+    if (chatStatus === "subscribed-no-user") {
+      setTextStatus("Subscribed - no user connected yet.");
+    }
+
+    if (chatStatus === "subscribed-w-user") {
+      setTextStatus("Subscribed - user connected.");
+    }
+
+    if (chatStatus === "subscribed-user-left") {
+      setTextStatus("Subscribed - user left.");
+    }
+  }, [chatStatus]);
+
+  const sendMsgMutation = api.omegleChat.sendMessage.useMutation({
+    onMutate: () => {
+      setTextStatus("Sending Message - Channel: " + channelName);
+    },
+    onSuccess: (data) => {
+      setTextStatus("Message sent.");
+    },
+    onError: (error) => {
+      console.log(error.data);
+      setTextStatus("Error sending message: " + error.message);
+    },
+  });
+
+  const searchUserMutation = api.omegleChat.searchUser.useMutation({
+    onMutate: () => {
+      setChannelName(null);
+      setTextStatus("Searching...");
+    },
+    onSuccess: (data) => {
+      if (!data?.channel) {
+        setTextStatus("Not found.");
+        return;
+      } else {
+        setTextStatus("Found channel. Connecting to: " + data?.channel);
+      }
+
+      setChannelName(data?.channel);
+      const _channelName = data?.channel;
+
+      setTimeout(() => {
+        console.log("set timeout triggered, " + chatStatus);
+        if (
+          channelName === _channelName &&
+          chatStatus === "subscribed-no-user"
+        ) {
+          console.log("No user connected. Reverting.");
+          setTextStatus("No user connected.");
+          setChannelName(null);
+        }
+      }, 3000);
+    },
+    onError: (error) => {
+      setTextStatus("Error finding channel: " + error.message);
+      setChannelName(null);
+    },
+  });
 
   return (
     <Card className={"mx-auto mt-6 max-w-xl"}>
-      {/* <CardHeader>Here you can try our chat!</CardHeader>
-      <CardBody>
-        <Button
-          isDisabled={chat.loadingMore}
-          isLoading={chat.loadingMore}
-          onClick={() => chat.loadMore()}
-        >
-          Load more
+      <div className={"flex flex-col gap-4"}>
+        <Button onClick={() => searchUserMutation.mutate()}>
+          test search user
         </Button>
-        <div ref={animationParent}>
-          {chat.messages.reverse().map((message, index) => {
-            //const color = message.role === "USER" ? "bg-gray-200" : (message.error ? "bg-red-200" : "bg-blue-100");
-            return (
-              <Card className={"my-2"} key={message.id}>
-                <CardBody>{formatText(message.content)}</CardBody>
-              </Card>
-            );
-          })}
-        </div>
+        <Button
+          onClick={() => {
+            if (!channelName) {
+              setTextStatus("Cannot send message, because no channel.");
+              return;
+            }
+            sendMsgMutation.mutate({
+              channel: channelName!,
+              message: "some message",
+            });
+          }}
+        >
+          test send message
+        </Button>
 
-        <button onClick={() => {}}>
-          click
-        </button>
-      </CardBody>
-      <CardFooter className={"flex flex-row items-end gap-4"}>
-        <Textarea
-          value={input}
-          onValueChange={setInput}
-          onKeyDown={onKeyDown}
-          variant={"faded"}
-        />
-      </CardFooter> */}
-
-      <button onClick={() => triggerChatMessage.mutate()}>click</button>
+        <div>Status: {textStatus}</div>
+      </div>
     </Card>
   );
 }
-
-// function formatText(text: string): React.ReactNode[] {
-//   return text.split("*").map((part, index) => {
-//     // Every second piece of text (starting from 0) is outside of the asterisks
-//     if (index % 2 === 0) {
-//       return part;
-//     } else {
-//       // Add newline characters before and after the italic text
-//       return (
-//         <>
-//           <div className="my-[4px] italic">*{part}*</div>
-//         </>
-//       );
-//     }
-//   });
-// }

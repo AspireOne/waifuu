@@ -9,7 +9,7 @@ import {
 import GoogleProvider from "next-auth/providers/google";
 
 import { prisma } from "~/server/lib/db";
-import { generateUniqueUsername } from "~/server/lib/utils";
+import { generateUniqueUsername } from "~/server/lib/usernameUtils";
 import { env } from "~/server/env";
 
 /**
