@@ -29,30 +29,37 @@ function Chat(props: {}) {
   const {messages, clearMessages, sendMessage} = useOmegleChatMessages(channel);
 
   useEffect(() => {
-    if (connStatus === "subscribing") {
-      setTextStatus("Subscribing - Channel: " + channelData);
-    }
-
-    if (connStatus === "subscribe-failed") {
-      setTextStatus("Failed to subscribe - Channel: " + channelData);
-      endChat();
-    }
-
-    if (connStatus === "subscribed-no-user") {
-      setTextStatus("Subscribed - no user connected yet.");
-    }
-
-    if (connStatus === "subscribed-w-user") {
-      setTextStatus("Subscribed - user connected.");
-    }
-
-    if (connStatus === "subscribed-user-left") {
-      setTextStatus("Subscribed - user left.");
-      endChat();
+    switch (connStatus) {
+      case "subscribing":
+        setTextStatus("Connecting...");
+        break;
+      case "subscribe-failed":
+        setTextStatus("Failed to connect.");
+        resetChannelData();
+        break;
+      case "subscribed-no-user":
+        setTextStatus("Waiting for the other user to connect.");
+        break;
+      case "subscribed-w-user":
+        setTextStatus("Connected.");
+        break;
+      case "subscribed-user-left":
+        setTextStatus("User left.");
+        endChat();
+        break;
+      default:
+        break;
     }
   }, [connStatus]);
 
   useEffect(() => {
+    if (searchStatus === "searching") {
+      setTextStatus("Searching...");
+    }
+    if (searchStatus === "not-found") {
+      setTextStatus("No room found :( Please try again later.");
+      resetChannelData();
+    }
     if (searchStatus === "found") {
       const _channelName = channelData?.name;
       setTimeout(() => {
@@ -62,7 +69,7 @@ function Chat(props: {}) {
         ) {
           console.log("No user connected. Reverting.");
           setTextStatus("No user has connected.");
-          endChat();
+          resetChannelData();
         }
       }, 2000);
     }
