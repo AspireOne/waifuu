@@ -6,6 +6,7 @@ import Page from "~/components/Page";
 import { useOmegleChatConnection } from "~/use-hooks/useOmegleChatConnection";
 import { Button } from "@nextui-org/react";
 import useOmegleChatMessages from "~/use-hooks/useOmegleChatMessages";
+import { ChannelData } from "~/server/api/routers/omegleChat";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -18,17 +19,22 @@ export default function Home() {
 }
 
 function Chat(props: {}) {
-  const [channelName, setChannelName] = React.useState<string | null>(null);
+  const [channelData, setChannelData] = React.useState<ChannelData | null>(
+    null,
+  );
   const [textStatus, setTextStatus] = React.useState<string | null>();
-  const { status: connStatus, channel } = useOmegleChatConnection(channelName);
+  const { status: connStatus, channel } = useOmegleChatConnection(
+    channelData?.name,
+  );
   const { messages, clearMessages, sendMessage } =
     useOmegleChatMessages(channel);
 
-  let channelNameRef = React.useRef(channelName);
+  // This is here so that I can setTimeout (to check member connection) and use fresh data.
+  let channelDataRef = React.useRef(channelData);
   let connStatusRef = React.useRef(connStatus);
   React.useEffect(() => {
-    channelNameRef.current = channelName;
-  }, [channelName]);
+    channelDataRef.current = channelData;
+  }, [channelData]);
 
   React.useEffect(() => {
     connStatusRef.current = connStatus;
@@ -36,12 +42,12 @@ function Chat(props: {}) {
 
   useEffect(() => {
     if (connStatus === "subscribing") {
-      setTextStatus("Subscribing - Channel: " + channelName);
+      setTextStatus("Subscribing - Channel: " + channelData);
     }
 
     if (connStatus === "subscribe-failed") {
-      setTextStatus("Failed to subscribe - Channel: " + channelName);
-      setChannelName(null);
+      setTextStatus("Failed to subscribe - Channel: " + channelData);
+      setChannelData(null);
     }
 
     if (connStatus === "subscribed-no-user") {
@@ -59,41 +65,41 @@ function Chat(props: {}) {
   }, [connStatus]);
 
   function endChat() {
-    setChannelName(null);
+    setChannelData(null);
   }
 
   const searchUserMutation = api.omegleChat.searchUser.useMutation({
     onMutate: () => {
-      setChannelName(null);
+      setChannelData(null);
       setTextStatus("Searching...");
     },
-    onSuccess: async (data) => {
-      if (!data?.channel) {
+    onSuccess: async (channelData) => {
+      if (!channelData) {
         setTextStatus("Not found.");
         return;
       } else {
-        setTextStatus("Found channel. Connecting to: " + data?.channel);
+        setTextStatus("Found channel. Connecting to: " + channelData.name);
       }
 
-      setChannelName(data?.channel);
-      const _channelName = data?.channel;
+      setChannelData(channelData);
+      const _channelName = channelData?.name;
 
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       setTimeout(() => {
         if (
-          channelNameRef.current === _channelName &&
+          channelDataRef.current?.name === _channelName &&
           connStatusRef.current === "subscribed-no-user"
         ) {
           console.log("No user connected. Reverting.");
           setTextStatus("No user connected.");
-          setChannelName(null);
+          setChannelData(null);
         }
       }, 3000);
     },
     onError: (error) => {
       setTextStatus("Error finding channel: " + error.message);
-      setChannelName(null);
+      setChannelData(null);
     },
   });
 
@@ -105,7 +111,7 @@ function Chat(props: {}) {
         </Button>
         <Button
           onClick={() => {
-            if (!channelName) {
+            if (!channelData) {
               setTextStatus("Cannot send message, because no channel.");
               return;
             }
