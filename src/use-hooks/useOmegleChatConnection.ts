@@ -59,13 +59,6 @@ const useOmegleChatConnection = (channelName?: string | null) => {
         }
         console.log("member_added");
       });
-
-      channel.bind("message", (data: any) => {
-        if (data.from === session.data?.user.id) return;
-        console.log(data.from);
-        console.log(session.data?.user.id);
-        alert("new message" + JSON.stringify(data));
-      });
     }
   }, [channelName]);
   return { status };
