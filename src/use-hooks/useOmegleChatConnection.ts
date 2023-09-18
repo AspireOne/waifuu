@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { pusherClient } from "~/lib/pusherClient";
 import { PresenceChannel } from "pusher-js";
 
-type ChatStatus =
+export type ConnectionStatus =
   | "no-channel"
   | "subscribing"
   | "subscribe-failed"
@@ -12,7 +12,7 @@ type ChatStatus =
 
 let channel: PresenceChannel | null = null;
 const useOmegleChatConnection = (channelName?: string | null) => {
-  const [status, setStatus] = useState<ChatStatus>("no-channel");
+  const [status, setStatus] = useState<ConnectionStatus>("no-channel");
 
   let statusRef = React.useRef(status);
   React.useEffect(() => {

@@ -42,7 +42,7 @@ const Chat = () => {
         />
       );
     });
-  }, [chat, bot, session]);
+  }, [chat.messages, bot, session]);
 
   return (
     <Page protected={true} metaTitle={bot?.name || "Loading..."}>
@@ -90,7 +90,7 @@ const Chat = () => {
 
       <div className="p-3">
         <div className="fixed bottom-6 left-[50%] z-30 flex translate-x-[-50%] flex-col gap-6">
-          <ScrollShadow className="scrollbar scrollbar-thumb-gray-700 scrollbar-track-transparent flex h-32 flex-col gap-7 overflow-scroll overflow-x-visible">
+          <ScrollShadow className="flex h-32 flex-col gap-7 overflow-scroll overflow-x-visible scrollbar scrollbar-track-transparent scrollbar-thumb-gray-700">
             <div ref={chatParent}>{chatMessages}</div>
 
             {chat.loadingReply && <ChatTypingIndicator />}
