@@ -84,8 +84,6 @@ function Chat(props: {}) {
       setChannelData(channelData);
       const _channelName = channelData?.name;
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       setTimeout(() => {
         if (
           channelDataRef.current?.name === _channelName &&
@@ -95,7 +93,7 @@ function Chat(props: {}) {
           setTextStatus("No user connected.");
           setChannelData(null);
         }
-      }, 3000);
+      }, 2200);
     },
     onError: (error) => {
       setTextStatus("Error finding channel: " + error.message);
