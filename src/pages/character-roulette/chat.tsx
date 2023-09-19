@@ -89,6 +89,7 @@ function OmegleChat(props: {}) {
       {showLoading && <LoadingScreen />}
       {!showLoading && (
         <div className={"flex h-[90vh] flex-col gap-4 mb-20 mt-28"}>
+          <p className={"text-lg font-semibold"}>Topic: {channelData?.topic}</p>
           <Messages messages={chat.messages} />
           {conn.status === "no-channel" && !!conn.lastUser && (
             <SystemMessage content={"The user has left the chat..."} />
