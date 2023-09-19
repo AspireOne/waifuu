@@ -1,7 +1,7 @@
 import { Button, Chip, Input } from "@nextui-org/react";
 import Image from "next/image";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { CharacterCard } from "~/components/Character/CharacterCard";
+import { CharacterCard } from "~/components/character/CharacterCard";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaCompass, FaTag } from "react-icons/fa";
 import Page from "~/components/Page";
