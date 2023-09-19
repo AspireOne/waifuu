@@ -89,11 +89,17 @@ function OmegleChat(props: {}) {
       {showLoading && <LoadingScreen />}
       {!showLoading && (
         <div className={"flex h-[90vh] flex-col gap-4 mb-20 mt-28"}>
-          <p className={"text-lg font-semibold"}>Topic: {channelData?.topic}</p>
-          <Messages messages={chat.messages} />
-          {conn.status === "no-channel" && !!conn.lastUser && (
-            <SystemMessage content={"The user has left the chat..."} />
+          {channelData?.topic && (
+            <p className={"text-lg font-semibold"}>
+              Topic: {channelData.topic}
+            </p>
           )}
+          <Messages messages={chat.messages} />
+          {conn.status === "no-channel" &&
+            !!conn.lastUser &&
+            searchStatus !== "not-found" && (
+              <SystemMessage content={"The user has left the chat..."} />
+            )}
         </div>
       )}
 
@@ -153,16 +159,15 @@ function UserHeader(props: {
   className?: string;
   user: PresenceChannelMember;
 }) {
-  // TODO: Handle image onClick
+  // TODO: Handle dropdown.
   return (
     <Card className={"h-24"}>
       <CardBody className={twMerge("flex flex-row gap-4", props.className)}>
         {/*@ts-ignore*/}
         <Image
           referrerpolicy="no-referrer"
-          onClick={() => {}}
           src={props.user.info.image!}
-          className={"h-12 w-12 aspect-square rounded-full"}
+          className={"h-12 w-12 aspect-square rounded-full cursor-pointer"}
           alt="avatar"
         />
         <div className="flex flex-col flex-1">
