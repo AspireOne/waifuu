@@ -115,9 +115,7 @@ const ChatMessages = (props: {
   if (!props.bot) return <div></div>;
 
   return (
-    <div
-      className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible pr-3 z-[30] mt-32 mb-20" // padding right for scrollbar.
-    >
+    <div className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible z-[30] mt-32 mb-20">
       {props.messages.map((message, index) => {
         const botName = props.bot!.name || "Them";
         const userName = session?.user?.name || "You";
