@@ -10,7 +10,6 @@ export type OmegleChatMessage = {
 };
 
 let msgId = 0;
-
 export default function useOmegleChatMessages(channel: PresenceChannel | null) {
   const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
   const [messages, setMessages] = useState<OmegleChatMessage[]>([]);
@@ -62,22 +61,21 @@ export default function useOmegleChatMessages(channel: PresenceChannel | null) {
 
   useEffect(() => {
     if (!channel?.name) return;
-    if (prevChannelName === channel.name) return;
+    console.log(prevChannelName, "prev ch");
+    console.log(channel.name, "cannel name");
+    //if (prevChannelName === channel.name) return;
 
     setPrevChannelName(channel.name);
-    setMessages([]);
+    clearMessages();
 
     channel.bind("message", (data: any) => {
       const user: PresenceChannelMember = channel.members.get(data.from);
       const me: PresenceChannelMember = channel.members.me;
 
       if (me.id === user.id) return;
-
-      console.log(JSON.stringify(data));
-
       addMessage(data.message, user);
     });
-  }, [channel]);
+  }, [channel?.name]);
 
   return { messages, sendMessage, clearMessages };
 }

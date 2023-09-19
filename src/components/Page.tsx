@@ -43,7 +43,7 @@ function Page(
         >
           <div
             className={twMerge(
-              "relative mx-auto min-h-[70vh] max-w-[1500px] p-4 px-4 pt-0 sm:px-8 md:px-14 lg:px-14",
+              "relative mx-auto min-h-[70vh] max-w-[1500px] p-4 px-4 pt-4 sm:px-8 md:px-14 lg:px-14",
               props.className,
             )}
           >

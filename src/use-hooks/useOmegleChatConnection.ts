@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { pusherClient } from "~/lib/pusherClient";
 import { PresenceChannel } from "pusher-js";
+import PresenceChannelMember from "~/server/types/presenceChannelMember";
 
 export type ConnectionStatus =
   | "no-channel"
@@ -10,9 +11,10 @@ export type ConnectionStatus =
   | "subscribed-w-user"
   | "subscribed-user-left";
 
-let channel: PresenceChannel | null = null;
 const useOmegleChatConnection = (channelName?: string | null) => {
   const [status, setStatus] = useState<ConnectionStatus>("no-channel");
+  const [lastUser, setLastUser] = useState<PresenceChannelMember | null>(null);
+  const [channel, setChannel] = useState<PresenceChannel | null>(null);
 
   let statusRef = React.useRef(status);
   React.useEffect(() => {
@@ -22,7 +24,7 @@ const useOmegleChatConnection = (channelName?: string | null) => {
   useEffect(() => {
     if (!channelName) {
       channel?.unsubscribe();
-      channel = null;
+      setChannel(null);
       setStatus("no-channel");
       return;
     }
@@ -30,41 +32,63 @@ const useOmegleChatConnection = (channelName?: string | null) => {
     if (channel?.name !== channelName) {
       setStatus("subscribing");
       channel?.unsubscribe();
-      channel = pusherClient.subscribe(channelName) as PresenceChannel;
 
-      channel.bind("pusher:error", (data: any) => {
+      const newChannel = pusherClient.subscribe(channelName) as PresenceChannel;
+      setChannel(newChannel);
+
+      newChannel.bind("pusher:error", (data: any) => {
         console.log("pusher:error", data);
       });
-      channel.bind("pusher:subscription_succeeded", () => {
-        if (channel!.members.count > 1) {
+      newChannel.bind("pusher:subscription_succeeded", () => {
+        if (newChannel!.members.count > 1) {
           setStatus("subscribed-w-user");
+          setLastUser(getOtherMember(newChannel));
         } else {
           setStatus("subscribed-no-user");
         }
         console.log(
-          "subscription_succeeded. Members: " + channel!.members.count,
+          "subscription_succeeded. Members: " + newChannel!.members.count,
         );
       });
 
-      channel.bind("pusher:subscription_error", () => {
+      newChannel.bind("pusher:subscription_error", () => {
         setStatus("subscribe-failed");
         console.log("subscription_error");
       });
 
-      channel.bind("pusher:member_removed", () => {
+      newChannel.bind("pusher:member_removed", () => {
         setStatus("subscribed-user-left");
         console.log("member_removed");
       });
 
-      channel.bind("pusher:member_added", () => {
-        if (channel!.members.count > 1) {
-          setStatus("subscribed-w-user");
-        }
-        console.log("member_added");
-      });
+      newChannel.bind(
+        "pusher:member_added",
+        (member: PresenceChannelMember) => {
+          if (newChannel!.members.count > 1) {
+            setStatus("subscribed-w-user");
+            setLastUser(getOtherMember(newChannel));
+          }
+          console.log("member_added");
+        },
+      );
     }
   }, [channelName]);
-  return { status, statusRef, channel };
+
+  return { status, statusRef, channel, lastUser };
 };
+
+function getOtherMember(
+  channel: PresenceChannel | null,
+): PresenceChannelMember | null {
+  if (!channel) return null;
+
+  let newMember: PresenceChannelMember | null = null;
+  channel.members.each((member: PresenceChannelMember) => {
+    if (newMember) return;
+    if (member.id !== channel.members.me.id) newMember = member;
+  });
+
+  return newMember;
+}
 
 export { useOmegleChatConnection };
