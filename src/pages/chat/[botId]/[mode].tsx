@@ -9,9 +9,10 @@ import Skeleton from "react-loading-skeleton";
 import { ShareDropdown } from "~/components/chat/ShareDropdown";
 import { SettingsDropdown } from "~/components/chat/SettingsDropdown";
 import { useBot } from "~/use-hooks/useBot";
-import ChatInput from "~/components/chat/ChatInput";
 import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
 import ChatMessagesContainer from "~/components/chat/ChatMessagesContainer";
+import { BotChatMessage } from ".prisma/client";
+import ChatInput from "~/components/chat/ChatInput";
 
 const BotChat = () => {
   // Data from URL.
@@ -22,6 +23,17 @@ const BotChat = () => {
   const { data: bot } = useBot(botId, mode, router.isReady);
   const chat = useBotChat(botId, mode as BotMode, router.isReady);
 
+  const message: BotChatMessage = {
+    id: 1,
+    userId: "asdasd",
+    botId: "asdasdasdas",
+    botMode: "ADVENTURE",
+    content: "Hello, I am a bot!",
+    role: "BOT",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   return (
     <Page protected={true} metaTitle={bot?.name || "Loading..."}>
       <BackgroundImage />
@@ -30,15 +42,23 @@ const BotChat = () => {
 
       <ChatHeader name={bot?.name} username={"@fauna_hot"} />
 
-      <div className="p-3">
-        <div className="fixed bottom-6 left-[50%] z-30 flex translate-x-[-50%] flex-col gap-6">
-          <ChatMessages
-            loadingReply={chat.loadingReply}
-            messages={chat.messages}
-            botName={bot?.name}
-          />
-          <ChatInput />
-        </div>
+      <div className="fixed bottom-3 left-3 right-3 z-30 space-y-8">
+        <ChatMessages
+          loadingReply={true}
+          messages={[
+            message,
+            message,
+            message,
+            message,
+            message,
+            message,
+            message,
+            message,
+            message,
+          ]}
+          botName={bot?.name}
+        />
+        <ChatInput />
       </div>
     </Page>
   );

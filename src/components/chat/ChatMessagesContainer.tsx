@@ -9,7 +9,10 @@ export default function ChatMessagesContainer(
   const [chatParent] = useAutoAnimate();
 
   return (
-    <ScrollShadow className="flex h-32 flex-col gap-7 overflow-scroll overflow-x-visible scrollbar scrollbar-track-transparent scrollbar-thumb-gray-700">
+    <ScrollShadow
+      className="flex h-72 flex-col gap-7 overflow-scroll overflow-x-visible scrollbar
+    scrollbar-track-transparent scrollbar-thumb-gray-700"
+    >
       <div ref={chatParent}>{props.children}</div>
       {props.typing && <ChatTypingIndicator />}
     </ScrollShadow>

@@ -9,14 +9,14 @@ const ChatInput = (props: {
 }) => (
   <div
     className={twMerge(
-      "mx-auto flex w-[310px] flex-row gap-2 sm:w-[400px] md:w-[500px] lg:w-[700px]",
+      "mx-auto flex w-full flex-row gap-2 sm:w-[400px] md:w-[500px] lg:w-[700px]",
       props.className,
     )}
   >
     <input
       placeholder={props.placeholder ?? "Your message..."}
       className={twMerge(
-        "w-full rounded-lg border-1 border-white bg-transparent p-3 text-white outline-none",
+        "flex-1 rounded-lg border-1 border-white bg-transparent p-3 text-white outline-none",
         props.inputClassname,
       )}
       type="text"

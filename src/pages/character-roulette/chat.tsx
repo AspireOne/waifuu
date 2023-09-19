@@ -7,6 +7,7 @@ import {
 } from "~/use-hooks/useOmegleChatConnection";
 import useOmegleChatMessages from "~/use-hooks/useOmegleChatMessages";
 import useOmegleChatSearch from "~/use-hooks/useOmegleChatSearch";
+import ChatMessagesContainer from "~/components/chat/ChatMessagesContainer";
 
 export default function CharacterRoulette() {
   return (
@@ -61,7 +62,7 @@ function OmegleChat(props: {}) {
   }, [searchStatus]);
 
   return (
-    <Card className={"mx-auto mt-6 max-w-xl"}>
+    <ChatMessagesContainer>
       {messages.map((message) => {
         return (
           <Card key={message.id}>
@@ -70,7 +71,7 @@ function OmegleChat(props: {}) {
           </Card>
         );
       })}
-    </Card>
+    </ChatMessagesContainer>
   );
 }
 
