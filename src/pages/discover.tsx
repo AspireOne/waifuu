@@ -8,7 +8,7 @@ import Page from "~/components/Page";
 
 const Discover = () => {
   return (
-    <Page metaTitle="Discover characters">
+    <Page metaTitle="Discover Characters">
       <div className="hidden h-[350px] overflow-hidden sm:block">
         <Image
           alt="background"
@@ -18,7 +18,7 @@ const Discover = () => {
           width={1920}
           height={1080}
         />
-        <div className="absolute left-0 top-[64px] flex h-[350px] h-full w-full flex-row">
+        <div className="absolute left-0 top-[64px] flex h-[350px] w-full flex-row">
           <div className="clear-both">
             <BiChevronLeft
               color="white"
@@ -56,7 +56,7 @@ const Discover = () => {
         </div>
       </div>
 
-      <div className="mx-auto w-[70%] p-5">
+      <div className="mx-auto p-5">
         <div className="mb-10 mt-7">
           <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
             <FaCompass /> Active chats
@@ -75,7 +75,7 @@ const Discover = () => {
         </div>
       </div>
 
-      <div className="mx-auto w-[70%] p-5">
+      <div className="mx-auto p-5">
         <div className="mb-10 mt-7">
           <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
             <FaTag /> Popular tags
@@ -102,12 +102,12 @@ const Discover = () => {
           </div>
         </div>
 
-        <div className="mb-5 flex flex-col gap-2">
+        <div className="mb-5 flex flex-row items-center gap-4">
           <div className="flex flex-row gap-2">
             <FaMagnifyingGlass color="white" fontSize={20} />
             <p className="text-white">Search</p>
           </div>
-          <Input className="w-fit rounded-lg text-white" type="text" />
+          <Input className="flex-1 rounded-lg text-white" type="text" />
         </div>
 
         <div className="flex flex-wrap gap-5">
