@@ -144,11 +144,7 @@ function LoadingScreen() {
 function StatusHeader(props: { status: string }) {
   return (
     <Card className={"h-24"}>
-      <CardBody
-        className={
-          "flex flex-row gap-4 text-center flex flex-col justify-center items-center text-lg"
-        }
-      >
+      <CardBody className={"text-center justify-center items-center text-lg"}>
         {props.status}
       </CardBody>
     </Card>
@@ -163,7 +159,7 @@ function UserHeader(props: {
   return (
     <Card className={"h-24"}>
       <CardBody className={twMerge("flex flex-row gap-4", props.className)}>
-        {/*@ts-ignore*/}
+        {/*@ts-ignore prettier-ignore*/}
         <Image
           referrerpolicy="no-referrer"
           src={props.user.info.image!}
