@@ -10,9 +10,9 @@ import { ShareDropdown } from "~/components/chat/ShareDropdown";
 import { SettingsDropdown } from "~/components/chat/SettingsDropdown";
 import { useBot } from "~/use-hooks/useBot";
 import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
-import ChatMessagesContainer from "~/components/chat/ChatMessagesContainer";
-import { BotChatMessage } from ".prisma/client";
+import { Bot, BotChatMessage } from ".prisma/client";
 import ChatInput from "~/components/chat/ChatInput";
+import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
 
 const BotChat = () => {
   // Data from URL.
@@ -40,24 +40,25 @@ const BotChat = () => {
       <CharacterImage />
       <ChatGradientOverlay />
 
-      <ChatHeader name={bot?.name} username={"@fauna_hot"} />
+      <ChatHeader bot={bot ?? undefined} />
 
-      <div className="fixed bottom-3 left-3 right-3 z-30 space-y-8">
-        <ChatMessages
-          loadingReply={true}
-          messages={[
-            message,
-            message,
-            message,
-            message,
-            message,
-            message,
-            message,
-            message,
-            message,
-          ]}
-          botName={bot?.name}
-        />
+      <ChatMessages
+        loadingReply={true}
+        bot={bot ?? undefined}
+        messages={[
+          message,
+          message,
+          message,
+          message,
+          message,
+          message,
+          message,
+          message,
+          message,
+        ]}
+      />
+
+      <div className="fixed bottom-0 left-0 right-0 p-3 z-30 bg-gradient-to-t from-black via-black/95 to-black/10">
         <ChatInput />
       </div>
     </Page>
@@ -86,28 +87,27 @@ const CharacterImage = () => (
   />
 );
 
-const ChatHeader = (props: { name?: string; username?: string }) => (
-  <div className="fixed z-30 w-full">
-    <div className="mx-auto mt-5 flex w-[75%] flex-row rounded-lg bg-black bg-opacity-80 p-3">
-      <div>
-        <Image
-          height={50}
-          width={50}
-          loading="eager"
-          src={"/assets/default_user.jpg"}
-          alt="botavatar"
-        />
-      </div>
+const ChatHeader = (props: { bot?: Bot }) => (
+  <div className="fixed z-20 left-5 right-5 top-6 flex flex-row gap-3 rounded-lg bg-black/90 p-3 max-w-[500px] mx-auto">
+    <Image
+      height={50}
+      width={50}
+      className={"aspect-square"} // Needed.
+      loading="eager"
+      src={props.bot?.img || "/assets/default_user.jpg"}
+      alt="bot avatar"
+    />
 
-      <div className="ml-3">
-        <h3 className="text-white">{props.name || <Skeleton />}</h3>
-        <h6 className="text-gray-400">{props.username}</h6>
-      </div>
+    <div className={"flex-1"}>
+      <h3 className="">{props.bot?.name || <Skeleton width={"50%"} />}</h3>
+      <h6 className="text-gray-400 line-clamp-1">
+        {props.bot?.description || <Skeleton width={"80%"} />}
+      </h6>
+    </div>
 
-      <div className="align-center mx-auto mr-2 flex flex-row gap-2">
-        <SettingsDropdown />
-        <ShareDropdown />
-      </div>
+    <div className="ml-auto flex flex-row gap-2">
+      <SettingsDropdown />
+      <ShareDropdown />
     </div>
   </div>
 );
@@ -115,29 +115,36 @@ const ChatHeader = (props: { name?: string; username?: string }) => (
 const ChatMessages = (props: {
   messages: Message[];
   loadingReply: boolean;
-  botName?: string;
+  bot?: Bot;
 }) => {
   const { data: session } = useSession();
 
+  if (!props.bot) return <div></div>;
+
   return (
-    <ChatMessagesContainer typing={props.loadingReply}>
+    <div
+      className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible pr-3 z-[30] mt-32 mb-4" // padding right for scrollbar.
+    >
       {props.messages.map((message, index) => {
-        const botName = props.botName || "Them";
+        const botName = props.bot!.name || "Them";
         const userName = session?.user?.name || "You";
+        const isBot = message.role === "BOT";
 
         return (
           <ChatMessage
+            className={"z-[10]"}
             key={message.id}
             author={{
-              bot: message.role === "BOT",
-              name: message.role === "BOT" ? botName : userName,
-              avatar: "/assets/default_user.jpg",
+              bot: isBot,
+              name: isBot ? botName : userName,
+              avatar: isBot ? props.bot!.img : session?.user?.image,
             }}
             message={message.content}
           />
         );
       })}
-    </ChatMessagesContainer>
+      {props.loadingReply && <ChatTypingIndicator />}
+    </div>
   );
 };
 

@@ -246,7 +246,8 @@ function Input(props: {
   return (
     <div
       className={twMerge(
-        "flex flex-row items-center w-full gap-2 sm:w-[400px] md:w-[500px] lg:w-[700px] fixed bottom-0 left-0 right-0 p-2 z-30 bg-gradient-to-t via-black/95 from-black",
+        "flex flex-row items-center w-full gap-2 sm:w-[400px] md:w-[500px] lg:w-[700px] " +
+          "fixed bottom-0 left-0 right-0 p-2 z-30 bg-gradient-to-t via-black/95 from-black",
         props.className,
       )}
     >

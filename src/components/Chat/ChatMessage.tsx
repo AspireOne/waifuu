@@ -1,15 +1,17 @@
 import { useMemo } from "react";
-import Image from "next/image";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Image,
 } from "@nextui-org/react";
 import { ChatMessageProps } from "./types";
+import { twMerge } from "tailwind-merge";
+import { Card, CardBody } from "@nextui-org/card";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
-const ChatMessage = ({ author, message, key }: ChatMessageProps) => {
+const ChatMessage = ({ author, message, key, className }: ChatMessageProps) => {
   const formattedMessage = useMemo(() => {
     return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
@@ -24,50 +26,51 @@ const ChatMessage = ({ author, message, key }: ChatMessageProps) => {
   return (
     <div
       key={key}
-      className={`flex ${
-        author.bot ? "ml-0" : "mr-0 flex-row"
-      } mx-auto w-fit gap-2`}
+      className={twMerge(
+        `flex mx-auto w-full gap-2`,
+        author.bot ? "ml-0" : "mr-0 flex-row",
+        className,
+      )}
     >
-      <Dropdown className="flex-none">
-        <DropdownTrigger>
-          <button>
-            <BsThreeDotsVertical size={24} color="white" />
-          </button>
-        </DropdownTrigger>
-        <DropdownMenu aria-label="Static Actions">
-          <DropdownItem className="text-white" key="edit">
-            Edit
-          </DropdownItem>
-          <DropdownItem key="delete" className="text-danger" color="danger">
-            Delete
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+      <Card className={twMerge("w-full rounded-lg p-3")}>
+        {/*Comment this out for now, because it is not needed.*/}
+        {/*<MsgDropdown/>*/}
 
-      <div
-        className={`${
-          author.bot ? "bg-white" : "bg-white bg-opacity-20 text-white"
-        } max-w-[70%] rounded-lg p-3`}
-      >
-        <p
-          className={`${
-            author.bot ? "text-gray-400" : "text-gray-300"
-          } mb-1 text-sm`}
-        >
-          {author.name}
-        </p>
-        <p dangerouslySetInnerHTML={{ __html: formattedMessage }} />
-      </div>
+        <CardBody className={"p-1 flex flex-row gap-4"}>
+          <Image
+            src={author.avatar ?? "/assets/default_user.jpg"}
+            alt="profile-picture"
+            className="w-10 rounded-full aspect-square"
+          />
 
-      <Image
-        src="/assets/default_user.jpg"
-        alt="profile-picture"
-        height={50}
-        width={50}
-        className="h-10 w-10 rounded-full"
-      />
+          <div>
+            <p className={"font-bold"}>{author.name}</p>
+            <p dangerouslySetInnerHTML={{ __html: formattedMessage }} />
+          </div>
+        </CardBody>
+      </Card>
     </div>
   );
 };
+
+function MsgDropdown() {
+  return (
+    <Dropdown className="flex-none">
+      <DropdownTrigger>
+        <button>
+          <BsThreeDotsVertical size={24} color="white" />
+        </button>
+      </DropdownTrigger>
+      <DropdownMenu aria-label="Static Actions">
+        <DropdownItem className="text-white" key="edit">
+          Edit
+        </DropdownItem>
+        <DropdownItem key="delete" className="text-danger" color="danger">
+          Delete
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  );
+}
 
 export { ChatMessage };
