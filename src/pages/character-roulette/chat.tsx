@@ -25,17 +25,16 @@ function OmegleChat(props: {}) {
     status: searchStatus,
   } = useOmegleChatSearch();
   const [textStatus, setTextStatus] = React.useState<string | null>();
+  const conn = useOmegleChatConnection(channelData?.name);
   // prettier-ignore
-  const {status: connStatus, statusRef: connStatusRef, channel} = useOmegleChatConnection(channelData?.name);
-  // prettier-ignore
-  const {messages, clearMessages, sendMessage} = useOmegleChatMessages(channel);
+  const {messages, clearMessages, sendMessage} = useOmegleChatMessages(conn.channel);
 
   // Connection management.
   useEffect(() => {
-    setTextStatus(connStatusToText(connStatus));
-    if (connStatus === "subscribe-failed") resetChannelData();
-    if (connStatus === "subscribed-user-left") resetChannelData();
-  }, [connStatus]);
+    setTextStatus(connStatusToText(conn.status));
+    if (conn.status === "subscribe-failed") resetChannelData();
+    if (conn.status === "subscribed-user-left") resetChannelData();
+  }, [conn.status]);
 
   // Search management.
   useEffect(() => {
@@ -51,7 +50,7 @@ function OmegleChat(props: {}) {
       setTimeout(() => {
         if (
           channelDataRef.current?.name === _channelName &&
-          connStatusRef.current === "subscribed-no-user"
+          conn.statusRef.current === "subscribed-no-user"
         ) {
           console.log("No user connected. Reverting.");
           setTextStatus("No user has connected.");
