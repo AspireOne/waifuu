@@ -21,9 +21,10 @@ const BotChat = () => {
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
   const { data: bot } = useBot(botId, mode, router.isReady);
+  // TODO: Fix chat initial message fetching, refetching message duplication...
   const chat = useBotChat(botId, mode as BotMode, router.isReady);
 
-  const message: BotChatMessage = {
+  const mockMessage: BotChatMessage = {
     id: 1,
     userId: "asdasd",
     botId: "asdasdasdas",
@@ -36,51 +37,43 @@ const BotChat = () => {
 
   return (
     <Page protected={true} metaTitle={bot?.name || "Loading..."}>
-      <BackgroundImage />
-      <CharacterImage />
+      {/*TODO: Add background to bot.*/}
+      <BackgroundImage src={undefined} />
+      {/*TODO: Make character image only the png of the char.*/}
+      <CharacterImage src={bot?.img ?? "/assets/character.png"} />
       <ChatGradientOverlay />
 
       <ChatHeader bot={bot ?? undefined} />
 
       <ChatMessages
-        loadingReply={true}
+        loadingReply={chat.loadingReply}
         bot={bot ?? undefined}
-        messages={[
-          message,
-          message,
-          message,
-          message,
-          message,
-          message,
-          message,
-          message,
-          message,
-        ]}
+        messages={chat.messages}
       />
 
       <div className="fixed bottom-0 left-0 right-0 p-3 z-30 bg-gradient-to-t from-black via-black/95 to-black/10">
-        <ChatInput />
+        <ChatInput onSend={chat.postMessage} />
       </div>
     </Page>
   );
 };
 
-const BackgroundImage = () => (
+const BackgroundImage = (props: { src?: string }) => (
   <Image
     alt="background"
     loading="eager"
-    src={"/assets/background.png"}
+    src={props.src ?? "/assets/background.png"}
     className="fixed left-0 top-0 h-full w-full object-cover"
     width={1920}
     height={1080}
   />
 );
 
-const CharacterImage = () => (
+const CharacterImage = (props: { src: string }) => (
   <Image
     alt="background"
     loading="eager"
-    src={"/assets/character.png"}
+    src={props.src}
     className="fixed bottom-0 left-[50%] h-[800px] w-full max-w-[500px] translate-x-[-50%] object-cover"
     width={1920}
     height={1080}
@@ -123,7 +116,7 @@ const ChatMessages = (props: {
 
   return (
     <div
-      className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible pr-3 z-[30] mt-32 mb-4" // padding right for scrollbar.
+      className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible pr-3 z-[30] mt-32 mb-20" // padding right for scrollbar.
     >
       {props.messages.map((message, index) => {
         const botName = props.bot!.name || "Them";
@@ -143,7 +136,7 @@ const ChatMessages = (props: {
           />
         );
       })}
-      {props.loadingReply && <ChatTypingIndicator />}
+      {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
     </div>
   );
 };

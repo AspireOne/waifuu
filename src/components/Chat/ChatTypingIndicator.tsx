@@ -1,10 +1,16 @@
 import { motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
 
-const ChatTypingIndicator = () => {
+const ChatTypingIndicator = (props: { className?: string }) => {
   const DELAYS = [0, 0.25, 0.5];
 
   return (
-    <div className="flex w-fit flex-row gap-2 rounded-full bg-white bg-opacity-20 p-3">
+    <div
+      className={twMerge(
+        "flex w-fit flex-row gap-2 rounded-full bg-white bg-opacity-20 p-3",
+        props.className,
+      )}
+    >
       {DELAYS.map((delay) => {
         return (
           <motion.span

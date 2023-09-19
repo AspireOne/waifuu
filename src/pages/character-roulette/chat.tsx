@@ -159,9 +159,8 @@ function UserHeader(props: {
   return (
     <Card className={"h-24"}>
       <CardBody className={twMerge("flex flex-row gap-4", props.className)}>
-        {/*@ts-ignore prettier-ignore*/}
         <Image
-          referrerpolicy="no-referrer"
+          referrerPolicy="no-referrer"
           src={props.user.info.image!}
           className={"h-12 w-12 aspect-square rounded-full cursor-pointer"}
           alt="avatar"

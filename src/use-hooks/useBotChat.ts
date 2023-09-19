@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { BotMode, BotChatRole } from "@prisma/client";
+import { BotChatRole, BotMode } from "@prisma/client";
 import { api } from "~/utils/api";
-import { useQueryClient } from "@tanstack/react-query";
-import generateUUID from "~/utils/utils";
 import { toast } from "react-toastify";
-import { produce } from "immer";
 
 type MessageStatus = "error" | "temp";
 export type Message = {
