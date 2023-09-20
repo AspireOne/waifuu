@@ -8,11 +8,13 @@ const ChatInput = (props: {
   placeholder?: string;
   className?: string;
   inputClassname?: string;
+  disabled?: boolean;
   onSend: (content: string) => void;
 }) => {
   const [input, setInput] = useState<string>("");
 
   function handleClick() {
+    if (props.disabled) return;
     if (!input.trim()) return;
     props.onSend(input.trim());
     setInput("");
@@ -41,7 +43,12 @@ const ChatInput = (props: {
 
       <Button
         isIconOnly
-        className={"h-12 w-16 bg-black dark:bg-white"}
+        className={twMerge(
+          "h-12 w-16",
+          props.disabled
+            ? "bg-zinc-800 dark:bg-zinc-500"
+            : "bg-black dark:bg-white",
+        )}
         onClick={handleClick}
       >
         <RiSendPlane2Fill size={30} color="black" />

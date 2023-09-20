@@ -13,6 +13,18 @@ import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
 import { Bot, BotChatMessage } from ".prisma/client";
 import ChatInput from "~/components/chat/ChatInput";
 import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
+import React, { useEffect } from "react";
+
+const mockMessage: BotChatMessage = {
+  id: 1,
+  userId: "asdasd",
+  botId: "asdasdasdas",
+  botMode: "ADVENTURE",
+  content: "Hello, I am a bot!",
+  role: "BOT",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 
 const BotChat = () => {
   // Data from URL.
@@ -21,19 +33,17 @@ const BotChat = () => {
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
   const { data: bot } = useBot(botId, mode, router.isReady);
-  // TODO: Fix chat initial message fetching, refetching message duplication...
   const chat = useBotChat(botId, mode as BotMode, router.isReady);
 
-  const mockMessage: BotChatMessage = {
-    id: 1,
-    userId: "asdasd",
-    botId: "asdasdasdas",
-    botMode: "ADVENTURE",
-    content: "Hello, I am a bot!",
-    role: "BOT",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
+  function handleScrollChange() {
+    if (window.scrollY === 0) chat.loadMore();
+  }
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", handleScrollChange);
+    // TODO: When I add a return unsubscribe, it does not work.
+    //return window.removeEventListener("scroll", handleScrollChange);
+  }, []);
 
   return (
     <Page protected={true} metaTitle={bot?.name || "Loading..."}>
@@ -47,12 +57,13 @@ const BotChat = () => {
 
       <ChatMessages
         loadingReply={chat.loadingReply}
+        loadingHistory={chat.loadingMore}
         bot={bot ?? undefined}
         messages={chat.messages}
       />
 
       <div className="fixed bottom-0 left-0 right-0 p-3 z-30 bg-gradient-to-t from-black via-black/95 to-black/10">
-        <ChatInput onSend={chat.postMessage} />
+        <ChatInput disabled={chat.loadingReply} onSend={chat.postMessage} />
       </div>
     </Page>
   );
@@ -87,6 +98,7 @@ const ChatHeader = (props: { bot?: Bot }) => (
       width={50}
       className={"aspect-square"} // Needed.
       loading="eager"
+      isLoading={!props.bot}
       src={props.bot?.img || "/assets/default_user.jpg"}
       alt="bot avatar"
     />
@@ -108,14 +120,52 @@ const ChatHeader = (props: { bot?: Bot }) => (
 const ChatMessages = (props: {
   messages: Message[];
   loadingReply: boolean;
+  loadingHistory?: boolean;
   bot?: Bot;
 }) => {
   const { data: session } = useSession();
+  const lastMsgRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [scrollPosBeforeLoad, setScrollPosBeforeLoad] =
+    React.useState<number>(0);
+  const [deferredScrollFix, setDeferredScrollFix] =
+    React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (props.loadingHistory) {
+      setScrollPosBeforeLoad(containerRef.current?.scrollHeight ?? 0);
+    }
+    if (deferredScrollFix) {
+      setDeferredScrollFix(false);
+      if (!containerRef.current) return;
+      window.scrollTo(
+        0,
+        containerRef.current.scrollHeight - scrollPosBeforeLoad,
+      );
+    }
+  }, [props.loadingHistory, deferredScrollFix]);
+
+  useEffect(() => {
+    if (!props.loadingHistory) setDeferredScrollFix(true);
+  }, [props.loadingHistory]);
+
+  // Scrolls to the latest message.
+  React.useEffect(() => {
+    const posY = window.scrollY;
+    const maxY = document.body.scrollHeight - window.innerHeight;
+
+    if (maxY - posY < 220) {
+      lastMsgRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [props.messages]);
 
   if (!props.bot) return <div></div>;
 
   return (
-    <div className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible z-[30] mt-32 mb-20">
+    <div
+      ref={containerRef}
+      className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible z-[30] mt-32 mb-20"
+    >
       {props.messages.map((message, index) => {
         const botName = props.bot!.name || "Them";
         const userName = session?.user?.name || "You";
@@ -135,6 +185,7 @@ const ChatMessages = (props: {
         );
       })}
       {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
+      <div ref={lastMsgRef} />
     </div>
   );
 };

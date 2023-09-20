@@ -56,7 +56,7 @@ export default function useBotChat(
     ) {
       fetchMore.mutate({ botId, botMode, cursor });
     }
-  }, [shouldLoadMore, fetchMore.isLoading]);
+  }, [shouldLoadMore, fetchMore.isLoading, botId, botMode, enabled]);
 
   const replyMutation = api.bots.genReply.useMutation({
     onMutate: async (variables) => {
