@@ -13,7 +13,7 @@ export const appRouter = createTRPCRouter({
   general: generalRouter,
   bots: botsRouter,
   users: usersRouter,
-  omegleChat: omegleChatRouter,
+  RRChat: omegleChatRouter,
 });
 
 // export type definition of API

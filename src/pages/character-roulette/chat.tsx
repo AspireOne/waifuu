@@ -1,16 +1,11 @@
 import React, { useEffect } from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import Page from "~/components/Page";
-import {
-  ConnectionStatus,
-  useOmegleChatConnection,
-} from "~/use-hooks/useOmegleChatConnection";
-import useOmegleChatMessages, {
-  OmegleChatMessage,
-} from "~/use-hooks/useOmegleChatMessages";
-import useOmegleChatSearch, {
-  SearchStatus,
-} from "~/use-hooks/useOmegleChatSearch";
+import { ConnectionStatus, useRRConnection } from "~/hooks/useRRConnection";
+import useRRMessages, { RRMessage } from "~/hooks/useRRMessages";
+import useRRChannelConnector, {
+  RRChannelSearchStatus,
+} from "~/hooks/useRRChannelConnector";
 import { twMerge } from "tailwind-merge";
 import { Button, Image, Textarea } from "@nextui-org/react";
 import { RiSendPlane2Fill } from "react-icons/ri";
@@ -20,95 +15,94 @@ import PresenceChannelMember from "~/server/types/presenceChannelMember";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { Spinner } from "@nextui-org/spinner";
 
-export default function CharacterRoulette() {
+// "RR". Stands for Roleplay Roulette.
+export default function RoleplayRoulette() {
   return (
     <Page metaTitle={"Character Roulette"} protected={true}>
-      <OmegleChat />
+      <Chat />
     </Page>
   );
 }
 
-function OmegleChat(props: {}) {
-  const {
-    search,
-    channelData,
-    channelDataRef,
-    resetChannelData,
-    status: searchStatus,
-  } = useOmegleChatSearch();
-
-  const conn = useOmegleChatConnection(channelData?.name);
-  const chat = useOmegleChatMessages(conn.channel);
+function Chat(props: {}) {
+  const channel = useRRChannelConnector();
+  const conn = useRRConnection(channel.data?.name);
+  const chat = useRRMessages(conn.channel);
 
   function handleSearchClick() {
-    resetChannelData();
-    search();
+    channel.reset();
+    channel.search();
   }
 
   // Connection management.
   useEffect(() => {
-    if (conn.status === "subscribe-failed") resetChannelData();
-    if (conn.status === "subscribed-user-left") resetChannelData();
+    if (conn.status === "subscribe-failed") channel.reset();
+    if (conn.status === "subscribed-user-left") channel.reset();
   }, [conn.status]);
 
-  // Search management.
+  // Channel search management.
   useEffect(() => {
-    if (searchStatus === "not-found") resetChannelData();
+    if (channel.status === "not-found") channel.reset();
 
     // If channel found, wait x seconds and check if the other user is connected yet. If not, disconnect.
-    if (searchStatus === "found") {
-      const _channelName = channelData?.name;
+    if (channel.status === "found") {
+      const _channelName = channel.data?.name;
       setTimeout(() => {
         if (
-          channelDataRef.current?.name === _channelName &&
+          channel.datRef.current?.name === _channelName &&
           conn.statusRef.current === "subscribed-no-user"
         ) {
           console.log("No user connected. Reverting.");
-          resetChannelData();
+          channel.reset();
         }
       }, 2000);
     }
-  }, [searchStatus]);
+  }, [channel.status]);
 
   const showLoading =
-    searchStatus === "searching" || conn.status === "subscribing";
+    channel.status === "searching" || conn.status === "subscribing";
+
+  // Show header when user is successfully connected.
+  const showUserHeader =
+    conn.lastUser &&
+    conn.status !== "subscribing" &&
+    channel.status !== "searching" &&
+    channel.status !== "not-found";
 
   return (
     <div className="z-30 flex flex-col gap-8">
       <div className={"fixed top-2 left-2 right-2 z-30"}>
-        {conn.lastUser &&
-        conn.status !== "subscribing" &&
-        searchStatus !== "searching" &&
-        searchStatus !== "not-found" ? (
-          <UserHeader user={conn.lastUser} />
+        {showUserHeader ? (
+          <UserHeader user={conn.lastUser!} />
         ) : (
-          <StatusHeader status={getStatus(conn.status, searchStatus)} />
+          <StatusHeader status={getStatusStr(conn.status, channel.status)} />
         )}
       </div>
 
       {showLoading && <LoadingScreen />}
+
       {!showLoading && (
         <div className={"flex h-[90vh] flex-col gap-4 mb-20 mt-28"}>
-          {channelData?.topic && (
+          {channel.data?.topic && (
             <p className={"text-lg font-semibold"}>
-              Topic: {channelData.topic}
+              Topic: {channel.data?.topic}
             </p>
           )}
           <Messages messages={chat.messages} />
           {conn.status === "no-channel" &&
             !!conn.lastUser &&
-            searchStatus !== "not-found" && (
+            channel.status !== "not-found" && (
               <SystemMessage content={"The user has left the chat..."} />
             )}
         </div>
       )}
 
       <Input
-        onStop={resetChannelData}
+        onStop={channel.reset}
         onSearch={handleSearchClick}
         onSend={chat.sendMessage}
         inChat={conn.status === "subscribed-w-user"}
-        isSearching={searchStatus === "searching"}
+        isSearching={channel.status === "searching"}
       />
     </div>
   );
@@ -118,7 +112,7 @@ function SystemMessage(props: { content: string }) {
   return <Card className={"p-1 italic bg-transparent"}>{props.content}</Card>;
 }
 
-function Messages(props: { messages: OmegleChatMessage[] }) {
+function Messages(props: { messages: RRMessage[] }) {
   if (props.messages.length > 0) {
     return props.messages.map((message, i) => {
       return (
@@ -267,7 +261,10 @@ function Input(props: {
   );
 }
 
-function getStatus(connStatus: ConnectionStatus, searchStatus: SearchStatus) {
+function getStatusStr(
+  connStatus: ConnectionStatus,
+  searchStatus: RRChannelSearchStatus,
+) {
   if (searchStatus === "searching") return "Searching...";
   if (searchStatus === "not-found") return "No available room found!";
   if (connStatus === "subscribing") return "Connecting...";

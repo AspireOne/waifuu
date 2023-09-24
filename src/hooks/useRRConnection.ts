@@ -11,7 +11,12 @@ export type ConnectionStatus =
   | "subscribed-w-user"
   | "subscribed-user-left";
 
-const useOmegleChatConnection = (channelName?: string | null) => {
+/**
+ * Creates and manages a connection to a Pusher presence channel.
+ *
+ * @param {string | null} channelName - The name of the channel to connect to. If null or undefined, the connection will be closed.
+ */
+const useRRConnection = (channelName?: string | null) => {
   const [status, setStatus] = useState<ConnectionStatus>("no-channel");
   const [lastUser, setLastUser] = useState<PresenceChannelMember | null>(null);
   const [channel, setChannel] = useState<PresenceChannel | null>(null);
@@ -91,4 +96,4 @@ function getOtherMember(
   return newMember;
 }
 
-export { useOmegleChatConnection };
+export { useRRConnection };

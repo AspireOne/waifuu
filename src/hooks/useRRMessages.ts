@@ -3,18 +3,21 @@ import { api } from "~/utils/api";
 import { PresenceChannel } from "pusher-js";
 import PresenceChannelMember from "~/server/types/presenceChannelMember";
 
-export type OmegleChatMessage = {
+export type RRMessage = {
   content: string;
   id: number;
   user: PresenceChannelMember;
 };
 
 let msgId = 0;
-export default function useOmegleChatMessages(channel: PresenceChannel | null) {
+/**
+ * Manages messages (fetching, sending, etc.) for a specific channel. Exposes functions to manipulate the messages.
+ */
+export default function useRRMessages(channel: PresenceChannel | null) {
   const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
-  const [messages, setMessages] = useState<OmegleChatMessage[]>([]);
+  const [messages, setMessages] = useState<RRMessage[]>([]);
 
-  const sendMsgMutation = api.omegleChat.sendMessage.useMutation({
+  const sendMsgMutation = api.RRChat.sendMessage.useMutation({
     onMutate: () => {
       // Check the ID of the last message, and add this message with an id one number higher.
       console.log("Sending Message - Channel: " + channel?.name);
@@ -61,9 +64,6 @@ export default function useOmegleChatMessages(channel: PresenceChannel | null) {
 
   useEffect(() => {
     if (!channel?.name) return;
-    console.log(prevChannelName, "prev ch");
-    console.log(channel.name, "cannel name");
-    //if (prevChannelName === channel.name) return;
 
     setPrevChannelName(channel.name);
     clearMessages();

@@ -3,10 +3,20 @@ import React, { useState } from "react";
 import { ChannelData } from "~/server/api/routers/omegleChat";
 import { toast } from "react-toastify";
 
-export type SearchStatus = "searching" | "found" | "not-found" | null;
-export default function useOmegleChatSearch() {
+export type RRChannelSearchStatus = "searching" | "found" | "not-found" | null;
+/**
+ * Custom hook for searching for a channel and exposing the data and status.
+ *
+ * @returns An object containing the following properties:
+ *          - search: A function for initiating a search.
+ *          - status: The current search status.
+ *          - data: The channel data if found or null.
+ *          - dataRef: A reference to the channel data to use in setTimeout callbacks.
+ *          - reset: A function for resetting the channel data.
+ */
+export default function useRRChannelConnector() {
   const [channelData, setChannelData] = useState<ChannelData | null>(null);
-  const [status, setStatus] = useState<SearchStatus>(null);
+  const [status, setStatus] = useState<RRChannelSearchStatus>(null);
 
   // This is here so that I can setTimeout (to check member connection) and use fresh data.
   let channelDataRef = React.useRef(channelData);
@@ -14,7 +24,7 @@ export default function useOmegleChatSearch() {
     channelDataRef.current = channelData;
   }, [channelData]);
 
-  const searchUserMutation = api.omegleChat.searchUser.useMutation({
+  const searchUserMutation = api.RRChat.searchUser.useMutation({
     onMutate: () => {
       setChannelData(null);
       setStatus("searching");
@@ -42,8 +52,8 @@ export default function useOmegleChatSearch() {
   return {
     search,
     status,
-    channelData,
-    channelDataRef,
-    resetChannelData: () => setChannelData(null),
+    data: channelData,
+    datRef: channelDataRef,
+    reset: () => setChannelData(null),
   };
 }
