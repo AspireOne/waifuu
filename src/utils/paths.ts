@@ -3,7 +3,8 @@ import { BotMode } from "@prisma/client";
 export default {
   index: "/",
   discover: "/discover",
-  botChatMainMenu: (botId: string) => `/chat/${botId}`,
+  botChatMainMenu: (botId: string) => `/character/${botId}`,
   userProfile: (username: string) => `/user/${username}`,
-  botChat: (botId: string, botMode: BotMode) => `/chat/${botId}/${botMode}`,
+  botChat: (botId: string, botMode: BotMode) =>
+    `/character/${botId}/${botMode}`, // todo
 };
