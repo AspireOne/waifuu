@@ -30,7 +30,7 @@ function Page(
 
       <AnimatePresence>
         <motion.section
-          initial={{ y: hasPrev ? -5 : 0, opacity: 1 }}
+          initial={{ y: 0, opacity: 1 }}
           animate={{ y: 0, opacity: 1 }}
           // change animation movement to be fast at the start and slow at the end.
           transition={{
