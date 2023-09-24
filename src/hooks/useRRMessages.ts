@@ -7,7 +7,19 @@ export type RRMessage = {
   content: string;
   id: number;
   user: PresenceChannelMember;
+  type: "message";
 };
+
+export type RRSystemMessageType = "error" | "success" | "info" | "";
+export type RRSystemMessage = {
+  title?: string;
+  content: string;
+  id: number;
+  messageType?: RRSystemMessageType;
+  type: "system-message";
+};
+
+export type RRMessages = (RRMessage | RRSystemMessage)[];
 
 let msgId = 0;
 /**
@@ -15,7 +27,7 @@ let msgId = 0;
  */
 export default function useRRMessages(channel: PresenceChannel | null) {
   const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
-  const [messages, setMessages] = useState<RRMessage[]>([]);
+  const [messages, setMessages] = useState<RRMessages>([]);
 
   const sendMsgMutation = api.RRChat.sendMessage.useMutation({
     onMutate: () => {
@@ -38,6 +50,24 @@ export default function useRRMessages(channel: PresenceChannel | null) {
         content: content,
         id: msgId++,
         user: user,
+        type: "message",
+      },
+    ]);
+  }
+
+  function addSystemMessage(
+    content: string,
+    title?: string,
+    type?: RRSystemMessageType,
+  ) {
+    setMessages((prev) => [
+      ...prev,
+      {
+        title: title,
+        content: content,
+        id: msgId++,
+        type: "system-message",
+        messageType: type,
       },
     ]);
   }
@@ -77,5 +107,5 @@ export default function useRRMessages(channel: PresenceChannel | null) {
     });
   }, [channel?.name]);
 
-  return { messages, sendMessage, clearMessages };
+  return { messages, sendMessage, addSystemMessage, clearMessages };
 }

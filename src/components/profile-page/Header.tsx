@@ -21,9 +21,11 @@ function Avatar(props: { image: string | null | undefined }) {
 }
 
 function Buttons(props: { onClick: () => void }) {
+  // TODO: Implement follow button.
+  // TODO: Implement Ionic share.
   return (
     <div className={"flex flex-row justify-center gap-4"}>
-      <Button className={"w-32"}>Follow</Button>
+      {/*<Button className={"w-32"}>Follow</Button>*/}
       <Button className={"w-32"} variant={"bordered"} onClick={props.onClick}>
         Share
       </Button>

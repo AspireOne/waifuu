@@ -23,13 +23,15 @@ function Page(
   }, [props.children]);
 
   return (
-    <div>
+    <div id={"_page-root-container"} key={"_page-root-container"}>
       <PageHead title={props.metaTitle} description={props.metaDesc} />
       {/*TODO: Navbar / sidebar*/}
       {/*<Navbar/>*/}
 
       <AnimatePresence>
         <motion.section
+          key={"_page-root-div-anim-div"}
+          id={"_page-rot-div-anim-div"}
           initial={{ y: 0, opacity: 1 }}
           animate={{ y: 0, opacity: 1 }}
           // change animation movement to be fast at the start and slow at the end.
@@ -42,6 +44,8 @@ function Page(
           exit={{ y: 5, opacity: 0 }}
         >
           <div
+            key={"_page-root-div"}
+            id={"_page-rot-div"}
             className={twMerge(
               "relative mx-auto min-h-[70vh] max-w-[1500px] p-4 px-4 pt-4 sm:px-8 md:px-14 lg:px-14",
               props.className,
