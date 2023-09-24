@@ -92,6 +92,7 @@ function Chat(props: {}) {
       )}
 
       <RRInput
+        isFirstChat={!conn.lastUser}
         onStop={channel.reset}
         onSearch={handleSearchClick}
         onSend={chat.sendMessage}

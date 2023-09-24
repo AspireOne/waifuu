@@ -10,9 +10,11 @@ import {
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { BsFillStopCircleFill } from "react-icons/bs";
 import { LuRefreshCcw } from "react-icons/lu";
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { twMerge } from "tailwind-merge";
 
 export default function RRInput(props: {
+  isFirstChat: boolean;
   inChat: boolean;
   onSend: (message: string) => void;
   onStop: () => void;
@@ -80,6 +82,7 @@ export default function RRInput(props: {
 
         {!showSendButton && (
           <ActionButton
+            firstChat={props.isFirstChat}
             isSearching={props.isSearching}
             inChat={props.inChat}
             handleButtonClicked={handleButtonClicked}
@@ -126,6 +129,7 @@ function ConfirmCloseModal(props: {
 
 function ActionButton(props: {
   isSearching: boolean;
+  firstChat: boolean;
   inChat: boolean;
   handleButtonClicked: () => void;
 }) {
@@ -136,15 +140,22 @@ function ActionButton(props: {
       className={"p-1 bg-transparent"}
       onClick={props.handleButtonClicked}
     >
-      {props.inChat ? (
+      {props.inChat && (
         <BsFillStopCircleFill size={30} className={"text-danger"} />
-      ) : (
+      )}
+      {!props.inChat && (!props.firstChat || props.isSearching) && (
         <LuRefreshCcw
           size={30}
           className={twMerge(
-            props.isSearching && "text-foreground-400",
             props.isSearching && "animate-spin",
+            props.isSearching && "text-foreground-400",
           )}
+        />
+      )}
+      {!props.inChat && props.firstChat && !props.isSearching && (
+        <HiOutlineMagnifyingGlass
+          size={30}
+          className={twMerge(props.isSearching && "text-foreground-400")}
         />
       )}
     </Button>
