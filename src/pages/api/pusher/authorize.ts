@@ -20,7 +20,7 @@ export default async function handler(
   // To validate, we can check if the user is assigned to that channel in db.
   // We are not doing it rn, because we are prioritizing speed at the cost
   // of security.
-  const isAssigned = prisma.omegleChatQueue.findFirst({
+  const isAssigned = prisma.rRChatQueue.findFirst({
     where: {
       userId: user.id,
       channel: channel,

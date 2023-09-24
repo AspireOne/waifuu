@@ -42,23 +42,23 @@ model VerificationToken {
 }
 
 model User {
-  id                   String            @id @default(cuid())
-  name                 String?
-  email                String?           @unique
-  emailVerified        DateTime?
-  image                String?
-  username             String?           @unique
-  bio                  String?
-  accounts             Account[]
-  Bot                  Bot[]
-  BotMessage           BotChatMessage[]
-  ChatMessage          ChatMessage[]
-  sessions             Session[]
-  Chat                 Chat[]            @relation("ChatToUser")
-  BotLikes             BotLike[]
-  BotDislikes          BotDislike[]
-  BotShares            BotShares[]
-  OmegleAvailableUsers OmegleChatQueue[]
+  id               String           @id @default(cuid())
+  name             String?
+  email            String?          @unique
+  emailVerified    DateTime?
+  image            String?
+  username         String?          @unique
+  bio              String?
+  accounts         Account[]
+  Bot              Bot[]
+  BotMessage       BotChatMessage[]
+  ChatMessage      ChatMessage[]
+  sessions         Session[]
+  Chat             Chat[]           @relation("ChatToUser")
+  BotLikes         BotLike[]
+  BotDislikes      BotDislike[]
+  BotShares        BotShares[]
+  RRAvailableUsers RRChatQueue[]
 }
 
 model Bot {
@@ -141,7 +141,7 @@ model ChatMessage {
 // -> If assigned to a chat during search, it will be polled. Return chatID.
 // -> If not assigned to a chat, remove from the db and return null.
 
-model OmegleChatQueue {
+model RRChatQueue {
   userId    String   @id
   channel   String?
   topic     String?
