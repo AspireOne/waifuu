@@ -1,11 +1,12 @@
 import Pusher from "pusher-js";
+import { clientEnv } from "~/server/env";
 
 const pusherClient =
   Pusher.instances.length > 0
     ? Pusher.instances[0]!
-    : new Pusher("app-key", {
-        wsHost: "127.0.0.1",
-        wsPort: 6001,
+    : new Pusher(clientEnv().NEXT_PUBLIC_PUSHER_APP_KEY, {
+        wsHost: clientEnv().NEXT_PUBLIC_PUSHER_HOST,
+        wsPort: Number(clientEnv().NEXT_PUBLIC_PUSHER_PORT),
         forceTLS: false,
         disableStats: true,
         enabledTransports: ["ws", "wss"],

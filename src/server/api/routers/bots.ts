@@ -8,12 +8,10 @@ import {
 import Replicate from "replicate";
 import { env } from "~/server/env";
 import { TRPCError } from "@trpc/server";
-import { Prisma } from "@prisma/client";
-import { BotMode } from "@prisma/client";
-import { BotSource, Visibility } from "@prisma/client";
+import { BotMode, BotSource, Visibility } from "@prisma/client";
 
 const replicate = new Replicate({
-  auth: env.REPLICATE_API_TOKEN,
+  auth: env().REPLICATE_API_TOKEN,
 });
 
 export const botsRouter = createTRPCRouter({

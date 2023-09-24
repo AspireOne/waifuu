@@ -10,7 +10,7 @@ import pusherServer from "~/server/lib/pusherServer";
 import { env } from "~/server/env";
 
 const replicate = new Replicate({
-  auth: env.REPLICATE_API_TOKEN,
+  auth: env().REPLICATE_API_TOKEN,
 });
 
 export const generalRouter = createTRPCRouter({

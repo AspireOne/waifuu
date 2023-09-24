@@ -1,4 +1,5 @@
 import PusherServer from "pusher";
+import { env } from "~/server/env";
 
 const globalForPusher = globalThis as unknown as {
   pusher: PusherServer | undefined;
@@ -7,12 +8,12 @@ const globalForPusher = globalThis as unknown as {
 const pusher =
   globalForPusher.pusher ??
   new PusherServer({
-    appId: "app-id",
-    key: "app-key",
-    secret: "app-secret",
-    //cluster: "EU",
-    host: "127.0.0.1",
-    port: "6001",
+    appId: env().NEXT_PUBLIC_PUSHER_APP_ID,
+    key: env().NEXT_PUBLIC_PUSHER_APP_KEY,
+    secret: env().PUSHER_SECRET,
+    cluster: "EU",
+    host: env().NEXT_PUBLIC_PUSHER_HOST,
+    port: env().NEXT_PUBLIC_PUSHER_PORT,
     useTLS: false, // idk? TODO: SOCKETI_SSL_CERT? https://docs.soketi.app/getting-started/ssl-configuration
   });
 
