@@ -84,6 +84,8 @@ async function pollForChannel(
   db: PrismaClient,
   userId: string,
 ): Promise<ChannelData | null> {
+  // Vercel's max timeout is 10 seconds, so we need to poll for less time.
+  const pollingSeconds = !!process.env.VERCEL ? 7 : 15;
   for (let i = 0; i < 10; i++) {
     // Wait for 1 second before next check. This MUST be at the top of the loop, so that we don't wait for 1 second
     // after the last check, which causes a lot of trouble.
