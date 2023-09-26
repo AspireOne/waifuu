@@ -10,6 +10,8 @@ export type ChannelData = {
   topic: string;
 };
 
+const POLLING_TIME_SECS = 15;
+
 export const RRChatRouter = createTRPCRouter({
   // user starts searching
   // -> if someone already exists, remove him and assign them to a chat. Return ChatId.
@@ -74,6 +76,9 @@ async function isUserPolling(db: PrismaClient, userId: string) {
     where: {
       userId: userId,
       channel: null,
+      createdAt: {
+        gte: new Date(Date.now() - (POLLING_TIME_SECS + 2) * 1000),
+      },
     },
   });
   return user !== null;
@@ -85,8 +90,8 @@ async function pollForChannel(
   userId: string,
 ): Promise<ChannelData | null> {
   // Vercel's max timeout is 10 seconds, so we need to poll for less time.
-  const pollingSeconds = !!process.env.VERCEL ? 7 : 15;
-  for (let i = 0; i < 10; i++) {
+  const pollingSeconds = !!process.env.VERCEL ? 7 : POLLING_TIME_SECS;
+  for (let i = 0; i < pollingSeconds; i++) {
     // Wait for 1 second before next check. This MUST be at the top of the loop, so that we don't wait for 1 second
     // after the last check, which causes a lot of trouble.
     if (i > 0) await new Promise((r) => setTimeout(r, 950));
