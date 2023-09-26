@@ -4,7 +4,7 @@ const pusherClient =
   Pusher.instances.length > 0
     ? Pusher.instances[0]!
     : new Pusher("app-key", {
-        wsHost: "127.0.0.1",
+        wsHost: process.env.NEXT_PUBLIC_PUSHER_HOST! as string,
         wsPort: 6001,
         forceTLS: false,
         disableStats: true,

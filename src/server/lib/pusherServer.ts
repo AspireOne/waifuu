@@ -11,7 +11,7 @@ const pusher =
     key: "app-key",
     secret: "app-secret",
     //cluster: "EU",
-    host: "127.0.0.1",
+    host: process.env.NEXT_PUBLIC_PUSHER_HOST! as string,
     port: "6001",
     useTLS: false, // idk? TODO: SOCKETI_SSL_CERT? https://docs.soketi.app/getting-started/ssl-configuration
   });
