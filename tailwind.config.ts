@@ -16,7 +16,6 @@ export default {
   darkMode: "class",
   plugins: [
     require("@tailwindcss/typography"),
-    require("tailwind-scrollbar"),
     // https://nextui.org/docs/customization/theme
     nextui({
       prefix: "nextui", // prefix for themes variables

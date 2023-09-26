@@ -18,7 +18,7 @@ const Discover = () => {
           width={1920}
           height={1080}
         />
-        <div className="absolute left-0 top-[64px] flex h-[350px] w-full flex-row">
+        <div className="absolute left-0 top-4 flex h-[350px] w-full flex-row">
           <div className="clear-both">
             <BiChevronLeft
               color="white"
@@ -63,7 +63,7 @@ const Discover = () => {
           </h3>
         </div>
 
-        <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible scrollbar scrollbar-track-transparent scrollbar-thumb-gray-700">
+        <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
           <CharacterCard />
           <CharacterCard />
           <CharacterCard />
@@ -110,7 +110,7 @@ const Discover = () => {
           <Input className="flex-1 rounded-lg text-white" type="text" />
         </div>
 
-        <div className="flex flex-wrap gap-5">
+        <div className="flex justify-center w-full flex-wrap gap-5">
           <CharacterCard />
           <CharacterCard />
           <CharacterCard />
