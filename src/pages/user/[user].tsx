@@ -14,7 +14,7 @@ export default function UserProfile(props: { username?: string }) {
 
   // Needed to make the gradient stay below other elements.
   return (
-    <Page metaTitle={username || "Loading..."}>
+    <Page metaTitle={username || "Loading..."} unprotected>
       <div
         className={
           "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-secondary-400/30 via-secondary-400/5"

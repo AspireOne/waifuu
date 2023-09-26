@@ -1,0 +1,9 @@
+import Page from "~/components/Page";
+
+export default function Profile() {
+  return (
+    <Page metaTitle={"Profile"} showNav>
+      <div></div>
+    </Page>
+  );
+}

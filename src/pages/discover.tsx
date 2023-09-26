@@ -1,14 +1,14 @@
 import { Button, Chip, Input } from "@nextui-org/react";
 import Image from "next/image";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { CharacterCard } from "~/components/character/CharacterCard";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaCompass, FaTag } from "react-icons/fa";
 import Page from "~/components/Page";
+import { CharacterCard } from "~/components/Character/CharacterCard";
 
 const Discover = () => {
   return (
-    <Page metaTitle="Discover Characters">
+    <Page metaTitle="Discover Characters" showNav>
       <div className="hidden h-[350px] overflow-hidden sm:block">
         <Image
           alt="background"

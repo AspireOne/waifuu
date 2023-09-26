@@ -20,6 +20,7 @@ const Message = (props: { message: RRMessage }) => (
     <CardHeader>
       <div className={"flex flex-row gap-4 items-center"}>
         <Avatar
+          imgProps={{ referrerPolicy: "no-referrer" }} // for google 403.
           src={props.message.user.info.image ?? undefined}
           name={props.message.user.info.username}
         />

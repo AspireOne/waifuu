@@ -14,7 +14,7 @@ import RRUserHeader from "~/components/character-roulette/UserHeader";
 // "RR". Stands for Roleplay Roulette.
 export default function RoleplayRoulette() {
   return (
-    <Page metaTitle={"Character Roulette"} protected={true}>
+    <Page metaTitle={"Character Roulette"}>
       <Chat />
     </Page>
   );
