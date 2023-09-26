@@ -31,7 +31,7 @@ const ChatSelectTabs = ({
       <Tabs
         color="primary"
         size="lg"
-        className="mx-auto w-fit"
+        className="mx-auto w-fit mb-4"
         variant="bordered"
         aria-label="Disabled Options"
       >

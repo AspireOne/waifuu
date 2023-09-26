@@ -22,7 +22,7 @@ const ChatMainMenu = () => {
     }
   }, [bot.isLoading, bot.data]);
 
-  function handleClick(mode: BotMode) {
+  function handleModeSelect(mode: BotMode) {
     if (!botId) {
       console.warn("Bot mode button clicked but bot ID has not been passed.");
       return;
@@ -31,37 +31,29 @@ const ChatMainMenu = () => {
     router.push(paths.botChat(botId as string, mode));
   }
 
-  // TODO: Bot main menu.
-
-  if (bot.isLoading) {
-    return (
-      <Page metaTitle={"Loading Character..."}>
-        <Skeleton height={100} />
-        <Skeleton height={280} />
-        <Skeleton height={200} />
-      </Page>
-    );
-  }
   return (
     <Page
-      metaTitle={`Chat with ${bot.data?.name}` || "Loading..."}
+      metaTitle={`Chat with ${bot.data?.name}` || "Loading character..."}
       className={"space-y-12"}
     >
       {/*<Header bot={bot.data ?? undefined} />*/}
       <Card className="z-20">
         <Image
           removeWrapper
+          isLoading={bot.isLoading}
           alt="Card example background"
           className="z-0 w-full h-36 scale-120 -translate-y-6 object-cover"
           src="/assets/background.png"
         />
         <CardBody>
-          <p className="mt-2">{bot.data?.description}</p>
+          <p className="mt-2">
+            {bot.data?.description ?? <Skeleton inline height={140} />}
+          </p>
         </CardBody>
 
         <Divider className="mt-1 mb-5" />
 
-        <ChatSelectTabs onSelect={handleClick} />
+        <ChatSelectTabs onSelect={handleModeSelect} />
       </Card>
     </Page>
   );
