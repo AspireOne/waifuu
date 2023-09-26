@@ -4,5 +4,17 @@ html, body {
     @apply min-h-full
 }
 
+.title {
+    @apply text-xl font-semibold
+}
+
+.title-lg {
+    @apply text-2xl font-semibold
+}
+
+.title-xl {
+    @apply text-3xl font-semibold
+}
+
 @tailwind components;
 @tailwind utilities;
