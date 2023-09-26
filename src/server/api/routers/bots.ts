@@ -8,9 +8,10 @@ import {
 import Replicate from "replicate";
 import { env } from "~/server/env";
 import { TRPCError } from "@trpc/server";
-import { Prisma } from "@prisma/client";
+import { Prisma, Tag } from "@prisma/client";
 import { BotMode } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
+import { prisma } from "~/server/lib/db";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
@@ -88,10 +89,11 @@ export const botsRouter = createTRPCRouter({
         description: z.string(),
         visibility: z.nativeEnum(Visibility),
         img: z.string().url().optional(),
+        tags: z.array(z.string()).default([]),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const bot = await ctx.prisma.bot.create({
+      return await ctx.prisma.bot.create({
         data: {
           name: input.name,
           description: input.description,
@@ -99,9 +101,20 @@ export const botsRouter = createTRPCRouter({
           creatorId: ctx.session.user.id,
           source: BotSource.COMMUNITY,
           img: input.img,
+          tags: {
+            connectOrCreate: input.tags.map((tag) => {
+              return {
+                where: {
+                  name: tag,
+                },
+                create: {
+                  name: tag,
+                },
+              };
+            }),
+          },
         },
       });
-      return bot;
     }),
 
   /**
@@ -230,6 +243,36 @@ export const botsRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+
+  /**
+   * Search for tags
+   */
+  searchTagCounts: publicProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      const botsWithItems = await prisma.tag.findMany({
+        where: {
+          name: {
+            contains: input,
+            mode: "insensitive",
+          },
+        },
+        select: {
+          bots: {
+            select: {
+              id: true,
+            },
+          },
+        }
+      });
+
+      const botsWithItemCount = botsWithItems.map((bot) => ({
+        ...bot,
+        itemCount: bot.bots.length
+      }));
+
+      return botsWithItemCount;
+    }),
 });
 
 function delay(ms: number) {
