@@ -21,7 +21,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   const router = useRouter();
 
   function handleBackClick() {
-    if (back === "last-page") router.back();
+    if (back === "previous") router.back();
     else if (back === null) return;
     else router.push(back);
 
