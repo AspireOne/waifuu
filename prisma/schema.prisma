@@ -69,6 +69,7 @@ model Bot {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   creatorId   String?
+  tags        Tag[]
   source      BotSource
   visibility  Visibility
   creator     User?            @relation(fields: [creatorId], references: [id])
@@ -76,6 +77,13 @@ model Bot {
   botLikes    BotLike[]
   botDislikes BotDislike[]
   BotShares   BotShares[]
+}
+
+model Tag {
+  name      String  @id
+  bots      Bot[] 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model BotLike {
