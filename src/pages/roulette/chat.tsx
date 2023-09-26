@@ -10,11 +10,12 @@ import useRRMessages from "~/hooks/useRRMessages";
 import RRInput from "~/components/character-roulette/Input";
 import RRMessages from "~/components/character-roulette/Messages";
 import RRUserHeader from "~/components/character-roulette/UserHeader";
+import paths from "~/utils/paths";
 
 // "RR". Stands for Roleplay Roulette.
 export default function RoleplayRoulette() {
   return (
-    <Page metaTitle={"Character Roulette"}>
+    <Page metaTitle={"Character Roulette"} header={{ back: paths.RR }}>
       <Chat />
     </Page>
   );

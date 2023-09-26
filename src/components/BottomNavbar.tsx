@@ -85,10 +85,10 @@ export function BottomNavbar(props: {}) {
       <div className={"flex flex-row justify-between items-center"}>
         {buttons.map((button) => {
           return (
-            <ButtonIcon
+            <NavButton
+              key={button.title}
               {...button}
               isActive={button.title === activeButtId}
-              key={button.title}
             />
           );
         })}
@@ -101,7 +101,7 @@ function normalizePath(path: string): string {
   return path.endsWith("/") ? path : path + "/";
 }
 
-function ButtonIcon(props: ButtonProp & { isActive: boolean; key: any }) {
+function NavButton(props: ButtonProp & { isActive: boolean; keyProp: any }) {
   const router = useRouter();
 
   function handleClick() {
@@ -112,12 +112,12 @@ function ButtonIcon(props: ButtonProp & { isActive: boolean; key: any }) {
   const transitionDuration = "duration-100";
 
   return (
-    <div key={props.key} className={""}>
+    <div className={""}>
       <Button
         disableRipple={true}
         onPress={handleClick}
         className={twMerge(
-          "m-0 bg-transparent hover:bg-none h-12 duration-1000 ",
+          "m-0 bg-transparent hover:bg-none h-12 duration-1000",
           "flex flex-col items-center justify-center gap-0",
           props.isActive ? "text-secondary-600" : "text-foreground-400",
         )}

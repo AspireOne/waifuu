@@ -8,7 +8,7 @@ import { CharacterCard } from "~/components/Character/CharacterCard";
 
 const Discover = () => {
   return (
-    <Page metaTitle="Discover Characters" showNav>
+    <Page metaTitle="Discover Characters" showMobileNav header={{ back: null }}>
       <div className="hidden h-[350px] overflow-hidden sm:block">
         <Image
           alt="background"
