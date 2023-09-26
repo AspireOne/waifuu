@@ -77,7 +77,7 @@ export function BottomNavbar(props: {}) {
   }, [router.pathname]);
 
   return (
-    <div className={"bg-default-50 min-h-max p-1 py-2"}>
+    <div className={"bg-default-50 min-h-max p-1 py-2 rounded-xl mx-2 mb-2"}>
       <div className={"flex flex-row justify-between items-center"}>
         {buttons.map((button) => {
           return (
@@ -113,7 +113,7 @@ function ButtonIcon(props: ButtonProp & { isActive: boolean; key: any }) {
         disableRipple={true}
         onPress={handleClick}
         className={twMerge(
-          "m-0 bg-transparent hover:bg-none h-14 duration-1000 ",
+          "m-0 bg-transparent hover:bg-none h-12 duration-1000 ",
           "flex flex-col items-center justify-center gap-0",
           props.isActive ? "text-secondary-600" : "text-foreground-400",
         )}
