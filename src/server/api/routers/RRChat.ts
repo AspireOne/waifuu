@@ -36,7 +36,7 @@ export const RRChatRouter = createTRPCRouter({
 
       if (await isUserPolling(db, userId)) {
         throw new TRPCError({
-          code: "FORBIDDEN",
+          code: "BAD_REQUEST",
           message: "User is already polling for a chat.",
         });
       }
