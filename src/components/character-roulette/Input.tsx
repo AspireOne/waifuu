@@ -60,7 +60,7 @@ export default function RRInput(props: {
       />
       <Textarea
         rows={1}
-        maxRows={4}
+        maxRows={3}
         value={input}
         onValueChange={setInput}
         disabled={!props.inChat}

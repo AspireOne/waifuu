@@ -11,6 +11,7 @@ import RRInput from "~/components/character-roulette/Input";
 import RRMessages from "~/components/character-roulette/Messages";
 import RRUserHeader from "~/components/character-roulette/UserHeader";
 import paths from "~/utils/paths";
+import { twMerge } from "tailwind-merge";
 
 // "RR". Stands for Roleplay Roulette.
 export default function RoleplayRoulette() {
@@ -78,9 +79,15 @@ function Chat(props: {}) {
     <div className="z-30 flex flex-col gap-8">
       <div className={"fixed left-2 right-2 z-30"}>
         {showUserHeader ? (
-          <RRUserHeader user={conn.lastUser!} />
+          <RRUserHeader
+            className={"border border-default-200 shadow"}
+            user={conn.lastUser!}
+          />
         ) : (
-          <StatusHeader status={getStatusStr(conn.status, channel.status)} />
+          <StatusHeader
+            className={"border border-default-200 shadow"}
+            status={getStatusStr(conn.status, channel.status)}
+          />
         )}
       </div>
 
@@ -112,9 +119,9 @@ function LoadingScreen() {
   );
 }
 
-function StatusHeader(props: { status: string }) {
+function StatusHeader(props: { status: string; className?: string }) {
   return (
-    <Card className={"h-24"}>
+    <Card className={twMerge("h-24", props.className)}>
       <CardBody className={"text-center justify-center items-center text-lg"}>
         {props.status}
       </CardBody>
