@@ -22,32 +22,39 @@ function Page(
     hasPrev = true;
   }, [props.children]);
 
+  const showBottomNav = props.showNav ?? false;
+
   return (
     <div id={"_page-root-container"} key={"_page-root-container"}>
       <PageHead title={props.metaTitle} description={props.metaDesc} />
 
       {/*TODO: Upper navbar for PC.*/}
 
-      <div className={"flex flex-col relative min-h-screen max-h-screen"}>
-        <div className={"overflow-y-scroll flex-1"}>
-          <PageWrapper
-            unprotected={props.unprotected ?? false}
-            className={twMerge(props.className)}
-          >
-            {props.children}
-          </PageWrapper>
-        </div>
+      <div className={"min-h-screen max-h-screen"}>
+        <PageWrapper
+          unprotected={props.unprotected ?? false}
+          showingBottomNav={showBottomNav}
+          className={twMerge(props.className)}
+        >
+          {props.children}
+        </PageWrapper>
 
-        {props.showNav && <BottomNavbar />}
+        {showBottomNav && <BottomNavbar />}
       </div>
     </div>
   );
 }
 
 function PageWrapper(
-  props: PropsWithChildren<{ className?: string; unprotected: boolean }>,
+  props: PropsWithChildren<{
+    className?: string;
+    unprotected: boolean;
+    showingBottomNav: boolean;
+  }>,
 ) {
   const { data: session, status } = useSession();
+
+  const paddingBottom = props.showingBottomNav ? "pb-20" : "pb-4";
 
   return (
     <AnimatePresence>
@@ -67,7 +74,8 @@ function PageWrapper(
       >
         <div
           className={twMerge(
-            "mx-auto max-w-[1500px] p-4 px-4 pt-4 sm:px-8 md:px-14 lg:px-14",
+            "mx-auto max-w-[1500px] px-4 pt-4 sm:px-8 md:px-14 lg:px-14",
+            paddingBottom,
             props.className,
           )}
         >

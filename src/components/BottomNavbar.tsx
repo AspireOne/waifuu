@@ -77,7 +77,11 @@ export function BottomNavbar(props: {}) {
   }, [router.pathname]);
 
   return (
-    <div className={"bg-default-50 min-h-max p-1 py-2 rounded-xl mx-2 mb-2"}>
+    <div
+      className={
+        "bg-default-50 min-h-max p-1 py-2 rounded-xl fixed left-2 right-2 bottom-2"
+      }
+    >
       <div className={"flex flex-row justify-between items-center"}>
         {buttons.map((button) => {
           return (
