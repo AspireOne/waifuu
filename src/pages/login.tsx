@@ -2,10 +2,11 @@ import { Button, Card, Image } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
+import Page from "~/components/Page";
 
 const Login = () => {
   return (
-    <div>
+    <Page metaTitle={"Log in"} unprotected>
       <Image
         alt="background"
         loading="eager"
@@ -42,7 +43,7 @@ const Login = () => {
           </Button>
         </Card>
       </div>
-    </div>
+    </Page>
   );
 };
 

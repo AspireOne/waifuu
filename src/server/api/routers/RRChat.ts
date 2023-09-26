@@ -10,7 +10,7 @@ export type ChannelData = {
   topic: string;
 };
 
-export const omegleChatRouter = createTRPCRouter({
+export const RRChatRouter = createTRPCRouter({
   // user starts searching
   // -> if someone already exists, remove him and assign them to a chat. Return ChatId.
   // -> if no one exists, add to the db and start polling.
@@ -70,7 +70,7 @@ export const omegleChatRouter = createTRPCRouter({
 });
 
 async function isUserPolling(db: PrismaClient, userId: string) {
-  const user = await db.omegleChatQueue.findFirst({
+  const user = await db.rRChatQueue.findFirst({
     where: {
       userId: userId,
       channel: null,
@@ -90,7 +90,7 @@ async function pollForChannel(
     if (i > 0) await new Promise((r) => setTimeout(r, 950));
 
     // Here we are checking if this user (the one in queue) has been assigned a channel.
-    const poll = await db.omegleChatQueue.findFirst({
+    const poll = await db.rRChatQueue.findFirst({
       where: {
         userId: userId,
         channel: {
@@ -110,7 +110,7 @@ async function pollForChannel(
 }
 
 async function removeUserFromQueue(db: PrismaClient, userId: string) {
-  await db.omegleChatQueue.delete({
+  await db.rRChatQueue.delete({
     where: {
       userId: userId,
     },
@@ -118,7 +118,7 @@ async function removeUserFromQueue(db: PrismaClient, userId: string) {
 }
 
 async function addUserToQueue(db: PrismaClient, userId: string) {
-  await db.omegleChatQueue.upsert({
+  await db.rRChatQueue.upsert({
     where: {
       userId: userId,
     },
@@ -139,7 +139,7 @@ async function assignDataToUsers(
   channelData: ChannelData,
 ) {
   // Assign channel to the current user, and create him first, if does not already exist in the db.
-  await db.omegleChatQueue.upsert({
+  await db.rRChatQueue.upsert({
     where: {
       userId: userId,
     },
@@ -155,7 +155,7 @@ async function assignDataToUsers(
   });
 
   // Assign channel to the available user.
-  await db.omegleChatQueue.update({
+  await db.rRChatQueue.update({
     where: {
       userId: availableUserId,
     },
@@ -167,7 +167,7 @@ async function assignDataToUsers(
 }
 
 async function findUserInQueue(db: PrismaClient, userId: string) {
-  return await db.omegleChatQueue.findFirst({
+  return await db.rRChatQueue.findFirst({
     where: {
       userId: {
         not: userId,

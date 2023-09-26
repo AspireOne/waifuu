@@ -2,13 +2,13 @@ import { ChatMessage } from "~/components/chat/ChatMessage";
 import { Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import useBotChat, { Message } from "~/use-hooks/useBotChat";
+import useBotChat, { Message } from "~/hooks/useBotChat";
 import { BotMode } from "@prisma/client";
 import Page from "~/components/Page";
 import Skeleton from "react-loading-skeleton";
 import { ShareDropdown } from "~/components/chat/ShareDropdown";
 import { SettingsDropdown } from "~/components/chat/SettingsDropdown";
-import { useBot } from "~/use-hooks/useBot";
+import { useBot } from "~/hooks/useBot";
 import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
 import { Bot, BotChatMessage } from ".prisma/client";
 import ChatInput from "~/components/chat/ChatInput";
@@ -46,7 +46,7 @@ const BotChat = () => {
   }, []);
 
   return (
-    <Page protected={true} metaTitle={bot?.name || "Loading..."}>
+    <Page metaTitle={bot?.name || "Loading..."}>
       {/*TODO: Add background to bot.*/}
       <BackgroundImage src={undefined} />
       {/*TODO: Make character image only the png of the char.*/}

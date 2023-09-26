@@ -3,18 +3,33 @@ import { api } from "~/utils/api";
 import { PresenceChannel } from "pusher-js";
 import PresenceChannelMember from "~/server/types/presenceChannelMember";
 
-export type OmegleChatMessage = {
+export type RRMessage = {
   content: string;
   id: number;
   user: PresenceChannelMember;
+  type: "message";
 };
 
-let msgId = 0;
-export default function useOmegleChatMessages(channel: PresenceChannel | null) {
-  const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
-  const [messages, setMessages] = useState<OmegleChatMessage[]>([]);
+export type RRSystemMessageType = "error" | "success" | "info" | "";
+export type RRSystemMessage = {
+  title?: string;
+  content: string;
+  id: number;
+  messageType?: RRSystemMessageType;
+  type: "system-message";
+};
 
-  const sendMsgMutation = api.omegleChat.sendMessage.useMutation({
+export type RRMessages = (RRMessage | RRSystemMessage)[];
+
+let msgId = 0;
+/**
+ * Manages messages (fetching, sending, etc.) for a specific channel. Exposes functions to manipulate the messages.
+ */
+export default function useRRMessages(channel: PresenceChannel | null) {
+  const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
+  const [messages, setMessages] = useState<RRMessages>([]);
+
+  const sendMsgMutation = api.RRChat.sendMessage.useMutation({
     onMutate: () => {
       // Check the ID of the last message, and add this message with an id one number higher.
       console.log("Sending Message - Channel: " + channel?.name);
@@ -35,6 +50,24 @@ export default function useOmegleChatMessages(channel: PresenceChannel | null) {
         content: content,
         id: msgId++,
         user: user,
+        type: "message",
+      },
+    ]);
+  }
+
+  function addSystemMessage(
+    content: string,
+    title?: string,
+    type?: RRSystemMessageType,
+  ) {
+    setMessages((prev) => [
+      ...prev,
+      {
+        title: title,
+        content: content,
+        id: msgId++,
+        type: "system-message",
+        messageType: type,
       },
     ]);
   }
@@ -61,9 +94,6 @@ export default function useOmegleChatMessages(channel: PresenceChannel | null) {
 
   useEffect(() => {
     if (!channel?.name) return;
-    console.log(prevChannelName, "prev ch");
-    console.log(channel.name, "cannel name");
-    //if (prevChannelName === channel.name) return;
 
     setPrevChannelName(channel.name);
     clearMessages();
@@ -77,5 +107,5 @@ export default function useOmegleChatMessages(channel: PresenceChannel | null) {
     });
   }, [channel?.name]);
 
-  return { messages, sendMessage, clearMessages };
+  return { messages, sendMessage, addSystemMessage, clearMessages };
 }

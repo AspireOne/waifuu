@@ -8,16 +8,16 @@ import paths from "~/utils/paths";
 import Header from "~/components/profile-page/Header";
 import InfoCards from "~/components/profile-page/InfoCards";
 
-export default function UserProfile() {
+export default function UserProfile(props: { username?: string }) {
   const router = useRouter();
-  const username = router.query.user as string | undefined;
+  const username = props.username || (router.query.user as string | undefined);
 
   // Needed to make the gradient stay below other elements.
   return (
-    <Page metaTitle={username || "Loading..."}>
+    <Page metaTitle={username || "Loading..."} unprotected>
       <div
         className={
-          "absolute left-0 right-0 top-0 z-[0] h-64 bg-gradient-to-b from-[#292935]"
+          "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-secondary-400/30 via-secondary-400/5"
         }
       ></div>
       <div className={"relative z-[1]"}>
@@ -43,10 +43,7 @@ function Content(props: { username?: string }) {
   // If user does not exist, redirect.
   useEffect(() => {
     if (!isLoading && !user) {
-      // TODO: Remove it from history.
       router.replace(paths.discover);
-      // remove it from history.
-
       return;
     }
   }, [username, user, router.isReady]);
@@ -55,6 +52,7 @@ function Content(props: { username?: string }) {
     <>
       <div className={"flex flex-col gap-4"}>
         <Header {...user} className={"mt-20"} />
+        {/*TODO: Implement (when users can have stats).*/}
         {/*<Stats className={"mt-8"} />*/}
         <InfoCards username={username} />
       </div>
