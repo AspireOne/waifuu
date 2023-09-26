@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react";
 import { Chip } from "@nextui-org/react";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { api } from "~/utils/api";
-import { Bot } from ".prisma/client";
+import { Bot } from "@prisma/client";
 import Link from "next/link";
 import paths from "~/utils/paths";
 import { FaEye, FaHeart } from "react-icons/fa";

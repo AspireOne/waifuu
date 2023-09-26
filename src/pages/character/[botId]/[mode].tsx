@@ -10,7 +10,7 @@ import { ShareDropdown } from "~/components/chat/ShareDropdown";
 import { SettingsDropdown } from "~/components/chat/SettingsDropdown";
 import { useBot } from "~/hooks/useBot";
 import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
-import { Bot, BotChatMessage } from ".prisma/client";
+import { Bot, BotChatMessage } from "@prisma/client";
 import ChatInput from "~/components/chat/ChatInput";
 import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
 import React, { useEffect } from "react";
