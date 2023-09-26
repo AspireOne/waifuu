@@ -45,7 +45,7 @@ const ChatSelectTabs = ({
                   color="primary"
                   onClick={() => onSelect(tab.key)}
                   variant="solid"
-                  className="mt-1"
+                  className="mt-1 mx-2"
                 >
                   Start conversation
                 </Button>
