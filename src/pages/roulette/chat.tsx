@@ -76,7 +76,7 @@ function Chat(props: {}) {
 
   return (
     <div className="z-30 flex flex-col gap-8">
-      <div className={"fixed top-2 left-2 right-2 z-30"}>
+      <div className={"fixed left-2 right-2 z-30"}>
         {showUserHeader ? (
           <RRUserHeader user={conn.lastUser!} />
         ) : (
