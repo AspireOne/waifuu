@@ -101,7 +101,7 @@ function normalizePath(path: string): string {
   return path.endsWith("/") ? path : path + "/";
 }
 
-function NavButton(props: ButtonProp & { isActive: boolean; keyProp: any }) {
+function NavButton(props: ButtonProp & { isActive: boolean }) {
   const router = useRouter();
 
   function handleClick() {
