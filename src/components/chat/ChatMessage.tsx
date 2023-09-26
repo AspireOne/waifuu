@@ -9,9 +9,19 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Card, CardBody } from "@nextui-org/card";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { ChatMessageProps } from "~/components/chat/types";
 
-const ChatMessage = ({ author, message, key, className }: ChatMessageProps) => {
+type Props = {
+  message: string;
+  className?: string;
+  key: any;
+  author: {
+    bot: boolean;
+    avatar?: string | null;
+    name: string;
+  };
+};
+
+const ChatMessage = ({ author, message, key, className }: Props) => {
   const formattedMessage = useMemo(() => {
     return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
