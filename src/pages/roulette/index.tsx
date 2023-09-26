@@ -41,7 +41,7 @@ export default function RRIndex() {
           possibilities are endless!
         </CardBody>
         {/*TODO: Implement anonymous mode.*/}
-        {/*<CardFooter className={"flex flex-col items-start gap-4"}>
+        <CardFooter className={"flex flex-col items-start gap-4"}>
           <Button
             className={"w-full"}
             color={"primary"}
@@ -49,10 +49,10 @@ export default function RRIndex() {
           >
             Start
           </Button>
-          <Switch isSelected={anonymous} onValueChange={setAnonymous}>
+          {/*<Switch isSelected={anonymous} onValueChange={setAnonymous}>
             Anonymous mode
-          </Switch>
-        </CardFooter>*/}
+          </Switch>*/}
+        </CardFooter>
       </Card>
     </Page>
   );
