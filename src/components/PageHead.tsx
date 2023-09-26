@@ -7,7 +7,7 @@ export default function PageHead(
   // TODO: Change this shit meta description.
   return (
     <Head>
-      <title key={"page-title"}>{props.title + " | Companion Red"}</title>
+      <title key={"page-title"}>{props.title + " | Companion"}</title>
       {props.description && (
         <meta
           key="page-description"

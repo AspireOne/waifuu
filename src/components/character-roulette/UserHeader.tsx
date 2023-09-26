@@ -34,7 +34,7 @@ export default function RRUserHeader(props: {
   }
 
   return (
-    <Card className={"h-24"}>
+    <Card className={twMerge("h-24", props.className)}>
       <UserProfileModal
         username={props.user.info.username}
         isOpen={profileOpen}
@@ -42,7 +42,7 @@ export default function RRUserHeader(props: {
       />
       <CardBody
         onClick={showProfile}
-        className={twMerge("flex flex-row gap-4", props.className)}
+        className={twMerge("flex flex-row gap-4")}
       >
         <Avatar
           //isBlurred={true} // OMG TENHLE EFEKT MUSÍME NĚKDE POUŽÍT

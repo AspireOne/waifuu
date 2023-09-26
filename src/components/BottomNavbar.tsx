@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { IconType } from "react-icons";
 import { AiFillHome, AiOutlineUser } from "react-icons/ai";
 import { useEffect, useState } from "react";
-import paths from "~/utils/paths";
+import paths, { normalizePath } from "~/utils/paths";
 import { twMerge } from "tailwind-merge";
 import { Button } from "@nextui-org/react";
 import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
@@ -79,7 +79,7 @@ export function BottomNavbar(props: {}) {
   return (
     <div
       className={
-        "bg-default-50 min-h-max p-1 py-2 rounded-xl fixed left-2 right-2 bottom-2"
+        "bg-default-50 min-h-max p-1 py-2 rounded-xl fixed left-2 right-2 bottom-2 border border-default-100 shadow"
       }
     >
       <div className={"flex flex-row justify-between items-center"}>
@@ -95,10 +95,6 @@ export function BottomNavbar(props: {}) {
       </div>
     </div>
   );
-}
-
-function normalizePath(path: string): string {
-  return path.endsWith("/") ? path : path + "/";
 }
 
 function NavButton(props: ButtonProp & { isActive: boolean }) {
