@@ -56,12 +56,13 @@ function Chat(props: {}) {
       setTimeout(() => {
         if (
           channel.datRef.current?.name === _channelName &&
-          conn.statusRef.current === "subscribed-no-user"
+          (conn.statusRef.current === "subscribed-no-user" ||
+            conn.statusRef.current === "subscribing")
         ) {
           console.log("No user connected. Reverting.");
           channel.reset();
         }
-      }, 2000);
+      }, 2500);
     }
   }, [channel.status]);
 
