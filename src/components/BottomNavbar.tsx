@@ -79,7 +79,7 @@ export function BottomNavbar(props: {}) {
   return (
     <div
       className={
-        "bg-default-50 min-h-max p-1 py-2 rounded-xl fixed left-2 right-2 bottom-2"
+        "bg-default-50 min-h-max p-1 py-2 rounded-xl fixed left-2 right-2 bottom-2 border border-default-100 shadow"
       }
     >
       <div className={"flex flex-row justify-between items-center"}>
