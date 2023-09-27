@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { CharacterCard } from "~/components/Character/CharacterCard";
 import Page from "~/components/Page";
 
 export default function LandingPage() {
@@ -51,7 +52,9 @@ export default function LandingPage() {
         <div>
           <h3 className="text-2xl font-bold text-left">Characters</h3>
 
-          
+          <div className="w-1/2 w-fit mx-auto flex flex-wrap">
+            <CharacterCard />
+          </div>
         </div>
       </div>
     </Page>
