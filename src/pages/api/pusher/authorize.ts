@@ -7,6 +7,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  // TODO: Abstract this out or remove this if unnecesarry.
+  if (req.method === "OPTIONS") {
+    // Pre-flight request. Reply successfully:
+    res.status(200).end();
+    return;
+  }
+
   const socketId = req.body.socket_id;
   const channel = req.body.channel_name;
 
