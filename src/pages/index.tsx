@@ -48,6 +48,7 @@ export default function LandingPage() {
             <li>
               📚 <b>Diversity</b> - Go on adventure, roleplay or simply chat
               with characters
+              <Link href={"/home"}>Test link to go to homepage</Link>
             </li>
             <li>
               🧠 <b>Memory</b> - Characters remember you and will not forget
@@ -55,6 +56,7 @@ export default function LandingPage() {
             </li>
           </ul>
         </div>
+        <Link href={"/home"}>Test link to go to homepage</Link>
 
         <div>
           <h3 className="text-2xl font-bold text-left">Characters</h3>
@@ -71,6 +73,7 @@ export default function LandingPage() {
         Protected backend API Health:{" "}
         {protectedHealth.isLoading ? "Loading..." : protectedHealth.data}
       </p>
+      <Link href={"/home"}>Test link to go to homepage</Link>
     </Page>
   );
 }
