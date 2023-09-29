@@ -20,29 +20,19 @@ export const generalRouter = createTRPCRouter({
       return "ok";
     }),
 
+  dbHealth: publicProcedure
+    .meta({ openapi: { method: "GET", path: "/db-health" } })
+    .query(async ({ input, ctx }) => {
+      // Check that prisma db works. Do not use rawQuery.
+      const res = await ctx.prisma.user.findMany();
+      if (res) {
+        return "ok";
+      }
+    }),
+
   protectedHealth: protectedProcedure
     .meta({ openapi: { method: "GET", path: "/protected-health" } })
     .query(() => {
       return "ok";
     }),
-
-  hello: publicProcedure
-    .meta({ openapi: { method: "GET", path: "/hello" } })
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
-
-  triggerChatMatch: protectedProcedure.mutation(async () => {
-    await pusherServer.trigger(`lobby`, "room_matched", {
-      roomId: "123",
-      topic: "test test",
-    });
-  }),
 });

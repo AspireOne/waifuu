@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">companion</string>
+    <string name="title_activity_main">companion</string>
+    <string name="package_name">com.gmail.matejpesl1.companion</string>
+    <string name="custom_url_scheme">com.gmail.matejpesl1.companion</string>
+</resources>

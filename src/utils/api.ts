@@ -11,12 +11,24 @@ import superjson from "superjson";
 
 import { type AppRouter } from "~/server/api/root";
 
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") return ""; // browser should use relative url
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
-  if (process.env.RAILWAY_PUBLIC_DOMAIN)
-    return `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`; // SSR should use railway url
-  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+const getBaseServerUrl = () => {
+  if (process.env.NATIVE) {
+    const serverUrl = "https://companion-red.vercel.app";
+    console.log(
+      `Native project, using hard-cded external hosted server url (${serverUrl}).`,
+    );
+    return serverUrl; // TODO: Change this when we have a real domain.
+  }
+
+  if (typeof window !== "undefined") return ""; // Browser should use relative url.
+
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  // prettier-ignore
+  if (process.env.RAILWAY_PUBLIC_DOMAIN) return `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
+
+  if (process.env.DOMAIN) return `https://${process.env.PUBLIC_DOMAIN}`;
+
+  return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost.
 };
 
 /** A set of type-safe react-query hooks for your tRPC API. */
@@ -57,7 +69,14 @@ export const api = createTRPCNext<AppRouter>({
             (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
-          url: `${getBaseUrl()}/api/trpc`,
+          url: `${getBaseServerUrl()}/api/trpc`,
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              // 'include' is required for cookies to be sent to the server.
+              credentials: process.env.NATIVE ? "include" : undefined,
+            });
+          },
         }),
       ],
     };
