@@ -9,9 +9,9 @@ import { SkeletonTheme } from "react-loading-skeleton";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
-import 'filepond/dist/filepond.min.css';
+import "filepond/dist/filepond.min.css";
 import "~/styles/globals.css";
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -25,6 +25,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         borderRadius={"0.7rem"}
       >
         <NextUIProvider>
+          {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
           <main className={"bg-background text-foreground dark"}>
             <ToastContainer />
             <Component {...pageProps} />

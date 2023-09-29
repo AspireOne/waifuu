@@ -2,8 +2,15 @@ import Image from "next/image";
 import React from "react";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import Page from "~/components/Page";
+import Link from "next/link";
+import { Button } from "@nextui-org/react";
+import { api } from "~/utils/api";
 
 export default function LandingPage() {
+  const health = api.general.health.useQuery();
+  const protectedHealth = api.general.protectedHealth.useQuery();
+  const dbHealth = api.general.dbHealth.useQuery();
+
   // Todo: meta description.
   return (
     <Page
@@ -57,6 +64,13 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
+      <Link href={"/home"}>Test link to go to homepage</Link>
+      <p>Backend API Health: {health.isLoading ? "Loading..." : health.data}</p>
+      <p>DB Health: {dbHealth.isLoading ? "Loading..." : dbHealth.data}</p>
+      <p>
+        Protected backend API Health:{" "}
+        {protectedHealth.isLoading ? "Loading..." : protectedHealth.data}
+      </p>
     </Page>
   );
 }
