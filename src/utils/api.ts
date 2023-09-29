@@ -10,12 +10,13 @@ import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
 import { type AppRouter } from "~/server/api/root";
+import { Capacitor } from "@capacitor/core";
 
 const getBaseServerUrl = () => {
-  if (process.env.NATIVE) {
+  if (Capacitor.isNativePlatform()) {
     const serverUrl = "https://companion-red.vercel.app";
     console.log(
-      `Native project, using hard-cded external hosted server url (${serverUrl}).`,
+      `Native project, using hardcoded external hosted server url (${serverUrl}).`,
     );
     return serverUrl; // TODO: Change this when we have a real domain.
   }
@@ -74,7 +75,7 @@ export const api = createTRPCNext<AppRouter>({
             return fetch(url, {
               ...options,
               // 'include' is required for cookies to be sent to the server.
-              credentials: process.env.NATIVE ? "include" : undefined,
+              credentials: Capacitor.isNativePlatform() ? "include" : undefined,
             });
           },
         }),

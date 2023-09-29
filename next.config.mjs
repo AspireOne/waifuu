@@ -14,7 +14,7 @@ const config = {
                 source: "/api/:path*",
                 headers: [
                     {key: "Access-Control-Allow-Credentials", value: "true"},
-                    {key: "Access-Control-Allow-Origin", value: "*"},
+                    {key: "Access-Control-Allow-Origin", value: "http://localhost"},
                     {key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT"},
                     {
                         key: "Access-Control-Allow-Headers",
@@ -25,19 +25,9 @@ const config = {
         ]
     },
 
-    redirects: process.env.NATIVE ? async () => {
-        return [
-            {
-                source: '/api/:path*',
-                destination: `https://companion-red.vercel.app/api/:path*`, // TODO: Change this to a new domain.
-                permanent: true
-            },
-        ]
-    } : undefined,
-
     images: {
         // Capacitor needs static export/build -> that doesn't support optimized images -> disable it so that Capacitor works.
-        unoptimized: !!process.env.NATIVE,
+        unoptimized: true,
     },
 
     /**
