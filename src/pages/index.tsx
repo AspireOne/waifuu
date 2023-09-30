@@ -1,15 +1,21 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import Page from "~/components/Page";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
 import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
   const health = api.general.health.useQuery();
   const protectedHealth = api.general.protectedHealth.useQuery();
   const dbHealth = api.general.dbHealth.useQuery();
+  const session = useSession();
+
+  useEffect(() => {
+    console.log("Session data changed: ", JSON.stringify(session.data));
+  }, [session.data]);
 
   // Todo: meta description.
   return (
@@ -72,6 +78,12 @@ export default function LandingPage() {
       <p>
         Protected backend API Health:{" "}
         {protectedHealth.isLoading ? "Loading..." : protectedHealth.data}
+      </p>
+      <p>
+        Session:{" "}
+        {session.status === "loading"
+          ? "Loading..."
+          : JSON.stringify(session.data) ?? "undefined"}
       </p>
       <Link href={"/home"}>Test link to go to homepage</Link>
     </Page>
