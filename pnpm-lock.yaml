@@ -14,6 +14,9 @@ dependencies:
   '@capacitor/ios':
     specifier: ^5.4.1
     version: 5.4.1(@capacitor/core@5.4.1)
+  '@codetrix-studio/capacitor-google-auth':
+    specifier: ^3.3.2
+    version: 3.3.2(@capacitor/core@5.4.1)
   '@emotion/react':
     specifier: ^11.11.1
     version: 11.11.1(@types/react@18.2.21)(react@18.2.0)
@@ -285,6 +288,14 @@ packages:
     resolution: {integrity: sha512-s5djQEX1HFM6u4gQlWz7DUWG7ma0d3AwwnjbSbCh25aYEt40Dbei0TjzlKrfU6b3nUbyVVAZJBJgMuk7Bq59qA==}
     peerDependencies:
       '@capacitor/core': ^5.4.0
+    dependencies:
+      '@capacitor/core': 5.4.1
+    dev: false
+
+  /@codetrix-studio/capacitor-google-auth@3.3.2(@capacitor/core@5.4.1):
+    resolution: {integrity: sha512-RHYsgm/pU4JNmed5lYlT+xtoU6ktfw4/xG3o1iI5n7dhWO77kptOr2ZaVSXsYeOu1J93VeyOAyyqdaF+qkzxhw==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
     dependencies:
       '@capacitor/core': 5.4.1
     dev: false

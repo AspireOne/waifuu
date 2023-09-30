@@ -26,6 +26,7 @@
     "@capacitor/android": "^5.4.1",
     "@capacitor/core": "^5.4.1",
     "@capacitor/ios": "^5.4.1",
+    "@codetrix-studio/capacitor-google-auth": "^3.3.2",
     "@emotion/react": "^11.11.1",
     "@formkit/auto-animate": "^0.7.0",
     "@next-auth/prisma-adapter": "^1.0.7",

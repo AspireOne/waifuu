@@ -3,9 +3,10 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { NextUIProvider } from "@nextui-org/react";
 import { api } from "~/utils/api";
-import React from "react";
+import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +19,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  useEffect(() => {
+    GoogleAuth.initialize({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID, // TODO: Insert client id.
+      scopes: ["profile", "email"],
+      grantOfflineAccess: true, // Might not be needed, can be turned off later if so.
+    });
+  }, []);
   return (
     <SessionProvider session={session} baseUrl={getBaseServerUrl()}>
       <SkeletonTheme

@@ -11,7 +11,7 @@ install! 'cocoapods', :disable_input_output_paths => true
 def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/.pnpm/@capacitor+ios@5.4.1_@capacitor+core@5.4.1/node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/.pnpm/@capacitor+ios@5.4.1_@capacitor+core@5.4.1/node_modules/@capacitor/ios'
-
+  pod 'CodetrixStudioCapacitorGoogleAuth', :path => '../../node_modules/.pnpm/@codetrix-studio+capacitor-google-auth@3.3.2_@capacitor+core@5.4.1/node_modules/@codetrix-studio/capacitor-google-auth'
 end
 
 target 'App' do

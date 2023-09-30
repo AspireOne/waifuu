@@ -3,8 +3,19 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import Page from "~/components/Page";
+import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
+import { Capacitor } from "@capacitor/core";
 
 const Login = () => {
+  async function handleGoogleSignIn() {
+    // TODO: Remove the debugging "true" clause.
+    if (true || Capacitor.isNativePlatform()) {
+      await googleSignInMobile();
+    } else {
+      // TODO: NextAuth sign in.
+    }
+  }
+
   return (
     <Page metaTitle={"Log in"} unprotected>
       <Image
@@ -32,7 +43,11 @@ const Login = () => {
         />
 
         <Card className="flex-column flex gap-3 p-2">
-          <Button size="lg" startContent={<FcGoogle />}>
+          <Button
+            size="lg"
+            startContent={<FcGoogle />}
+            onClick={handleGoogleSignIn}
+          >
             Login with Google
           </Button>
           <Button size="lg" startContent={<AiFillFacebook />}>
@@ -46,5 +61,15 @@ const Login = () => {
     </Page>
   );
 };
+
+async function googleSignInMobile() {
+  let googleUser = await GoogleAuth.signIn();
+  console.log(
+    "Signed in using Capacitor Google Auth Plugin! Access Token: ",
+    googleUser.authentication.idToken,
+    "User Info: ",
+    JSON.stringify(googleUser),
+  );
+}
 
 export default Login;
