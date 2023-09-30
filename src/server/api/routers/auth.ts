@@ -10,13 +10,13 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const session = await ctx.session.user;
+      /*const session = await ctx.session.user;
 
       const { idToken } = input;
       const { user, account, isNewUser } = await ctx.nextAuth.signIn("google", {
         idToken,
       });
 
-      return { user, account, isNewUser };
+      return { user, account, isNewUser };*/
     }),
 });
