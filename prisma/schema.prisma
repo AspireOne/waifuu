@@ -61,6 +61,34 @@ model User {
   RRAvailableUsers RRChatQueue[]
 }
 
+model Moods {
+  id          String           @id @default(cuid())
+
+  angry       String?
+  happy       String?
+  sad         String?
+  confident   String?
+  confused    String?
+  shy         String?
+  excited     String?
+  bored       String?
+  scared      String?
+
+  bots        Bot?
+}
+
+enum Mood {
+  ANGRY
+  HAPPY
+  SAD
+  CONFIDENT
+  CONFUSED
+  SHY
+  EXCITED
+  BORED
+  SCARED
+}
+
 model Bot {
   id          String           @id @default(cuid())
   name        String
@@ -77,6 +105,8 @@ model Bot {
   botLikes    BotLike[]
   botDislikes BotDislike[]
   BotShares   BotShares[]
+  moodId      String            @unique  
+  mood        Moods            @relation(fields: [moodId], references: [id])
 }
 
 model Tag {
@@ -116,6 +146,7 @@ model BotShares {
 model BotChatMessage {
   id        Int         @id @default(autoincrement())
   content   String
+  mood      Mood?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   userId    String
