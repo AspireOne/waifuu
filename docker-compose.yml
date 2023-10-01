@@ -3,30 +3,54 @@ version: "3"
 services:
   postgres:
     image: postgres
-    container_name: postgres_db
+    container_name: database
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mysecretpassword
       POSTGRES_DB: mydb
     ports:
-      - "5432:5432"
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   soketi:
     image: quay.io/soketi/soketi:latest
-    container_name: soketi_websocket_client
+    container_name: websocket
     environment:
       SOKETI_DEBUG: 1
-      # Only required on production
       SOKETI_SSL_CERT: ''
       SOKETI_SSL_KEY: ''
       SOKETI_SSL_PASS: ''
       SOKETI_SSL_CA: ''
-      # Driver configuration
       SOKETI_APP_MANAGER_DRIVER: array
       SOKETI_DEFAULT_APP_ID: app-id
       SOKETI_DEFAULT_APP_KEY: app-key
       SOKETI_DEFAULT_APP_SECRET: app-secret
     ports:
-      - "6001:6001"
+      - 6001:6001
     depends_on:
       - postgres
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"    
+      - "9001:9001"  
+    volumes:
+      - minio-data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_DEFAULT_BUCKET: ${MINIO_DEFAULT_BUCKET_NAME}
+    command: server /data --console-address ":9001"
+
+volumes:
+  minio-data:
+
+
+
+
