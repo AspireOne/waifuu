@@ -61,23 +61,25 @@ model User {
   RRAvailableUsers RRChatQueue[]
 }
 
-model Moods {
-  id          String           @id @default(cuid())
+// Contains mapping of moods to their respective images.
+model MoodTable {
+  id String @id @default(cuid())
 
-  angry       String?
-  happy       String?
-  sad         String?
-  confident   String?
-  confused    String?
-  shy         String?
-  excited     String?
-  bored       String?
-  scared      String?
+  angry     String?
+  happy     String?
+  sad       String?
+  confident String?
+  confused  String?
+  shy       String?
+  excited   String?
+  scared    String?
 
-  bots        Bot?
+  botId String @unique
+  bot   Bot    @relation(fields: [botId], references: [id])
 }
 
 enum Mood {
+  NEUTRAL
   ANGRY
   HAPPY
   SAD
@@ -85,7 +87,6 @@ enum Mood {
   CONFUSED
   SHY
   EXCITED
-  BORED
   SCARED
 }
 
@@ -105,13 +106,12 @@ model Bot {
   botLikes    BotLike[]
   botDislikes BotDislike[]
   BotShares   BotShares[]
-  moodId      String            @unique  
-  mood        Moods            @relation(fields: [moodId], references: [id])
+  MoodTable   MoodTable?
 }
 
 model Tag {
-  name      String  @id
-  bots      Bot[] 
+  name      String   @id
+  bots      Bot[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

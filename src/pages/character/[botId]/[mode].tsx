@@ -24,6 +24,7 @@ const mockMessage: BotChatMessage = {
   role: "BOT",
   createdAt: new Date(),
   updatedAt: new Date(),
+  mood: null,
 };
 
 const BotChat = () => {

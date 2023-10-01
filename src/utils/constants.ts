@@ -4,9 +4,17 @@ export class Constants {
   static readonly SERVER_HOST_URL = "https://companion-red.vercel.app";
 }
 
+// A wrapper for logging.
 export const getBaseServerUrl = () => {
-  console.log("is native platform: ", Capacitor.isNativePlatform());
-  if (Capacitor.isNativePlatform()) return Constants.SERVER_HOST_URL;
+  const url = _getBaseServerUrl();
+  console.log("Requested base server url:", url);
+  return url;
+};
+
+export const _getBaseServerUrl = () => {
+  // If on mobile OR if building for mobile, use the hosted prod server instead of localhost.
+  if (Capacitor.isNativePlatform() || !!process.env.NEXT_PUBLIC_NATIVE)
+    return Constants.SERVER_HOST_URL;
 
   if (typeof window !== "undefined") return ""; // Browser should use relative url.
 
