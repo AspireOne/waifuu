@@ -40,3 +40,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Minio files & Multer 
+.minio.sys
+uploads
