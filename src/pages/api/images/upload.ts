@@ -4,8 +4,24 @@ import path from "path";
 import * as formidable from 'formidable';
 import * as minio from 'minio';
 import { env } from '~/server/env';
+import generateUUID from '~/utils/utils';
+import { getSession } from 'next-auth/react';
 
 type ProcessedFiles = Array<[string, formidable.File]>;
+type ResultData = {
+    fileName: string;
+    id: string;
+};
+enum ResponseCode {
+    OK = 200,
+    UNAUTHORIZED = 401,
+    BAD_REQUEST = 400,
+    SERVER_ERROR = 500
+}
+type Response = {
+    status: ResponseCode;
+    message: unknown;
+}
 
 const MinioClient = new minio.Client({
   endPoint: '127.0.0.1',
@@ -16,8 +32,11 @@ const MinioClient = new minio.Client({
 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    let status = 200,
-        resultBody = { status: 'ok', message: 'Files were uploaded successfully' };
+    let status = 200;
+    let resultBody: Response = { status: ResponseCode.OK, message: null };
+
+    const session = await getSession({ req })
+    if(!session) return res.status(401).send('Unauthorized');
 
     const files = await new Promise<ProcessedFiles | undefined>((resolve, reject) => {
         const form = new formidable.IncomingForm();
@@ -32,15 +51,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if (!files.length) {
                 status = 400;
                 resultBody = {
-                    status: 'fail', message: 'No files were uploaded'
+                    status: ResponseCode.BAD_REQUEST, message: 'No files were uploaded'
                 }
                 reject();
             }
         });
-    }).catch(e => {
+    }).catch(() => {
         status = 500;
         resultBody = {
-            status: 'fail', message: 'Upload error'
+            status: ResponseCode.SERVER_ERROR, message: 'Upload error'
         }
     });
 
@@ -52,14 +71,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             await fs.mkdir(targetPath);
         }
 
+        const result: ResultData[] = [];
         for (const file of files) {
+            if (!file[1].originalFilename) return;
+
+            const uuid = generateUUID();
+
             const tempPath = file[1].filepath;
             await fs.rename(tempPath, targetPath + file[1].originalFilename);
-            MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, file[1].originalFilename as string, targetPath + file[1].originalFilename);
+
+            MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, uuid, targetPath + file[1].originalFilename);
+
+            result.push({
+                fileName: file[1].originalFilename,
+                id: uuid
+            });
+        }
+
+        resultBody = {
+            status: ResponseCode.OK,
+            message: result
         }
     }
 
-    res.status(status).json(resultBody);
+    return res.status(status).json(resultBody);
 }
 
 export default handler;
