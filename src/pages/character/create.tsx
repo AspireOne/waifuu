@@ -8,119 +8,164 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { FilePond, registerPlugin } from "react-filepond";
+import { registerPlugin } from "react-filepond";
 import FilepondImagePreviewPlugin from "filepond-plugin-image-preview";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import { useState } from "react";
 import Page from "~/components/Page";
+import { FileUpload } from "~/components/shared/FileUpload";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Visibility } from "@prisma/client";
+import Router from "next/router";
+import { api } from "~/utils/api";
 
 registerPlugin(FilepondImagePreviewPlugin, FilePondPluginImageExifOrientation);
 
+type CreateInput = {
+  title: string;
+  description: string;
+  visibility: Visibility;
+
+  name: string;
+  persona: string;
+  dialogue: string;
+  nsfw: boolean;
+};
+
 const CreateChatPage = () => {
   const [isSelected, setIsSelected] = useState(false);
+  const [avatar, setAvatar] = useState<string | undefined>(undefined);
+  const [cover, setCover] = useState<string | undefined>(undefined);
+
+  const createBot = api.bots.create.useMutation({
+    onSuccess: () => {
+      Router.push('/discover');
+    }
+  });
+
+  const { register, handleSubmit } = useForm<CreateInput>();
+  const submitHandler: SubmitHandler<CreateInput> = (data) => {
+    createBot.mutateAsync({
+      ...data,
+      avatar,
+      cover
+    });
+  };
 
   return (
     <Page metaTitle="Create a new character">
-      <Card>
-        <div className="p-4">
-          <h2 className="text-xl mb-4">About</h2>
+      <form onSubmit={handleSubmit(submitHandler)}>
+        <Card>
+          <div className="p-4">
+            <h2 className="text-xl mb-4">About</h2>
 
-          <div className="flex flex-col gap-4">
-            <div>
-              <h3 className="text-sm font-medium">Avatar</h3>
-              <FilePond
-                className="h-44 w-44"
-                imagePreviewHeight={170}
-                files={[]}
-                onupdatefiles={() => {}}
-                allowMultiple={false}
-                stylePanelLayout="compact circle"
-                stylePanelAspectRatio="1:1"
-                name="files"
-                labelIdle='Drag & Drop your character image or <span class="filepond--label-action">Browse</span>'
+            <div className="flex flex-col gap-4">
+              <div>
+                <h3 className="text-sm font-medium">Avatar</h3>
+                <FileUpload
+                  structure="CIRCLE"
+                  onSuccess={(data) => setAvatar(data.message[0]?.id)}
+                  onError={() => setAvatar(undefined)}
+                />
+              </div>
+
+              <Input
+                {...register("title")}
+                isRequired
+                type="text"
+                label="Title"
               />
-            </div>
 
-            <Input isRequired type="text" label="Title" />
-
-            <Textarea isRequired type="text" label="Description" />
-
-            <Select
-              items={[
-                {
-                  label: "Public",
-                  value: "public",
-                },
-                {
-                  label: "Private",
-                  value: "private",
-                },
-                {
-                  label: "Only for friends",
-                  value: "friends",
-                },
-              ]}
-              label="Select visibility"
-            >
-              <SelectItem key="public" value="public">
-                Public
-              </SelectItem>
-              <SelectItem key="private" value="private">
-                Private
-              </SelectItem>
-              <SelectItem key="friends" value="friends">
-                Only for friends
-              </SelectItem>
-            </Select>
-          </div>
-
-          <Divider className="mt-4 mb-4" />
-
-          <h2 className="text-xl mb-4">Character's character</h2>
-
-          <div className="flex flex-col gap-4">
-            <Input isRequired type="text" label="Name" />
-
-            <Textarea required label="Persona" labelPlacement="outside" />
-
-            <Textarea label="Example dialogue" labelPlacement="outside" />
-
-            <div className="flex flex-col gap-2">
-              <Switch isSelected={isSelected} onValueChange={setIsSelected}>
-                NSFW content
-              </Switch>
-              <p className="text-small text-default-500">
-                Character will produce content {!isSelected && "not"} suitable
-                for minors
-              </p>
-            </div>
-          </div>
-
-          <Divider className="mt-4 mb-4" />
-
-          <h2 className="text-xl mb-3">Images</h2>
-          <div className="flex flex-col gap-4">
-            <div>
-              <h3 className="text-sm font-medium">Character image</h3>
-              <FilePond
-                required
-                files={[]}
-                onupdatefiles={() => {}}
-                allowMultiple={false}
-                name="files"
-                labelIdle='Drag & Drop your character image or <span class="filepond--label-action">Browse</span>'
+              <Textarea
+                {...register("description")}
+                isRequired
+                type="text"
+                label="Description"
               />
+
+              <Select
+                {...register("visibility")}
+                label="Select visibility"
+                isRequired
+              >
+                <SelectItem key={Visibility.PUBLIC} value={Visibility.PUBLIC}>
+                  Public
+                </SelectItem>
+                <SelectItem key={Visibility.PRIVATE} value={Visibility.PRIVATE}>
+                  Private
+                </SelectItem>
+                <SelectItem key={Visibility.LINK} value={Visibility.LINK}>
+                  Only for friends
+                </SelectItem>
+              </Select>
+            </div>
+
+            <Divider className="mt-4 mb-4" />
+
+            <h2 className="text-xl mb-4">Character's character</h2>
+
+            <div className="flex flex-col gap-4">
+              <Input
+                {...register("name")}
+                isRequired
+                type="text"
+                label="Name"
+              />
+
+              <Textarea
+                {...register("persona")}
+                isRequired
+                label="Persona"
+                labelPlacement="outside"
+              />
+
+              <Textarea
+                {...register("dialogue")}
+                isRequired
+                label="Example dialogue"
+                labelPlacement="outside"
+              />
+
+              <div className="flex flex-col gap-2">
+                <Switch
+                  {...register("nsfw")}
+                  isSelected={isSelected}
+                  onValueChange={setIsSelected}
+                >
+                  NSFW content
+                </Switch>
+                <p className="text-small text-default-500">
+                  Character will produce content {!isSelected && "not"} suitable
+                  for minors
+                </p>
+              </div>
+            </div>
+
+            <Divider className="mt-4 mb-4" />
+
+            <h2 className="text-xl mb-3">Images</h2>
+            <div className="flex flex-col gap-4">
+              <div>
+                <h3 className="text-sm font-medium">Character image</h3>
+                <FileUpload
+                  structure="SQUARE"
+                  onSuccess={(data) => setCover(data.message[0]?.id)}
+                  onError={() => setCover(undefined)}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-row w-fit mx-auto mr-0 gap-2 mt-5">
+              <Button color="primary" variant="bordered">
+                Close
+              </Button>
+              <Button type="submit" color="primary">
+                Create
+              </Button>
             </div>
           </div>
-
-          <div className="flex flex-row w-fit mx-auto mr-0 gap-2 mt-5">
-            <Button color="primary" variant="bordered">
-              Close
-            </Button>
-            <Button color="primary">Create</Button>
-          </div>
-        </div>
-      </Card>
+        </Card>
+      </form>
     </Page>
   );
 };

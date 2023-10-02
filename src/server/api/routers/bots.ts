@@ -85,11 +85,19 @@ export const botsRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        name: z.string(),
+        // Public image (meaning on discover page ex.)
+        cover: z.string().optional(),
+        title: z.string(),
         description: z.string(),
         visibility: z.nativeEnum(Visibility),
-        img: z.string().url().optional(),
         tags: z.array(z.string()).default([]),
+
+        // in Chat data
+        avatar: z.string().optional(),
+        name: z.string(),
+        persona: z.string(),
+        dialogue: z.string(),
+        nsfw: z.boolean(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -100,7 +108,7 @@ export const botsRouter = createTRPCRouter({
           visibility: input.visibility,
           creatorId: ctx.session.user.id,
           source: BotSource.COMMUNITY,
-          img: input.img,
+          img: input.avatar,
           tags: {
             connectOrCreate: input.tags.map((tag) => {
               return {

@@ -5,13 +5,13 @@ services:
     image: postgres
     container_name: database
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: mydb
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
     ports:
       - 5432:5432
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "mydb"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "${DATABASE_DB}"]
       interval: 10s
       timeout: 5s
       retries: 3
