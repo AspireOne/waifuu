@@ -108,7 +108,8 @@ export const botsRouter = createTRPCRouter({
           visibility: input.visibility,
           creatorId: ctx.session.user.id,
           source: BotSource.COMMUNITY,
-          img: input.avatar,
+          avatar: input.avatar,
+          cover: input.cover,
           tags: {
             connectOrCreate: input.tags.map((tag) => {
               return {

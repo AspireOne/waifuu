@@ -51,10 +51,8 @@ const BotChat = () => {
       {/*TODO: Add background to bot.*/}
       <BackgroundImage src={undefined} />
       {/*TODO: Make character image only the png of the char.*/}
-      <CharacterImage src={bot?.img ?? "/assets/character.png"} />
+      <CharacterImage src={"/api/images/download?id=" + bot?.avatar} />
       <ChatGradientOverlay />
-
-      <ChatHeader bot={bot ?? undefined} />
 
       <ChatMessages
         loadingReply={chat.loadingReply}
@@ -100,7 +98,7 @@ const ChatHeader = (props: { bot?: Bot }) => (
       className={"aspect-square"} // Needed.
       loading="eager"
       isLoading={!props.bot}
-      src={props.bot?.img || "/assets/default_user.jpg"}
+      src={props.bot?.avatar || "/assets/default_user.jpg"}
       alt="bot avatar"
     />
 
@@ -167,7 +165,7 @@ const ChatMessages = (props: {
       ref={containerRef}
       className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible z-[30] mt-32 mb-20"
     >
-      {props.messages.map((message, index) => {
+      {props.messages.map((message, _) => {
         const botName = props.bot!.name || "Them";
         const userName = session?.user?.name || "You";
         const isBot = message.role === "BOT";
@@ -179,7 +177,7 @@ const ChatMessages = (props: {
             author={{
               bot: isBot,
               name: isBot ? botName : userName,
-              avatar: isBot ? props.bot!.img : session?.user?.image,
+              avatar: isBot ? props.bot!.avatar : session?.user?.image,
             }}
             message={message.content}
           />

@@ -11,7 +11,7 @@ import {
 import { registerPlugin } from "react-filepond";
 import FilepondImagePreviewPlugin from "filepond-plugin-image-preview";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Page from "~/components/Page";
 import { FileUpload } from "~/components/shared/FileUpload";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -38,8 +38,8 @@ const CreateChatPage = () => {
   const [cover, setCover] = useState<string | undefined>(undefined);
 
   const createBot = api.bots.create.useMutation({
-    onSuccess: () => {
-      Router.push('/discover');
+    onSuccess: (data) => {
+      Router.push(`/character/${data.id}/create`);
     }
   });
 
@@ -47,10 +47,23 @@ const CreateChatPage = () => {
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
     createBot.mutateAsync({
       ...data,
+      nsfw: data.nsfw ?? false,
       avatar,
       cover
     });
   };
+
+  const AvatarUpload = useMemo(() => FileUpload({
+    onSuccess: (data) => setAvatar(data.message[0]?.id),
+    onError: () => setAvatar(undefined),
+    structure: "CIRCLE"
+  }), []);
+
+  const CoverUpload = useMemo(() => FileUpload({
+    onSuccess: (data) => setCover(data.message[0]?.id),
+    onError: () => setCover(undefined),
+    structure: "SQUARE"
+  }), []); 
 
   return (
     <Page metaTitle="Create a new character">
@@ -62,11 +75,7 @@ const CreateChatPage = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <h3 className="text-sm font-medium">Avatar</h3>
-                <FileUpload
-                  structure="CIRCLE"
-                  onSuccess={(data) => setAvatar(data.message[0]?.id)}
-                  onError={() => setAvatar(undefined)}
-                />
+                {AvatarUpload}
               </div>
 
               <Input
@@ -129,6 +138,7 @@ const CreateChatPage = () => {
               <div className="flex flex-col gap-2">
                 <Switch
                   {...register("nsfw")}
+                  defaultChecked={false}
                   isSelected={isSelected}
                   onValueChange={setIsSelected}
                 >
@@ -147,11 +157,7 @@ const CreateChatPage = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <h3 className="text-sm font-medium">Character image</h3>
-                <FileUpload
-                  structure="SQUARE"
-                  onSuccess={(data) => setCover(data.message[0]?.id)}
-                  onError={() => setCover(undefined)}
-                />
+                {CoverUpload}
               </div>
             </div>
 

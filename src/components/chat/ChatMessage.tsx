@@ -49,7 +49,7 @@ const ChatMessage = ({ author, message, key, className }: Props) => {
         <CardBody className={"p-1 flex flex-row gap-4"}>
           <Image
             referrerPolicy="no-referrer"
-            src={author.avatar ?? "/assets/default_user.jpg"}
+            src={author.avatar || "/assets/default_user.jpg"}
             alt="profile-picture"
             className="w-10 rounded-full aspect-square"
           />
