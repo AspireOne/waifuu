@@ -3,16 +3,55 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import Page from "~/components/Page";
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 import { Capacitor } from "@capacitor/core";
+import { api } from "~/utils/api";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import { getGoogleClientId } from "~/utils/utils";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 
 const Login = () => {
+  const router = useRouter();
+  const googleAuthMutation = api.auth.completeNativeGoogleSignIn.useMutation({
+    onSuccess: (data) => {
+      console.log("Successfully logged in with Google!", data);
+      router.reload(); // Reload so that session token from cookies is picked up.
+    },
+    onError: (error) => {
+      console.error("Error logging in with Google!", error);
+    },
+  });
+
+  // NOTE: APPLE SIGN IN must have "skipNativeAuth = true" passed.
+  // https://github.com/capawesome-team/capacitor-firebase/blob/main/packages/authentication/docs/firebase-js-sdk.md
   async function handleGoogleSignIn() {
-    // TODO: Remove the debugging "true" clause.
-    if (true || Capacitor.isNativePlatform()) {
-      await googleSignInMobile();
+    if (true /*await Capacitor.isNativePlatform()*/) {
+      console.warn("SIGNING IN USING GOOGLE.");
+      const result = await FirebaseAuthentication.signInWithGoogle({
+        scopes: ["email", "profile"],
+        mode: "popup",
+      });
+
+      console.warn("SIGNED IN USING GOOGLE! CONTACTING BACKEND");
+      console.log("RESULT:", result);
+
+      if (
+        !result?.credential ||
+        !result.credential.idToken ||
+        !result.credential.accessToken
+      ) {
+        throw new Error("Invalid Google sign in result!");
+      }
+
+      googleAuthMutation.mutate({
+        idToken: result.credential.idToken,
+        accessToken: result.credential.accessToken,
+        refreshToken: null,
+        serverAuthCode: result.credential.authorizationCode,
+        clientId: getGoogleClientId()!,
+      });
     } else {
-      // TODO: NextAuth sign in.
+      await signIn("google");
     }
   }
 
@@ -61,15 +100,5 @@ const Login = () => {
     </Page>
   );
 };
-
-async function googleSignInMobile() {
-  let googleUser = await GoogleAuth.signIn();
-  console.log(
-    "Signed in using Capacitor Google Auth Plugin! Access Token: ",
-    googleUser.authentication.idToken,
-    "User Info: ",
-    JSON.stringify(googleUser),
-  );
-}
 
 export default Login;

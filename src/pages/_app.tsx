@@ -6,7 +6,6 @@ import { api } from "~/utils/api";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
-import { GoogleAuth } from "@codetrix-studio/capacitor-google-auth";
 
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,17 +13,34 @@ import "filepond/dist/filepond.min.css";
 import "~/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { getBaseServerUrl } from "~/utils/constants";
+import { Capacitor } from "@capacitor/core";
+
+import { getApp, initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import firebaseConfig from "~/lib/firebaseConfig";
+import {
+  getAuth,
+  indexedDBLocalPersistence,
+  initializeAuth,
+} from "firebase/auth";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  // Initialize firebase.
   useEffect(() => {
-    GoogleAuth.initialize({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID, // TODO: Insert client id.
-      scopes: ["profile", "email"],
-      grantOfflineAccess: true, // Might not be needed, can be turned off later if so.
-    });
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    let auth;
+    if (Capacitor.isNativePlatform()) {
+      auth = initializeAuth(getApp(), {
+        persistence: indexedDBLocalPersistence,
+      });
+    } else {
+      auth = getAuth();
+    }
   }, []);
   return (
     <SessionProvider session={session} baseUrl={getBaseServerUrl()}>

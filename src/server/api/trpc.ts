@@ -16,6 +16,7 @@ import { ZodError } from "zod";
 import { getServerAuthSession } from "~/server/lib/auth";
 import { prisma } from "~/server/lib/db";
 import { OpenApiMeta } from "trpc-openapi";
+import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * 1. CONTEXT
@@ -27,6 +28,8 @@ import { OpenApiMeta } from "trpc-openapi";
 
 interface CreateContextOptions {
   session: Session | null;
+  req?: NextApiRequest | null;
+  res?: NextApiResponse | null;
 }
 
 /**
@@ -42,6 +45,8 @@ interface CreateContextOptions {
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
+    req: opts.req,
+    res: opts.res,
     prisma,
   };
 };
@@ -58,9 +63,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
 
-  return createInnerTRPCContext({
-    session,
-  });
+  return createInnerTRPCContext({ session, req, res });
 };
 
 /**

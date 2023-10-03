@@ -1,3 +1,5 @@
+import { Capacitor } from "@capacitor/core";
+
 /**
  * Generates a random UUID (Universally Unique Identifier).
  * Example: 8b3e8a1e-4b9b-4b4b-9b9b-4b9b4b9b4b9b
@@ -46,4 +48,15 @@ export function applyMarkdown(text: string): React.ReactNode[] {
   }
 
   return result;
+}
+
+export function getGoogleClientId() {
+  switch (Capacitor.getPlatform()) {
+    case "ios":
+      return process.env.NEXT_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+    /*case "android":
+      return process.env.NEXT_PUBLIC_GOOGLE_ANDROID_CLIENT_ID;*/
+    default:
+      return process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  }
 }

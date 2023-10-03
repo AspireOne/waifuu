@@ -66,7 +66,7 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
+      clientId: env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     /**

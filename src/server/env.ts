@@ -10,7 +10,7 @@ export const envSchema = z.object({
   // Auth.
   NEXTAUTH_URL: z.string().url().default("http://localhost:3000"),
   NEXTAUTH_SECRET: z.string(),
-  GOOGLE_CLIENT_ID: z.string(),
+  NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
 
   // PUSHER_APP_ID: z.string(),

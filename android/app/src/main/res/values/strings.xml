@@ -4,4 +4,5 @@
     <string name="title_activity_main">companion</string>
     <string name="package_name">com.gmail.matejpesl1.companion</string>
     <string name="custom_url_scheme">com.gmail.matejpesl1.companion</string>
+    <string name="server_client_id">24288336305-4508p4kdsovvoet4lgbi4kqfnako54a9.apps.googleusercontent.com</string>
 </resources>

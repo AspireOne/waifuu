@@ -2,5 +2,5 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/.pnpm/@capacitor+android@5.4.1_@capacitor+core@5.4.1/node_modules/@capacitor/android/capacitor')
 
-include ':codetrix-studio-capacitor-google-auth'
-project(':codetrix-studio-capacitor-google-auth').projectDir = new File('../node_modules/.pnpm/@codetrix-studio+capacitor-google-auth@3.3.2_@capacitor+core@5.4.1/node_modules/@codetrix-studio/capacitor-google-auth/android')
+include ':capacitor-firebase-authentication'
+project(':capacitor-firebase-authentication').projectDir = new File('../node_modules/.pnpm/@capacitor-firebase+authentication@5.1.0_@capacitor+core@5.4.1_firebase@10.4.0/node_modules/@capacitor-firebase/authentication/android')
