@@ -1,30 +1,29 @@
-import { Bot } from "@prisma/client";
+import { Bot, BotMode } from "@prisma/client";
 import Image from "next/image";
+import Link from "next/link";
+import { makeDownloadPath } from "~/utils/paths";
 
 type CharacterCardProps = {
   bot: Bot;
+  chatType?: BotMode;
 };
 
-const CharacterCard = ({ bot }: CharacterCardProps) => {
+const CharacterCard = ({ bot, chatType }: CharacterCardProps) => {
   return (
-    <div className="w-full rounded-lg border-1 border-gray-500 p-3">
+    <Link
+      href={`/character/${bot.id}/${chatType}`}
+      className="w-fit rounded-lg border-1 border-gray-500 p-3"
+    >
       <Image
-        src={"/assets/character.png"}
+        src={makeDownloadPath(bot.avatar!)}
         alt="character"
-        className="mt-[-14px] opacity-100"
-        width={300}
-        height={350}
+        className="opacity-100 rounded-lg w-full h-28 object-cover"
+        width={100}
+        height={100}
       />
-      <Image
-        src={"/assets/background.png"}
-        alt="character"
-        className="mt-[-150px] h-[150px] rounded-lg object-cover opacity-20"
-        width={300}
-        height={350}
-      />
-      <h1 className="text-xl text-white">{bot.name}</h1>
-      <p className="text-gray-300">{bot.description}</p>
-    </div>
+      <h1 className="text-xl text-white mt-3">{bot.name}</h1>
+      <p className="text-gray-300 table w-[120px] text-sm">{bot.description}</p>
+    </Link>
   );
 };
 

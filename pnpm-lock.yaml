@@ -68,6 +68,15 @@ dependencies:
   fastify:
     specifier: ^4.22.2
     version: 4.22.2
+  filepond-plugin-file-validate-size:
+    specifier: ^2.2.8
+    version: 2.2.8(filepond@4.30.4)
+  filepond-plugin-file-validate-type:
+    specifier: ^1.2.8
+    version: 1.2.8(filepond@4.30.4)
+  filepond-plugin-image-crop:
+    specifier: ^2.0.6
+    version: 2.0.6(filepond@4.30.4)
   filepond-plugin-image-exif-orientation:
     specifier: ^1.0.11
     version: 1.0.11(filepond@4.30.4)
@@ -3979,6 +3988,30 @@ packages:
   /fflate@0.8.0:
     resolution: {integrity: sha512-FAdS4qMuFjsJj6XHbBaZeXOgaypXp8iw/Tpyuq/w3XA41jjLHT8NPA+n7czH/DDhdncq0nAyDZmPeWXh2qmdIg==}
     dev: true
+
+  /filepond-plugin-file-validate-size@2.2.8(filepond@4.30.4):
+    resolution: {integrity: sha512-yzb8scATmkWqPTP7oKQz6L8WwJm6Xmgc/fuq6DFGRaLz0I7372BUvBsxagBk/hypMIjvieNzhggm33Y60x3rcw==}
+    peerDependencies:
+      filepond: '>=3.1.2 <5.x'
+    dependencies:
+      filepond: 4.30.4
+    dev: false
+
+  /filepond-plugin-file-validate-type@1.2.8(filepond@4.30.4):
+    resolution: {integrity: sha512-UBTqIWbk5+5R0GBELI8svu01MHWjFSLfc9DfCMvFtHKXLdJMxY1p37ChC4YKQjhfODaTuvLnNVRsukMGMFZBBg==}
+    peerDependencies:
+      filepond: '>=1.x <5.x'
+    dependencies:
+      filepond: 4.30.4
+    dev: false
+
+  /filepond-plugin-image-crop@2.0.6(filepond@4.30.4):
+    resolution: {integrity: sha512-bSy/KND4EP/QtW8MxIj23qgSEPUVRrT8XdktJ+OU9y8xRjFjTG+qcuw1LsycARQYRtzi8cZrD3P4POOITfkywQ==}
+    peerDependencies:
+      filepond: '>=3.x <5.x'
+    dependencies:
+      filepond: 4.30.4
+    dev: false
 
   /filepond-plugin-image-exif-orientation@1.0.11(filepond@4.30.4):
     resolution: {integrity: sha512-hLBc12Fk6Zkj3L8mSAn+elugHOqT5rLUbgVXQQIQjMe0FsGjtpoxqeVR6jt4IWHGat2L9sFAgU2TGmd1mqosCg==}

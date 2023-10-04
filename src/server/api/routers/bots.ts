@@ -54,6 +54,51 @@ export const botsRouter = createTRPCRouter({
       });
     }),
 
+  createBotChat: protectedProcedure
+    .input(
+      z.object({
+        botId: z.string(),
+        botMode: z.nativeEnum(BotMode),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      return await ctx.prisma.botChat.create({
+        data: {
+          botId: input.botId,
+          botMode: input.botMode,
+          userId: ctx.session.user.id,
+        },
+      });
+    }),
+
+  /**
+   * Return all bots that user has currently conversation with.
+   */
+  getAllConversationBots: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).nullish(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const chats = await ctx.prisma.botChat.findMany({
+        take: input?.limit || undefined,
+        where: {
+          userId: ctx.session.user.id,
+        },
+        include: {
+          bot: true,
+        },
+      });
+
+      return chats.map((chat) => {
+        return {
+          mode: chat.botMode,
+          ...chat.bot,
+        };
+      });
+    }),
+
   /**
    * Returns all bots that the user has access to (public and private for the user making the request, public for bots
    * of other users).
@@ -132,64 +177,34 @@ export const botsRouter = createTRPCRouter({
   messages: protectedProcedure
     .input(
       z.object({
-        botId: z.string(),
-        botMode: z.nativeEnum(BotMode),
+        chatId: z.string(),
         limit: z.number().min(1).max(100).default(15),
         cursor: z.number().nullish(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const messages = await ctx.prisma.botChatMessage.findMany({
-        // Take one more item that we will use as the cursor.
-        take: input.limit + 1,
-        cursor: input.cursor ? { id: input.cursor } : undefined,
-        orderBy: { id: "desc" },
-        where: {
-          botId: input.botId,
-          botMode: input.botMode,
-          userId: ctx.session.user.id,
-        },
-      });
-
-      let nextCursor: typeof input.cursor | undefined = undefined;
-      // If there is more messages (signalised by the limit + 1), pop the last item and use it as the next cursor.
-
-      if (messages.length > input.limit) {
-        const nextItem = messages.pop();
-        nextCursor = nextItem!.id;
-      }
-
-      return {
-        messages,
-        nextCursor,
-      };
+      // TODO: Message fetching
     }),
 
   genReply: protectedProcedure
     .input(
       z.object({
-        botId: z.string(),
-        botMode: z.nativeEnum(BotMode),
+        chatId: z.string(),
         message: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const userMsg = await ctx.prisma.botChatMessage.create({
         data: {
-          userId: ctx.session.user.id,
-          botId: input.botId,
-          botMode: input.botMode,
+          chatId: input.chatId,
           content: input.message,
-          role: "USER", // TODO: Do not hardcode.
+          role: "USER",
         },
       });
 
-      // TODO: Messages will have to implement some indexing, metadata, context... For long term memory.
       const messages = await ctx.prisma.botChatMessage.findMany({
         where: {
-          botId: input.botId,
-          userId: ctx.session.user.id,
-          botMode: input.botMode,
+          chatId: input.chatId,
         },
         take: 20, // TODO: Take more, this is just for test
       });
@@ -232,14 +247,11 @@ export const botsRouter = createTRPCRouter({
 
       const outputStr = (output as []).join("");
 
-      // save the output to db.
       const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
-          userId: ctx.session.user.id,
-          botId: input.botId,
-          botMode: input.botMode,
+          chatId: input.chatId,
           content: outputStr,
-          role: "BOT", // TODO: Do not hardcode.
+          role: "BOT",
         },
       });
 
@@ -247,40 +259,6 @@ export const botsRouter = createTRPCRouter({
         botChatMessage: botMsg,
         userMessage: userMsg,
       };
-    }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
-
-  /**
-   * Search for tags
-   */
-  searchTagCounts: publicProcedure
-    .input(z.string())
-    .query(async ({ input }) => {
-      const botsWithItems = await prisma.tag.findMany({
-        where: {
-          name: {
-            contains: input,
-            mode: "insensitive",
-          },
-        },
-        select: {
-          bots: {
-            select: {
-              id: true,
-            },
-          },
-        }
-      });
-
-      const botsWithItemCount = botsWithItems.map((bot) => ({
-        ...bot,
-        itemCount: bot.bots.length
-      }));
-
-      return botsWithItemCount;
     }),
 });
 

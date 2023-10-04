@@ -2,13 +2,17 @@ import { Button, Chip, Input } from "@nextui-org/react";
 import Image from "next/image";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { FaCompass, FaTag } from "react-icons/fa";
+import { FaCompass } from "react-icons/fa";
+import { BiTrendingUp } from "react-icons/bi";
 import Page from "~/components/Page";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import { api } from "~/utils/api";
 
 const Discover = () => {
   const bots = api.bots.getAllBots.useQuery();
+  const conversationBots = api.bots.getAllConversationBots.useQuery({
+    limit: 5,
+  });
 
   return (
     <Page metaTitle="Discover Characters" showMobileNav header={{ back: null }}>
@@ -60,44 +64,24 @@ const Discover = () => {
       </div>
 
       <div className="mx-auto p-5">
-        <div className="mb-10 mt-7">
-          <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
+        <div className="mb-5 mt-7">
+          <h3 className="flex flex-row gap-2 text-3xl text-white">
             <FaCompass /> Active chats
           </h3>
         </div>
 
         <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
-          {bots.data?.map(bot => {
-            return (<CharacterCard bot={bot} />)
+          {conversationBots.data?.map((bot) => {
+            return <CharacterCard chatType={bot.mode} bot={bot} />;
           })}
         </div>
       </div>
 
       <div className="mx-auto p-5">
-        <div className="mb-10 mt-7">
+        <div className="mb-5 mt-7">
           <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
-            <FaTag /> Popular tags
+            <BiTrendingUp /> Popular bots
           </h3>
-          <div className="flex flex-wrap gap-3">
-            {[
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-            ].map((tag) => {
-              return (
-                <Chip size="lg" color="default" variant="bordered">
-                  Bordered
-                </Chip>
-              );
-            })}
-          </div>
         </div>
 
         <div className="mb-5 flex flex-row items-center gap-4">
@@ -109,14 +93,9 @@ const Discover = () => {
         </div>
 
         <div className="flex justify-center w-full flex-wrap gap-5">
-          {/* <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard /> */}
+          {bots.data?.map((bot) => {
+            return <CharacterCard bot={bot} />;
+          })}
         </div>
       </div>
     </Page>

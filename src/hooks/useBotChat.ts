@@ -20,19 +20,15 @@ const chatCache = new Map<string, Message[]>();
  * querying or loading before the botId or botMode is available.
  * @returns {Object} An object containing chat messages and functions to interact with the chat.
  */
-export default function useBotChat(
-  botId: string | undefined,
-  botMode: BotMode | undefined,
-  enabled: boolean = true,
-) {
+export default function useBotChat(chatId: string, enabled: boolean = true) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
   const [cursor, setCursor] = useState<number | undefined>(undefined);
 
   const fetchMore = api.bots.messages.useMutation({
     onSuccess: async (data) => {
-      setCursor(data.nextCursor);
-      addMessages(data.messages);
+      // setCursor(data.nextCursor);
+      // addMessages(data.messages);
     },
 
     onSettled: async () => {
@@ -44,19 +40,13 @@ export default function useBotChat(
     setMessages([]);
     setCursor(undefined);
     setShouldLoadMore(true);
-  }, [botId, botMode]);
+  }, [chatId]);
 
   useEffect(() => {
-    if (
-      shouldLoadMore &&
-      !fetchMore.isLoading &&
-      !!botId &&
-      !!botMode &&
-      enabled
-    ) {
-      fetchMore.mutate({ botId, botMode, cursor });
+    if (shouldLoadMore && !fetchMore.isLoading && !!chatId && enabled) {
+      fetchMore.mutate({ chatId, cursor });
     }
-  }, [shouldLoadMore, fetchMore.isLoading, botId, botMode, enabled]);
+  }, [shouldLoadMore, fetchMore.isLoading, chatId, enabled]);
 
   const replyMutation = api.bots.genReply.useMutation({
     onMutate: async (variables) => {
@@ -120,8 +110,11 @@ export default function useBotChat(
     messages,
 
     postMessage: (message: string) => {
-      if (!enabled || !botId || !botMode) return;
-      replyMutation.mutate({ botId, botMode, message });
+      if (!enabled || !chatId) return;
+      replyMutation.mutate({
+        chatId,
+        message,
+      });
     },
     loadingReply: replyMutation.isLoading,
 

@@ -42,30 +42,30 @@ model VerificationToken {
 }
 
 model User {
-  id               String           @id @default(cuid())
+  id               String        @id @default(cuid())
   name             String?
-  email            String?          @unique
+  email            String?       @unique
   emailVerified    DateTime?
   image            String?
-  username         String?          @unique
+  username         String?       @unique
   bio              String?
   accounts         Account[]
   Bot              Bot[]
-  BotMessage       BotChatMessage[]
   ChatMessage      ChatMessage[]
   sessions         Session[]
-  Chat             Chat[]           @relation("ChatToUser")
+  Chat             Chat[]        @relation("ChatToUser")
   BotLikes         BotLike[]
   BotDislikes      BotDislike[]
   BotShares        BotShares[]
   RRAvailableUsers RRChatQueue[]
   Assets           Asset[]
+  BotChats         BotChat[]
 }
 
 model Asset {
-  id       String   @id @unique
-  authorId String
-  author   User     @relation(fields: [authorId], references: [id])
+  id        String   @id @unique
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -100,23 +100,23 @@ enum Mood {
 }
 
 model Bot {
-  id          String           @id @default(cuid())
+  id          String       @id @default(cuid())
   name        String
   description String
-  avatar         String?           @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  cover         String?           @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  avatar      String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  cover       String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   creatorId   String?
   tags        Tag[]
   source      BotSource
   visibility  Visibility
-  creator     User?            @relation(fields: [creatorId], references: [id])
-  messages    BotChatMessage[]
+  creator     User?        @relation(fields: [creatorId], references: [id])
   botLikes    BotLike[]
   botDislikes BotDislike[]
   BotShares   BotShares[]
   MoodTable   MoodTable?
+  BotChats    BotChat[]
 }
 
 model Tag {
@@ -153,18 +153,25 @@ model BotShares {
   createdAt DateTime @default(now())
 }
 
+model BotChat {
+  id       String           @id @default(cuid())
+  botMode  BotMode
+  botId    String
+  userId   String
+  bot      Bot              @relation(fields: [botId], references: [id])
+  user     User             @relation(fields: [userId], references: [id])
+  messages BotChatMessage[]
+}
+
 model BotChatMessage {
   id        Int         @id @default(autoincrement())
+  chat      BotChat     @relation(fields: [chatId], references: [id])
+  chatId    String
   content   String
   mood      Mood?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-  userId    String
-  botId     String
-  botMode   BotMode
   role      BotChatRole
-  bot       Bot         @relation(fields: [botId], references: [id])
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Chat {

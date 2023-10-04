@@ -30,3 +30,7 @@ export function normalizePath(path: string, keepSlash: boolean = true): string {
   if (keepSlash) return path.endsWith("/") ? path : path + "/";
   else return path.endsWith("/") ? path.slice(0, -1) : path;
 }
+
+export function makeDownloadPath(id: string): string {
+  return `/api/images/download?id=${id}`;
+}

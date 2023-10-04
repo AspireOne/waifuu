@@ -22,8 +22,10 @@ const tabs = [
 
 const ChatSelectTabs = ({
   onSelect,
+  isLoading,
 }: {
   onSelect: (data: BotMode) => void;
+  isLoading: boolean;
 }) => {
   // TODO: FIX - Not working on firefox devtools,
   return (
@@ -42,6 +44,7 @@ const ChatSelectTabs = ({
                 <CardBody>{tab.description}</CardBody>
 
                 <Button
+                  isLoading={isLoading}
                   color="primary"
                   onClick={() => onSelect(tab.key)}
                   variant="solid"
