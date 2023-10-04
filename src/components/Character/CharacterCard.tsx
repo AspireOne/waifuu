@@ -1,17 +1,17 @@
 import { Bot, BotMode } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { makeDownloadPath } from "~/utils/paths";
+import paths, { makeDownloadPath } from "~/utils/paths";
 
 type CharacterCardProps = {
   bot: Bot;
-  chatType?: BotMode;
+  chatId?: string;
 };
 
-const CharacterCard = ({ bot, chatType }: CharacterCardProps) => {
+const CharacterCard = ({ bot, chatId }: CharacterCardProps) => {
   return (
     <Link
-      href={`/character/${bot.id}/${chatType}`}
+      href={paths.botChat(chatId ?? "", bot.id)}
       className="w-fit rounded-lg border-1 border-gray-500 p-3"
     >
       <Image

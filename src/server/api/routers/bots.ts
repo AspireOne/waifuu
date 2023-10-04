@@ -93,7 +93,7 @@ export const botsRouter = createTRPCRouter({
 
       return chats.map((chat) => {
         return {
-          mode: chat.botMode,
+          chatId: chat.id,
           ...chat.bot,
         };
       });

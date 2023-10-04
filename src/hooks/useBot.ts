@@ -20,14 +20,15 @@ const useBot = (
     if (!enabled) return;
 
     // If the bot does not exist, redirect to discover page.
-    if (!bot.isLoading && !bot.data) {
-      router.replace(paths.discover);
-    }
+    // TODO: Make this work
+    // if (!bot.isLoading && !bot.data) {
+    //   router.replace(paths.discover);
+    // }
 
-    // If mode does not exist, redirect to the bot main menu.
-    if (!Object.values(BotMode).includes(mode as BotMode)) {
-      router.replace(paths.botChatMainMenu(botId!));
-    }
+    // // If mode does not exist, redirect to the bot main menu.
+    // if (!Object.values(BotMode).includes(mode as BotMode)) {
+    //   router.replace(paths.botChatMainMenu(botId!));
+    // }
   }, [mode, bot.isLoading, bot.data, botId, router]);
 
   return bot;

@@ -72,7 +72,7 @@ const Discover = () => {
 
         <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
           {conversationBots.data?.map((bot) => {
-            return <CharacterCard chatType={bot.mode} bot={bot} />;
+            return <CharacterCard chatId={bot.chatId} bot={bot} />;
           })}
         </div>
       </div>

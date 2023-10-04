@@ -9,8 +9,7 @@ export default {
   profile: "/profile",
   botChatMainMenu: (botId: string) => `/character/${botId}`,
   userProfile: (username: string) => `/user/${username}`,
-  botChat: (botId: string, botMode: BotMode) =>
-    `/character/${botId}/${botMode}`, // todo
+  botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,
 };
 
 export function addQueryParams(

@@ -19,10 +19,13 @@ import { makeDownloadPath } from "~/utils/paths";
 const BotChat = () => {
   const router = useRouter();
 
-  const chatId = router.query["chatId"] as string;
+  const path = router.asPath.split("/");
+  const chatId = path[path.length - 2] as string;
+  const botId = path[path.length - 1] as string;
+
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
-  const { data: bot } = useBot("", mode, router.isReady);
+  const { data: bot } = useBot(botId, mode, router.isReady);
   const chat = useBotChat(chatId, true);
 
   function handleScrollChange() {
