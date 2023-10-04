@@ -59,6 +59,15 @@ model User {
   BotDislikes      BotDislike[]
   BotShares        BotShares[]
   RRAvailableUsers RRChatQueue[]
+  Assets           Asset[]
+}
+
+model Asset {
+  id       String   @id @unique
+  authorId String
+  author   User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // Contains mapping of moods to their respective images.

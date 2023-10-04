@@ -10,11 +10,13 @@ type Response = {
 type FileUploadProps = {
   structure: "CIRCLE" | "SQUARE";
   onSuccess: (data: Response) => void;
+  onFileRemove: () => void;
   onError: (data: unknown) => void;
 };
 
 export const FileUpload = ({
   structure,
+  onFileRemove,
   onSuccess,
   onError,
 }: FileUploadProps) => {
@@ -36,7 +38,7 @@ export const FileUpload = ({
           },
         },
       }}
-      onupdatefiles={() => {}}
+      onremovefile={onFileRemove}
       allowMultiple={false}
       stylePanelAspectRatio="1:1"
       name="files"

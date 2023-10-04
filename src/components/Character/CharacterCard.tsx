@@ -1,6 +1,11 @@
+import { Bot } from "@prisma/client";
 import Image from "next/image";
 
-const CharacterCard = () => {
+type CharacterCardProps = {
+  bot: Bot;
+};
+
+const CharacterCard = ({ bot }: CharacterCardProps) => {
   return (
     <div className="w-full rounded-lg border-1 border-gray-500 p-3">
       <Image
@@ -17,8 +22,8 @@ const CharacterCard = () => {
         width={300}
         height={350}
       />
-      <h1 className="text-xl text-white">Fauna</h1>
-      <p className="text-gray-300">Fauna is very submissive waifu</p>
+      <h1 className="text-xl text-white">{bot.name}</h1>
+      <p className="text-gray-300">{bot.description}</p>
     </div>
   );
 };

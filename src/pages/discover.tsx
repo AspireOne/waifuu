@@ -5,8 +5,11 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaCompass, FaTag } from "react-icons/fa";
 import Page from "~/components/Page";
 import { CharacterCard } from "~/components/Character/CharacterCard";
+import { api } from "~/utils/api";
 
 const Discover = () => {
+  const bots = api.bots.getAllBots.useQuery();
+
   return (
     <Page metaTitle="Discover Characters" showMobileNav header={{ back: null }}>
       <div className="hidden h-[350px] overflow-hidden sm:block">
@@ -64,14 +67,9 @@ const Discover = () => {
         </div>
 
         <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
+          {bots.data?.map(bot => {
+            return (<CharacterCard bot={bot} />)
+          })}
         </div>
       </div>
 
@@ -111,14 +109,14 @@ const Discover = () => {
         </div>
 
         <div className="flex justify-center w-full flex-wrap gap-5">
+          {/* <CharacterCard />
           <CharacterCard />
           <CharacterCard />
           <CharacterCard />
           <CharacterCard />
           <CharacterCard />
           <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
+          <CharacterCard /> */}
         </div>
       </div>
     </Page>

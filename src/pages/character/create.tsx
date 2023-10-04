@@ -40,7 +40,7 @@ const CreateChatPage = () => {
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
       Router.push(`/character/${data.id}/create`);
-    }
+    },
   });
 
   const { register, handleSubmit } = useForm<CreateInput>();
@@ -49,21 +49,31 @@ const CreateChatPage = () => {
       ...data,
       nsfw: data.nsfw ?? false,
       avatar,
-      cover
+      cover,
     });
   };
 
-  const AvatarUpload = useMemo(() => FileUpload({
-    onSuccess: (data) => setAvatar(data.message[0]?.id),
-    onError: () => setAvatar(undefined),
-    structure: "CIRCLE"
-  }), []);
+  const AvatarUpload = useMemo(
+    () =>
+      FileUpload({
+        onSuccess: (data) => setAvatar(data.message[0]?.id),
+        onError: () => setAvatar(undefined),
+        onFileRemove: () => {},
+        structure: "CIRCLE",
+      }),
+    [],
+  );
 
-  const CoverUpload = useMemo(() => FileUpload({
-    onSuccess: (data) => setCover(data.message[0]?.id),
-    onError: () => setCover(undefined),
-    structure: "SQUARE"
-  }), []); 
+  const CoverUpload = useMemo(
+    () =>
+      FileUpload({
+        onSuccess: (data) => setCover(data.message[0]?.id),
+        onError: () => setCover(undefined),
+        onFileRemove: () => {},
+        structure: "SQUARE",
+      }),
+    [],
+  );
 
   return (
     <Page metaTitle="Create a new character">

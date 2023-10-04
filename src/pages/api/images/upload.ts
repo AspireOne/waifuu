@@ -6,6 +6,7 @@ import * as minio from 'minio';
 import { env } from '~/server/env';
 import generateUUID from '~/utils/utils';
 import { getSession } from 'next-auth/react';
+import { prisma } from '~/server/lib/db';
 
 type ProcessedFiles = Array<[string, formidable.File]>;
 type ResultData = {
@@ -78,15 +79,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const uuid = generateUUID();
 
             const tempPath = file[1].filepath;
-            await fs.rename(tempPath, targetPath + file[1].originalFilename);
+            const targetFilePath = targetPath + file[1].originalFilename;
 
-            MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, uuid, targetPath + file[1].originalFilename);
+            await fs.rename(tempPath, targetFilePath);
+
+            MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, uuid, targetFilePath);
 
             result.push({
                 fileName: file[1].originalFilename,
                 id: uuid
             });
+
+            await fs.unlink(targetFilePath);
         }
+
+        await prisma.asset.createMany({
+            data: result.map(item => ({
+                id: item.id,
+                authorId: session.user.id
+            }))
+        });
 
         resultBody = {
             status: ResponseCode.OK,
