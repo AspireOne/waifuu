@@ -3,6 +3,7 @@ import { Button } from "@nextui-org/react";
 import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
+import { UserDropdown } from "./User/UserDropdown";
 
 export type HeaderProps = {
   /** Null for no back button, "last-page" for the last opened page, and string for a certain path. */
@@ -47,6 +48,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
         <h1 className={"my-auto mx-auto text-center title-lg"}>
           {props.children}
         </h1>
+        <UserDropdown />
       </div>
     </div>
   );

@@ -26,6 +26,7 @@ export const botsRouter = createTRPCRouter({
       z
         .object({
           sourceFilter: z.nativeEnum(BotSource).nullish(),
+          textFilter: z.string().nullish(),
           limit: z.number().min(1).nullish(),
         })
         .optional(),
@@ -36,6 +37,22 @@ export const botsRouter = createTRPCRouter({
         where: {
           visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
+          ...(input?.textFilter && {
+            OR: [
+              {
+                name: {
+                  contains: input?.textFilter ?? undefined,
+                  mode: "insensitive",
+                },
+              },
+              {
+                description: {
+                  contains: input?.textFilter ?? undefined,
+                  mode: "insensitive",
+                },
+              },
+            ],
+          }),
         },
       });
     }),
@@ -94,6 +111,7 @@ export const botsRouter = createTRPCRouter({
       return chats.map((chat) => {
         return {
           chatId: chat.id,
+          chatType: chat.botMode,
           ...chat.bot,
         };
       });

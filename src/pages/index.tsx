@@ -67,9 +67,7 @@ export default function LandingPage() {
         <div>
           <h3 className="text-2xl font-bold text-left">Characters</h3>
 
-          <div className="w-1/2 w-fit mx-auto flex flex-wrap">
-            <CharacterCard />
-          </div>
+          <div className="w-1/2 w-fit mx-auto flex flex-wrap">character</div>
         </div>
       </div>
       <Link href={"/home"}>Test link to go to homepage</Link>

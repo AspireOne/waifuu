@@ -1,18 +1,46 @@
-import { Button, Chip, Input } from "@nextui-org/react";
+import { Button, Chip, Input, Select, SelectItem } from "@nextui-org/react";
 import Image from "next/image";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaCompass } from "react-icons/fa";
 import { BiTrendingUp } from "react-icons/bi";
 import Page from "~/components/Page";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import { api } from "~/utils/api";
+import { useForm } from "react-hook-form";
+import { BotSource } from "@prisma/client";
+import { useEffect, useState } from "react";
+
+type SearchType = {
+  textFilter?: string;
+  sourceFilter?: BotSource;
+};
 
 const Discover = () => {
-  const bots = api.bots.getAllBots.useQuery();
+  const [searchData, setSearchData] = useState<SearchType>({
+    textFilter: undefined,
+  });
+
+  const bots = api.bots.getAllBots.useQuery(searchData);
   const conversationBots = api.bots.getAllConversationBots.useQuery({
     limit: 5,
   });
+
+  const { register, watch } = useForm<{
+    textFilter?: string;
+    sourceFilter?: BotSource;
+  }>();
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+
+      setSearchData({
+        textFilter: value.textFilter,
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <Page metaTitle="Discover Characters" showMobileNav header={{ back: null }}>
@@ -72,7 +100,13 @@ const Discover = () => {
 
         <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
           {conversationBots.data?.map((bot) => {
-            return <CharacterCard chatId={bot.chatId} bot={bot} />;
+            return (
+              <CharacterCard
+                chatType={bot.chatType}
+                chatId={bot.chatId}
+                bot={bot}
+              />
+            );
           })}
         </div>
       </div>
@@ -84,15 +118,25 @@ const Discover = () => {
           </h3>
         </div>
 
-        <div className="mb-5 flex flex-row items-center gap-4">
-          <div className="flex flex-row gap-2">
-            <FaMagnifyingGlass color="white" fontSize={20} />
-            <p className="text-white">Search</p>
+        <form className="mb-5 flex flex-col items-center gap-4">
+          <div className="flex flex-col w-full gap-1">
+            <Input
+              {...register("textFilter")}
+              label="Search by name"
+              placeholder="Enter your search term..."
+              className="flex-1 rounded-lg text-white"
+              type="text"
+            />
           </div>
-          <Input className="flex-1 rounded-lg text-white" type="text" />
-        </div>
 
-        <div className="flex justify-center w-full flex-wrap gap-5">
+          {/** Implement in future */}
+          {/* <Select label="Bot visibility" {...register('sourceFilter')}>
+            <SelectItem key={BotSource.OFFICIAL} value={BotSource.OFFICIAL}>Official</SelectItem>
+            <SelectItem key={BotSource.COMMUNITY} value={BotSource.COMMUNITY}>Community</SelectItem>
+          </Select> */}
+        </form>
+
+        <div className="flex w-full flex-wrap gap-5">
           {bots.data?.map((bot) => {
             return <CharacterCard bot={bot} />;
           })}
