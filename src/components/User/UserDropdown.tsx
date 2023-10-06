@@ -25,35 +25,36 @@ export const UserDropdown = () => {
   };
 
   return (
-    <Dropdown placement="bottom-end">
-      <DropdownTrigger>
-        <Avatar
-          isBordered
-          as="button"
-          className="transition-transform"
-          color="secondary"
-          name={data?.user.name ?? "Loading..."}
-          size="sm"
-          src={data?.user.image}
-        />
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2">
-          <p className="font-semibold">Signed in as</p>
-          <p className="font-semibold">{data?.user.email}</p>
-        </DropdownItem>
-        <DropdownItem onClick={toggleSettingsOpen} key="settings">
-          My Settings
-        </DropdownItem>
-        <DropdownItem onClick={() => signOut()} key="logout" color="danger">
-          Log Out
-        </DropdownItem>
-      </DropdownMenu>
+    <>
+      <Dropdown placement="bottom-end">
+        <DropdownTrigger>
+          <Avatar
+            isBordered
+            as="button"
+            className="transition-transform mr-4 mt-1"
+            name={data?.user.name ?? "Loading..."}
+            size="sm"
+            src={data?.user.image}
+          />
+        </DropdownTrigger>
+        <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownItem key="profile" className="h-14 gap-2">
+            <p className="font-semibold">Signed in as</p>
+            <p className="font-semibold">{data?.user.email}</p>
+          </DropdownItem>
+          <DropdownItem onClick={toggleSettingsOpen} key="settings">
+            My Settings
+          </DropdownItem>
+          <DropdownItem onClick={() => signOut()} key="logout" color="danger">
+            Log Out
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
 
       <UserSettingsDialog
         isOpen={isSettingsOpen}
         onOpenChange={toggleSettingsOpen}
       />
-    </Dropdown>
+    </>
   );
 };

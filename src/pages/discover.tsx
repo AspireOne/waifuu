@@ -9,6 +9,7 @@ import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import { BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 type SearchType = {
   textFilter?: string;
@@ -16,6 +17,8 @@ type SearchType = {
 };
 
 const Discover = () => {
+  const { data } = useSession();
+
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
   });
@@ -44,54 +47,27 @@ const Discover = () => {
 
   return (
     <Page metaTitle="Discover Characters" showMobileNav header={{ back: null }}>
-      <div className="hidden h-[350px] overflow-hidden sm:block">
-        <Image
-          alt="background"
-          loading="eager"
-          className="opacity-30"
-          src={"/assets/background.png"}
-          width={1920}
-          height={1080}
-        />
-        <div className="absolute left-0 top-4 flex h-[350px] w-full flex-row">
-          <div className="clear-both">
-            <BiChevronLeft
-              color="white"
-              fontSize={70}
-              className="mt-[150px] cursor-pointer"
-            />
-          </div>
+      <Image
+        alt="background"
+        loading="eager"
+        className="opacity-30 absolute z-10 top-10"
+        src={"/assets/background.png"}
+        width={1920}
+        height={1080}
+      />
 
-          <div className="align-center absolute mx-auto flex w-fit flex-row sm:relative">
-            <Image
-              alt="background"
-              loading="eager"
-              src={"/assets/character.png"}
-              className="h-[350px] w-[300px]"
-              width={1920}
-              height={1080}
-            />
-            <div className="mt-[50px] flex w-[400px] flex-col gap-4">
-              <h1 className="text-6xl font-extrabold text-white">Fauna</h1>
-              <p className="text-white">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt
-                iure recusandae sapiente repellat quasi tenetur!
-              </p>
-              <Button>Buy now</Button>
-            </div>
-          </div>
+      <div className="mx-auto z-20">
+        <div>
+          <h1 className="title-xl">👋</h1>
 
-          <div className="clear-both">
-            <BiChevronRight
-              color="white"
-              fontSize={70}
-              className="mt-[150px] cursor-pointer"
-            />
+          <div>
+            <h1 className="title-xl flex-wrap font-bold">
+              Hi, {data?.user.name}
+            </h1>
+            <p>Let's explore some new characters</p>
           </div>
         </div>
-      </div>
 
-      <div className="mx-auto p-5">
         <div className="mb-5 mt-7">
           <h3 className="flex flex-row gap-2 text-3xl text-white">
             <FaCompass /> Active chats

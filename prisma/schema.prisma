@@ -49,6 +49,8 @@ model User {
   image            String?
   username         String?       @unique
   bio              String?
+  about            String?
+  addressedAs      String?      @default("Senpai")
   accounts         Account[]
   Bot              Bot[]
   ChatMessage      ChatMessage[]
