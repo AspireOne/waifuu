@@ -16,7 +16,7 @@ const ChatMainMenu = () => {
 
   const createBotChat = api.bots.createBotChat.useMutation({
     onSuccess(data) {
-      router.push(paths.botChat(botId as string, data.botMode));
+      router.push(paths.botChat(data.id, data.botMode));
     },
   });
   const bot = api.bots.getBot.useQuery({ botId: botId as string });

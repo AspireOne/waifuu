@@ -105,6 +105,10 @@ model Bot {
   id          String       @id @default(cuid())
   name        String
   description String
+  characterName String
+  characterPersona String
+  characterDialogue String?
+  characterNsfw Boolean @default(false)
   avatar      String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
   cover       String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
   createdAt   DateTime     @default(now())
