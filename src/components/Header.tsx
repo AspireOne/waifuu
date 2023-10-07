@@ -14,7 +14,7 @@ export type HeaderProps = {
 
 /**
  * Unifies page headers. Contains a back button and page title.
- * Back button can be configured to either navigate to a path, navigate to the previous page ("last-page"),
+ * Back button can be configured to either navigate to a path, navigate to the previous page ("previous"),
  * or do nothing (null).
  */
 export default function Header(props: PropsWithChildren<HeaderProps>) {
