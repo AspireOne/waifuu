@@ -1,4 +1,5 @@
 import { BotMode } from "@prisma/client";
+import { apiBase } from "~/utils/constants";
 
 export default {
   index: "/",
@@ -33,5 +34,5 @@ export function normalizePath(path: string, keepSlash: boolean = true): string {
 }
 
 export function makeDownloadPath(id: string): string {
-  return `/api/images/download?id=${id}`;
+  return apiBase(`/api/images/download?id=${id}`);
 }
