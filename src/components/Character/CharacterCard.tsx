@@ -1,8 +1,8 @@
-import { Chip } from "@nextui-org/react";
+import { Card, CardBody, Chip, Image } from "@nextui-org/react";
 import { Bot, BotMode } from "@prisma/client";
-import Image from "next/image";
 import Link from "next/link";
 import paths, { makeDownloadPath } from "~/utils/paths";
+import { LargeText } from "../shared/LargeText";
 
 type CharacterCardProps = {
   bot: Bot;
@@ -12,30 +12,36 @@ type CharacterCardProps = {
 
 const CharacterCard = ({ bot, chatId, chatType }: CharacterCardProps) => {
   return (
-    <Link
-      href={paths.botChat(chatId ?? "", bot.id)}
-      className="w-fit rounded-lg border-1 border-gray-500 p-3"
-    >
-      <div>
-        {chatType ? (
-          <Chip className="z-30 relative top-1 left-1 bg-opacity-70">
-            {chatType}
-          </Chip>
-        ) : null}
-        <Image
-          src={makeDownloadPath(bot.avatar!)}
-          alt="character"
-          className={`opacity-100 rounded-lg w-full ${
-            chatType ? "mt-[-27px]" : null
-          } h-28 object-cover`}
-          width={100}
-          height={100}
-        />
-      </div>
+    <Card>
+      <Link href={paths.botChat(chatId ?? "", bot.id)}>
+        <div>
+          <Image
+            removeWrapper
+            src={makeDownloadPath(bot.avatar!)}
+            alt="character"
+            className={`h-[100px] w-full object-cover z-0 mx-auto rounded-lg bg-gray-100`}
+            width={100}
+            height={100}
+          />
+        </div>
 
-      <h1 className="text-xl text-white mt-1">{bot.name}</h1>
-      <p className="text-gray-300 table w-[120px] text-sm">{bot.description}</p>
-    </Link>
+        <CardBody className="p-2">
+          <b className="text-md text-white flex-wrap w-[150px] text-center mx-auto">
+            {bot.name}
+          </b>
+          {!chatType && (
+            <LargeText
+              className="table text-center w-[150px] text-sm mt-2"
+              content={bot.description}
+              maxLength={35}
+            />
+          )}
+          {chatType ? (
+            <Chip className="bg-opacity-70 w-fit mt-2 mx-auto">{chatType}</Chip>
+          ) : null}
+        </CardBody>
+      </Link>
+    </Card>
   );
 };
 
