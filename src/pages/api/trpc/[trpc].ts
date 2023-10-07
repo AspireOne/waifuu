@@ -1,7 +1,7 @@
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 import { appRouter } from "~/server/api/root";
 import { createTRPCContext } from "~/server/api/trpc";
-import handlerWithCors from "~/pages/api/handlerWithCors";
+import metaHandler from "~/pages/api/metaHandler";
 
 // export API handler
 const nextApiHandler = createNextApiHandler({
@@ -17,4 +17,4 @@ const nextApiHandler = createNextApiHandler({
       : undefined,
 });
 
-export default handlerWithCors(nextApiHandler);
+export default metaHandler.public(nextApiHandler);

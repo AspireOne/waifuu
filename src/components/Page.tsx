@@ -2,25 +2,31 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { PropsWithChildren, useEffect } from "react";
 import PageHead from "~/components/PageHead";
 import { twMerge } from "tailwind-merge";
-import { useSession } from "next-auth/react";
 import SignInModal from "~/components/SignInModal";
 import { BottomNavbar } from "~/components/BottomNavbar";
 import Header, { HeaderProps } from "~/components/Header";
+import useSession from "~/hooks/useSession";
+import { useRouter } from "next/router";
+import paths, { normalizePath } from "~/utils/paths";
 
 function Page(
   props: PropsWithChildren<{
     className?: string;
+    /** Will be shown in the browser title bar. */
     metaTitle: string;
     description?: string;
+    /** Default: false */
     unprotected?: boolean;
-    showMobileNav?: boolean;
+    /** Default: false */
+    showActionBar?: boolean;
+    /** Default enabled: true */
     header?: HeaderProps & {
       enabled?: boolean;
     };
   }>,
 ) {
   const unprotected = props.unprotected ?? false;
-  const showBottomNav = props.showMobileNav ?? false;
+  const showActionBar = props.showActionBar ?? false;
   const showHeader = props.header?.enabled ?? true;
 
   return (
@@ -37,14 +43,14 @@ function Page(
 
       <PageWrapper
         unprotected={unprotected}
-        showingBottomNav={showBottomNav}
+        showingBottomNav={showActionBar}
         showingHeader={showHeader}
         className={twMerge("flex-1", props.className)}
       >
         {props.children}
       </PageWrapper>
 
-      {showBottomNav && <BottomNavbar />}
+      {showActionBar && <BottomNavbar />}
     </div>
   );
 }
@@ -57,10 +63,16 @@ function PageWrapper(
     showingHeader: boolean;
   }>,
 ) {
-  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { user, status } = useSession();
 
   const paddingBottom = props.showingBottomNav ? "pb-20" : "pb-4";
   const paddingTop = props.showingHeader ? "pt-20" : "pt-4";
+
+  if (!props.unprotected && status === "unauthenticated") {
+    const currPath = normalizePath(router.pathname);
+    router.push(paths.login(currPath));
+  }
 
   return (
     <AnimatePresence>
@@ -86,9 +98,6 @@ function PageWrapper(
             props.className,
           )}
         >
-          {!props.unprotected && status === "unauthenticated" && (
-            <SignInModal />
-          )}
           {props.children}
         </div>
       </motion.section>

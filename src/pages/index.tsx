@@ -5,25 +5,16 @@ import Page from "~/components/Page";
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
 import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
+import useSession from "~/hooks/useSession";
 
 export default function LandingPage() {
-  const health = api.general.health.useQuery();
-  const protectedHealth = api.general.protectedHealth.useQuery();
-  const dbHealth = api.general.dbHealth.useQuery();
-  const session = useSession();
-
-  useEffect(() => {
-    console.log("Session data changed: ", JSON.stringify(session.data));
-  }, [session.data]);
-
   // Todo: meta description.
   return (
     <Page
       metaTitle={"Companion"}
       unprotected
       header={{ enabled: false }}
-      showMobileNav={false}
+      showActionBar={false}
     >
       <div className="z-10">
         <Image
@@ -54,7 +45,6 @@ export default function LandingPage() {
             <li>
               📚 <b>Diversity</b> - Go on adventure, roleplay or simply chat
               with characters
-              <Link href={"/home"}>Test link to go to homepage</Link>
             </li>
             <li>
               🧠 <b>Memory</b> - Characters remember you and will not forget
@@ -62,28 +52,11 @@ export default function LandingPage() {
             </li>
           </ul>
         </div>
-        <Link href={"/home"}>Test link to go to homepage</Link>
-
         <div>
           <h3 className="text-2xl font-bold text-left">Characters</h3>
-
           <div className="w-1/2 w-fit mx-auto flex flex-wrap">character</div>
         </div>
       </div>
-      <Link href={"/home"}>Test link to go to homepage</Link>
-      <p>Backend API Health: {health.isLoading ? "Loading..." : health.data}</p>
-      <p>DB Health: {dbHealth.isLoading ? "Loading..." : dbHealth.data}</p>
-      <p>
-        Protected backend API Health:{" "}
-        {protectedHealth.isLoading ? "Loading..." : protectedHealth.data}
-      </p>
-      <p>
-        Session:{" "}
-        {session.status === "loading"
-          ? "Loading..."
-          : JSON.stringify(session.data) ?? "undefined"}
-      </p>
-      <Link href={"/home"}>Test link to go to homepage</Link>
     </Page>
   );
 }

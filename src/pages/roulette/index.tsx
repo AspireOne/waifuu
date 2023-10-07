@@ -17,7 +17,7 @@ export default function RRIndex() {
     <Page
       metaTitle={"Character Roulette"}
       header={{ back: null }}
-      showMobileNav
+      showActionBar
     >
       <Card>
         <CardBody>

@@ -66,7 +66,7 @@ function BotList(props: { bots: Bot[] }) {
             <div className={"flex flex-row gap-3"}>
               <img
                 className={"aspect-square h-16 w-16 rounded-xl"}
-                src={bot.img!}
+                src={bot.avatar!}
                 alt={bot.name}
               />
               <div className={"flex max-w-xs flex-col"}>

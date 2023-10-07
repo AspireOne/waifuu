@@ -15,7 +15,7 @@ import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import { BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import useSession from "~/hooks/useSession";
 
 type SearchType = {
   textFilter?: string;
@@ -23,7 +23,7 @@ type SearchType = {
 };
 
 const Discover = () => {
-  const { data } = useSession();
+  const { user } = useSession();
 
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
@@ -61,7 +61,7 @@ const Discover = () => {
   }, [watch]);
 
   return (
-    <Page metaTitle="Discover Characters" showMobileNav header={{ back: null }}>
+    <Page metaTitle="Discover Characters" showActionBar header={{ back: null }}>
       <div className="relative">
         <Image
           alt="background"
@@ -77,9 +77,7 @@ const Discover = () => {
             <h1 className="title-xl">👋</h1>
 
             <div>
-              <h1 className="title-xl flex-wrap font-bold">
-                Hi, {data?.user.name}
-              </h1>
+              <h1 className="title-xl flex-wrap font-bold">Hi, {user?.name}</h1>
               <p>Let's explore some new characters</p>
             </div>
           </div>

@@ -3,8 +3,78 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import Page from "~/components/Page";
+import { api } from "~/utils/api";
+import { useRouter } from "next/router";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { toast } from "react-toastify";
+import paths from "~/utils/paths";
+import useSession from "~/hooks/useSession";
+import { useEffect } from "react";
 
 const Login = () => {
+  const router = useRouter();
+  const session = useSession();
+  const redirect = router.query.redirect;
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.replace(paths.home);
+    }
+  }, [session.status]);
+
+  const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
+    onSuccess: async (data) => {
+      console.log("Successfully logged in with Google!", data);
+
+      router.replace((redirect as string) || paths.home);
+      session.refetch();
+    },
+    onError: (error) => {
+      console.error("Error logging in with Google!", error);
+    },
+  });
+
+  // NOTE: APPLE SIGN IN must have "skipNativeAuth = true" passed.
+  // https://github.com/capawesome-team/capacitor-firebase/blob/main/packages/authentication/docs/firebase-js-sdk.md
+  async function handleGoogleSignIn() {
+    console.log("Signing in using google...");
+    try {
+      await FirebaseAuthentication.signInWithGoogle({
+        scopes: ["email", "profile"],
+        mode: "popup",
+      });
+    } catch (e) {
+      console.error("Error signing in using Google!", e);
+      toast("Error signing in with Google!", { type: "error" });
+      return;
+    }
+
+    console.log(
+      "Signed in using google, getting id token and contacting backend...",
+    );
+    const idToken = await FirebaseAuthentication.getIdToken({
+      forceRefresh: true,
+    });
+
+    const csrfToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrfToken"))
+      ?.split("=")[1];
+
+    if (!idToken.token) {
+      console.error(
+        "Error getting ID token from Google! This should not happen!",
+        idToken,
+      );
+      return;
+    }
+
+    googleAuthMutation.mutate({
+      idToken: idToken.token,
+      csrfToken: csrfToken,
+    });
+  }
+
   return (
     <Page metaTitle={"Log in"} unprotected>
       <Image
@@ -32,7 +102,11 @@ const Login = () => {
         />
 
         <Card className="flex-column flex gap-3 p-2">
-          <Button size="lg" startContent={<FcGoogle />}>
+          <Button
+            size="lg"
+            startContent={<FcGoogle />}
+            onClick={handleGoogleSignIn}
+          >
             Login with Google
           </Button>
           <Button size="lg" startContent={<AiFillFacebook />}>

@@ -83,7 +83,7 @@ export const botsRouter = createTRPCRouter({
         data: {
           botId: input.botId,
           botMode: input.botMode,
-          userId: ctx.session.user.id,
+          userId: ctx.user.id,
         },
       });
     }),
@@ -101,7 +101,7 @@ export const botsRouter = createTRPCRouter({
       const chats = await ctx.prisma.botChat.findMany({
         take: input?.limit || undefined,
         where: {
-          userId: ctx.session.user.id,
+          userId: ctx.user.id,
         },
         include: {
           bot: true,
@@ -132,14 +132,14 @@ export const botsRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       const visibility =
-        !input?.userId || input.userId === ctx.session.user.id
+        !input?.userId || input.userId === ctx.user.id
           ? undefined
           : Visibility.PUBLIC;
 
       return await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         where: {
-          creatorId: input?.userId ?? ctx.session.user.id,
+          creatorId: input?.userId ?? ctx.user.id,
           visibility: visibility,
         },
       });
@@ -188,7 +188,7 @@ export const botsRouter = createTRPCRouter({
           name: input.title,
           description: input.description,
           visibility: input.visibility,
-          creatorId: ctx.session.user.id,
+          creatorId: ctx.user.id,
           source: BotSource.COMMUNITY,
           avatar: input.avatar,
           cover: input.cover,

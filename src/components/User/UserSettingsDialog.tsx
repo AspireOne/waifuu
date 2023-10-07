@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
+import useSession from "~/hooks/useSession";
 
 type UserSettingsDialogProps = {
   isOpen: boolean;
@@ -25,7 +26,9 @@ export const UserSettingsDialog = ({
   isOpen,
   onOpenChange,
 }: UserSettingsDialogProps) => {
-  const user = api.users.getSelf.useQuery();
+  const user = api.users.getSelf.useQuery({
+    includeBots: false,
+  });
 
   const selfUpdate = api.users.updateSelf.useMutation({
     onSuccess() {

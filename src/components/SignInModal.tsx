@@ -1,5 +1,4 @@
 import { Modal, ModalBody, ModalContent, ModalHeader } from "@nextui-org/modal";
-import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@nextui-org/react";
 
@@ -12,11 +11,14 @@ export default function SignInModal(props: {}) {
       isDismissable={false}
     >
       <ModalContent>
-        <ModalHeader>Please log in before continuing</ModalHeader>
+        <ModalHeader className={"text-center"}>
+          Please log in before continuing
+        </ModalHeader>
         <ModalBody>
           <Button
             startContent={<FcGoogle size={20} />}
-            onClick={() => signIn("google")}
+            // TODO: Implement this.
+            //onClick={() => signIn("google")}
             className={
               "rounded-md border border-zinc-500 bg-transparent px-3 py-2 " +
               "mx-auto my-6"

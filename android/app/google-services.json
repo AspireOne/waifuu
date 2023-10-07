@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "24288336305",
+    "project_id": "companion-400217",
+    "storage_bucket": "companion-400217.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24288336305:android:4e6a185b317fde03d80590",
+        "android_client_info": {
+          "package_name": "com.gmail.matejpesl1.companion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24288336305-22vh5fsoro2v96f0r1r9c5i1cr6m6l00.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.matejpesl1.companion",
+            "certificate_hash": "f8873548bb6f4a4f28ffb8ad1737cb1f44bf4736"
+          }
+        },
+        {
+          "client_id": "24288336305-d3uapeiok2rvddp94nq1vgvffn316do8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gmail.matejpesl1.companion",
+            "certificate_hash": "216e8984f4e26131ae776617e3c7972a2a187fb0"
+          }
+        },
+        {
+          "client_id": "24288336305-4508p4kdsovvoet4lgbi4kqfnako54a9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATsc6rj3eQkfmUuM5MVlmXVXtl4nasBcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24288336305-4508p4kdsovvoet4lgbi4kqfnako54a9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "24288336305-2l0mt6bhbbjts6bb3q43a0lha63m6geb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gmail.matejpesl1.companion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
