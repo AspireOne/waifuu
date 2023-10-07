@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { User } from ".prisma/client";
+import { User } from "@prisma/client";
 import { getUser } from "~/pages/api/utils";
 
 export type MetaHandlerContext = {

@@ -15,7 +15,7 @@ import { ZodError } from "zod";
 import { prisma } from "~/server/lib/db";
 import { OpenApiMeta } from "trpc-openapi";
 import { NextApiRequest, NextApiResponse } from "next";
-import { User } from ".prisma/client";
+import { User } from "@prisma/client";
 import { getUser } from "~/pages/api/utils";
 
 /**
