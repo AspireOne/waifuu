@@ -1,4 +1,11 @@
-import { Button, Chip, Input, Select, SelectItem } from "@nextui-org/react";
+import {
+  Button,
+  Chip,
+  Input,
+  MenuItem,
+  Select,
+  Switch,
+} from "@nextui-org/react";
 import Image from "next/image";
 import { FaCompass } from "react-icons/fa";
 import { BiTrendingUp } from "react-icons/bi";
@@ -21,6 +28,15 @@ const Discover = () => {
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
   });
+  const tags = useState<string[]>([]);
+  const onTagToggle = (value: string): void => {
+    if (tags[0].includes(value)) {
+      tags[1](tags[0].filter((tag) => tag !== value));
+    } else {
+      tags[1]([...tags[0], value]);
+    }
+  };
+  const isTagToggled = (value: string): boolean => tags[0].includes(value);
 
   const bots = api.bots.getAllBots.useQuery(searchData);
   const conversationBots = api.bots.getAllConversationBots.useQuery({
@@ -46,73 +62,125 @@ const Discover = () => {
 
   return (
     <Page metaTitle="Discover Characters" showActionBar header={{ back: null }}>
-      <Image
-        alt="background"
-        loading="eager"
-        className="opacity-30 absolute z-10 top-10"
-        src={"/assets/background.png"}
-        width={1920}
-        height={1080}
-      />
+      <div className="relative">
+        <Image
+          alt="background"
+          loading="eager"
+          className="opacity-30 h-[140px] mt-[-20px] object-cover z-10"
+          src={"/assets/background.png"}
+          width={1920}
+          height={1080}
+        />
 
-      <div className="mx-auto z-20">
-        <div>
-          <h1 className="title-xl">👋</h1>
-
+        <div className="mx-auto mt-[-120px] z-20 relative">
           <div>
-            <h1 className="title-xl flex-wrap font-bold">Hi, {user?.name}</h1>
-            <p>Let's explore some new characters</p>
+            <h1 className="title-xl">👋</h1>
+
+            <div>
+              <h1 className="title-xl flex-wrap font-bold">Hi, {user?.name}</h1>
+              <p>Let's explore some new characters</p>
+            </div>
           </div>
-        </div>
-
-        <div className="mb-5 mt-7">
-          <h3 className="flex flex-row gap-2 text-3xl text-white">
-            <FaCompass /> Active chats
-          </h3>
-        </div>
-
-        <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
-          {conversationBots.data?.map((bot) => {
-            return (
-              <CharacterCard
-                chatType={bot.chatType}
-                chatId={bot.chatId}
-                bot={bot}
-              />
-            );
-          })}
         </div>
       </div>
 
-      <div className="mx-auto p-5">
-        <div className="mb-5 mt-7">
-          <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
-            <BiTrendingUp /> Popular bots
-          </h3>
-        </div>
+      <div className="w-full">
+        <div className="mx-auto mt-10">
+          <div className="mb-5 mt-7">
+            <h3 className="flex align-center font-bold flex-row gap-2 text-2xl text-white">
+              <FaCompass className="mt-1.5" />
+              <p>Active chats</p>
+            </h3>
 
-        <form className="mb-5 flex flex-col items-center gap-4">
-          <div className="flex flex-col w-full gap-1">
-            <Input
-              {...register("textFilter")}
-              label="Search by name"
-              placeholder="Enter your search term..."
-              className="flex-1 rounded-lg text-white"
-              type="text"
-            />
+            {conversationBots.data?.length === 0 && (
+              <p className="text-white mt-3">
+                You don't have any active chats yet. Start one now!
+              </p>
+            )}
+
+            <div className="flex w-full flex-row mt-3 gap-5 overflow-scroll overflow-x-visible">
+              {conversationBots.data?.map((bot) => {
+                return (
+                  <CharacterCard
+                    chatType={bot.chatType}
+                    chatId={bot.chatId}
+                    bot={bot}
+                  />
+                );
+              })}
+            </div>
           </div>
 
-          {/** Implement in future */}
-          {/* <Select label="Bot visibility" {...register('sourceFilter')}>
-            <SelectItem key={BotSource.OFFICIAL} value={BotSource.OFFICIAL}>Official</SelectItem>
-            <SelectItem key={BotSource.COMMUNITY} value={BotSource.COMMUNITY}>Community</SelectItem>
-          </Select> */}
-        </form>
+          <div className="mt-10 flex flex-row align-center">
+            <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
+              <BiTrendingUp className="mt-1.5" />
+              <p>Popular bots</p>
+            </h3>
 
-        <div className="flex w-full flex-wrap gap-5">
-          {bots.data?.map((bot) => {
-            return <CharacterCard bot={bot} />;
-          })}
+            <Switch className="w-fit mx-auto mr-4">NSFW</Switch>
+          </div>
+
+          <form className="mb-5 mt-1 flex flex-col items-center gap-4">
+            <div className="flex flex-col w-full gap-3">
+              <div className="flex flex-row gap-1 overflow-scroll overflow-scroll-y">
+                {[
+                  "All",
+                  "Anime",
+                  "Games",
+                  "Movies",
+                  "TV",
+                  "NSFW",
+                  "Nevim",
+                  "Submissive",
+                  "Dominant",
+                  "Fetish",
+                ].map((tag) => {
+                  return (
+                    <Chip
+                      variant={isTagToggled(tag) ? "solid" : "bordered"}
+                      key={tag}
+                      onClick={() => onTagToggle(tag)}
+                      className="bg-opacity-70 w-fit mt-2 mx-auto"
+                    >
+                      {tag}
+                    </Chip>
+                  );
+                })}
+              </div>
+
+              <Input
+                {...register("textFilter")}
+                label="Search by name"
+                placeholder="Enter your search term..."
+                className="flex-1 rounded-lg text-white"
+                type="text"
+              />
+
+              <Select label="Display community or official bots">
+                <MenuItem value={undefined}>All</MenuItem>
+                <MenuItem value={BotSource.COMMUNITY}>Community</MenuItem>
+                <MenuItem value={BotSource.OFFICIAL}>Official</MenuItem>
+              </Select>
+            </div>
+          </form>
+
+          <div className="flex w-full flex-wrap gap-5">
+            {bots.data?.length === 0 && (
+              <p className="text-white">
+                No bots found. Try changing your search term.
+              </p>
+            )}
+
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-fit mx-auto">
+              {bots.data?.map((bot) => {
+                return <CharacterCard bot={bot} />;
+              })}
+            </div>
+
+            <Button variant="solid" className="w-1/2 mx-auto mb-4">
+              Load more
+            </Button>
+          </div>
         </div>
       </div>
     </Page>
