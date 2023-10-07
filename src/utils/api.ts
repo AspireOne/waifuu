@@ -11,7 +11,7 @@ import superjson from "superjson";
 
 import { type AppRouter } from "~/server/api/root";
 import { Capacitor } from "@capacitor/core";
-import { getBaseServerUrl } from "~/utils/constants";
+import { apiBase } from "~/utils/constants";
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
@@ -51,7 +51,7 @@ export const api = createTRPCNext<AppRouter>({
             (opts.direction === "down" && opts.result instanceof Error),
         }),
         httpBatchLink({
-          url: `${getBaseServerUrl()}/api/trpc`,
+          url: apiBase("/api/trpc"),
           fetch(url, options) {
             return fetch(url, {
               ...options,

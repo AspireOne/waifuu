@@ -15,6 +15,7 @@ import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
 import React, { useEffect } from "react";
 import { makeDownloadPath } from "~/utils/paths";
 import useSession from "~/hooks/useSession";
+import { apiBase } from "~/utils/constants";
 
 const BotChat = () => {
   const router = useRouter();
@@ -43,7 +44,7 @@ const BotChat = () => {
       {/*TODO: Add background to bot.*/}
       <BackgroundImage src={undefined} />
       {/*TODO: Make character image only the png of the char.*/}
-      <CharacterImage src={"/api/images/download?id=" + bot?.avatar} />
+      <CharacterImage src={apiBase("/api/images/download?id=" + bot?.avatar)} />
       <ChatGradientOverlay />
 
       <ChatMessages

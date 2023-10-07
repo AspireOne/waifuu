@@ -1,19 +1,29 @@
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { CharacterCard } from "~/components/Character/CharacterCard";
+import React from "react";
 import Page from "~/components/Page";
-import Link from "next/link";
-import { Button } from "@nextui-org/react";
-import { api } from "~/utils/api";
-import useSession from "~/hooks/useSession";
+import { Capacitor } from "@capacitor/core";
+import Home from "~/pages/home";
+import { useRouter } from "next/router";
+import paths from "~/utils/paths";
 
-export default function LandingPage() {
+// If building for a native app, we don't want to show the landing page as the index screen.
+// So if we are building for a native app, we export Homepage instead.
+
+// prettier-ignore
+export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function LandingPage() {
+  const router = useRouter();
+  React.useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      // replace current path with /home without reloading and without adding a new entry to the history.
+      window.history.replaceState(null, document.title, paths.home);
+    }
+  }, []);
   // Todo: meta description.
   return (
     <Page
       metaTitle={"Companion"}
       unprotected
-      header={{ enabled: false }}
+      header={{enabled: false}}
       showActionBar={false}
     >
       <div className="z-10">

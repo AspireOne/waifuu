@@ -1,5 +1,5 @@
 import Pusher from "pusher-js";
-import { getBaseServerUrl } from "~/utils/constants";
+import { apiBase } from "~/utils/constants";
 
 const pusherClient =
   Pusher.instances.length > 0
@@ -11,14 +11,14 @@ const pusherClient =
         disableStats: true,
         enabledTransports: ["ws", "wss"],
         cluster: "EU",
-        authEndpoint: `${getBaseServerUrl()}/api/pusher/authenticate`,
+        authEndpoint: apiBase("/api/pusher/authenticate"),
         // @ts-ignore
         userAuthentication: {
-          endpoint: `${getBaseServerUrl()}/api/pusher/authenticate`,
+          endpoint: apiBase("/api/pusher/authenticate"),
         },
         // @ts-ignore
         channelAuthorization: {
-          endpoint: `${getBaseServerUrl()}/api/pusher/authorize`,
+          endpoint: apiBase("/api/pusher/authorize"),
         },
       });
 

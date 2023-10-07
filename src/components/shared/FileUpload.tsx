@@ -5,6 +5,7 @@ import FilepondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilepondPluginImageCrop from "filepond-plugin-image-crop";
 import FilepondPluginValidateFileType from "filepond-plugin-file-validate-size";
 import FilepondPluginValidateFileSize from "filepond-plugin-file-validate-size";
+import { apiBase } from "~/utils/constants";
 
 type Response = {
   status: string;
@@ -49,7 +50,7 @@ export const FileUpload = ({
       imageCropAspectRatio="1:1"
       server={{
         process: {
-          url: "/api/images/upload",
+          url: apiBase("/images/upload"),
           onload(data) {
             onSuccess(JSON.parse(data));
             return -1;

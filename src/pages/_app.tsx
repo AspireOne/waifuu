@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "filepond/dist/filepond.min.css";
 import "~/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { getBaseServerUrl } from "~/utils/constants";
 import { Capacitor } from "@capacitor/core";
 
 import { getApp, initializeApp } from "firebase/app";
