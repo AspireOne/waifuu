@@ -13,7 +13,7 @@ const Login = () => {
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: (data) => {
       console.log("Successfully logged in with Google!", data);
-      //router.reload(); // Reload so that session token from cookies is picked up.
+      router.reload(); // Reload so that session token from cookies is picked up.
     },
     onError: (error) => {
       console.error("Error logging in with Google!", error);
@@ -42,6 +42,11 @@ const Login = () => {
       forceRefresh: true,
     });
 
+    const csrfToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrfToken"))
+      ?.split("=")[1];
+
     if (!idToken.token) {
       console.error(
         "Error getting ID token from Google! This should not happen!",
@@ -52,6 +57,7 @@ const Login = () => {
 
     googleAuthMutation.mutate({
       idToken: idToken.token,
+      csrfToken: csrfToken,
     });
   }
 

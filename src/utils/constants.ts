@@ -8,7 +8,6 @@ export class Constants {
 // A wrapper for logging.
 export const getBaseServerUrl = () => {
   const url = _getBaseServerUrl();
-  console.log("Requested base server url:", url);
   return url;
 };
 

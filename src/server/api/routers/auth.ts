@@ -1,11 +1,25 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { z } from "zod";
-import { NextApiResponse } from "next";
-import admin from "firebase-admin";
 import { generateUniqueUsername } from "~/server/lib/usernameUtils";
-import initializeFirebaseApp from "~/server/lib/firebaseApp";
+import { DecodedIdToken } from "firebase-admin/auth";
+import { TRPCError } from "@trpc/server";
+import { NextApiResponse } from "next";
+import { PrismaClient } from "@prisma/client";
+import getServerFirebaseAuth from "~/server/lib/getServerFirebaseAuth";
 
 export const authRouter = createTRPCRouter({
+  logOut: protectedProcedure.mutation(async ({ ctx }) => {
+    // Remove the session cookie.
+    ctx.res?.setHeader(
+      "Set-Cookie",
+      `session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0`,
+    );
+    return undefined;
+  }),
   // Handles signIn from frontend's CapacitorGoogleAuth plugin in accordance with NextAuth.
   // Creates an user or updates their data.
   // TODO: Abstract this out for other OAuth providers? (Apple...)
@@ -13,55 +27,100 @@ export const authRouter = createTRPCRouter({
     .input(
       z.object({
         idToken: z.string(),
+        csrfToken: z.string().nullish(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const app = initializeFirebaseApp();
-
-      console.log("Getting user data...");
       // Get the user data.
-      const decodedIdToken = await admin
-        .auth(app!)
-        .verifyIdToken(input.idToken);
+      const decodedIdToken = await getServerFirebaseAuth().verifyIdToken(
+        input.idToken,
+      );
 
-      console.log("Checking if user exists...");
-      // Check if user already exists.
-      const exists = await ctx.prisma.user.findUnique({
-        where: {
-          id: decodedIdToken.uid,
-        },
-      });
+      await verifyRequest(
+        decodedIdToken.auth_time,
+        input.csrfToken,
+        ctx.req?.cookies["csrfToken"]!,
+      );
 
-      console.log("Generating username (if any)...");
-      const username = exists
-        ? await generateUniqueUsername(
-            decodedIdToken.name,
-            decodedIdToken.email!,
-          )
-        : null;
+      await upsertUser(ctx.prisma, decodedIdToken);
 
-      console.log("Upserting user...");
-      // Create or update the user.
-      ctx.prisma.user.upsert({
-        where: {
-          // Note: When using other providers, uid might not be present.
-          id: decodedIdToken.uid,
-        },
-        create: {
-          id: decodedIdToken.uid,
-          email: decodedIdToken.email,
-          name: decodedIdToken.name,
-          username: username!,
-          image: decodedIdToken.picture,
-        },
-        // Update all updatable fields.
-        update: {
-          name: decodedIdToken.name,
-          email: decodedIdToken.email ?? undefined,
-        },
-      });
+      await createSessionCookie(input.idToken, ctx.res!);
 
-      console.log("Successfully signed in! Returning...");
+      console.log("Successfully signed in with Firebase.");
       return undefined;
     }),
 });
+
+/**
+ * Creates a user if they don't exist.
+ * @param prisma
+ * @param decodedIdToken
+ */
+async function upsertUser(
+  prisma: PrismaClient,
+  decodedIdToken: DecodedIdToken,
+) {
+  // Check if user already exists.
+  const exists = await prisma.user.findUnique({
+    where: {
+      id: decodedIdToken.uid,
+    },
+  });
+
+  const username = exists
+    ? null
+    : await generateUniqueUsername(decodedIdToken.name, decodedIdToken.email!);
+
+  if (!exists) {
+    await prisma.user.create({
+      data: {
+        id: decodedIdToken.uid,
+        email: decodedIdToken.email,
+        name: decodedIdToken.name,
+        username: username!,
+        image: decodedIdToken.picture,
+      },
+    });
+  }
+}
+
+/**
+ * Verifies the request by checking the authentication time and CSRF tokens.
+ *
+ * @param {number} authTime - The authentication time in seconds.
+ * @param {string} [inputCsrf] - The input CSRF token.
+ * @param {string} [cookieCsrf] - The cookie CSRF token.
+ * @throws {TRPCError} When the authentication time is not recent or the CSRF tokens do not match.
+ */
+async function verifyRequest(
+  authTime: number,
+  inputCsrf?: string | null,
+  cookieCsrf?: string | null,
+) {
+  // Check if the user signed in recently.
+  if (authTime < new Date().getTime() / 1000 - 5 * 60) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Sign in must be recent.",
+    });
+  }
+
+  if (inputCsrf !== cookieCsrf) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "CSRF token mismatch.",
+    });
+  }
+}
+
+async function createSessionCookie(idToken: string, res: NextApiResponse) {
+  const cookie = await getServerFirebaseAuth().createSessionCookie(idToken, {
+    // 2 weeks.
+    expiresIn: 60 * 60 * 24 * 14 * 1000,
+  });
+
+  res.setHeader(
+    "Set-Cookie",
+    `session=${cookie}; Path=/; HttpOnly; Secure; SameSite=Strict`,
+  );
+}

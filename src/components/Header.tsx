@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { UserDropdown } from "./User/UserDropdown";
 
 export type HeaderProps = {
-  /** Null for no back button, "last-page" for the last opened page, and string for a certain path. */
+  /** Null for no back button, "previous" for the last opened page, and string for a certain path. Default: "previous" */
   back?: string | null | "previous";
   /** Triggered when the back button is clicked. Can be used for cleanups. */
   onBack?: () => void;

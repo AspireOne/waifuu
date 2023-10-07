@@ -39,6 +39,7 @@ const MyApp: AppType<{
       auth = getAuth();
     }
   }, []);
+
   return (
     <>
       <SkeletonTheme

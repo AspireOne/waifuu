@@ -6,14 +6,14 @@ import {
 import { z } from "zod";
 
 export const usersRouter = createTRPCRouter({
-  getSelf: protectedProcedure
+  getSelf: publicProcedure
     .input(
       z.object({
         includeBots: z.boolean().optional().default(false),
       }),
     )
     .query(async ({ ctx, input }) => {
-      return ctx.user;
+      return ctx.user || null;
     }),
 
   getPublic: publicProcedure

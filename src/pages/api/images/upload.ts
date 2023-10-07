@@ -5,8 +5,8 @@ import * as formidable from "formidable";
 import * as minio from "minio";
 import { env } from "~/server/env";
 import generateUUID from "~/utils/utils";
-import { getSession } from "next-auth/react";
 import { prisma } from "~/server/lib/db";
+import { getUser } from "~/pages/api/utils";
 
 type ProcessedFiles = Array<[string, formidable.File]>;
 type ResultData = {
@@ -36,8 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let status = 200;
   let resultBody: Response = { status: ResponseCode.OK, message: null };
 
-  const session = await getSession({ req });
-  if (!session) return res.status(401).send("Unauthorized");
+  const user = await getUser(req);
+  if (!user) return res.status(401).send("Unauthorized");
 
   const files = await new Promise<ProcessedFiles | undefined>(
     (resolve, reject) => {
@@ -98,7 +98,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await prisma.asset.createMany({
       data: result.map((item) => ({
         id: item.id,
-        authorId: session.user.id,
+        authorId: user.id,
       })),
     });
 

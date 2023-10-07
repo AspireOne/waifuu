@@ -1,7 +1,6 @@
 import { ChatMessage } from "~/components/chat/ChatMessage";
 import { Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import useBotChat, { Message } from "~/hooks/useBotChat";
 import { BotMode } from "@prisma/client";
 import Page from "~/components/Page";
@@ -15,6 +14,7 @@ import ChatInput from "~/components/chat/ChatInput";
 import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
 import React, { useEffect } from "react";
 import { makeDownloadPath } from "~/utils/paths";
+import useSession from "~/hooks/useSession";
 
 const BotChat = () => {
   const router = useRouter();
@@ -89,7 +89,7 @@ const ChatMessages = (props: {
   loadingHistory?: boolean;
   bot?: Bot;
 }) => {
-  const { data: session } = useSession();
+  const { user } = useSession();
   const lastMsgRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [scrollPosBeforeLoad, setScrollPosBeforeLoad] =
@@ -134,7 +134,7 @@ const ChatMessages = (props: {
     >
       {props.messages.map((message, _) => {
         const botName = props.bot!.name || "Them";
-        const userName = session?.user?.name || "You";
+        const userName = user?.name || "You";
         const isBot = message.role === "BOT";
 
         return (
@@ -146,7 +146,7 @@ const ChatMessages = (props: {
               name: isBot ? botName : userName,
               avatar: isBot
                 ? makeDownloadPath(props.bot?.avatar!)
-                : session?.user?.image,
+                : user?.image,
             }}
             message={message.content}
           />

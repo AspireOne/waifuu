@@ -8,7 +8,7 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
-import { useSession } from "next-auth/react";
+import useSession from "~/hooks/useSession";
 
 type UserSettingsDialogProps = {
   isOpen: boolean;
@@ -19,7 +19,7 @@ export const UserSettingsDialog = ({
   isOpen,
   onOpenChange,
 }: UserSettingsDialogProps) => {
-  const { data } = useSession();
+  const { user } = useSession();
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -31,7 +31,7 @@ export const UserSettingsDialog = ({
             </ModalHeader>
             <ModalBody>
               <Input
-                defaultValue={data?.user.name ?? ""}
+                defaultValue={user?.name ?? ""}
                 label="How you wish characters to address you..."
               />
               <Textarea

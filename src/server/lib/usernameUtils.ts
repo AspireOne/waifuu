@@ -32,8 +32,8 @@ const usernameBases: string[] = [
  * @returns A promise that resolves to the generated unique username.
  */
 export async function generateUniqueUsername(
-  name: string,
-  email: string,
+  name?: string,
+  email?: string,
 ): Promise<string> {
   let username;
 
