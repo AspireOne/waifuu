@@ -2,16 +2,9 @@ import { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { api } from "~/utils/api";
+import { User } from "@prisma/client";
 
-type SessionUser = {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
-  username: string;
-  bio: string | null;
-};
-
+type SessionUser = User;
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 
 export default function useSession(): {
@@ -47,12 +40,11 @@ export default function useSession(): {
   useEffect(() => {
     if (userQuery.data) {
       setUser({
-        id: userQuery.data.id,
+        ...userQuery.data,
         name: userQuery.data.name!,
         email: userQuery.data.email!,
         image: userQuery.data.image ?? "/assets/default_user.jpg",
         username: userQuery.data.username!,
-        bio: userQuery.data.bio,
       });
     }
 

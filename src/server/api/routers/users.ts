@@ -13,6 +13,8 @@ export const usersRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
+      if (!ctx.user?.id) return null;
+
       return await ctx.prisma.user.findUnique({
         where: {
           id: ctx.user?.id,

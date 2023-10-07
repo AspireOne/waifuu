@@ -34,7 +34,7 @@ export const UserDropdown = () => {
             className="transition-transform mr-4 mt-1"
             name={user?.name ?? "Loading..."}
             size="sm"
-            src={user?.image}
+            src={user?.image ?? undefined}
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">

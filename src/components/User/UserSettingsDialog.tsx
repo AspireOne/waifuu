@@ -26,13 +26,12 @@ export const UserSettingsDialog = ({
   isOpen,
   onOpenChange,
 }: UserSettingsDialogProps) => {
-  const user = api.users.getSelf.useQuery({
-    includeBots: false,
-  });
+  const { user, refetch } = useSession();
 
   const selfUpdate = api.users.updateSelf.useMutation({
     onSuccess() {
       onOpenChange(false);
+      refetch();
     },
   });
   const { handleSubmit, register } = useForm<SubmitData>();
@@ -51,7 +50,7 @@ export const UserSettingsDialog = ({
               <ModalBody>
                 <Input
                   {...register("addressedAs")}
-                  defaultValue={user.data?.addressedAs ?? ""}
+                  defaultValue={user?.addressedAs ?? ""}
                   label="How you wish characters to address you..."
                 />
 
@@ -59,7 +58,7 @@ export const UserSettingsDialog = ({
                   {...register("about")}
                   className="w-full"
                   minRows={3}
-                  defaultValue={user.data?.about ?? ""}
+                  defaultValue={user?.about ?? ""}
                   placeholder="Tell us about yourself..."
                 />
               </ModalBody>
