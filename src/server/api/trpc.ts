@@ -9,14 +9,14 @@
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { getServerAuthSession } from "~/server/lib/auth";
 import { prisma } from "~/server/lib/db";
 import { OpenApiMeta } from "trpc-openapi";
 import { NextApiRequest, NextApiResponse } from "next";
+import { User } from ".prisma/client";
+import { getUser } from "~/pages/api/utils";
 
 /**
  * 1. CONTEXT
@@ -27,7 +27,7 @@ import { NextApiRequest, NextApiResponse } from "next";
  */
 
 interface CreateContextOptions {
-  session: Session | null;
+  user: User | null;
   req?: NextApiRequest | null;
   res?: NextApiResponse | null;
 }
@@ -44,7 +44,7 @@ interface CreateContextOptions {
  */
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
-    session: opts.session,
+    user: opts.user,
     req: opts.req,
     res: opts.res,
     prisma,
@@ -59,11 +59,9 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
-
-  // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
-
-  return createInnerTRPCContext({ session, req, res });
+  const user = await getUser(req);
+  // @ts-ignore
+  return createInnerTRPCContext({ user, req, res });
 };
 
 /**
@@ -116,13 +114,13 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session?.user) {
+  if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
-      // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      // infers the `user` as non-nullable
+      user: ctx.user,
     },
   });
 });

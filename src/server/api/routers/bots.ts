@@ -69,14 +69,14 @@ export const botsRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       const visibility =
-        !input?.userId || input.userId === ctx.session.user.id
+        !input?.userId || input.userId === ctx.user.id
           ? undefined
           : Visibility.PUBLIC;
 
       return await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         where: {
-          creatorId: input?.userId ?? ctx.session.user.id,
+          creatorId: input?.userId ?? ctx.user.id,
           visibility: visibility,
         },
       });
@@ -98,7 +98,7 @@ export const botsRouter = createTRPCRouter({
           name: input.name,
           description: input.description,
           visibility: input.visibility,
-          creatorId: ctx.session.user.id,
+          creatorId: ctx.user.id,
           source: BotSource.COMMUNITY,
           img: input.img,
           tags: {
@@ -138,7 +138,7 @@ export const botsRouter = createTRPCRouter({
         where: {
           botId: input.botId,
           botMode: input.botMode,
-          userId: ctx.session.user.id,
+          userId: ctx.user.id,
         },
       });
 
@@ -167,7 +167,7 @@ export const botsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const userMsg = await ctx.prisma.botChatMessage.create({
         data: {
-          userId: ctx.session.user.id,
+          userId: ctx.user.id,
           botId: input.botId,
           botMode: input.botMode,
           content: input.message,
@@ -179,7 +179,7 @@ export const botsRouter = createTRPCRouter({
       const messages = await ctx.prisma.botChatMessage.findMany({
         where: {
           botId: input.botId,
-          userId: ctx.session.user.id,
+          userId: ctx.user.id,
           botMode: input.botMode,
         },
         take: 20, // TODO: Take more, this is just for test
@@ -226,7 +226,7 @@ export const botsRouter = createTRPCRouter({
       // save the output to db.
       const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
-          userId: ctx.session.user.id,
+          userId: ctx.user.id,
           botId: input.botId,
           botMode: input.botMode,
           content: outputStr,
@@ -263,12 +263,12 @@ export const botsRouter = createTRPCRouter({
               id: true,
             },
           },
-        }
+        },
       });
 
       const botsWithItemCount = botsWithItems.map((bot) => ({
         ...bot,
-        itemCount: bot.bots.length
+        itemCount: bot.bots.length,
       }));
 
       return botsWithItemCount;

@@ -40,3 +40,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+
+# Ignore Firebase service account.
+/src/server/service-account.json
+service-account.json

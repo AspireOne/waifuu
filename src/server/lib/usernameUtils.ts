@@ -1,7 +1,5 @@
 // Generate an username based on user.name if present, user.email if user.name is not present, and random
 // if neither are present. The username should be checked using prisma for uniqueness.
-import { User } from "next-auth";
-import { AdapterUser } from "next-auth/adapters";
 import { prisma } from "~/server/lib/db";
 
 // prettier-ignore
@@ -29,18 +27,20 @@ const usernameBases: string[] = [
 
 /**
  * Generates a unique username based on the given user information.
- *
- * @param {User | AdapterUser} user - The user object containing the name and email properties.
- *
- * @return {Promise<string>} A promise that resolves to the generated unique username.
+ * @param name - The user's name.
+ * @param email - The user's email.
+ * @returns A promise that resolves to the generated unique username.
  */
-export async function generateUniqueUsername(user: User | AdapterUser) {
+export async function generateUniqueUsername(
+  name: string,
+  email: string,
+): Promise<string> {
   let username;
 
-  if (user.name) {
-    username = user.name;
-  } else if (user.email) {
-    username = user.email.split("@")[0]!;
+  if (name) {
+    username = name;
+  } else if (email) {
+    username = email.split("@")[0]!;
   } else {
     username = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
   }

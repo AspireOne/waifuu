@@ -1,5 +1,3 @@
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import { NextUIProvider } from "@nextui-org/react";
 import { api } from "~/utils/api";
@@ -24,10 +22,9 @@ import {
   initializeAuth,
 } from "firebase/auth";
 
-const MyApp: AppType<{ session: Session | null }> = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const MyApp: AppType<{
+  /*session: Session | null*/
+}> = ({ Component, pageProps: { /*session,*/ ...pageProps } }) => {
   // Initialize firebase.
   useEffect(() => {
     const app = initializeApp(firebaseConfig);
@@ -43,7 +40,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     }
   }, []);
   return (
-    <SessionProvider session={session} baseUrl={getBaseServerUrl()}>
+    <>
       <SkeletonTheme
         baseColor={"rgba(255, 255, 255, 0.06)"}
         highlightColor={"rgba(255, 255, 255, 0.5)"}
@@ -58,7 +55,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         </NextUIProvider>
       </SkeletonTheme>
       <ToastContainer />
-    </SessionProvider>
+    </>
   );
 };
 

@@ -3,19 +3,17 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import Page from "~/components/Page";
-import { Capacitor } from "@capacitor/core";
 import { api } from "~/utils/api";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { getGoogleClientId } from "~/utils/utils";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const router = useRouter();
-  const googleAuthMutation = api.auth.completeNativeGoogleSignIn.useMutation({
+  const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: (data) => {
       console.log("Successfully logged in with Google!", data);
-      router.reload(); // Reload so that session token from cookies is picked up.
+      //router.reload(); // Reload so that session token from cookies is picked up.
     },
     onError: (error) => {
       console.error("Error logging in with Google!", error);
@@ -25,34 +23,36 @@ const Login = () => {
   // NOTE: APPLE SIGN IN must have "skipNativeAuth = true" passed.
   // https://github.com/capawesome-team/capacitor-firebase/blob/main/packages/authentication/docs/firebase-js-sdk.md
   async function handleGoogleSignIn() {
-    if (true /*await Capacitor.isNativePlatform()*/) {
-      console.warn("SIGNING IN USING GOOGLE.");
-      const result = await FirebaseAuthentication.signInWithGoogle({
+    console.log("Signing in using google...");
+    try {
+      await FirebaseAuthentication.signInWithGoogle({
         scopes: ["email", "profile"],
         mode: "popup",
       });
-
-      console.warn("SIGNED IN USING GOOGLE! CONTACTING BACKEND");
-      console.log("RESULT:", result);
-
-      if (
-        !result?.credential ||
-        !result.credential.idToken ||
-        !result.credential.accessToken
-      ) {
-        throw new Error("Invalid Google sign in result!");
-      }
-
-      googleAuthMutation.mutate({
-        idToken: result.credential.idToken,
-        accessToken: result.credential.accessToken,
-        refreshToken: null,
-        serverAuthCode: result.credential.authorizationCode,
-        clientId: getGoogleClientId()!,
-      });
-    } else {
-      await signIn("google");
+    } catch (e) {
+      console.error("Error signing in using Google!", e);
+      toast("Error signing in with Google!", { type: "error" });
+      return;
     }
+
+    console.log(
+      "Signed in using google, getting id token and contacting backend...",
+    );
+    const idToken = await FirebaseAuthentication.getIdToken({
+      forceRefresh: true,
+    });
+
+    if (!idToken.token) {
+      console.error(
+        "Error getting ID token from Google! This should not happen!",
+        idToken,
+      );
+      return;
+    }
+
+    googleAuthMutation.mutate({
+      idToken: idToken.token,
+    });
   }
 
   return (
