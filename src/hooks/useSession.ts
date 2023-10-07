@@ -17,6 +17,7 @@ type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 export default function useSession(): {
   user: SessionUser | null | undefined;
   status: SessionStatus;
+  refetch: () => void;
 } {
   const userQuery = api.users.getSelf.useQuery(
     { includeBots: false },
@@ -53,7 +54,9 @@ export default function useSession(): {
         username: userQuery.data.username!,
         bio: userQuery.data.bio,
       });
-    } else {
+    }
+
+    if (!userQuery.data && !userQuery.isLoading) {
       setUser(null);
     }
   }, [userQuery.isLoading, userQuery.data]);
@@ -65,5 +68,5 @@ export default function useSession(): {
       ? "unauthenticated"
       : "authenticated";
 
-  return { user: user, status: status };
+  return { user: user, status: status, refetch: userQuery.refetch };
 }

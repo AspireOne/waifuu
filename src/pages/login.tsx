@@ -7,13 +7,27 @@ import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { toast } from "react-toastify";
+import paths from "~/utils/paths";
+import useSession from "~/hooks/useSession";
+import { useEffect } from "react";
 
 const Login = () => {
   const router = useRouter();
+  const session = useSession();
+  const redirect = router.query.redirect;
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.replace(paths.home);
+    }
+  }, [session.status]);
+
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       console.log("Successfully logged in with Google!", data);
-      router.reload(); // Reload so that session token from cookies is picked up.
+
+      router.replace((redirect as string) || paths.home);
+      session.refetch();
     },
     onError: (error) => {
       console.error("Error logging in with Google!", error);

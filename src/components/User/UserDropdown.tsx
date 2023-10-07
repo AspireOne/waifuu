@@ -45,10 +45,6 @@ export const UserDropdown = () => {
           <DropdownItem onClick={toggleSettingsOpen} key="settings">
             My Settings
           </DropdownItem>
-          {/*TODO: Implement signOut*/}
-          {/*<DropdownItem onClick={() => signOut()} key="logout" color="danger">
-            Log Out
-          </DropdownItem>*/}
         </DropdownMenu>
       </Dropdown>
 

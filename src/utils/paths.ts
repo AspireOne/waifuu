@@ -7,6 +7,8 @@ export default {
   RRChat: "/roulette/chat",
   discover: "/discover",
   profile: "/profile",
+  login: (redirect?: string) =>
+    "/login" + (redirect ? `?redirect=${redirect}` : ""),
   botChatMainMenu: (botId: string) => `/character/${botId}`,
   userProfile: (username: string) => `/user/${username}`,
   botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,

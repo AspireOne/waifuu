@@ -11,7 +11,9 @@ export default function SignInModal(props: {}) {
       isDismissable={false}
     >
       <ModalContent>
-        <ModalHeader>Please log in before continuing</ModalHeader>
+        <ModalHeader className={"text-center"}>
+          Please log in before continuing
+        </ModalHeader>
         <ModalBody>
           <Button
             startContent={<FcGoogle size={20} />}

@@ -6,6 +6,8 @@ import SignInModal from "~/components/SignInModal";
 import { BottomNavbar } from "~/components/BottomNavbar";
 import Header, { HeaderProps } from "~/components/Header";
 import useSession from "~/hooks/useSession";
+import { useRouter } from "next/router";
+import paths, { normalizePath } from "~/utils/paths";
 
 function Page(
   props: PropsWithChildren<{
@@ -61,10 +63,16 @@ function PageWrapper(
     showingHeader: boolean;
   }>,
 ) {
+  const router = useRouter();
   const { user, status } = useSession();
 
   const paddingBottom = props.showingBottomNav ? "pb-20" : "pb-4";
   const paddingTop = props.showingHeader ? "pt-20" : "pt-4";
+
+  if (!props.unprotected && status === "unauthenticated") {
+    const currPath = normalizePath(router.pathname);
+    router.push(paths.login(currPath));
+  }
 
   return (
     <AnimatePresence>
@@ -90,9 +98,6 @@ function PageWrapper(
             props.className,
           )}
         >
-          {!props.unprotected && status === "unauthenticated" && (
-            <SignInModal />
-          )}
           {props.children}
         </div>
       </motion.section>

@@ -22,9 +22,12 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   const router = useRouter();
 
   function handleBackClick() {
-    if (back === "previous") router.back();
-    else if (back === null) return;
-    else router.push(back);
+    if (back === null) return;
+    else if (back === "previous") router.back();
+    else {
+      router.push(back);
+      // TODO: Remove the last path from history to not confuse mobile app back button (/swipe)?
+    }
 
     if (props.onBack) props.onBack();
   }
