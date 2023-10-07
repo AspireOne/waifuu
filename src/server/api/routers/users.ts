@@ -72,7 +72,7 @@ export const usersRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       await ctx.prisma.user.update({
         where: {
-          id: ctx.session.user.id,
+          id: ctx.user.id,
         },
         data: {
           addressedAs: input.addressedAs,
