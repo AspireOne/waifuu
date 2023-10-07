@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import { promises as fs } from "fs";
 import path from "path";
 import * as formidable from "formidable";
@@ -7,18 +6,21 @@ import { env } from "~/server/env";
 import generateUUID from "~/utils/utils";
 import { prisma } from "~/server/lib/db";
 import { getUser } from "~/pages/api/utils";
+import metaHandler from "~/pages/api/metaHandler";
 
 type ProcessedFiles = Array<[string, formidable.File]>;
 type ResultData = {
   fileName: string;
   id: string;
 };
+
 enum ResponseCode {
   OK = 200,
   UNAUTHORIZED = 401,
   BAD_REQUEST = 400,
   SERVER_ERROR = 500,
 }
+
 type Response = {
   status: ResponseCode;
   message: unknown;
@@ -32,12 +34,9 @@ const MinioClient = new minio.Client({
   secretKey: env.MINIO_SECRET_KEY,
 });
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+export default metaHandler.protected(async (req, res, ctx) => {
   let status = 200;
   let resultBody: Response = { status: ResponseCode.OK, message: null };
-
-  const user = await getUser(req);
-  if (!user) return res.status(401).send("Unauthorized");
 
   const files = await new Promise<ProcessedFiles | undefined>(
     (resolve, reject) => {
@@ -98,7 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await prisma.asset.createMany({
       data: result.map((item) => ({
         id: item.id,
-        authorId: user.id,
+        authorId: ctx.user.id,
       })),
     });
 
@@ -109,9 +108,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   return res.status(status).json(resultBody);
-};
-
-export default handler;
+});
 
 export const config = {
   api: {
