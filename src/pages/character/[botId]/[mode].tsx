@@ -15,7 +15,6 @@ import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
 import React, { useEffect } from "react";
 import { makeDownloadPath } from "~/utils/paths";
 import useSession from "~/hooks/useSession";
-import { apiBase } from "~/utils/constants";
 
 const BotChat = () => {
   const router = useRouter();
@@ -26,8 +25,8 @@ const BotChat = () => {
 
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
-  const { data: bot } = useBot(botId, mode, router.isReady);
-  const chat = useBotChat(chatId, true);
+  const { data: bot } = useBot(chatId, mode, router.isReady);
+  const chat = useBotChat(chatId, router.isReady);
 
   function handleScrollChange() {
     if (window.scrollY === 0) chat.loadMore();
@@ -42,9 +41,9 @@ const BotChat = () => {
   return (
     <Page metaTitle={bot?.name || "Loading..."}>
       {/*TODO: Add background to bot.*/}
-      <BackgroundImage src={undefined} />
+      <BackgroundImage src={makeDownloadPath(bot?.avatar ?? "")} />
       {/*TODO: Make character image only the png of the char.*/}
-      <CharacterImage src={apiBase("/api/images/download?id=" + bot?.avatar)} />
+      <CharacterImage src={makeDownloadPath(bot?.avatar ?? "")} />
       <ChatGradientOverlay />
 
       <ChatMessages
@@ -134,7 +133,7 @@ const ChatMessages = (props: {
       className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible z-[30] mt-32 mb-20"
     >
       {props.messages.map((message, _) => {
-        const botName = props.bot!.name || "Them";
+        const botName = props.bot!.characterName || "Them";
         const userName = user?.name || "You";
         const isBot = message.role === "BOT";
 
@@ -153,6 +152,7 @@ const ChatMessages = (props: {
           />
         );
       })}
+
       {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
       <div ref={lastMsgRef} />
     </div>

@@ -8,6 +8,8 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import { api } from "~/utils/api";
 import useSession from "~/hooks/useSession";
 
 type UserSettingsDialogProps = {
@@ -15,11 +17,26 @@ type UserSettingsDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
+type SubmitData = {
+  addressedAs?: string;
+  about?: string;
+};
+
 export const UserSettingsDialog = ({
   isOpen,
   onOpenChange,
 }: UserSettingsDialogProps) => {
-  const { user } = useSession();
+  const user = api.users.getSelf.useQuery({
+    includeBots: false,
+  });
+
+  const selfUpdate = api.users.updateSelf.useMutation({
+    onSuccess() {
+      onOpenChange(false);
+    },
+  });
+  const { handleSubmit, register } = useForm<SubmitData>();
+  const onSubmit = (data: SubmitData) => selfUpdate.mutate(data);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -29,25 +46,38 @@ export const UserSettingsDialog = ({
             <ModalHeader className="flex flex-col gap-1">
               Change your user settings
             </ModalHeader>
-            <ModalBody>
-              <Input
-                defaultValue={user?.name ?? ""}
-                label="How you wish characters to address you..."
-              />
-              <Textarea
-                className="w-full"
-                minRows={3}
-                placeholder="Tell us about yourself..."
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
-                Close
-              </Button>
-              <Button color="primary" onPress={onClose}>
-                Save Changes
-              </Button>
-            </ModalFooter>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <ModalBody>
+                <Input
+                  {...register("addressedAs")}
+                  defaultValue={user.data?.addressedAs ?? ""}
+                  label="How you wish characters to address you..."
+                />
+
+                <Textarea
+                  {...register("about")}
+                  className="w-full"
+                  minRows={3}
+                  defaultValue={user.data?.about ?? ""}
+                  placeholder="Tell us about yourself..."
+                />
+              </ModalBody>
+
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+
+                <Button
+                  isLoading={selfUpdate.isLoading}
+                  type="submit"
+                  color="primary"
+                >
+                  Save Changes
+                </Button>
+              </ModalFooter>
+            </form>
           </>
         )}
       </ModalContent>

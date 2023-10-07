@@ -145,6 +145,25 @@ export const botsRouter = createTRPCRouter({
       });
     }),
 
+  getBotByChatId: protectedProcedure
+    .input(
+      z.object({
+        chatId: z.string(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const chat = await ctx.prisma.botChat.findUnique({
+        where: {
+          id: input.chatId,
+        },
+        include: {
+          bot: true,
+        },
+      });
+
+      return chat?.bot;
+    }),
+
   create: protectedProcedure
     .input(
       z.object({
@@ -166,13 +185,17 @@ export const botsRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       return await ctx.prisma.bot.create({
         data: {
-          name: input.name,
+          name: input.title,
           description: input.description,
           visibility: input.visibility,
           creatorId: ctx.user.id,
           source: BotSource.COMMUNITY,
           avatar: input.avatar,
           cover: input.cover,
+          characterPersona: input.persona,
+          characterDialogue: input.dialogue,
+          characterNsfw: input.nsfw,
+          characterName: input.name,
           tags: {
             connectOrCreate: input.tags.map((tag) => {
               return {
@@ -212,20 +235,32 @@ export const botsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const userMsg = await ctx.prisma.botChatMessage.create({
-        data: {
-          chatId: input.chatId,
-          content: input.message,
-          role: "USER",
-        },
-      });
-
-      const messages = await ctx.prisma.botChatMessage.findMany({
-        where: {
-          chatId: input.chatId,
-        },
-        take: 20, // TODO: Take more, this is just for test
-      });
+      const [userMsg, chat, messages] = await Promise.all([
+        // Create a new message from the input user provided
+        ctx.prisma.botChatMessage.create({
+          data: {
+            chatId: input.chatId,
+            content: input.message,
+            role: "USER",
+          },
+        }),
+        // Find the chat that is user and bot currently in
+        ctx.prisma.botChat.findUnique({
+          where: {
+            id: input.chatId,
+          },
+          include: {
+            bot: true,
+          },
+        }),
+        // And lastly, find the last 20 messages in the chat.
+        ctx.prisma.botChatMessage.findMany({
+          where: {
+            chatId: input.chatId,
+          },
+          take: 20,
+        }),
+      ]);
 
       // todo: pass the messages as a whole (i cannot get the prisma type on the other side).
       const _messages = messages.map((message) => {
@@ -236,19 +271,23 @@ export const botsRouter = createTRPCRouter({
 
       let output;
       try {
-        await delay(1000);
-        output = ["[Mock Output From a bot]"]; /*await replicate.run(
-        "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
-        {
-          input: {
-            "system_prompt": "You are Aqua. Aqua is a character with an interesting and troublesome personality. She is cheerful, and carefree, but often fails to consider the consequences of her actions. Aqua acts on her whims and can behave inappropriately in various situations. She seeks praise and worship as a goddess, often performing good deeds but then ruining them by aggressively seeking recognition. While she is honest and incapable of lying, she is gullible and easily deceived by others. Aqua has a limited business sense and lacks self-awareness, but she can be observant and knowledgeable when she wants to be. She is tolerant and forgiving of others' imperfections. Despite her vanity, she is unaware of her own impressive abilities.\n" +
-              "\n" +
-              "Your responses must be short.",
-            "prompt": processedMessages,
-          }
-        }
-      )*/
+        const response = (await replicate.run(
+          "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
+          {
+            input: {
+              system_prompt:
+                `${chat?.bot.description}\n` +
+                "\n" +
+                "Your responses must be short.",
+              prompt: processedMessages,
+            },
+          },
+        )) as string[];
+
+        output = response;
       } catch (e) {
+        console.log(e);
+
         // remove the user message from db.
         await ctx.prisma.botChatMessage.delete({
           where: {
@@ -263,7 +302,7 @@ export const botsRouter = createTRPCRouter({
         });
       }
 
-      const outputStr = (output as []).join("");
+      const outputStr = (output as unknown as []).join("");
 
       const botMsg = await ctx.prisma.botChatMessage.create({
         data: {

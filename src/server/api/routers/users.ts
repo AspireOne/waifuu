@@ -13,7 +13,20 @@ export const usersRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      return ctx.user || null;
+      return await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.user?.id,
+        },
+        include: {
+          ...(input.includeBots && {
+            Bot: {
+              where: {
+                visibility: "PUBLIC",
+              },
+            },
+          }),
+        },
+      });
     }),
 
   getPublic: publicProcedure
@@ -47,5 +60,24 @@ export const usersRouter = createTRPCRouter({
         username: user.username,
         bio: user.bio,
       };
+    }),
+
+  updateSelf: protectedProcedure
+    .input(
+      z.object({
+        addressedAs: z.string().optional(),
+        about: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      await ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          addressedAs: input.addressedAs,
+          bio: input.about,
+        },
+      });
     }),
 });
