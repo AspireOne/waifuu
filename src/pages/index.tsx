@@ -55,6 +55,7 @@ export default function LandingPage() {
               📚 <b>Diversity</b> - Go on adventure, roleplay or simply chat
               with characters
               <Link href={"/home"}>Test link to go to homepage</Link>
+              <Link href={"/login"}>Test link to go to LOGIN</Link>
             </li>
             <li>
               🧠 <b>Memory</b> - Characters remember you and will not forget
@@ -63,6 +64,7 @@ export default function LandingPage() {
           </ul>
         </div>
         <Link href={"/home"}>Test link to go to homepage</Link>
+        <Link href={"/login"}>Test link to go to LOGIN</Link>
 
         <div>
           <h3 className="text-2xl font-bold text-left">Characters</h3>
@@ -71,6 +73,7 @@ export default function LandingPage() {
         </div>
       </div>
       <Link href={"/home"}>Test link to go to homepage</Link>
+      <Link href={"/login"}>Test link to go to LOGIN</Link>
       <p>Backend API Health: {health.isLoading ? "Loading..." : health.data}</p>
       <p>DB Health: {dbHealth.isLoading ? "Loading..." : dbHealth.data}</p>
       <p>
@@ -84,6 +87,7 @@ export default function LandingPage() {
           : JSON.stringify(session.data) ?? "undefined"}
       </p>
       <Link href={"/home"}>Test link to go to homepage</Link>
+      <Link href={"/login"}>Test link to go to LOGIN</Link>
     </Page>
   );
 }

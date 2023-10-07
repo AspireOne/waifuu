@@ -31,7 +31,7 @@ export const RRChatRouter = createTRPCRouter({
         .nullable(),
     )
     .mutation(async ({ ctx }) => {
-      const { id: userId } = ctx.session.user;
+      const { id: userId } = ctx.user;
       const db = ctx.prisma;
 
       if (await isUserPolling(db, userId)) {
@@ -66,7 +66,7 @@ export const RRChatRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await pusherServer.trigger(input.channel, "message", {
         message: input.message,
-        from: ctx.session.user.id,
+        from: ctx.user.id,
       });
     }),
 });

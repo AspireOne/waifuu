@@ -1,7 +1,8 @@
 import { Capacitor } from "@capacitor/core";
 
 export class Constants {
-  static readonly SERVER_HOST_URL = "https://companion-red.vercel.app";
+  // TODO: Create a script for this and ENSURE IT IS NEVER LOCALHOST.
+  public static readonly SERVER_HOST_URL = "http://192.168.100.179:3000"; // "https://companion-red.vercel.app";
 }
 
 // A wrapper for logging.
@@ -12,18 +13,17 @@ export const getBaseServerUrl = () => {
 };
 
 export const _getBaseServerUrl = () => {
-  // If on mobile OR if building for mobile, use the hosted prod server instead of localhost.
-  if (Capacitor.isNativePlatform() || !!process.env.NEXT_PUBLIC_NATIVE)
+  // If on mobile, use the hosted prod server instead of localhost.
+  if (Capacitor.isNativePlatform()) {
     return Constants.SERVER_HOST_URL;
+  }
 
-  if (typeof window !== "undefined") return ""; // Browser should use relative url.
+  // Browser = relative URL.
+  if (typeof window !== "undefined") return "";
 
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  // prettier-ignore
-  if (process.env.RAILWAY_PUBLIC_DOMAIN) return `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
+  // Production (Can be only WEB SERVER - android/ios don't have backend and browser always has window).
+  if (process.env.NODE_ENV === "production") return Constants.SERVER_HOST_URL;
 
-  // TODO: Implement this on our server.
-  if (process.env.DOMAIN) return `https://${process.env.PUBLIC_DOMAIN}`;
-
+  // Development (can be only WEB SERVER).
   return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost.
 };

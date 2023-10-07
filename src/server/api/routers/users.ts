@@ -6,16 +6,15 @@ import {
 import { z } from "zod";
 
 export const usersRouter = createTRPCRouter({
-  getSelf: protectedProcedure.query(async ({ ctx }) => {
-    return await ctx.prisma.user.findUnique({
-      where: {
-        id: ctx.session.user.id,
-      },
-      include: {
-        Bot: true,
-      },
-    });
-  }),
+  getSelf: protectedProcedure
+    .input(
+      z.object({
+        includeBots: z.boolean().optional().default(false),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.user;
+    }),
 
   getPublic: publicProcedure
     .input(

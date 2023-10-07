@@ -18,7 +18,7 @@ export default handlerWithCors(
     const userData: PresenceChannelMember = {
       id: user.id,
       info: {
-        username: user.username!,
+        username: user.username,
         image: user.image,
         bio: user.bio,
       },

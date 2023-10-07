@@ -1,12 +1,9 @@
-import { z } from "zod";
-
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
 import Replicate from "replicate";
-import pusherServer from "~/server/lib/pusherServer";
 import { env } from "~/server/env";
 
 const replicate = new Replicate({

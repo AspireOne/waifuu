@@ -1,3 +1,5 @@
+import { Capacitor } from "@capacitor/core";
+
 /**
  * Generates a random UUID (Universally Unique Identifier).
  * Example: 8b3e8a1e-4b9b-4b4b-9b9b-4b9b4b9b4b9b
