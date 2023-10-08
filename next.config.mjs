@@ -3,25 +3,23 @@
  * for Docker builds.
  */
 
+import next_transpile_modules from "next-transpile-modules";
+
 /** @type {import("next").NextConfig} */
 const config = {
     reactStrictMode: true,
     async headers() {
-        return [
-            {
-                // matching all API routes
-                source: "/api/:path*",
-                headers: [
-                    {key: "Access-Control-Allow-Credentials", value: "true"},
-                    {key: "Access-Control-Allow-Origin", value: "http://localhost"},
-                    {key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT"},
-                    {
-                        key: "Access-Control-Allow-Headers",
-                        value: "Origin, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-                    },
-                ]
-            }
-        ]
+        return [{
+            // matching all API routes
+            source: "/api/:path*",
+            headers: [{key: "Access-Control-Allow-Credentials", value: "true"}, {
+                key: "Access-Control-Allow-Origin",
+                value: "http://localhost"
+            }, {key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT"}, {
+                key: "Access-Control-Allow-Headers",
+                value: "Origin, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+            },]
+        }]
     },
 
     images: {
@@ -40,4 +38,7 @@ const config = {
     },*/
 };
 
-export default config;
+// '@ionic/react', '@ionic/core', '@stencil/core',
+const withTM = next_transpile_modules([]);
+
+export default withTM(config);

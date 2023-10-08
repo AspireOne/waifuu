@@ -51,7 +51,7 @@ const ChatMessage = ({ author, message, key, className }: Props) => {
             referrerPolicy="no-referrer"
             src={author.avatar || "/assets/default_user.jpg"}
             alt="profile-picture"
-            className="w-10 rounded-full aspect-square"
+            className="w-[40px] h-[40px] min-w-[40px] rounded-full aspect-square"
           />
 
           <div>

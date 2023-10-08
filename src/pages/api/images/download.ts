@@ -1,6 +1,6 @@
 import * as minio from "minio";
-import { NextApiRequest, NextApiResponse } from "next";
 import { env } from "~/server/env";
+import metaHandler from "~/pages/api/metaHandler";
 
 const MinioClient = new minio.Client({
   endPoint: "127.0.0.1",
@@ -10,11 +10,12 @@ const MinioClient = new minio.Client({
   secretKey: env.MINIO_SECRET_KEY,
 });
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { id } = req.query;
-    
-    const file = await MinioClient.getObject(env.MINIO_DEFAULT_BUCKET, id as string);
-    return file.pipe(res);
-};
+export default metaHandler.public(async (req, res, ctx) => {
+  const { id } = req.query;
 
-export default handler;
+  const file = await MinioClient.getObject(
+    env.MINIO_DEFAULT_BUCKET,
+    id as string,
+  );
+  return file.pipe(res);
+});

@@ -1,122 +1,227 @@
-import { Button, Chip, Input } from "@nextui-org/react";
+import {
+  Button,
+  Chip,
+  Input,
+  MenuItem,
+  Select,
+  Switch,
+} from "@nextui-org/react";
 import Image from "next/image";
-import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { FaCompass, FaTag } from "react-icons/fa";
+import { FaCompass } from "react-icons/fa";
+import { BiTrendingUp } from "react-icons/bi";
 import Page from "~/components/Page";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import { api } from "~/utils/api";
+import { useForm } from "react-hook-form";
+import { BotSource } from "@prisma/client";
+import { useEffect, useState } from "react";
+import useSession from "~/hooks/useSession";
+import { MdForum } from "react-icons/md";
+import { BsPlus } from "react-icons/bs";
+import Router from "next/router";
+import paths from "~/utils/paths";
+import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
+import { CreateForumPostModal } from "~/components/Forum/CreateForumPostModal";
+
+type SearchType = {
+  textFilter?: string;
+  sourceFilter?: BotSource;
+};
 
 const Discover = () => {
-  const bots = api.bots.getAllBots.useQuery();
+  const { user } = useSession();
+
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false);
+
+  const [searchData, setSearchData] = useState<SearchType>({
+    textFilter: undefined,
+  });
+  const tags = useState<string[]>([]);
+  const onTagToggle = (value: string): void => {
+    if (tags[0].includes(value)) {
+      tags[1](tags[0].filter((tag) => tag !== value));
+    } else {
+      tags[1]([...tags[0], value]);
+    }
+  };
+  const isTagToggled = (value: string): boolean => tags[0].includes(value);
+
+  const bots = api.bots.getAllBots.useQuery(searchData);
+  const conversationBots = api.bots.getAllConversationBots.useQuery({
+    limit: 5,
+  });
+
+  const { register, watch } = useForm<{
+    textFilter?: string;
+    sourceFilter?: BotSource;
+  }>();
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+
+      setSearchData({
+        textFilter: value.textFilter,
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
-    <Page metaTitle="Discover Characters" showMobileNav header={{ back: null }}>
-      <div className="hidden h-[350px] overflow-hidden sm:block">
+    <Page metaTitle="Discover Characters" showActionBar header={{ back: null }}>
+      <div className="relative">
         <Image
           alt="background"
           loading="eager"
-          className="opacity-30"
+          className="opacity-30 h-[140px] mt-[-20px] object-cover z-10"
           src={"/assets/background.png"}
           width={1920}
           height={1080}
         />
-        <div className="absolute left-0 top-4 flex h-[350px] w-full flex-row">
-          <div className="clear-both">
-            <BiChevronLeft
-              color="white"
-              fontSize={70}
-              className="mt-[150px] cursor-pointer"
-            />
-          </div>
 
-          <div className="align-center absolute mx-auto flex w-fit flex-row sm:relative">
-            <Image
-              alt="background"
-              loading="eager"
-              src={"/assets/character.png"}
-              className="h-[350px] w-[300px]"
-              width={1920}
-              height={1080}
-            />
-            <div className="mt-[50px] flex w-[400px] flex-col gap-4">
-              <h1 className="text-6xl font-extrabold text-white">Fauna</h1>
-              <p className="text-white">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt
-                iure recusandae sapiente repellat quasi tenetur!
+        <div className="mx-auto mt-[-120px] z-20 relative">
+          <div>
+            <h1 className="title-xl">👋</h1>
+
+            <div>
+              <h1 className="title-xl flex-wrap font-bold">Hi, {user?.name}</h1>
+              <p>Let's explore some new characters</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full">
+        <div className="mx-auto mt-10">
+          <div className="mb-5 mt-7">
+            <h3 className="flex align-center font-bold flex-row gap-2 text-2xl text-white">
+              <FaCompass className="mt-1.5" />
+              <p>Active chats</p>
+            </h3>
+
+            {conversationBots.data?.length === 0 && (
+              <p className="text-white mt-3">
+                You don't have any active chats yet. Start one now!
               </p>
-              <Button>Buy now</Button>
+            )}
+
+            <div className="flex w-full flex-row mt-3 gap-5 overflow-scroll overflow-x-visible">
+              {conversationBots.data?.map((bot) => {
+                return (
+                  <CharacterCard
+                    chatType={bot.chatType}
+                    chatId={bot.chatId}
+                    bot={bot}
+                  />
+                );
+              })}
             </div>
           </div>
 
-          <div className="clear-both">
-            <BiChevronRight
-              color="white"
-              fontSize={70}
-              className="mt-[150px] cursor-pointer"
+          <div className="mt-10 flex flex-row align-center">
+            <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
+              <BiTrendingUp className="mt-1.5" />
+              <p>Popular bots</p>
+            </h3>
+
+            <Switch className="w-fit mx-auto mr-4">NSFW</Switch>
+          </div>
+
+          <form className="mb-5 mt-1 flex flex-col items-center gap-4">
+            <div className="flex flex-col w-full gap-3">
+              <Button onClick={() => Router.push(paths.createBot)}>
+                <BsPlus fontSize={25} /> Create new bot
+              </Button>
+
+              <div className="flex flex-row gap-1 overflow-scroll overflow-scroll-y">
+                {[
+                  "All",
+                  "Anime",
+                  "Games",
+                  "Movies",
+                  "TV",
+                  "NSFW",
+                  "Nevim",
+                  "Submissive",
+                  "Dominant",
+                  "Fetish",
+                ].map((tag) => {
+                  return (
+                    <Chip
+                      variant={isTagToggled(tag) ? "solid" : "bordered"}
+                      key={tag}
+                      onClick={() => onTagToggle(tag)}
+                      className="bg-opacity-70 w-fit mt-2 mx-auto"
+                    >
+                      {tag}
+                    </Chip>
+                  );
+                })}
+              </div>
+
+              <Input
+                {...register("textFilter")}
+                label="Search by name"
+                placeholder="Enter your search term..."
+                className="flex-1 rounded-lg text-white"
+                type="text"
+              />
+
+              <Select label="Display community or official bots">
+                <MenuItem value={undefined}>All</MenuItem>
+                <MenuItem value={BotSource.COMMUNITY}>Community</MenuItem>
+                <MenuItem value={BotSource.OFFICIAL}>Official</MenuItem>
+              </Select>
+            </div>
+          </form>
+
+          <div className="flex w-full flex-wrap gap-5">
+            {bots.data?.length === 0 && (
+              <p className="text-white">
+                No bots found. Try changing your search term.
+              </p>
+            )}
+
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-fit mx-auto">
+              {bots.data?.map((bot) => {
+                return <CharacterCard bot={bot} />;
+              })}
+            </div>
+
+            <Button variant="solid" className="w-1/2 mx-auto mb-4">
+              Load more
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
+            <MdForum className="mt-1.5" />
+            <p>Popular forum posts</p>
+          </h3>
+
+          <Button
+            onClick={() => setIsCreatePostOpen(!isCreatePostOpen)}
+            className="w-full"
+          >
+            Create new forum post
+          </Button>
+
+          <div className="flex flex-row gap-2 mt-5">
+            <ForumPostHighlight
+              title="Why is my senpais so damn cute?"
+              caption="I just want to hug her all day long! But can't she's angry on me now"
+              likes={175}
+              reads={10029}
+              image="/assets/background.png"
             />
           </div>
-        </div>
-      </div>
 
-      <div className="mx-auto p-5">
-        <div className="mb-10 mt-7">
-          <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
-            <FaCompass /> Active chats
-          </h3>
-        </div>
-
-        <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
-          {bots.data?.map(bot => {
-            return (<CharacterCard bot={bot} />)
-          })}
-        </div>
-      </div>
-
-      <div className="mx-auto p-5">
-        <div className="mb-10 mt-7">
-          <h3 className="mb-3 flex flex-row gap-2 text-3xl text-white">
-            <FaTag /> Popular tags
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {[
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-              "Bordered",
-            ].map((tag) => {
-              return (
-                <Chip size="lg" color="default" variant="bordered">
-                  Bordered
-                </Chip>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="mb-5 flex flex-row items-center gap-4">
-          <div className="flex flex-row gap-2">
-            <FaMagnifyingGlass color="white" fontSize={20} />
-            <p className="text-white">Search</p>
-          </div>
-          <Input className="flex-1 rounded-lg text-white" type="text" />
-        </div>
-
-        <div className="flex justify-center w-full flex-wrap gap-5">
-          {/* <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard />
-          <CharacterCard /> */}
+          <CreateForumPostModal
+            isOpen={isCreatePostOpen}
+            onToggle={() => setIsCreatePostOpen(!isCreatePostOpen)}
+          />
         </div>
       </div>
     </Page>

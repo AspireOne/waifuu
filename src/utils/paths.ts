@@ -1,4 +1,5 @@
 import { BotMode } from "@prisma/client";
+import { apiBase } from "~/utils/constants";
 
 export default {
   index: "/",
@@ -7,10 +8,12 @@ export default {
   RRChat: "/roulette/chat",
   discover: "/discover",
   profile: "/profile",
+  login: (redirect?: string) =>
+    "/login" + (redirect ? `?redirect=${redirect}` : ""),
   botChatMainMenu: (botId: string) => `/character/${botId}`,
+  createBot: "/character/create",
   userProfile: (username: string) => `/user/${username}`,
-  botChat: (botId: string, botMode: BotMode) =>
-    `/character/${botId}/${botMode}`, // todo
+  botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,
 };
 
 export function addQueryParams(
@@ -29,4 +32,8 @@ export function addQueryParams(
 export function normalizePath(path: string, keepSlash: boolean = true): string {
   if (keepSlash) return path.endsWith("/") ? path : path + "/";
   else return path.endsWith("/") ? path.slice(0, -1) : path;
+}
+
+export function makeDownloadPath(id: string): string {
+  return apiBase(`/api/images/download?id=${id}`);
 }

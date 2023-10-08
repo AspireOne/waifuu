@@ -41,6 +41,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# Minio files & Multer 
+
+# Ignore Firebase service account.
+/src/server/service-account.json
+service-account.json
+
+# Minio files & Multer
 .minio.sys
 uploads

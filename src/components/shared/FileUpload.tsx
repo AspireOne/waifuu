@@ -1,4 +1,11 @@
-import { FilePond } from "react-filepond";
+import { FilePond, registerPlugin } from "react-filepond";
+
+import FilepondImagePreviewPlugin from "filepond-plugin-image-preview";
+import FilepondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilepondPluginImageCrop from "filepond-plugin-image-crop";
+import FilepondPluginValidateFileType from "filepond-plugin-file-validate-size";
+import FilepondPluginValidateFileSize from "filepond-plugin-file-validate-size";
+import { apiBase } from "~/utils/constants";
 
 type Response = {
   status: string;
@@ -14,6 +21,14 @@ type FileUploadProps = {
   onError: (data: unknown) => void;
 };
 
+registerPlugin(
+  FilepondPluginValidateFileType,
+  FilepondImagePreviewPlugin,
+  FilepondPluginImageCrop,
+  FilepondPluginImageExifOrientation,
+  FilepondPluginValidateFileSize,
+);
+
 export const FileUpload = ({
   structure,
   onFileRemove,
@@ -24,11 +39,18 @@ export const FileUpload = ({
     <FilePond
       {...(structure === "CIRCLE" && { stylePanelLayout: "compact circle" })}
       className="h-44 w-44"
+      acceptedFileTypes={["image/jpg", "image/jpeg", "image/png"]}
+      allowFileSizeValidation
+      maxFileSize="5MB"
       imagePreviewHeight={170}
+      allowDrop
+      allowReplace={false}
+      allowPaste
       files={[]}
+      imageCropAspectRatio="1:1"
       server={{
         process: {
-          url: "/api/images/upload",
+          url: apiBase("/images/upload"),
           onload(data) {
             onSuccess(JSON.parse(data));
             return -1;

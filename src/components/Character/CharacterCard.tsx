@@ -1,30 +1,47 @@
-import { Bot } from "@prisma/client";
-import Image from "next/image";
+import { Card, CardBody, Chip, Image } from "@nextui-org/react";
+import { Bot, BotMode } from "@prisma/client";
+import Link from "next/link";
+import paths, { makeDownloadPath } from "~/utils/paths";
+import { LargeText } from "../shared/LargeText";
 
 type CharacterCardProps = {
   bot: Bot;
+  chatId?: string;
+  chatType?: BotMode;
 };
 
-const CharacterCard = ({ bot }: CharacterCardProps) => {
+const CharacterCard = ({ bot, chatId, chatType }: CharacterCardProps) => {
   return (
-    <div className="w-full rounded-lg border-1 border-gray-500 p-3">
-      <Image
-        src={"/assets/character.png"}
-        alt="character"
-        className="mt-[-14px] opacity-100"
-        width={300}
-        height={350}
-      />
-      <Image
-        src={"/assets/background.png"}
-        alt="character"
-        className="mt-[-150px] h-[150px] rounded-lg object-cover opacity-20"
-        width={300}
-        height={350}
-      />
-      <h1 className="text-xl text-white">{bot.name}</h1>
-      <p className="text-gray-300">{bot.description}</p>
-    </div>
+    <Card className="min-w-[160px]">
+      <Link href={paths.botChat(chatId ?? "", bot.id)}>
+        <div>
+          <Image
+            removeWrapper
+            src={makeDownloadPath(bot.avatar!)}
+            alt="character"
+            className={`h-[100px] w-full object-cover z-0 mx-auto rounded-lg bg-gray-100`}
+            width={100}
+            height={100}
+          />
+        </div>
+
+        <CardBody className="p-2">
+          <b className="text-md text-white flex-wrap w-[150px] text-center mx-auto">
+            {bot.name}
+          </b>
+          {!chatType && (
+            <LargeText
+              className="table text-center w-[150px] text-sm mt-2"
+              content={bot.description}
+              maxLength={35}
+            />
+          )}
+          {chatType ? (
+            <Chip className="bg-opacity-70 w-fit mt-2 mx-auto">{chatType}</Chip>
+          ) : null}
+        </CardBody>
+      </Link>
+    </Card>
   );
 };
 

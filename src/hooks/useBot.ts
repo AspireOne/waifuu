@@ -9,26 +9,29 @@ import paths from "~/utils/paths";
  * @param enabled Whether the query should be enabled. Can be used to postpone the query until botId or mode is ready.
  */
 const useBot = (
-  botId: string | undefined,
+  chatId: string | undefined,
   mode: string | undefined,
   enabled: boolean = true,
 ) => {
-  const router = useRouter();
-  const bot = api.bots.getBot.useQuery({ botId: botId! }, { enabled: enabled });
+  const bot = api.bots.getBotByChatId.useQuery(
+    { chatId: chatId! },
+    { enabled: enabled },
+  );
 
-  useEffect(() => {
-    if (!enabled) return;
+  // useEffect(() => {
+  //   if (!enabled) return;
 
-    // If the bot does not exist, redirect to discover page.
-    if (!bot.isLoading && !bot.data) {
-      router.replace(paths.discover);
-    }
+  //   // If the bot does not exist, redirect to discover page.
+  //   TODO: Make this work
+  //   if (!bot.isLoading && !bot.data) {
+  //     router.replace(paths.discover);
+  //   }
 
-    // If mode does not exist, redirect to the bot main menu.
-    if (!Object.values(BotMode).includes(mode as BotMode)) {
-      router.replace(paths.botChatMainMenu(botId!));
-    }
-  }, [mode, bot.isLoading, bot.data, botId, router]);
+  //   // If mode does not exist, redirect to the bot main menu.
+  //   if (!Object.values(BotMode).includes(mode as BotMode)) {
+  //     router.replace(paths.botChatMainMenu(botId!));
+  //   }
+  // }, [mode, bot.isLoading, bot.data, bot.data?.id, router]);
 
   return bot;
 };

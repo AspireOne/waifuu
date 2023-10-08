@@ -7,12 +7,6 @@ export const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   REPLICATE_API_TOKEN: z.string(),
 
-  // Auth.
-  NEXTAUTH_URL: z.string().url().default("http://localhost:3000"),
-  NEXTAUTH_SECRET: z.string(),
-  GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
-
   // PUSHER_APP_ID: z.string(),
   // PUSHER_SECRET: z.string(),
   // NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
@@ -24,6 +18,9 @@ export const envSchema = z.object({
   MINIO_DEFAULT_BUCKET: z.string(),
   MINIO_ACCESS_KEY: z.string(),
   MINIO_SECRET_KEY: z.string(),
+
+  // The Firebase Admin SDK credentials. This should be an one-line JSON string.
+  SERVICE_ACCOUNT_JSON: z.string().min(10),
 });
 
 export const env = envSchema.parse(process.env);

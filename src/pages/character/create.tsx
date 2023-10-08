@@ -8,9 +8,6 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { registerPlugin } from "react-filepond";
-import FilepondImagePreviewPlugin from "filepond-plugin-image-preview";
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import { useMemo, useState } from "react";
 import Page from "~/components/Page";
 import { FileUpload } from "~/components/shared/FileUpload";
@@ -18,8 +15,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Visibility } from "@prisma/client";
 import Router from "next/router";
 import { api } from "~/utils/api";
-
-registerPlugin(FilepondImagePreviewPlugin, FilePondPluginImageExifOrientation);
+import paths from "~/utils/paths";
 
 type CreateInput = {
   title: string;
@@ -39,7 +35,7 @@ const CreateChatPage = () => {
 
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
-      Router.push(`/character/${data.id}/create`);
+      Router.push(paths.botChatMainMenu(data.id));
     },
   });
 

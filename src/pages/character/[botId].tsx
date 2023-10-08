@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import React, { useEffect } from "react";
-import paths from "~/utils/paths";
+import paths, { makeDownloadPath } from "~/utils/paths";
 import Page from "~/components/Page";
 import { Bot, BotMode } from "@prisma/client";
 import Skeleton from "react-loading-skeleton";
@@ -12,8 +12,13 @@ import { Divider, Image } from "@nextui-org/react";
 // Main page of the bot.
 const ChatMainMenu = () => {
   const router = useRouter();
-  const { botId, mode } = router.query;
+  const { botId } = router.query;
 
+  const createBotChat = api.bots.createBotChat.useMutation({
+    onSuccess(data) {
+      router.push(paths.botChat(data.id, data.botId));
+    },
+  });
   const bot = api.bots.getBot.useQuery({ botId: botId as string });
 
   useEffect(() => {
@@ -22,14 +27,14 @@ const ChatMainMenu = () => {
     }
   }, [bot.isLoading, bot.data]);
 
-  function handleModeSelect(mode: BotMode) {
-    if (!botId) {
-      console.warn("Bot mode button clicked but bot ID has not been passed.");
-      return;
-    }
+  const onSubmit = (type: BotMode) => {
+    if (!bot.data?.id || typeof bot.data?.id !== "string") return;
 
-    router.push(paths.botChat(botId as string, mode));
-  }
+    createBotChat.mutateAsync({
+      botId: bot.data?.id,
+      botMode: type,
+    });
+  };
 
   return (
     <Page
@@ -38,14 +43,17 @@ const ChatMainMenu = () => {
       }
       className={"space-y-12"}
     >
-      {/*<Header bot={bot.data ?? undefined} />*/}
       <Card className="z-20">
         <Image
           removeWrapper
           isLoading={bot.isLoading}
           alt="Card example background"
           className="z-0 w-full h-36 scale-120 -translate-y-6 object-cover"
-          src="/assets/background.png"
+          src={
+            makeDownloadPath(bot.data?.cover ?? "") ??
+            makeDownloadPath(bot.data?.avatar ?? "") ??
+            "/assets/background.png"
+          }
         />
         <CardBody>
           <p className="mt-2">
@@ -55,20 +63,12 @@ const ChatMainMenu = () => {
 
         <Divider className="mt-1 mb-5" />
 
-        <ChatSelectTabs onSelect={handleModeSelect} />
+        <ChatSelectTabs
+          isLoading={createBotChat.isLoading}
+          onSelect={onSubmit}
+        />
       </Card>
     </Page>
-  );
-};
-
-const Header = (props: { bot?: Bot }) => {
-  return (
-    // TODO: A faded background image of the bot.
-    <div className={"text-center"}>
-      <h1 className={"text-3xl font-semibold line-clamp-2 my-auto"}>
-        {props.bot?.name || <Skeleton inline />}
-      </h1>
-    </div>
   );
 };
 

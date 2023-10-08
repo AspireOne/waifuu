@@ -1,7 +1,6 @@
 import { ChatMessage } from "~/components/chat/ChatMessage";
 import { Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import useBotChat, { Message } from "~/hooks/useBotChat";
 import { BotMode } from "@prisma/client";
 import Page from "~/components/Page";
@@ -14,27 +13,20 @@ import { Bot, BotChatMessage } from "@prisma/client";
 import ChatInput from "~/components/chat/ChatInput";
 import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
 import React, { useEffect } from "react";
-
-const mockMessage: BotChatMessage = {
-  id: 1,
-  userId: "asdasd",
-  botId: "asdasdasdas",
-  botMode: "ADVENTURE",
-  content: "Hello, I am a bot!",
-  role: "BOT",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  mood: null,
-};
+import { makeDownloadPath } from "~/utils/paths";
+import useSession from "~/hooks/useSession";
 
 const BotChat = () => {
-  // Data from URL.
   const router = useRouter();
-  const botId = router.query.botId as string | undefined;
+
+  const path = router.asPath.split("/");
+  const chatId = path[path.length - 2] as string;
+  const botId = path[path.length - 1] as string;
+
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
-  const { data: bot } = useBot(botId, mode, router.isReady);
-  const chat = useBotChat(botId, mode as BotMode, router.isReady);
+  const { data: bot } = useBot(chatId, mode, router.isReady);
+  const chat = useBotChat(chatId, router.isReady);
 
   function handleScrollChange() {
     if (window.scrollY === 0) chat.loadMore();
@@ -49,9 +41,9 @@ const BotChat = () => {
   return (
     <Page metaTitle={bot?.name || "Loading..."}>
       {/*TODO: Add background to bot.*/}
-      <BackgroundImage src={undefined} />
+      <BackgroundImage src={makeDownloadPath(bot?.avatar ?? "")} />
       {/*TODO: Make character image only the png of the char.*/}
-      <CharacterImage src={"/api/images/download?id=" + bot?.avatar} />
+      <CharacterImage src={makeDownloadPath(bot?.avatar ?? "")} />
       <ChatGradientOverlay />
 
       <ChatMessages
@@ -73,7 +65,8 @@ const BackgroundImage = (props: { src?: string }) => (
     alt="background"
     loading="eager"
     src={props.src ?? "/assets/background.png"}
-    className="fixed left-0 top-0 h-full w-full object-cover"
+    // TODO: This is hidden for now since users will not upload transparent bot images
+    className="fixed hidden left-0 top-0 h-full w-full object-cover"
     width={1920}
     height={1080}
   />
@@ -90,39 +83,13 @@ const CharacterImage = (props: { src: string }) => (
   />
 );
 
-const ChatHeader = (props: { bot?: Bot }) => (
-  <div className="fixed z-20 left-5 right-5 top-6 flex flex-row gap-3 rounded-lg bg-black/90 p-3 max-w-[500px] mx-auto">
-    <Image
-      height={50}
-      width={50}
-      className={"aspect-square"} // Needed.
-      loading="eager"
-      isLoading={!props.bot}
-      src={props.bot?.avatar || "/assets/default_user.jpg"}
-      alt="bot avatar"
-    />
-
-    <div className={"flex-1"}>
-      <h3 className="">{props.bot?.name || <Skeleton width={"50%"} />}</h3>
-      <h6 className="text-gray-400 line-clamp-1">
-        {props.bot?.description || <Skeleton width={"80%"} />}
-      </h6>
-    </div>
-
-    <div className="ml-auto flex flex-row gap-2">
-      <SettingsDropdown />
-      <ShareDropdown />
-    </div>
-  </div>
-);
-
 const ChatMessages = (props: {
   messages: Message[];
   loadingReply: boolean;
   loadingHistory?: boolean;
   bot?: Bot;
 }) => {
-  const { data: session } = useSession();
+  const { user } = useSession();
   const lastMsgRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [scrollPosBeforeLoad, setScrollPosBeforeLoad] =
@@ -166,8 +133,8 @@ const ChatMessages = (props: {
       className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible z-[30] mt-32 mb-20"
     >
       {props.messages.map((message, _) => {
-        const botName = props.bot!.name || "Them";
-        const userName = session?.user?.name || "You";
+        const botName = props.bot!.characterName || "Them";
+        const userName = user?.name || "You";
         const isBot = message.role === "BOT";
 
         return (
@@ -177,12 +144,15 @@ const ChatMessages = (props: {
             author={{
               bot: isBot,
               name: isBot ? botName : userName,
-              avatar: isBot ? props.bot!.avatar : session?.user?.image,
+              avatar: isBot
+                ? makeDownloadPath(props.bot?.avatar!)
+                : user?.image,
             }}
             message={message.content}
           />
         );
       })}
+
       {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
       <div ref={lastMsgRef} />
     </div>

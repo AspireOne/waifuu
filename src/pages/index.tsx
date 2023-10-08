@@ -1,29 +1,31 @@
 import Image from "next/image";
-import React, { useEffect } from "react";
-import { CharacterCard } from "~/components/Character/CharacterCard";
+import React from "react";
 import Page from "~/components/Page";
-import Link from "next/link";
-import { Button } from "@nextui-org/react";
-import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
+import { Capacitor } from "@capacitor/core";
+import Home from "~/pages/home";
+import { useRouter } from "next/router";
+import paths from "~/utils/paths";
 
-export default function LandingPage() {
-  const health = api.general.health.useQuery();
-  const protectedHealth = api.general.protectedHealth.useQuery();
-  const dbHealth = api.general.dbHealth.useQuery();
-  const session = useSession();
+// If building for a native app, we don't want to show the landing page as the index screen.
+// So if we are building for a native app, we export Homepage instead.
 
-  useEffect(() => {
-    console.log("Session data changed: ", JSON.stringify(session.data));
-  }, [session.data]);
+// prettier-ignore
+export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function LandingPage() {
+  const router = useRouter();
+  React.useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      // replace current path with /home without reloading and without adding a new entry to the history.
+      window.history.replaceState(null, document.title, paths.home);
+    }
+  }, []);
 
   // Todo: meta description.
   return (
     <Page
       metaTitle={"Companion"}
       unprotected
-      header={{ enabled: false }}
-      showMobileNav={false}
+      header={{enabled: false}}
+      showActionBar={false}
     >
       <div className="z-10">
         <Image
@@ -40,13 +42,13 @@ export default function LandingPage() {
         />
       </div>
 
-      <div className="mt-20 z-20 absolute top-0 w-4/6 mx-auto text-center">
+      <div className="z-20 relative text-center p-1">
         <div>
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-4xl text-white font-bold">
             Come chat with your favourite characters
           </h1>
 
-          <ul className="mt-5">
+          <ul className="mt-5 text-left text-white">
             <li>
               😇 <b>Real feeling</b> - Characters have emotions and will respond
               acordingly to what you say
@@ -54,7 +56,6 @@ export default function LandingPage() {
             <li>
               📚 <b>Diversity</b> - Go on adventure, roleplay or simply chat
               with characters
-              <Link href={"/home"}>Test link to go to homepage</Link>
             </li>
             <li>
               🧠 <b>Memory</b> - Characters remember you and will not forget
@@ -62,30 +63,7 @@ export default function LandingPage() {
             </li>
           </ul>
         </div>
-        <Link href={"/home"}>Test link to go to homepage</Link>
-
-        <div>
-          <h3 className="text-2xl font-bold text-left">Characters</h3>
-
-          <div className="w-1/2 w-fit mx-auto flex flex-wrap">
-            <CharacterCard />
-          </div>
-        </div>
       </div>
-      <Link href={"/home"}>Test link to go to homepage</Link>
-      <p>Backend API Health: {health.isLoading ? "Loading..." : health.data}</p>
-      <p>DB Health: {dbHealth.isLoading ? "Loading..." : dbHealth.data}</p>
-      <p>
-        Protected backend API Health:{" "}
-        {protectedHealth.isLoading ? "Loading..." : protectedHealth.data}
-      </p>
-      <p>
-        Session:{" "}
-        {session.status === "loading"
-          ? "Loading..."
-          : JSON.stringify(session.data) ?? "undefined"}
-      </p>
-      <Link href={"/home"}>Test link to go to homepage</Link>
     </Page>
   );
 }

@@ -3,9 +3,10 @@ import { Button } from "@nextui-org/react";
 import { BiArrowBack } from "react-icons/bi";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
+import { UserDropdown } from "./User/UserDropdown";
 
 export type HeaderProps = {
-  /** Null for no back button, "last-page" for the last opened page, and string for a certain path. */
+  /** Null for no back button, "previous" for the last opened page, and string for a certain path. Default: "previous" */
   back?: string | null | "previous";
   /** Triggered when the back button is clicked. Can be used for cleanups. */
   onBack?: () => void;
@@ -13,7 +14,7 @@ export type HeaderProps = {
 
 /**
  * Unifies page headers. Contains a back button and page title.
- * Back button can be configured to either navigate to a path, navigate to the previous page ("last-page"),
+ * Back button can be configured to either navigate to a path, navigate to the previous page ("previous"),
  * or do nothing (null).
  */
 export default function Header(props: PropsWithChildren<HeaderProps>) {
@@ -21,9 +22,12 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   const router = useRouter();
 
   function handleBackClick() {
-    if (back === "previous") router.back();
-    else if (back === null) return;
-    else router.push(back);
+    if (back === null) return;
+    else if (back === "previous") router.back();
+    else {
+      router.push(back);
+      // TODO: Remove the last path from history to not confuse mobile app back button (/swipe)?
+    }
 
     if (props.onBack) props.onBack();
   }
@@ -47,6 +51,7 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
         <h1 className={"my-auto mx-auto text-center title-lg"}>
           {props.children}
         </h1>
+        <UserDropdown />
       </div>
     </div>
   );

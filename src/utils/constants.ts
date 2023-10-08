@@ -1,29 +1,42 @@
 import { Capacitor } from "@capacitor/core";
 
 export class Constants {
-  static readonly SERVER_HOST_URL = "https://companion-red.vercel.app";
+  public static readonly SERVER_URL = "https://companion-red.vercel.app"; // "https://companion-red.vercel.app";
 }
 
-// A wrapper for logging.
-export const getBaseServerUrl = () => {
-  const url = _getBaseServerUrl();
-  console.log("Requested base server url:", url);
-  return url;
+/**
+ * Adds base API path in front of the given path.
+ * @param path Path to append to base URL, e.g. "/api/bots"
+ * @returns {string} The full API URL
+ *
+ * @example Constants.apiBase("/api/bots") // "https://companion-red.vercel.app/api/bots"
+ * @example Constants.apiBase() // "https://companion-red.vercel.app/api"
+ **/
+export const apiBase = (path?: string): string => {
+  const base = getBaseServerUrl() + "/api";
+  if (!path) return base;
+
+  if (path.startsWith("/api")) path = path.slice(4);
+  if (path.startsWith("api")) path = path.slice(3);
+  if (!path.startsWith("/")) path = "/" + path;
+
+  return base + path;
 };
 
-export const _getBaseServerUrl = () => {
-  // If on mobile OR if building for mobile, use the hosted prod server instead of localhost.
-  if (Capacitor.isNativePlatform() || !!process.env.NEXT_PUBLIC_NATIVE)
-    return Constants.SERVER_HOST_URL;
+const getBaseServerUrl = () => {
+  // Mobile = use the hosted prod server instead of localhost.
+  if (Capacitor.isNativePlatform()) {
+    return Constants.SERVER_URL;
+  }
 
-  if (typeof window !== "undefined") return ""; // Browser should use relative url.
+  // Browser = relative URL.
+  if (typeof window !== "undefined") return "";
 
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  // prettier-ignore
-  if (process.env.RAILWAY_PUBLIC_DOMAIN) return `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`;
-
-  // TODO: Implement this on our server.
-  if (process.env.DOMAIN) return `https://${process.env.PUBLIC_DOMAIN}`;
-
+  // Web Server - Production. (Can oly be web server - android/ios don't have backend and browser always has window).
+  if (process.env.NODE_ENV === "production") {
+    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+    return Constants.SERVER_URL;
+  }
+  // Web Server - Development.
   return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost.
 };

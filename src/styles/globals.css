@@ -3,6 +3,10 @@
 html,
 body {
   @apply min-h-full;
+
+  /*Remove the blue flash when clicking on elements on mobile devices.*/
+  -webkit-tap-highlight-color: transparent;
+  
 }
 
 .title {
