@@ -7,13 +7,13 @@ const usernameBases: string[] = [
   "star", "wolf", "stone",
   "steel", "shadow", "light",
   "magic", "legend", "myth",
-  "blade", "shield", "dragon",
+  "blade", "shield",
   "cupcake", "giant", "phoenix",
   "raven", "saber", "thunder",
-  "master", "king", "mage",
+  "master", "king",
   "queen", "prince", "princess",
   "warrior", "wizard", "witch",
-  "hunter", "hero", "demon",
+  "hunter", "hero",
   "angel", "ghost", "spirit",
   "soul", "sage", "saint",
   "reaper", "rebel", "rogue",
@@ -35,36 +35,55 @@ export async function generateUniqueUsername(
   name?: string,
   email?: string,
 ): Promise<string> {
-  let username;
+  let base: string = "";
 
+  // First try to choose a base based on the user's name or email.
   if (name) {
-    username = name;
+    base = normalize(name);
   } else if (email) {
-    username = email.split("@")[0]!;
-  } else {
-    username = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
+    base = normalize(email.split("@")[0]!);
   }
 
+  // If the normalized base is too short, choose a random base.
+  if (!base || base.length < 3) {
+    base = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
+  }
+
+  // Now generate a random suffix and append it to the base until we find a unique username.
+  const usedSuffixes: string[] = [];
+  for (let i = 0; i < 100; i++) {
+    const suffix = generateSuffix(usedSuffixes);
+    let username = base + suffix;
+    const unique = await isUsernameUnique(username);
+    if (unique) return username;
+  }
+
+  // If we couldn't find a unique username after 100 tries...
+  console.error(
+    "Couldn't generate a unique username after a lot of tries. This might be a bug in the algorithm. Returning an extra-long surely-unique username.",
+  );
+  // generate a number between 100_000 and 999_999.
+  return base + Math.floor(Math.random() * 900_000 + 100_000).toString();
+}
+
+function generateSuffix(used: string[]) {
+  let suffix: string;
+  do {
+    // generate random number between 1000 and 9999.
+    suffix = Math.floor(Math.random() * 9000 + 1000).toString();
+  } while (used.includes(suffix));
+
+  used.push(suffix);
+  return suffix;
+}
+
+function normalize(text: string) {
   // Convert all non-ASCII characters to their closest ASCII equivalent (diacritics etc.)
   // and leave only simple alphanumeric characters (both upper and lower case) and numbers.
-  username = username
+  return text
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-zA-Z0-9]/g, "");
-
-  if (username.length < 3) {
-    username = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
-  }
-
-  let unique;
-  let suffix = undefined;
-  while (true) {
-    username = suffix ? `${username}${suffix}` : username;
-    unique = await isUsernameUnique(username);
-    if (unique) return username;
-
-    suffix = suffix ? suffix + 1 : 0;
-  }
 }
 
 async function isUsernameUnique(username: string) {
