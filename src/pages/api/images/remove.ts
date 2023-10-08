@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { prisma } from "~/server/lib/db";
-import minio from 'minio';
+import * as minio from 'minio';
 import { env } from "~/server/env";
 
 const MinioClient = new minio.Client({
@@ -14,7 +14,7 @@ const MinioClient = new minio.Client({
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== 'DELETE') return res.status(405).send('Method not allowed');
-    
+
     const session = await getSession({ req });
     const params: Partial<{ id: string }> = req.query;
 
