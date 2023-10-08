@@ -28,6 +28,8 @@ model User {
   RRAvailableUsers RRChatQueue[]
   Assets           Asset[]
   BotChats         BotChat[]
+  ForumPosts       ForumPost[]
+  ForumPostLikes   ForumPostLike[]
 }
 
 model Asset {
@@ -161,6 +163,28 @@ model ChatMessage {
   chatId    String
   chat      Chat     @relation(fields: [chatId], references: [id])
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ForumPost {
+  id      String   @id @default(cuid())
+  title   String
+  content String
+  author  User     @relation(fields: [authorId], references: [id])
+  authorId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  likeCount   BigInt  @default(0)
+  viewCount   BigInt  @default(0)
+  likes       ForumPostLike[]
+}
+
+model ForumPostLike {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  post      ForumPost @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 // -> starts searching
