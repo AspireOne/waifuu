@@ -18,6 +18,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function Landing
       window.history.replaceState(null, document.title, paths.home);
     }
   }, []);
+
   // Todo: meta description.
   return (
     <Page
@@ -41,13 +42,13 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function Landing
         />
       </div>
 
-      <div className="mt-20 z-20 absolute top-0 w-4/6 mx-auto text-center">
+      <div className="z-20 relative text-center p-1">
         <div>
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-4xl text-white font-bold">
             Come chat with your favourite characters
           </h1>
 
-          <ul className="mt-5">
+          <ul className="mt-5 text-left text-white">
             <li>
               😇 <b>Real feeling</b> - Characters have emotions and will respond
               acordingly to what you say
@@ -61,10 +62,6 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function Landing
               things you tell them
             </li>
           </ul>
-        </div>
-        <div>
-          <h3 className="text-2xl font-bold text-left">Characters</h3>
-          <div className="w-1/2 w-fit mx-auto flex flex-wrap">character</div>
         </div>
       </div>
     </Page>
