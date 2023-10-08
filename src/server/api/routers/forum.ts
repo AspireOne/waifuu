@@ -35,6 +35,9 @@ export const forumRouter = createTRPCRouter({
             increment: 1,
           },
         },
+        include: {
+          comments: true,
+        }
       });
     }),
 

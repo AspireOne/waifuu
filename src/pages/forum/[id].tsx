@@ -1,41 +1,63 @@
-import { Button, Image, Input } from "@nextui-org/react";
+import { Button, Image, Textarea } from "@nextui-org/react";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { ForumPostComment } from "~/components/Forum/ForumPostComment";
 import Page from "~/components/Page";
 import { api } from "~/utils/api";
-import { makeDownloadPath } from "~/utils/paths";
+
+type CreateFormPostForm = {
+  content: string;
+};
 
 export default function ForumPostPage() {
   const { id } = useRouter().query;
+
+  const { register, handleSubmit } = useForm<CreateFormPostForm>();
+  const createCommentMutation = api.forum.comment.useMutation();
+  const onSubmit = async (data: CreateFormPostForm) => {
+    await createCommentMutation.mutateAsync({
+      content: data.content,
+      parentPostId: id as string,
+    });
+
+    post.refetch();
+  };
 
   const post = api.forum.get.useQuery({ id: id as string });
 
   return (
     <Page
       metaTitle={post.isLoading ? "Loading Post..." : post.data?.title ?? ""}
-      className={"space-y-12"}
+      className={"space-y-4"}
       header={{ back: null }}
     >
-      <header>
+      <header className="w-full">
         <Image
           isLoading={post.isLoading}
           alt="Card example background"
-          className="z-0 w-full h-36 scale-120 -translate-y-6 object-cover"
+          className="z-0 w-screen h-36 object-cover"
           src={"https://picsum.photos/seed/picsum/200/300"}
         />
 
-        <h1>{post.data?.title}</h1>
-        <p>{post.data?.content}</p>
+        <div className="mt-2">
+          <h1 className="text-2xl font-bold">{post.data?.title}</h1>
+          <p>{post.data?.content}</p>
+        </div>
       </header>
 
-      <section>
+      <section className="flex flex-col gap-2">
         <h1>Comments</h1>
 
-        <form onSubmit={() => {}}>
-          <Input placeholder="Comment" />
-          <Button>Submit</Button>
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+          <Textarea {...register("content")} placeholder="Comment" />
+          <Button isLoading={createCommentMutation.isLoading} type="submit">
+            Submit
+          </Button>
         </form>
 
-        <div className="flex flex-row"></div>
+        <div className="flex flex-col gap-2 p-2">
+            {post.data?.comments.map((comment) => <ForumPostComment {...comment} />)}
+        </div>
       </section>
     </Page>
   );
