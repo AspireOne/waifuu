@@ -12,7 +12,7 @@ type CharacterCardProps = {
 
 const CharacterCard = ({ bot, chatId, chatType }: CharacterCardProps) => {
   return (
-    <Card>
+    <Card className="min-w-[160px]">
       <Link href={paths.botChat(chatId ?? "", bot.id)}>
         <div>
           <Image

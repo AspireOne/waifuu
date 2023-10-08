@@ -16,6 +16,9 @@ import { useForm } from "react-hook-form";
 import { BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
 import useSession from "~/hooks/useSession";
+import { BsPlus } from "react-icons/bs";
+import Router from "next/router";
+import paths from "~/utils/paths";
 
 type SearchType = {
   textFilter?: string;
@@ -122,6 +125,10 @@ const Discover = () => {
 
           <form className="mb-5 mt-1 flex flex-col items-center gap-4">
             <div className="flex flex-col w-full gap-3">
+              <Button onClick={() => Router.push(paths.createBot)}>
+                <BsPlus fontSize={25} /> Create new bot
+              </Button>
+
               <div className="flex flex-row gap-1 overflow-scroll overflow-scroll-y">
                 {[
                   "All",

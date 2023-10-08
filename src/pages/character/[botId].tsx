@@ -12,11 +12,11 @@ import { Divider, Image } from "@nextui-org/react";
 // Main page of the bot.
 const ChatMainMenu = () => {
   const router = useRouter();
-  const { botId, mode } = router.query;
+  const { botId } = router.query;
 
   const createBotChat = api.bots.createBotChat.useMutation({
     onSuccess(data) {
-      router.push(paths.botChat(data.id, data.botMode));
+      router.push(paths.botChat(data.id, data.botId));
     },
   });
   const bot = api.bots.getBot.useQuery({ botId: botId as string });
@@ -28,10 +28,10 @@ const ChatMainMenu = () => {
   }, [bot.isLoading, bot.data]);
 
   const onSubmit = (type: BotMode) => {
-    if (!botId || typeof botId !== "string") return;
+    if (!bot.data?.id || typeof bot.data?.id !== "string") return;
 
     createBotChat.mutateAsync({
-      botId,
+      botId: bot.data?.id,
       botMode: type,
     });
   };

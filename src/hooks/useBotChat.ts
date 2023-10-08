@@ -27,8 +27,8 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
 
   const fetchMore = api.bots.messages.useMutation({
     onSuccess: async (data) => {
-      // setCursor(data.nextCursor);
-      // addMessages(data.messages);
+      setCursor(data.nextCursor);
+      addMessages(data.messages);
     },
 
     onSettled: async () => {
@@ -67,14 +67,14 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
       });
       console.error(error);
 
-      /*setMessages(prevMessages => {
-          return produce(prevMessages, draft => {
+      // setMessages(prevMessages => {
+      //   return produce(prevMessages, draft => {
 
-            if (draft.length === 0) return;
-            const lastMessage = draft[draft.length - 1];
-            lastMessage!.type = "error";
-          });
-        });*/
+      //     if (draft.length === 0) return;
+      //     const lastMessage = draft[draft.length - 1];
+      //     lastMessage!.type = "error";
+      //   });
+      // });
     },
 
     onSuccess: (data, variables, context) => {

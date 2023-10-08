@@ -15,6 +15,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Visibility } from "@prisma/client";
 import Router from "next/router";
 import { api } from "~/utils/api";
+import paths from "~/utils/paths";
 
 type CreateInput = {
   title: string;
@@ -34,7 +35,7 @@ const CreateChatPage = () => {
 
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
-      Router.push(`/character/${data.id}/create`);
+      Router.push(paths.botChatMainMenu(data.id));
     },
   });
 

@@ -224,7 +224,28 @@ export const botsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      // TODO: Message fetching
+      const messages = await ctx.prisma.botChatMessage.findMany({
+        take: input.limit,
+        where: {
+          chatId: input.chatId,
+          id: input.cursor
+            ? {
+                lt: input.cursor,
+              }
+            : undefined,
+        },
+        orderBy: {
+          id: "desc",
+        },
+      });
+
+      const nextCursor =
+        messages.length > 0 ? messages[messages.length - 1]?.id : undefined;
+
+      return {
+        messages: messages.reverse(),
+        nextCursor,
+      };
     }),
 
   genReply: protectedProcedure
@@ -251,6 +272,7 @@ export const botsRouter = createTRPCRouter({
           },
           include: {
             bot: true,
+            user: true,
           },
         }),
         // And lastly, find the last 20 messages in the chat.
@@ -276,8 +298,13 @@ export const botsRouter = createTRPCRouter({
           {
             input: {
               system_prompt:
-                `${chat?.bot.description}\n` +
-                "\n" +
+                `Act as following character: "${chat?.bot.characterName}"\n` +
+                `The character's persona is "${chat?.bot.characterPersona}"\n` +
+                `The chat ${
+                  chat?.bot.characterNsfw ? "can" : "cannot"
+                } be nsfw.\n` +
+                `Example of dialogue with the character: "${chat?.bot.characterDialogue}"\n` +
+                `Address the user as: "${chat?.user.addressedAs}", here is some context about the user: "${chat?.user.about}"\n` +
                 "Your responses must be short.",
               prompt: processedMessages,
             },
