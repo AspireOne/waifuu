@@ -87,8 +87,8 @@ const Login = () => {
       />
       <div className="fixed left-0 top-0 z-20 h-full w-full bg-black bg-opacity-75" />
 
-      <div className="fixed left-[50%] top-5 z-30 max-w-[500px] translate-x-[-50%] p-7">
-        <h1 className="text-5xl font-extrabold text-white">
+      <div className="fixed w-full max-w-[500px] left-[50%] top-15 z-30 translate-x-[-50%] p-7">
+        <h1 className="text-4xl font-extrabold text-white">
           The companion that is always by your side.
         </h1>
 
