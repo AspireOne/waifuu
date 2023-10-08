@@ -8,10 +8,9 @@ import {
 import Replicate from "replicate";
 import { env } from "~/server/env";
 import { TRPCError } from "@trpc/server";
-import { Prisma, Tag } from "@prisma/client";
 import { BotMode } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
-import { prisma } from "~/server/lib/db";
+import { prompts } from "~/utils/prompt";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
@@ -298,13 +297,16 @@ export const botsRouter = createTRPCRouter({
           {
             input: {
               system_prompt:
-                `Act as following character: "${chat?.bot.characterName}"\n` +
-                `The character's persona is "${chat?.bot.characterPersona}"\n` +
-                `The chat ${
-                  chat?.bot.characterNsfw ? "can" : "cannot"
-                } be nsfw.\n` +
-                `Example of dialogue with the character: "${chat?.bot.characterDialogue}"\n` +
-                `Address the user as: "${chat?.user.addressedAs}", here is some context about the user: "${chat?.user.about}"\n` +
+                `${prompts.intro(
+                  chat?.bot.characterName!,
+                  chat?.bot.characterPersona!,
+                  chat?.bot.characterDialogue!,
+                )}\n` +
+                `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
+                `${prompts.user(
+                  chat?.user.about!,
+                  chat?.user.addressedAs!,
+                )}\n` +
                 "Your responses must be short.",
               prompt: processedMessages,
             },

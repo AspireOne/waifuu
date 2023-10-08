@@ -16,9 +16,12 @@ import { useForm } from "react-hook-form";
 import { BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
 import useSession from "~/hooks/useSession";
+import { MdForum } from "react-icons/md";
 import { BsPlus } from "react-icons/bs";
 import Router from "next/router";
 import paths from "~/utils/paths";
+import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
+import { CreateForumPostModal } from "~/components/Forum/CreateForumPostModal";
 
 type SearchType = {
   textFilter?: string;
@@ -27,6 +30,8 @@ type SearchType = {
 
 const Discover = () => {
   const { user } = useSession();
+
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false);
 
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
@@ -188,6 +193,35 @@ const Discover = () => {
               Load more
             </Button>
           </div>
+        </div>
+
+        <div className="mt-5">
+          <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
+            <MdForum className="mt-1.5" />
+            <p>Popular forum posts</p>
+          </h3>
+
+          <Button
+            onClick={() => setIsCreatePostOpen(!isCreatePostOpen)}
+            className="w-full"
+          >
+            Create new forum post
+          </Button>
+
+          <div className="flex flex-row gap-2 mt-5">
+            <ForumPostHighlight
+              title="Why is my senpais so damn cute?"
+              caption="I just want to hug her all day long! But can't she's angry on me now"
+              likes={175}
+              reads={10029}
+              image="/assets/background.png"
+            />
+          </div>
+
+          <CreateForumPostModal
+            isOpen={isCreatePostOpen}
+            onToggle={() => setIsCreatePostOpen(!isCreatePostOpen)}
+          />
         </div>
       </div>
     </Page>
