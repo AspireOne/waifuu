@@ -9,6 +9,7 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
+import { api } from "~/utils/api";
 
 type CreateForumPostModalProps = {
   isOpen: boolean;
@@ -17,7 +18,7 @@ type CreateForumPostModalProps = {
 
 type FormContentType = {
   title: string;
-  description: string;
+  content: string;
 };
 
 export const CreateForumPostModal = ({
@@ -25,33 +26,40 @@ export const CreateForumPostModal = ({
   onToggle,
 }: CreateForumPostModalProps) => {
   const { register, handleSubmit } = useForm<FormContentType>();
+  const createPostMutation = api.forum.create.useMutation();
 
-  const onSubmit = (data: FormContentType) => {
-    console.log(data);
+  const onSubmit = async (data: FormContentType) => {
+    await createPostMutation.mutateAsync(data);
+
     onToggle();
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onToggle}>
-      <ModalContent>
-        <ModalHeader>
-          <h1>Create Forum Post</h1>
-        </ModalHeader>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <ModalContent>
+          <ModalHeader>
+            <h1>Create Forum Post</h1>
+          </ModalHeader>
 
-        <ModalBody>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <ModalBody>
             <Input {...register("title")} autoFocus placeholder="Title" />
-            <Textarea {...register("description")} placeholder="Description" />
-          </form>
-        </ModalBody>
+            <Textarea {...register("content")} placeholder="Content" />
+          </ModalBody>
 
-        <ModalFooter>
-          <Button onClick={onToggle}>Close</Button>
-          <Button color="primary" autoFocus>
-            Save
-          </Button>
-        </ModalFooter>
-      </ModalContent>
+          <ModalFooter>
+            <Button onClick={onToggle}>Close</Button>
+            <Button
+              type="submit"
+              isLoading={createPostMutation.isLoading}
+              color="primary"
+              autoFocus
+            >
+              Save
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </form>
     </Modal>
   );
 };

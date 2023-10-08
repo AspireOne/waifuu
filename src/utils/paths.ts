@@ -14,6 +14,8 @@ export default {
   createBot: "/character/create",
   userProfile: (username: string) => `/user/${username}`,
   botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,
+  forumPost: (id: string) => `/forum/${id}`,
+  forum: "/forum",
 };
 
 export function addQueryParams(

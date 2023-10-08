@@ -47,6 +47,7 @@ const Discover = () => {
   const isTagToggled = (value: string): boolean => tags[0].includes(value);
 
   const bots = api.bots.getAllBots.useQuery(searchData);
+  const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
   const conversationBots = api.bots.getAllConversationBots.useQuery({
     limit: 5,
   });
@@ -209,13 +210,9 @@ const Discover = () => {
           </Button>
 
           <div className="flex flex-row gap-2 mt-5">
-            <ForumPostHighlight
-              title="Why is my senpais so damn cute?"
-              caption="I just want to hug her all day long! But can't she's angry on me now"
-              likes={175}
-              reads={10029}
-              image="/assets/background.png"
-            />
+            {forumPosts.data?.map(post => {
+              return <ForumPostHighlight {...post} />
+            })}
           </div>
 
           <CreateForumPostModal

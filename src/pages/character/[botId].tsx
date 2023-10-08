@@ -49,11 +49,7 @@ const ChatMainMenu = () => {
           isLoading={bot.isLoading}
           alt="Card example background"
           className="z-0 w-full h-36 scale-120 -translate-y-6 object-cover"
-          src={
-            makeDownloadPath(bot.data?.cover ?? "") ??
-            makeDownloadPath(bot.data?.avatar ?? "") ??
-            "/assets/background.png"
-          }
+          src={makeDownloadPath(bot.data?.avatar)}
         />
         <CardBody>
           <p className="mt-2">
