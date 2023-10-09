@@ -20,10 +20,11 @@ export default function ForumPostPage() {
       parentPostId: id as string,
     });
 
-    post.refetch();
+    postComments.refetch();
   };
 
   const post = api.forum.get.useQuery({ id: id as string });
+  const postComments = api.forum.getPostComments.useQuery({ id: id as string, cursor: 0 });
 
   return (
     <Page
@@ -55,8 +56,8 @@ export default function ForumPostPage() {
           </Button>
         </form>
 
-        <div className="flex flex-col gap-2 p-2">
-            {post.data?.comments.map((comment) => <ForumPostComment {...comment} />)}
+        <div className="flex flex-col gap-6 p-2">
+            {postComments.data?.map((comment) => <ForumPostComment {...comment} />)}
         </div>
       </section>
     </Page>

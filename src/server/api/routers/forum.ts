@@ -19,6 +19,26 @@ export const forumRouter = createTRPCRouter({
       });
     }),
 
+  getPostComments: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        cursor: z.number(),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      return await ctx.prisma.forumPost.findMany({
+        where: {
+          parentPostId: input.id,
+        },
+        skip: input.cursor,
+        take: 10,
+        include: {
+          author: true,
+        }
+      });
+    }),
+
   get: protectedProcedure
     .input(
       z.object({
@@ -29,6 +49,7 @@ export const forumRouter = createTRPCRouter({
       return await ctx.prisma.forumPost.update({
         where: {
           id: input.id,
+          parentPostId: null
         },
         data: {
           viewCount: {
@@ -37,6 +58,7 @@ export const forumRouter = createTRPCRouter({
         },
         include: {
           comments: true,
+          author: true
         }
       });
     }),
@@ -105,6 +127,9 @@ export const forumRouter = createTRPCRouter({
     )
     .query(async ({ input, ctx }) => {
       return await ctx.prisma.forumPost.findMany({
+        where: {
+          parentPostId: null,
+        },
         skip: input.skip,
         take: input.take,
       });
