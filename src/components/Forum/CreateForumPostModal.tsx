@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
+import { FileUpload } from "../shared/FileUpload";
 
 type CreateForumPostModalProps = {
   isOpen: boolean;
@@ -43,6 +44,13 @@ export const CreateForumPostModal = ({
           </ModalHeader>
 
           <ModalBody>
+            <h2>Post banner image</h2>
+            <FileUpload
+              onFileRemove={() => {}}
+              onSuccess={() => {}}
+              onError={() => {}}
+              structure="SQUARE"
+            />
             <Input {...register("title")} autoFocus placeholder="Title" />
             <Textarea {...register("content")} placeholder="Content" />
           </ModalBody>

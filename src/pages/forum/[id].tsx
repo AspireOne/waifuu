@@ -1,5 +1,6 @@
 import {
   Button,
+  Chip,
   Image,
   Modal,
   ModalContent,
@@ -22,6 +23,14 @@ export default function ForumPostPage() {
   const { id } = useRouter().query;
 
   const [commentInputOpen, setCommentInputOpen] = useState(false);
+  const [openComments, setOpenComments] = useState<string[]>([]);
+  const openComment = (id: string) => {
+    if (openComments.includes(id)) {
+      setOpenComments(openComments.filter((c) => c !== id));
+    } else {
+      setOpenComments([...openComments, id]);
+    }
+  };
 
   const { register, handleSubmit } = useForm<CreateFormPostForm>();
   const createCommentMutation = api.forum.comment.useMutation();
@@ -61,6 +70,19 @@ export default function ForumPostPage() {
             <p className="text-gray-500">33 minutes ago</p>
           </Flex>
 
+          <div className="flex flex-wrap gap-2 mt-2 w-3/4">
+            <Chip>Tag 1</Chip>
+            <Chip>Tag 2</Chip>
+            <Chip>Tag 3</Chip>
+            <Chip>Tag 4</Chip>
+            <Chip>Tag 5</Chip>
+            <Chip>Tag 5</Chip>
+            <Chip>Tag 5</Chip>
+            <Chip>Tag 5</Chip>
+            <Chip>Tag 5</Chip>
+            <Chip>Tag 5</Chip>
+          </div>
+
           <p className="mt-3">{post.data?.content}</p>
         </div>
 
@@ -79,7 +101,9 @@ export default function ForumPostPage() {
       <section className="flex flex-col gap-2">
         <div className="flex flex-row gap-2 align-center mt-4">
           <h1 className="text-xl font-bold">Comments</h1>
-          <label className="mt-0.5 text-gray-500">{postComments.data?.length} replies</label>
+          <label className="mt-0.5 text-gray-500">
+            {postComments.data?.length} replies
+          </label>
         </div>
 
         <Modal
@@ -102,7 +126,13 @@ export default function ForumPostPage() {
 
         <div className="flex flex-col gap-6 p-2">
           {postComments.data?.map((comment) => (
-            <ForumPostComment {...comment} />
+            <ForumPostComment
+              onCommentToggle={() => openComment(comment.id)}
+              onLikeToggle={() => {}}
+              comment={comment}
+              isOpen={openComments.includes(comment.id)}
+              nestedLevel={0}
+            />
           ))}
         </div>
       </section>
