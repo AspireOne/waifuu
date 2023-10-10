@@ -165,8 +165,18 @@ model ChatMessage {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model ForumPostCategory {
+  name      String  @id @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ForumPosts ForumPost[]
+}
+
 model ForumPost {
   id          String         @id @default(cuid())
+  bannerImage String?
+  categoryname  String?
+  category    ForumPostCategory? @relation(fields: [categoryname], references: [name])
   title       String?
   content     String
   author      User           @relation(fields: [authorId], references: [id])

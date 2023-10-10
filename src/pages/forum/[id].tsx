@@ -15,6 +15,7 @@ import Page from "~/components/Page";
 import { Flex } from "~/components/shared/Flex";
 import { api } from "~/utils/api";
 import moment from "moment";
+import { makeDownloadPath } from "~/utils/paths";
 
 type CreateFormPostForm = {
   content: string;
@@ -67,17 +68,17 @@ export default function ForumPostPage() {
   };
 
   return (
-    <Page
-      metaTitle={post.isLoading ? "Loading Post..." : post.data?.title ?? ""}
-      className={"space-y-4"}
-      header={{ back: null }}
-    >
+    <Page metaTitle="Forum Post" className="space-y-4">
       <header className="w-full">
         <Image
           isLoading={post.isLoading}
           alt="Card example background"
           className="z-0 w-screen h-36 object-cover"
-          src={"https://picsum.photos/seed/picsum/200/300"}
+          src={
+            post.data?.bannerImage
+              ? makeDownloadPath(post.data.bannerImage)
+              : "/default-banner.png"
+          }
         />
 
         <div className="mt-2">
@@ -88,13 +89,13 @@ export default function ForumPostPage() {
             </p>
           </Flex>
 
-          <div className="flex flex-wrap gap-2 mt-2 w-3/4">
-            {[...Array(10)].map((_, i) => (
-              <Chip key={i} color="default">
-                {`#${i}`}
-              </Chip>
-            ))}
-          </div>
+          <Chip
+            key={post.data?.categoryname}
+            className="mt-2 mb-2"
+            color="default"
+          >
+            {post.data?.categoryname}
+          </Chip>
 
           <p className="mt-3">{post.data?.content}</p>
         </div>

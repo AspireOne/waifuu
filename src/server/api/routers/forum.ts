@@ -1,3 +1,4 @@
+import { ForumPost } from "@prisma/client";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 
@@ -7,14 +8,38 @@ export const forumRouter = createTRPCRouter({
       z.object({
         title: z.string(),
         content: z.string(),
+        category: z.string(),
+        bannerImage: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      let categoryName = "";
+
+      const category = await ctx.prisma.forumPostCategory.findFirst({
+        where: {
+          name: input.category,
+        },
+      });
+
+      if (!category) {
+        const newCategory = await ctx.prisma.forumPostCategory.create({
+          data: {
+            name: input.category,
+          },
+        });
+
+        categoryName = newCategory.name;
+      } else {
+        categoryName = category.name;
+      }
+
       return await ctx.prisma.forumPost.create({
         data: {
           title: input.title,
           content: input.content,
           authorId: ctx.user.id,
+          categoryname: categoryName,
+          bannerImage: input.bannerImage,
         },
       });
     }),
@@ -44,19 +69,36 @@ export const forumRouter = createTRPCRouter({
         },
       });
 
+      let ids: string[] = [];
+      const recursivePostIds = (posts: ForumPost[]) => {
+        posts.map((post) => {
+          ids.push(post.id);
+
+          recursivePostIds((post as any).comments);
+        });
+      };
+      recursivePostIds(res);
+
       const likes = await ctx.prisma.forumPostLike.findMany({
         where: {
           userId: ctx.user.id,
           postId: {
-            in: res.map((post) => post.id),
-          }
-        }
+            in: ids,
+          },
+        },
       });
 
-      return res.map((post) => {
-        post.liked = likes.some((like) => like.postId === post.id);
-        return post;
-      });
+      const recursivePostMap = (posts: ForumPost[]): ForumPost[] => {
+        return posts.map((post) => {
+          // TODO: Fix later, little bit of typescript will be needed here
+          (post as any).liked = !!likes.find((like) => like.postId === post.id);
+          (post as any).comments = recursivePostMap((post as any).comments);
+
+          return post;
+        });
+      };
+
+      return recursivePostMap(res);
     }),
 
   get: protectedProcedure
@@ -84,8 +126,8 @@ export const forumRouter = createTRPCRouter({
       const like = await ctx.prisma.forumPostLike.findFirst({
         where: {
           postId: input.id,
-          userId: ctx.user.id
-        }
+          userId: ctx.user.id,
+        },
       });
 
       return {
@@ -104,16 +146,16 @@ export const forumRouter = createTRPCRouter({
       const like = await ctx.prisma.forumPostLike.findFirst({
         where: {
           postId: input.id,
-          userId: ctx.user.id
-        }
+          userId: ctx.user.id,
+        },
       });
 
       if (!like) {
         await ctx.prisma.forumPostLike.create({
           data: {
             postId: input.id,
-            userId: ctx.user.id
-          }
+            userId: ctx.user.id,
+          },
         });
 
         return await ctx.prisma.forumPost.update({
@@ -139,17 +181,17 @@ export const forumRouter = createTRPCRouter({
       const like = await ctx.prisma.forumPostLike.findFirst({
         where: {
           postId: input.id,
-          userId: ctx.user.id
-        }
+          userId: ctx.user.id,
+        },
       });
 
       if (like) {
         await ctx.prisma.forumPostLike.delete({
           where: {
-            id: like.id
-          }
+            id: like.id,
+          },
         });
-        
+
         return await ctx.prisma.forumPost.update({
           where: {
             id: input.id,
@@ -198,7 +240,7 @@ export const forumRouter = createTRPCRouter({
         take: input.take,
         include: {
           author: true,
-        }
+        },
       });
     }),
 });

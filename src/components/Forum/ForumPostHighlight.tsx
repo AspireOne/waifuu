@@ -31,7 +31,7 @@ export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
           </div>
 
           <LargeText
-            className="text-gray-400 text-sm"
+            className="text-gray-400 text-md"
             content={post.content}
             maxLength={100}
           />
