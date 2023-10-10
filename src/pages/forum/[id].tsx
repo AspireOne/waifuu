@@ -22,6 +22,14 @@ export default function ForumPostPage() {
   const { id } = useRouter().query;
 
   const [commentInputOpen, setCommentInputOpen] = useState(false);
+  const [commentsOpenIds, setCommentsOpenIds] = useState<string[]>([]);
+  const onCommentToggle = (id: string) => {
+    if (commentsOpenIds.includes(id)) {
+      setCommentsOpenIds(commentsOpenIds.filter((i) => i !== id));
+    } else {
+      setCommentsOpenIds([...commentsOpenIds, id]);
+    }
+  }
 
   const { register, handleSubmit } = useForm<CreateFormPostForm>();
   const createCommentMutation = api.forum.comment.useMutation();
@@ -40,6 +48,10 @@ export default function ForumPostPage() {
     id: id as string,
     cursor: 0,
   });
+
+  const likeMutation = api.forum.like.useMutation();
+  const dislikeMutation = api.forum.dislike.useMutation();
+  const onLike = (postId: string) => likeMutation.mutate({ id: postId });
 
   return (
     <Page
@@ -102,7 +114,11 @@ export default function ForumPostPage() {
 
         <div className="flex flex-col gap-6 p-2">
           {postComments.data?.map((comment) => (
-            <ForumPostComment {...comment} />
+            <ForumPostComment 
+              post={comment} 
+              onCommentToggle={() => onCommentToggle(comment.id)} 
+              onLikeToggle={() => onLike(comment.id)}
+            />
           ))}
         </div>
       </section>

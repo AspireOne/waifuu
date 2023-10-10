@@ -70,16 +70,32 @@ export const forumRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      return await ctx.prisma.forumPost.update({
+      const like = await ctx.prisma.forumPostLike.findFirst({
         where: {
-          id: input.id,
-        },
-        data: {
-          likeCount: {
-            increment: 1,
-          },
-        },
+          postId: input.id,
+          userId: ctx.user.id
+        }
       });
+
+      if (!like) {
+        await ctx.prisma.forumPostLike.create({
+          data: {
+            postId: input.id,
+            userId: ctx.user.id
+          }
+        });
+
+        return await ctx.prisma.forumPost.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            likeCount: {
+              decrement: 1,
+            },
+          },
+        });
+      }
     }),
 
   dislike: protectedProcedure
@@ -89,16 +105,31 @@ export const forumRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      return await ctx.prisma.forumPost.update({
+      const like = await ctx.prisma.forumPostLike.findFirst({
         where: {
-          id: input.id,
-        },
-        data: {
-          likeCount: {
-            decrement: 1,
-          },
-        },
+          postId: input.id,
+          userId: ctx.user.id
+        }
       });
+
+      if (like) {
+        await ctx.prisma.forumPostLike.delete({
+          where: {
+            id: like.id
+          }
+        });
+        
+        return await ctx.prisma.forumPost.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            likeCount: {
+              decrement: 1,
+            },
+          },
+        });
+      }
     }),
 
   comment: protectedProcedure
