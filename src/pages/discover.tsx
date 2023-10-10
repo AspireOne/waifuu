@@ -31,8 +31,6 @@ type SearchType = {
 const Discover = () => {
   const { user } = useSession();
 
-  const [isCreatePostOpen, setIsCreatePostOpen] = useState<boolean>(false);
-
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
   });
@@ -202,23 +200,11 @@ const Discover = () => {
             <p>Popular forum posts</p>
           </h3>
 
-          <Button
-            onClick={() => setIsCreatePostOpen(!isCreatePostOpen)}
-            className="w-full"
-          >
-            Create new forum post
-          </Button>
-
           <div className="flex flex-col gap-2 mt-5">
             {forumPosts.data?.map(post => {
               return <ForumPostHighlight {...post} />
             })}
           </div>
-
-          <CreateForumPostModal
-            isOpen={isCreatePostOpen}
-            onToggle={() => setIsCreatePostOpen(!isCreatePostOpen)}
-          />
         </div>
       </div>
     </Page>

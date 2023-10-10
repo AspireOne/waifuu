@@ -27,7 +27,7 @@ export const forumRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      return await ctx.prisma.forumPost.findMany({
+      const res = await ctx.prisma.forumPost.findMany({
         where: {
           parentPostId: input.id,
         },
@@ -35,7 +35,27 @@ export const forumRouter = createTRPCRouter({
         take: 10,
         include: {
           author: true,
+          comments: {
+            include: {
+              author: true,
+              comments: true,
+            },
+          },
+        },
+      });
+
+      const likes = await ctx.prisma.forumPostLike.findMany({
+        where: {
+          userId: ctx.user.id,
+          postId: {
+            in: res.map((post) => post.id),
+          }
         }
+      });
+
+      return res.map((post) => {
+        post.liked = likes.some((like) => like.postId === post.id);
+        return post;
       });
     }),
 
@@ -46,10 +66,10 @@ export const forumRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      return await ctx.prisma.forumPost.update({
+      const res = await ctx.prisma.forumPost.update({
         where: {
           id: input.id,
-          parentPostId: null
+          parentPostId: null,
         },
         data: {
           viewCount: {
@@ -57,10 +77,21 @@ export const forumRouter = createTRPCRouter({
           },
         },
         include: {
-          comments: true,
-          author: true
+          author: true,
+        },
+      });
+
+      const like = await ctx.prisma.forumPostLike.findFirst({
+        where: {
+          postId: input.id,
+          userId: ctx.user.id
         }
       });
+
+      return {
+        ...res,
+        liked: !!like,
+      };
     }),
 
   like: protectedProcedure
@@ -140,13 +171,15 @@ export const forumRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      return await ctx.prisma.forumPost.create({
+      const res = await ctx.prisma.forumPost.create({
         data: {
           content: input.content,
           authorId: ctx.user.id,
           parentPostId: input.parentPostId,
         },
       });
+
+      return res;
     }),
 
   getAll: protectedProcedure
@@ -163,6 +196,9 @@ export const forumRouter = createTRPCRouter({
         },
         skip: input.skip,
         take: input.take,
+        include: {
+          author: true,
+        }
       });
     }),
 });
