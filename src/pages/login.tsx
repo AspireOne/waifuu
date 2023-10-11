@@ -36,6 +36,9 @@ const Login = () => {
   // NOTE: APPLE SIGN IN must have "skipNativeAuth = true" passed.
   // https://github.com/capawesome-team/capacitor-firebase/blob/main/packages/authentication/docs/firebase-js-sdk.md
   async function handleGoogleSignIn() {
+    if (session.status === "authenticated") {
+      console.warn("Tried to sign in while already being authenticated.");
+    }
     console.log("Signing in using google...");
     try {
       await FirebaseAuthentication.signInWithGoogle({

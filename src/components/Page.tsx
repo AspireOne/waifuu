@@ -51,6 +51,7 @@ function Page(
 
   const router = useRouter();
 
+  // TODO: HAndle hardware back button using Capacitor.
   function handleBackClick() {
     if (!backPath && !autoBack) return;
 
