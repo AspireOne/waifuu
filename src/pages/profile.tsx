@@ -93,6 +93,7 @@ export default function Profile() {
     usernameAvailability.mutate({ username: getValues("username") });
   }
 
+  // TODO: Profile picture...
   return (
     <Page title={"Profile"} showActionBar autoBack={false}>
       <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-4"}>
