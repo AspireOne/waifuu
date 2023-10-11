@@ -75,7 +75,7 @@ const Login = () => {
   }
 
   return (
-    <Page title={"Log in"} unprotected back={null}>
+    <Page title={"Log in"} unprotected>
       <Image
         alt="background"
         loading="eager"

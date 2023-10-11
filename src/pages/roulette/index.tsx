@@ -14,7 +14,7 @@ export default function RRIndex() {
   }
 
   return (
-    <Page title={"Character Roulette"} back={null} showActionBar>
+    <Page title={"Character Roulette"} autoBack={false} showActionBar>
       <Card>
         <CardBody>
           <h2 className={"title mb-1"}>What is Character Roulette?</h2>

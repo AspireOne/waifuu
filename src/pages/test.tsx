@@ -10,7 +10,7 @@ export default function Test() {
   const session = useSession();
 
   return (
-    <Page title={"Test Page"} unprotected back={"/"}>
+    <Page title={"Test Page"} unprotected backPath={"/"}>
       <p>Backend API Health: {health.isLoading ? "Loading..." : health.data}</p>
       <p>DB Health: {dbHealth.isLoading ? "Loading..." : dbHealth.data}</p>
       <p>

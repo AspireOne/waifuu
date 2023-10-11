@@ -23,8 +23,16 @@ function Page(
     /** Default enabled: true */
     showHeader?: boolean;
 
-    /** Null for no back button, "previous" for the last opened page, and string for a certain path. Default: "previous" */
-    back?: null | string | "previous";
+    /** Explicit path to a page that will be loaded on back button click. */
+    backPath?: string;
+    /** If enabled, will go to previous page on back button click.
+     *
+     * If enabled and backPath is specified, will go to previous page if exists, and if it doesn't, will go to the specified page.
+     *
+     * If enabled and there is no previous path nor backPath specified, will do nothing and back button will not be shown.
+     * @default true
+     */
+    autoBack?: boolean;
     /** Triggered when the back button is clicked. Can be used for cleanups. */
     onBack?: () => void;
   }>,
@@ -33,19 +41,30 @@ function Page(
   const unprotected = props.unprotected ?? false;
   const showActionBar = props.showActionBar ?? false;
   const showHeader = props.showHeader ?? true;
-  const back = props.back === undefined ? "previous" : props.back;
+  const autoBack = props.autoBack ?? true;
+  const backPath = props.backPath;
+
+  const [prevPathExists, setPrevPathExists] = React.useState(false);
+  useEffect(() => {
+    setPrevPathExists(window.history.length > 1);
+  }, []);
 
   const router = useRouter();
 
   function handleBackClick() {
-    if (back === null) return;
-    else if (back === "previous") router.back();
-    else {
-      router.push(back);
-      // TODO: Remove the last path from history to not confuse mobile app back button (/swipe)?
+    if (!backPath && !autoBack) return;
+
+    if (autoBack && prevPathExists) {
+      router.back();
+      props.onBack?.();
+      return;
     }
 
-    if (props.onBack) props.onBack();
+    if (backPath) {
+      router.push(backPath);
+      props.onBack?.();
+      return;
+    }
   }
 
   return (
@@ -60,7 +79,7 @@ function Page(
 
       {showHeader && (
         <Header
-          backButtonEnabled={!!back}
+          backButtonEnabled={(autoBack && prevPathExists) || !!backPath}
           onBackButtonPressed={handleBackClick}
         >
           {props.title}

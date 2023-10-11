@@ -68,7 +68,7 @@ const Discover = () => {
   }, [watch]);
 
   return (
-    <Page title="Discover Characters" showActionBar back={null}>
+    <Page title="Discover Characters" showActionBar autoBack={false}>
       <div className="relative">
         <Image
           alt="background"
