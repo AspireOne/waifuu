@@ -2,7 +2,7 @@ import Page from "~/components/Page";
 
 export default function Profile() {
   return (
-    <Page metaTitle={"Profile"} showActionBar>
+    <Page title={"Profile"} showActionBar>
       <div></div>
     </Page>
   );

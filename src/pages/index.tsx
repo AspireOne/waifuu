@@ -22,9 +22,9 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function Landing
   // Todo: meta description.
   return (
     <Page
-      metaTitle={"Companion"}
+      title={"Companion"}
       unprotected
-      header={{enabled: false}}
+      showHeader={false}
       showActionBar={false}
     >
       <div className="z-10">

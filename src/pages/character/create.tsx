@@ -72,7 +72,7 @@ const CreateChatPage = () => {
   );
 
   return (
-    <Page metaTitle="Create a new character">
+    <Page title="Create a new character">
       <form onSubmit={handleSubmit(submitHandler)}>
         <Card>
           <div className="p-4">

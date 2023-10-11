@@ -68,7 +68,7 @@ export default function ForumPostPage() {
   };
 
   return (
-    <Page metaTitle="Forum Post" className="space-y-4">
+    <Page title="Forum Post" className="space-y-4">
       <header className="w-full">
         <Image
           isLoading={post.isLoading}

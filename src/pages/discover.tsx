@@ -68,7 +68,7 @@ const Discover = () => {
   }, [watch]);
 
   return (
-    <Page metaTitle="Discover Characters" showActionBar header={{ back: null }}>
+    <Page title="Discover Characters" showActionBar back={null}>
       <div className="relative">
         <Image
           alt="background"
@@ -201,8 +201,8 @@ const Discover = () => {
           </h3>
 
           <div className="flex flex-col gap-2 mt-5">
-            {forumPosts.data?.map(post => {
-              return <ForumPostHighlight {...post} />
+            {forumPosts.data?.map((post) => {
+              return <ForumPostHighlight {...post} />;
             })}
           </div>
         </div>

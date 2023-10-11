@@ -14,7 +14,7 @@ export default function ForumPage() {
   const posts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
 
   return (
-    <Page metaTitle="Forum" unprotected>
+    <Page title="Forum" unprotected>
       <h1 className="text-xl font-bold">Pinned posts</h1>
       {posts.isLoading || !posts.data ? (
         <p>Loading...</p>

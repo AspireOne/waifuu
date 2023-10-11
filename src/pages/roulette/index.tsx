@@ -14,11 +14,7 @@ export default function RRIndex() {
   }
 
   return (
-    <Page
-      metaTitle={"Character Roulette"}
-      header={{ back: null }}
-      showActionBar
-    >
+    <Page title={"Character Roulette"} back={null} showActionBar>
       <Card>
         <CardBody>
           <h2 className={"title mb-1"}>What is Character Roulette?</h2>

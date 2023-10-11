@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Home() {
   return (
-    <Page metaTitle={"Home"} showActionBar header={{ back: null }}>
+    <Page title={"Home"} showActionBar back={null}>
       <div></div>
     </Page>
   );

@@ -16,7 +16,7 @@ import { twMerge } from "tailwind-merge";
 // "RR". Stands for Roleplay Roulette.
 export default function RoleplayRoulette() {
   return (
-    <Page metaTitle={"Character Roulette"} header={{ back: paths.RR }}>
+    <Page title={"Character Roulette"} back={paths.RR}>
       <Chat />
     </Page>
   );

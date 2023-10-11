@@ -39,7 +39,7 @@ const BotChat = () => {
   }, []);
 
   return (
-    <Page metaTitle={bot?.name || "Loading..."}>
+    <Page title={bot?.name || "Loading..."}>
       {/*TODO: Add background to bot.*/}
       <BackgroundImage src={makeDownloadPath(bot?.avatar ?? "")} />
       {/*TODO: Make character image only the png of the char.*/}

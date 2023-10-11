@@ -4,30 +4,49 @@ import PageHead from "~/components/PageHead";
 import { twMerge } from "tailwind-merge";
 import SignInModal from "~/components/SignInModal";
 import { BottomNavbar } from "~/components/BottomNavbar";
-import Header, { HeaderProps } from "~/components/Header";
 import useSession from "~/hooks/useSession";
 import { useRouter } from "next/router";
 import paths, { normalizePath } from "~/utils/paths";
+import Header from "~/components/Header";
 
 function Page(
   props: PropsWithChildren<{
     className?: string;
-    /** Will be shown in the browser title bar. */
-    metaTitle: string;
+    /** Will be shown in the browser title bar and in Header. */
+    title: string;
+    /** Meta description of the page. */
     description?: string;
     /** Default: false */
     unprotected?: boolean;
     /** Default: false */
     showActionBar?: boolean;
     /** Default enabled: true */
-    header?: HeaderProps & {
-      enabled?: boolean;
-    };
+    showHeader?: boolean;
+
+    /** Null for no back button, "previous" for the last opened page, and string for a certain path. Default: "previous" */
+    back?: null | string | "previous";
+    /** Triggered when the back button is clicked. Can be used for cleanups. */
+    onBack?: () => void;
   }>,
 ) {
+  // Set default values for props.
   const unprotected = props.unprotected ?? false;
   const showActionBar = props.showActionBar ?? false;
-  const showHeader = props.header?.enabled ?? true;
+  const showHeader = props.showHeader ?? true;
+  const back = props.back === undefined ? "previous" : props.back;
+
+  const router = useRouter();
+
+  function handleBackClick() {
+    if (back === null) return;
+    else if (back === "previous") router.back();
+    else {
+      router.push(back);
+      // TODO: Remove the last path from history to not confuse mobile app back button (/swipe)?
+    }
+
+    if (props.onBack) props.onBack();
+  }
 
   return (
     <div
@@ -35,11 +54,18 @@ function Page(
       key={"_page-root-container"}
       className={"min-h-screen max-h-screen"}
     >
-      <PageHead title={props.metaTitle} description={props.description} />
+      <PageHead title={props.title} description={props.description} />
 
       {/*TODO: PC Navbar.*/}
 
-      {showHeader && <Header {...props.header}>{props.metaTitle}</Header>}
+      {showHeader && (
+        <Header
+          backButtonEnabled={!!back}
+          onBackButtonPressed={handleBackClick}
+        >
+          {props.title}
+        </Header>
+      )}
 
       <PageWrapper
         unprotected={unprotected}

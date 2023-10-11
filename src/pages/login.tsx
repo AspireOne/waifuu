@@ -75,7 +75,7 @@ const Login = () => {
   }
 
   return (
-    <Page metaTitle={"Log in"} unprotected header={{ back: null }}>
+    <Page title={"Log in"} unprotected back={null}>
       <Image
         alt="background"
         loading="eager"

@@ -38,7 +38,7 @@ const ChatMainMenu = () => {
 
   return (
     <Page
-      metaTitle={
+      title={
         bot.isLoading ? "Loading Character..." : `Chat with ${bot.data?.name}`
       }
       className={"space-y-12"}

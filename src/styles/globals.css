@@ -6,7 +6,26 @@ body {
 
   /*Remove the blue flash when clicking on elements on mobile devices.*/
   -webkit-tap-highlight-color: transparent;
-  
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* scrollbar track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px transparent;
+  border-radius: 10px;
+}
+
+/* scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-700 transition duration-100;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-secondary-500 transition duration-100;
 }
 
 .title {
