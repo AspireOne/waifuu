@@ -28,18 +28,6 @@ body {
   @apply bg-secondary-500 transition duration-100;
 }
 
-.title {
-  @apply text-xl font-semibold;
-}
-
-.title-lg {
-  @apply text-2xl font-semibold;
-}
-
-.title-xl {
-  @apply text-3xl font-semibold;
-}
-
 /* use a hand cursor intead of arrow for the action buttons */
 .filepond--file-action-button {
   cursor: pointer;
