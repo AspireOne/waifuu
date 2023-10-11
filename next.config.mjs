@@ -4,6 +4,7 @@
  */
 
 import next_transpile_modules from "next-transpile-modules";
+import {Capacitor} from "@capacitor/core";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -24,7 +25,7 @@ const config = {
 
     images: {
         // Capacitor needs static export/build -> that doesn't support optimized images -> disable it so that Capacitor works.
-        unoptimized: true,
+        unoptimized: !process.env.NEXT_PUBLIC_BUILDING_NATIVE || Capacitor.isNativePlatform(),
     },
 
     /**

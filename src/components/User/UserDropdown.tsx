@@ -9,8 +9,9 @@ import {
 } from "@nextui-org/react";
 import { UserSettingsDialog } from "./UserSettingsDialog";
 import useSession from "~/hooks/useSession";
+import { twMerge } from "tailwind-merge";
 
-export const UserDropdown = () => {
+export const UserDropdown = (props: { className?: string }) => {
   const { user } = useSession();
 
   const {
@@ -31,9 +32,9 @@ export const UserDropdown = () => {
           <Avatar
             isBordered
             as="button"
-            className="transition-transform mr-4 mt-1"
+            className={twMerge("transition-transform", props.className)}
             name={user?.name ?? "Loading..."}
-            size="sm"
+            size={"sm"}
             src={user?.image ?? undefined}
           />
         </DropdownTrigger>

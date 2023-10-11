@@ -35,23 +35,35 @@ export default function Header(props: PropsWithChildren<HeaderProps>) {
   return (
     <div
       className={
-        "z-[100] h-16 fixed -top-1 left-0 right-0 p-2 " +
-        "backdrop-blur-xl bg-background/50 border-b-1 border-foreground-300"
+        "z-[100] h-[55px] fixed top-0 left-0 right-0 " +
+        "backdrop-blur-xl bg-background/50 border-b-1 border-foreground-300 shadow"
       }
     >
-      <div className={"justify-center flex flex-row h-full items-center"}>
+      <div className={"flex flex-row items-center gap-5 h-full px-1"}>
+        {/*Back button, on the left*/}
         <Button
           variant={"light"}
           isIconOnly
           onClick={handleBackClick}
-          className={twMerge("-mr-8 p-0", back === null && "hidden")}
+          className={twMerge("p-0 mr-auto", back === null && "invisible")}
         >
           <BiArrowBack size={25} />
         </Button>
-        <h1 className={"my-auto mx-auto text-center title-lg"}>
+
+        {/*Text, absolute, centered*/}
+        <h2
+          className={twMerge(
+            "my-auto mx-auto text-center text-xl line-clamp-1 flex-1",
+            "",
+          )}
+        >
           {props.children}
-        </h1>
-        <UserDropdown />
+        </h2>
+
+        {/*mr-2 to offset the dropdown, because it is natively slightly off.*/}
+        {/*min-w-max to make it NOT shrink when title is too long*/}
+        {/*User button, on the right*/}
+        <UserDropdown className={"ml-auto mr-2 min-w-max"} />
       </div>
     </div>
   );

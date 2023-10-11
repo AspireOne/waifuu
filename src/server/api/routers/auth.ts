@@ -44,10 +44,12 @@ export const authRouter = createTRPCRouter({
 
       await upsertUser(ctx.prisma, decodedIdToken);
 
-      await createSessionCookie(input.idToken, ctx.res!);
+      const cookie = await createSessionCookie(input.idToken, ctx.res!);
 
       console.log("Successfully signed in with Firebase.");
-      return undefined;
+      return {
+        session: cookie,
+      };
     }),
 });
 
@@ -113,7 +115,15 @@ async function verifyRequest(
   }
 }
 
-async function createSessionCookie(idToken: string, res: NextApiResponse) {
+/**
+ * Creates a session cookie and sets it in the response. Returns the cookie.
+ * @param idToken
+ * @param res
+ */
+async function createSessionCookie(
+  idToken: string,
+  res: NextApiResponse,
+): Promise<string> {
   const cookie = await getServerFirebaseAuth().createSessionCookie(idToken, {
     // 2 weeks.
     expiresIn: 60 * 60 * 24 * 14 * 1000,
@@ -123,4 +133,6 @@ async function createSessionCookie(idToken: string, res: NextApiResponse) {
     "Set-Cookie",
     `session=${cookie}; Path=/; HttpOnly; Secure; SameSite=Strict`,
   );
+
+  return cookie;
 }

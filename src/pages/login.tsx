@@ -25,7 +25,6 @@ const Login = () => {
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: async (data) => {
       console.log("Successfully logged in with Google!", data);
-
       router.replace((redirect as string) || paths.home);
       session.refetch();
     },
@@ -76,7 +75,7 @@ const Login = () => {
   }
 
   return (
-    <Page metaTitle={"Log in"} unprotected>
+    <Page metaTitle={"Log in"} unprotected header={{ back: null }}>
       <Image
         alt="background"
         loading="eager"
