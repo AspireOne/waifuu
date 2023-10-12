@@ -120,6 +120,7 @@ export const forumRouter = createTRPCRouter({
         },
         include: {
           author: true,
+          category: true
         },
       });
 

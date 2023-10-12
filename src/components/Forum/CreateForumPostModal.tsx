@@ -67,17 +67,9 @@ export const CreateForumPostModal = ({
           <ModalBody>
             <h2>Post banner image</h2>
             {BannerImageUpload}
-            <Select label="Post category" {...register("category")}>
-              <MenuItem value="GENERAL">General</MenuItem>
-              <MenuItem value="ART">Art</MenuItem>
-              <MenuItem value="ANIMATION">Animation</MenuItem>
-              <MenuItem value="MUSIC">Music</MenuItem>
-              <MenuItem value="PROGRAMMING">Programming</MenuItem>
-              <MenuItem value="GAME_DESIGN">Game Design</MenuItem>
-              <MenuItem value="GAME_DEV">Game Development</MenuItem>
-            </Select>
             <Input {...register("title")} autoFocus placeholder="Title" />
             <Textarea {...register("content")} placeholder="Content" />
+            <Input label="Post category" {...register("category")} />
           </ModalBody>
 
           <ModalFooter>

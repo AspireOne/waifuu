@@ -19,7 +19,7 @@ export default function ForumPage() {
       {posts.isLoading || !posts.data ? (
         <p>Loading...</p>
       ) : (
-        <div className="flex flex-row gap-2 mt-5">
+        <div className="flex flex-col gap-2 mt-5">
           {posts.data.map((item) => {
             return <PinnedPost key={item.id} {...item} />;
           })}
@@ -41,7 +41,7 @@ export default function ForumPage() {
       {posts.isLoading || !posts.data ? (
         <p>Loading...</p>
       ) : (
-        <div className="flex flex-row gap-2 mt-5">
+        <div className="flex flex-col gap-2 mt-5">
           {posts.data.map((item) => {
             return <ForumPostHighlight key={item.id} {...item} />;
           })}

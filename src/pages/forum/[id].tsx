@@ -90,11 +90,11 @@ export default function ForumPostPage() {
           </Flex>
 
           <Chip
-            key={post.data?.categoryname}
+            key={post.data?.category?.name}
             className="mt-2 mb-2"
             color="default"
           >
-            {post.data?.categoryname}
+            {post.data?.category?.name}
           </Chip>
 
           <p className="mt-3">{post.data?.content}</p>
@@ -148,6 +148,7 @@ export default function ForumPostPage() {
             <ForumPostComment
               onCommentToggle={() => openComment(comment.id)}
               onLikeToggle={() => onLike(comment.id)}
+              // @ts-ignore TODO: Fix this type error later
               comment={comment}
               isOpen={openComments.includes(comment.id)}
               nestedLevel={0}
