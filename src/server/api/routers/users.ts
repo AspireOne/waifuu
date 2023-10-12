@@ -5,25 +5,7 @@ import {
 } from "~/server/api/trpc";
 import { z, ZodSchema } from "zod";
 import { TRPCError } from "@trpc/server";
-
-export const updateSelfSchema: ZodSchema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Required." })
-    .max(16, { message: "Too long." }),
-  name: z
-    .string()
-    .min(3, { message: "Required." })
-    .max(80, { message: "Too long." })
-    .nullable(),
-  email: z
-    .string()
-    .email({ message: "Invalid." })
-    .max(100, { message: "Too long." }),
-  bio: z.string().max(500, { message: "Too long." }).nullable(),
-  addressedAs: z.string().max(50, { message: "Too long." }).nullable(),
-  about: z.string().max(500, { message: "Too long." }).nullable(),
-});
+import updateSelfSchema from "~/server/types/updateSelfSchema";
 
 export const usersRouter = createTRPCRouter({
   getSelf: publicProcedure
@@ -126,7 +108,6 @@ export const usersRouter = createTRPCRouter({
           username: input.username,
           name: input.name,
           bio: input.bio,
-          image: input.image,
           about: input.about,
           addressedAs: input.addressedAs,
         },

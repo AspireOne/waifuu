@@ -8,25 +8,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { api } from "~/utils/api";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-
-const schema: ZodSchema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Required." })
-    .max(16, { message: "Too long." }),
-  name: z
-    .string()
-    .min(3, { message: "Required." })
-    .max(80, { message: "Too long." })
-    .nullable(),
-  email: z
-    .string()
-    .email({ message: "Invalid." })
-    .max(100, { message: "Too long." }),
-  bio: z.string().max(500, { message: "Too long." }).nullable(),
-  addressedAs: z.string().max(50, { message: "Too long." }).nullable(),
-  about: z.string().max(500, { message: "Too long." }).nullable(),
-});
+import updateSelfSchema from "~/server/types/updateSelfSchema";
+import { User } from "@prisma/client";
 
 export default function Profile() {
   const { user, refetch } = useSession();
@@ -55,35 +38,36 @@ export default function Profile() {
     },
   });
 
+  function getCurrentUserValues(user: User | null) {
+    return {
+      username: user?.username || "",
+      name: user?.name || "",
+      email: user?.email || "",
+      bio: user?.bio || "",
+      addressedAs: user?.addressedAs || "",
+      about: user?.about || "",
+    };
+  }
+
   // prettier-ignore
   const {register, watch, handleSubmit, getValues, formState: {errors, isDirty, dirtyFields}, reset}
-    = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
+    = useForm<z.infer<typeof updateSelfSchema>>({
+    resolver: zodResolver(updateSelfSchema),
     mode: "all",
-    defaultValues: useMemo(() => {
-      return {
-        username: user?.username || "",
-        name: user?.name || "",
-        email: user?.email || "",
-        bio: user?.bio || "",
-        addressedAs: user?.addressedAs || "",
-        about: user?.about || "",
-      };
-    }, [user]),
+    defaultValues: useMemo(() => getCurrentUserValues(user ?? null), [user]),
   });
 
   const username = watch("username");
-
   useEffect(() => {
     setUsernameAvailable(undefined);
   }, [username]);
 
   useEffect(() => {
-    reset(user);
+    reset(getCurrentUserValues(user ?? null));
   }, [user]);
 
-  const onSubmit: SubmitHandler<z.infer<typeof schema>> = (
-    data: z.infer<typeof schema>,
+  const onSubmit: SubmitHandler<z.infer<typeof updateSelfSchema>> = (
+    data: z.infer<typeof updateSelfSchema>,
   ) => {
     updateUserMutation.mutate(data);
   };
