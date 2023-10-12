@@ -22,6 +22,7 @@ import Router from "next/router";
 import paths from "~/utils/paths";
 import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
 import { CreateForumPostModal } from "~/components/Forum/CreateForumPostModal";
+import { FileUploadRaw } from "~/components/shared/FileUploadRaw";
 
 type SearchType = {
   textFilter?: string;
@@ -69,6 +70,7 @@ const Discover = () => {
 
   return (
     <Page title="Discover Characters" showActionBar autoBack={false}>
+      <FileUploadRaw onUpload={() => {}} label="Upload a file" />
       <div className="relative">
         <Image
           alt="background"
