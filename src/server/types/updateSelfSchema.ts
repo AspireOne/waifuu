@@ -17,4 +17,5 @@ export default z.object({
   bio: z.string().max(500, { message: "Too long." }).nullable(),
   addressedAs: z.string().max(50, { message: "Too long." }).nullable(),
   about: z.string().max(500, { message: "Too long." }).nullable(),
+  imageUrl: z.string().max(500, { message: "Too long." }).nullable(),
 });
