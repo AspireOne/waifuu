@@ -8,10 +8,9 @@ export const PinnedPost = (data: ForumPost) => {
   return (
     <Link href={paths.forumPost(data.id)}>
       <Card className="flex flex-row gap-3 p-2">
-        <TbPinnedFilled
-          fontSize={50}
-          className="mt-[-10px] align-center text-primary-500"
-        />
+        <div className="h-[30px] w-[30px]">
+          <TbPinnedFilled className="h-[30px] w-[30px] align-center text-primary-500" />
+        </div>
 
         <div className="flex flex-col gap-1">
           <h1 className="text-lg font-bold">{data.title}</h1>

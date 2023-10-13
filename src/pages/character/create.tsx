@@ -1,6 +1,9 @@
 import {
+  Accordion,
+  AccordionItem,
   Button,
   Card,
+  Checkbox,
   Divider,
   Input,
   Select,
@@ -10,12 +13,12 @@ import {
 } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import Page from "~/components/Page";
-import { FileUpload } from "~/components/shared/FileUpload";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Visibility } from "@prisma/client";
 import Router from "next/router";
 import { api } from "~/utils/api";
 import paths from "~/utils/paths";
+import { FileUploadRaw } from "~/components/shared/FileUpload";
 
 type CreateInput = {
   title: string;
@@ -33,6 +36,12 @@ const CreateChatPage = () => {
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [cover, setCover] = useState<string | undefined>(undefined);
 
+  // Mood states
+  const [sad, setSad] = useState<string | undefined>(undefined);
+  const [happy, setHappy] = useState<string | undefined>(undefined);
+  const [blushed, setBlushed] = useState<string | undefined>(undefined);
+  const [neutral, setNeutral] = useState<string | undefined>(undefined);
+
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
       Router.push(paths.botChatMainMenu(data.id));
@@ -49,28 +58,6 @@ const CreateChatPage = () => {
     });
   };
 
-  const AvatarUpload = useMemo(
-    () =>
-      FileUpload({
-        onSuccess: (data) => setAvatar(data.message[0]?.id),
-        onError: () => setAvatar(undefined),
-        onFileRemove: () => {},
-        structure: "CIRCLE",
-      }),
-    [],
-  );
-
-  const CoverUpload = useMemo(
-    () =>
-      FileUpload({
-        onSuccess: (data) => setCover(data.message[0]?.id),
-        onError: () => setCover(undefined),
-        onFileRemove: () => {},
-        structure: "SQUARE",
-      }),
-    [],
-  );
-
   return (
     <Page title="Create a new character">
       <form onSubmit={handleSubmit(submitHandler)}>
@@ -79,10 +66,7 @@ const CreateChatPage = () => {
             <h2 className="text-xl mb-4">About</h2>
 
             <div className="flex flex-col gap-4">
-              <div>
-                <h3 className="text-sm font-medium">Avatar</h3>
-                {AvatarUpload}
-              </div>
+              <FileUploadRaw onUpload={(id) => setAvatar(id)} label="Avatar" />
 
               <Input
                 {...register("title")}
@@ -160,12 +144,27 @@ const CreateChatPage = () => {
             <Divider className="mt-4 mb-4" />
 
             <h2 className="text-xl mb-3">Images</h2>
-            <div className="flex flex-col gap-4">
-              <div>
-                <h3 className="text-sm font-medium">Character image</h3>
-                {CoverUpload}
-              </div>
-            </div>
+            <FileUploadRaw onUpload={(id) => setCover(id)} label="Cover" />
+
+            <Divider className="mt-4 mb-4" />
+
+            <Accordion>
+              <AccordionItem
+                key="1"
+                aria-label="Advanced mood settings"
+                subtitle={
+                  <>
+                    <Checkbox /> Click to enable advanced mood settings
+                  </>
+                }
+                title="Advanced mood settings"
+              >
+                <FileUploadRaw label="Neutral mood image" onUpload={id => setNeutral(id)} />
+                <FileUploadRaw label="Sad mood image" onUpload={id => setSad(id)} />
+                <FileUploadRaw label="Blushed mood image" onUpload={id => setBlushed(id)} />
+                <FileUploadRaw label="Happy mood image" onUpload={id => setHappy(id)} />
+              </AccordionItem>
+            </Accordion>
 
             <div className="flex flex-row w-fit mx-auto mr-0 gap-2 mt-5">
               <Button color="primary" variant="bordered">

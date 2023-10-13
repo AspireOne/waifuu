@@ -21,7 +21,7 @@ import { BsPlus } from "react-icons/bs";
 import Router from "next/router";
 import paths from "~/utils/paths";
 import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
-import { CreateForumPostModal } from "~/components/Forum/CreateForumPostModal";
+import { FileUploadRaw } from "~/components/shared/FileUpload";
 
 type SearchType = {
   textFilter?: string;
