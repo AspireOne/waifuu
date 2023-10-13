@@ -255,16 +255,18 @@ export const botsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const [userMsg, chat, messages] = await Promise.all([
-        // Create a new message from the input user provided
-        ctx.prisma.botChatMessage.create({
-          data: {
-            chatId: input.chatId,
-            content: input.message,
-            role: "USER",
-          },
-        }),
-        // Find the chat that is user and bot currently in
+      // Create a new message from the input user provided
+      const userMsg = await ctx.prisma.botChatMessage.create({
+        data: {
+          chatId: input.chatId,
+          content: input.message,
+          role: "USER",
+          // Status: pending?
+        },
+      });
+
+      const [chat, messages] = await Promise.all([
+        // Find the chat that is user and bot currently in.
         ctx.prisma.botChat.findUnique({
           where: {
             id: input.chatId,
@@ -283,7 +285,6 @@ export const botsRouter = createTRPCRouter({
         }),
       ]);
 
-      // todo: pass the messages as a whole (i cannot get the prisma type on the other side).
       const _messages = messages.map((message) => {
         return { user: message.role === "USER", content: message.content };
       });
