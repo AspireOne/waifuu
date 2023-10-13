@@ -9,6 +9,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Card, CardBody } from "@nextui-org/card";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { Mood } from "@prisma/client";
 
 type Props = {
   message: string;
@@ -19,9 +20,10 @@ type Props = {
     avatar?: string | null;
     name: string;
   };
+  mood?: Mood;
 };
 
-const ChatMessage = ({ author, message, key, className }: Props) => {
+const ChatMessage = ({ author, message, key, className, mood }: Props) => {
   const formattedMessage = useMemo(() => {
     return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")

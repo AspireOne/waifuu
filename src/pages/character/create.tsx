@@ -37,6 +37,8 @@ const CreateChatPage = () => {
   const [cover, setCover] = useState<string | undefined>(undefined);
 
   // Mood states
+  const [moodImagesEnabled, setMoodImagesEnabled] = useState(false);
+
   const [sad, setSad] = useState<string | undefined>(undefined);
   const [happy, setHappy] = useState<string | undefined>(undefined);
   const [blushed, setBlushed] = useState<string | undefined>(undefined);
@@ -55,6 +57,11 @@ const CreateChatPage = () => {
       nsfw: data.nsfw ?? false,
       avatar,
       cover,
+      moodImagesEnabled,
+      sadImageId: sad,
+      happyImageId: happy,
+      neutralImageId: neutral,
+      blushedImageId: blushed,
     });
   };
 
@@ -154,7 +161,12 @@ const CreateChatPage = () => {
                 aria-label="Advanced mood settings"
                 subtitle={
                   <>
-                    <Checkbox /> Click to enable advanced mood settings
+                    <Checkbox 
+                      checked={moodImagesEnabled} 
+                      onChange={() => setMoodImagesEnabled(!moodImagesEnabled)} 
+                    /> 
+                    
+                    Click to enable advanced mood settings
                   </>
                 }
                 title="Advanced mood settings"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BotChatRole, BotMode } from "@prisma/client";
+import { BotChatRole, BotMode, Mood } from "@prisma/client";
 import { api } from "~/utils/api";
 import { toast } from "react-toastify";
 
@@ -7,6 +7,7 @@ type MessageStatus = "error" | "temp";
 export type Message = {
   role: BotChatRole;
   content: string;
+  mood: Mood;
   type?: MessageStatus;
   id: number;
 };

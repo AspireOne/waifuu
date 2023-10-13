@@ -8,7 +8,7 @@ import {
 import Replicate from "replicate";
 import { env } from "~/server/env";
 import { TRPCError } from "@trpc/server";
-import { BotMode } from "@prisma/client";
+import { BotMode, Mood } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
 import { prompts } from "~/utils/prompt";
 
@@ -179,6 +179,13 @@ export const botsRouter = createTRPCRouter({
         persona: z.string(),
         dialogue: z.string(),
         nsfw: z.boolean(),
+
+        // Mood images
+        moodImagesEnabled: z.boolean().default(false),
+        sadImageId: z.string().optional(),
+        neutralImageId: z.string().optional(),
+        blushedImageId: z.string().optional(),
+        happyImageId: z.string().optional(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -195,6 +202,11 @@ export const botsRouter = createTRPCRouter({
           characterDialogue: input.dialogue,
           characterNsfw: input.nsfw,
           characterName: input.name,
+          moodImagesEnabled: input.moodImagesEnabled,
+          sadImageId: input.sadImageId,
+          neutralImageId: input.neutralImageId,
+          blushedImageId: input.blushedImageId,
+          happyImageId: input.happyImageId,
           tags: {
             connectOrCreate: input.tags.map((tag) => {
               return {
@@ -298,17 +310,14 @@ export const botsRouter = createTRPCRouter({
           {
             input: {
               system_prompt:
+                "Your responses must be short." +
                 `${prompts.intro(
                   chat?.bot.characterName!,
                   chat?.bot.characterPersona!,
                   chat?.bot.characterDialogue!,
                 )}\n` +
                 `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
-                `${prompts.user(
-                  chat?.user.about!,
-                  chat?.user.addressedAs!,
-                )}\n` +
-                "Your responses must be short.",
+                `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
               prompt: processedMessages,
             },
           },
@@ -333,11 +342,13 @@ export const botsRouter = createTRPCRouter({
       }
 
       const outputStr = (output as unknown as []).join("");
+      const mood = outputStr.split(" ").pop() as Mood | undefined;
 
       const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
           chatId: input.chatId,
           content: outputStr,
+          mood: Math.random() > 0.5 ? Mood.BLUSHED : Mood.HAPPY,
           role: "BOT",
         },
       });
