@@ -2,17 +2,13 @@ import { ChatMessage } from "~/components/chat/ChatMessage";
 import { Image } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import useBotChat, { Message } from "~/hooks/useBotChat";
-import { BotMode } from "@prisma/client";
 import Page from "~/components/Page";
-import Skeleton from "react-loading-skeleton";
-import { SettingsDropdown } from "~/components/chat/SettingsDropdown";
-import { ShareDropdown } from "~/components/chat/ShareDropdown";
 import { useBot } from "~/hooks/useBot";
 import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
-import { Bot, BotChatMessage } from "@prisma/client";
+import { Bot } from "@prisma/client";
 import ChatInput from "~/components/chat/ChatInput";
 import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { makeDownloadPath } from "~/utils/paths";
 import useSession from "~/hooks/useSession";
 
@@ -40,10 +36,9 @@ const BotChat = () => {
 
   return (
     <Page title={bot?.name || "Loading..."}>
-      {/*TODO: Add background to bot.*/}
-      <BackgroundImage src={makeDownloadPath(bot?.avatar ?? "")} />
       {/*TODO: Make character image only the png of the char.*/}
-      <CharacterImage src={makeDownloadPath(bot?.avatar ?? "")} />
+
+      {bot && <CharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
 
       <ChatMessages
@@ -60,28 +55,53 @@ const BotChat = () => {
   );
 };
 
-const BackgroundImage = (props: { src?: string }) => (
-  <Image
-    alt="background"
-    loading="eager"
-    src={props.src ?? "/assets/background.png"}
-    // TODO: This is hidden for now since users will not upload transparent bot images
-    className="fixed hidden left-0 top-0 h-full w-full object-cover"
-    width={1920}
-    height={1080}
-  />
-);
+const CharacterImage = ({
+  bot,
+  messages,
+}: {
+  bot: Bot;
+  messages: Message[];
+}) => {
+  const getMoodId = () => {
+    if (!bot?.moodImagesEnabled) return null;
 
-const CharacterImage = (props: { src: string }) => (
-  <Image
-    alt="background"
-    loading="eager"
-    src={props.src}
-    className="fixed bottom-0 left-[50%] h-[800px] w-full max-w-[500px] translate-x-[-50%] object-cover"
-    width={1920}
-    height={1080}
-  />
-);
+    const lastMessage = messages[messages.length - 1];
+    if (!lastMessage) return null;
+
+    switch (lastMessage.mood) {
+      case "HAPPY":
+        return bot.happyImageId;
+      case "SAD":
+        return bot.sadImageId;
+      case "NEUTRAL":
+        return bot.neutralImageId;
+      case "BLUSHED":
+        return bot.blushedImageId;
+      default:
+        return null;
+    }
+  };
+
+  const component = useMemo(
+    () => (
+      <Image
+        alt="background"
+        loading="eager"
+        src={
+          bot?.moodImagesEnabled
+            ? makeDownloadPath(getMoodId() ?? "")
+            : makeDownloadPath(bot?.avatar ?? "")
+        }
+        className="fixed bottom-0 left-[50%] h-[800px] w-full max-w-[500px] translate-x-[-50%] object-cover"
+        width={1920}
+        height={1080}
+      />
+    ),
+    [bot, messages],
+  );
+
+  return component;
+};
 
 const ChatMessages = (props: {
   messages: Message[];
@@ -149,6 +169,7 @@ const ChatMessages = (props: {
                 : user?.image,
             }}
             message={message.content}
+            mood={message.mood}
           />
         );
       })}

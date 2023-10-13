@@ -59,14 +59,9 @@ model MoodTable {
 
 enum Mood {
   NEUTRAL
-  ANGRY
   HAPPY
-  SAD
-  CONFIDENT
-  CONFUSED
-  SHY
-  EXCITED
-  SCARED
+  SAD 
+  BLUSHED
 }
 
 model Bot {
@@ -91,6 +86,12 @@ model Bot {
   BotShares   BotShares[]
   MoodTable   MoodTable?
   BotChats    BotChat[]
+  // Mood images
+  moodImagesEnabled Boolean @default(false)
+  sadImageId  String?
+  blushedImageId  String?
+  neutralImageId  String?
+  happyImageId    String?
 }
 
 model Tag {
@@ -142,7 +143,7 @@ model BotChatMessage {
   chat      BotChat     @relation(fields: [chatId], references: [id])
   chatId    String
   content   String
-  mood      Mood?
+  mood      Mood        @default(NEUTRAL)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   role      BotChatRole
