@@ -159,11 +159,10 @@ const CreateChatPage = () => {
                 }
                 title="Advanced mood settings"
               >
-                <h2>Neutral mood</h2>
-
-                <h2 className="mt-5">Sad mood</h2>
-                <h2 className="mt-5">Angry mood</h2>
-                <h2 className="mt-5">Blushed mood</h2>
+                <FileUploadRaw label="Neutral mood image" onUpload={id => setNeutral(id)} />
+                <FileUploadRaw label="Sad mood image" onUpload={id => setSad(id)} />
+                <FileUploadRaw label="Blushed mood image" onUpload={id => setBlushed(id)} />
+                <FileUploadRaw label="Happy mood image" onUpload={id => setHappy(id)} />
               </AccordionItem>
             </Accordion>
 
