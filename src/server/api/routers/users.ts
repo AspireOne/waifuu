@@ -3,7 +3,9 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { z } from "zod";
+import { z, ZodSchema } from "zod";
+import { TRPCError } from "@trpc/server";
+import updateSelfSchema from "~/server/types/updateSelfSchema";
 
 export const usersRouter = createTRPCRouter({
   getSelf: publicProcedure
@@ -64,21 +66,50 @@ export const usersRouter = createTRPCRouter({
       };
     }),
 
-  updateSelf: protectedProcedure
+  checkUsernameAvailability: protectedProcedure
     .input(
       z.object({
-        addressedAs: z.string().optional(),
-        about: z.string().optional(),
+        username: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      const exists = await ctx.prisma.user.findUnique({
+        where: {
+          username: input.username,
+        },
+      });
+
+      return !exists;
+    }),
+
+  updateSelf: protectedProcedure
+    .input(updateSelfSchema)
+    .mutation(async ({ input, ctx }) => {
+      const usernameInvalid =
+        input.username !== ctx.user.username &&
+        (await ctx.prisma.user.findUnique({
+          where: {
+            username: input.username,
+          },
+        }));
+
+      if (usernameInvalid) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Username already exists.",
+        });
+      }
+
       await ctx.prisma.user.update({
         where: {
           id: ctx.user.id,
         },
         data: {
+          username: input.username,
+          name: input.name,
+          bio: input.bio,
+          about: input.about,
           addressedAs: input.addressedAs,
-          bio: input.about,
         },
       });
     }),

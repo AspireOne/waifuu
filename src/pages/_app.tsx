@@ -49,12 +49,11 @@ const MyApp: AppType<{
         <NextUIProvider>
           {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
           <main className={"bg-background text-foreground dark"}>
-            <ToastContainer />
+            <ToastContainer theme={"dark"} />
             <Component {...pageProps} />
           </main>
         </NextUIProvider>
       </SkeletonTheme>
-      <ToastContainer />
     </>
   );
 };
