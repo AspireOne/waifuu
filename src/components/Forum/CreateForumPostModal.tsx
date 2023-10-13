@@ -10,8 +10,8 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
-import { FileUpload } from "../shared/FileUpload";
 import { useMemo, useState } from "react";
+import { FileUploadRaw } from "../shared/FileUpload";
 
 type CreateForumPostModalProps = {
   isOpen: boolean;
@@ -43,17 +43,6 @@ export const CreateForumPostModal = ({
     onToggle();
   };
 
-  const BannerImageUpload = useMemo(() => {
-    return (
-      <FileUpload
-        onFileRemove={() => setBannerId(null)}
-        onSuccess={(data) => setBannerId(data.message && data.message[0]?.id)}
-        onError={() => {}}
-        structure="SQUARE"
-      />
-    );
-  }, []);
-
   return (
     <Modal isOpen={isOpen} onClose={onToggle}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,8 +52,7 @@ export const CreateForumPostModal = ({
           </ModalHeader>
 
           <ModalBody>
-            <h2>Post banner image</h2>
-            {BannerImageUpload}
+            <FileUploadRaw label="Post banner image" onUpload={(id) => setBannerId(id)} />
             <Input {...register("title")} autoFocus placeholder="Title" />
             <Textarea {...register("content")} placeholder="Content" />
             <Input label="Post category" {...register("category")} />
