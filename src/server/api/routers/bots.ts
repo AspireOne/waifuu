@@ -26,6 +26,7 @@ export const botsRouter = createTRPCRouter({
         .object({
           sourceFilter: z.nativeEnum(BotSource).nullish(),
           textFilter: z.string().nullish(),
+          nsfw: z.boolean().default(false),
           limit: z.number().min(1).nullish(),
         })
         .optional(),
@@ -36,6 +37,7 @@ export const botsRouter = createTRPCRouter({
         where: {
           visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
+          characterNsfw: input?.nsfw,
           ...(input?.textFilter && {
             OR: [
               {

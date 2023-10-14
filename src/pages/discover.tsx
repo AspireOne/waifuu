@@ -22,9 +22,11 @@ import Router from "next/router";
 import paths from "~/utils/paths";
 import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
 import { FileUploadRaw } from "~/components/shared/FileUpload";
+import { TagSelect } from "~/components/shared/TagSelect";
 
 type SearchType = {
   textFilter?: string;
+  nsfw: boolean;
   sourceFilter?: BotSource;
 };
 
@@ -33,16 +35,15 @@ const Discover = () => {
 
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
+    nsfw: false,
   });
-  const tags = useState<string[]>([]);
-  const onTagToggle = (value: string): void => {
-    if (tags[0].includes(value)) {
-      tags[1](tags[0].filter((tag) => tag !== value));
-    } else {
-      tags[1]([...tags[0], value]);
-    }
+
+  const toggleNsfw = () => {
+    setSearchData({
+      ...searchData,
+      nsfw: !searchData.nsfw,
+    });
   };
-  const isTagToggled = (value: string): boolean => tags[0].includes(value);
 
   const bots = api.bots.getAllBots.useQuery(searchData);
   const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
@@ -50,17 +51,13 @@ const Discover = () => {
     limit: 5,
   });
 
-  const { register, watch } = useForm<{
-    textFilter?: string;
-    sourceFilter?: BotSource;
-  }>();
+  const { register, watch } = useForm<SearchType>();
 
   useEffect(() => {
     const subscription = watch((value) => {
-      console.log(value);
-
       setSearchData({
         textFilter: value.textFilter,
+        nsfw: value.nsfw ?? false,
       });
     });
 
@@ -118,60 +115,40 @@ const Discover = () => {
             </div>
           </div>
 
-          <div className="mt-10 flex flex-row align-center">
-            <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
-              <BiTrendingUp className="mt-1.5" />
-              <p>Popular bots</p>
-            </h3>
+          <form>
+            <div className="mt-10 flex flex-row align-center">
+              <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
+                <BiTrendingUp className="mt-1.5" />
+                <p>Popular bots</p>
+              </h3>
 
-            <Switch className="w-fit mx-auto mr-4">NSFW</Switch>
-          </div>
+              <Switch onChange={toggleNsfw} className="w-fit mx-auto mr-4">
+                NSFW
+              </Switch>
+            </div>
 
-          <form className="mb-5 mt-1 flex flex-col items-center gap-4">
-            <div className="flex flex-col w-full gap-3">
-              <Button onClick={() => Router.push(paths.createBot)}>
-                <BsPlus fontSize={25} /> Create new bot
-              </Button>
+            <div className="mb-5 mt-1 flex flex-col items-center gap-4">
+              <div className="flex flex-col w-full gap-3">
+                <Button onClick={() => Router.push(paths.createBot)}>
+                  <BsPlus fontSize={25} /> Create new bot
+                </Button>
 
-              <div className="flex flex-row gap-1 overflow-scroll overflow-scroll-y">
-                {[
-                  "All",
-                  "Anime",
-                  "Games",
-                  "Movies",
-                  "TV",
-                  "NSFW",
-                  "Nevim",
-                  "Submissive",
-                  "Dominant",
-                  "Fetish",
-                ].map((tag) => {
-                  return (
-                    <Chip
-                      variant={isTagToggled(tag) ? "solid" : "bordered"}
-                      key={tag}
-                      onClick={() => onTagToggle(tag)}
-                      className="bg-opacity-70 w-fit mt-2 mx-auto"
-                    >
-                      {tag}
-                    </Chip>
-                  );
-                })}
+                <TagSelect />
+
+                <Input
+                  {...register("textFilter")}
+                  label="Search by name"
+                  placeholder="Enter your search term..."
+                  className="flex-1 rounded-lg text-white"
+                  type="text"
+                />
+
+                <Select label="Display community or official bots">
+                  <MenuItem value={undefined}>All</MenuItem>
+                  <MenuItem value={BotSource.COMMUNITY}>Community</MenuItem>
+                  <MenuItem value={BotSource.OFFICIAL}>Official</MenuItem>
+                </Select>
               </div>
-
-              <Input
-                {...register("textFilter")}
-                label="Search by name"
-                placeholder="Enter your search term..."
-                className="flex-1 rounded-lg text-white"
-                type="text"
-              />
-
-              <Select label="Display community or official bots">
-                <MenuItem value={undefined}>All</MenuItem>
-                <MenuItem value={BotSource.COMMUNITY}>Community</MenuItem>
-                <MenuItem value={BotSource.OFFICIAL}>Official</MenuItem>
-              </Select>
             </div>
           </form>
 

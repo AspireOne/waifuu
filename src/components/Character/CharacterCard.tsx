@@ -3,6 +3,7 @@ import { Bot, BotMode } from "@prisma/client";
 import Link from "next/link";
 import paths, { makeDownloadPath } from "~/utils/paths";
 import { LargeText } from "../shared/LargeText";
+import { MdVerified } from "react-icons/md";
 
 type CharacterCardProps = {
   bot: Bot;
@@ -26,8 +27,12 @@ const CharacterCard = ({ bot, chatId, chatType }: CharacterCardProps) => {
         </div>
 
         <CardBody className="p-2">
-          <b className="text-md text-white flex-wrap w-[150px] text-center mx-auto">
-            {bot.name}
+          <b className="text-md flex flex-row text-white text-center mx-auto">
+            <p>{bot.name}</p>
+
+            {bot.source === "OFFICIAL" && (
+              <MdVerified fontSize={23} className="ml-2 text-primary" />
+            )}
           </b>
           {!chatType && (
             <LargeText

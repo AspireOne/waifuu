@@ -49,10 +49,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
   const fetchInitial = api.bots.getInitialMessage.useMutation({
     onSuccess: async (data) => {
       addMessages([data.botChatMessage]);
-    },
-
-    onSettled: async () => {
-      setShouldLoadMore(false);
+      fetchMore.mutate({ chatId, cursor });
     },
   });
 
