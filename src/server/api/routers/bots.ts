@@ -87,6 +87,71 @@ export const botsRouter = createTRPCRouter({
       });
     }),
 
+  getInitialMessage: protectedProcedure
+    .input(
+      z.object({
+        chatId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const chat = await ctx.prisma.botChat.findFirst({
+        where: {
+          id: input.chatId,
+        },
+        include: {
+          bot: true,
+          user: true,
+        },
+      });
+
+      let output;
+      try {
+        const response = (await replicate.run(
+          "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
+          {
+            input: {
+              system_prompt:
+                `Your responses must be short.\n` +
+                `${prompts.intro(
+                  chat?.bot.characterName!,
+                  chat?.bot.characterPersona!,
+                  chat?.bot.characterDialogue!,
+                )}\n` +
+                `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
+                `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
+              prompt: prompts.initialMessage(),
+            },
+          },
+        )) as string[];
+
+        output = response;
+      } catch (e) {
+        console.log(e);
+
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to generate a reply.",
+          cause: e,
+        });
+      }
+
+      const outputStr = (output as unknown as []).join("");
+
+      const botMsg = await ctx.prisma.botChatMessage.create({
+        data: {
+          chatId: input.chatId,
+          content: outputStr,
+          // @ts-ignore make this from the message in future
+          mood: Math.random() > 0.5 ? Mood.BLUSHED : Mood.HAPPY,
+          role: "BOT",
+        },
+      });
+
+      return {
+        botChatMessage: botMsg,
+      };
+    }),
+
   /**
    * Return all bots that user has currently conversation with.
    */

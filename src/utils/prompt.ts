@@ -40,4 +40,7 @@ export const prompts = {
             Address the user as: "${addressedAs}", here is some context about the user: "${about}"
         `;
   },
+
+  initialMessage: () =>
+    "Welcome user while playing your character, give hime some example thing to talk about for example.",
 };
