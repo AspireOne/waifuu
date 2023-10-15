@@ -57,18 +57,13 @@ export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
           response?.status === 200 ? "border-green-500" : "border-gray-700"
         } p-4 cursor-pointer`}
       >
-        <form
-          encType="multipart/form-data"
-          action="/images/upload"
-        >
-          <input
-            type="file"
-            accept="image/jpeg, image/png"
-            className="hidden"
-            onChange={handleFileChange}
-            id={`fileInput_${label}`}
-          />
-        </form>
+        <input
+          type="file"
+          accept="image/jpeg, image/png"
+          className="hidden"
+          onChange={handleFileChange}
+          id={`fileInput_${label}`}
+        />
 
         <label
           htmlFor={`fileInput_${label}`}

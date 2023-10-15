@@ -1,11 +1,4 @@
-import {
-  Button,
-  Checkbox,
-  Input,
-  MenuItem,
-  Select,
-  Switch,
-} from "@nextui-org/react";
+import { Button, Checkbox, Input, Switch } from "@nextui-org/react";
 import Image from "next/image";
 import { FaCompass } from "react-icons/fa";
 import { BiTrendingUp } from "react-icons/bi";
@@ -22,6 +15,8 @@ import Router from "next/router";
 import paths from "~/utils/paths";
 import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
 import { TagSelect } from "~/components/shared/TagSelect";
+
+// TODO: Refactor this shitty code
 
 type SearchType = {
   textFilter?: string;
