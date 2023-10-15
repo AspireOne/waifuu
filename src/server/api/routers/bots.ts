@@ -8,7 +8,7 @@ import {
 import Replicate from "replicate";
 import { env } from "~/server/env";
 import { TRPCError } from "@trpc/server";
-import { BotMode, Mood } from "@prisma/client";
+import { BotMode, Mood, Prisma } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
 import { prompts } from "~/utils/prompt";
 
@@ -230,6 +230,25 @@ export const botsRouter = createTRPCRouter({
       return chat?.bot;
     }),
 
+  getPopularTags: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(10).default(10),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const tags = await ctx.prisma.tag.findMany({
+        take: input.limit,
+        orderBy: {
+          bots: {
+            _count: "desc",
+          },
+        },
+      });
+
+      return tags;
+    }),
+
   create: protectedProcedure
     .input(
       z.object({
@@ -239,6 +258,7 @@ export const botsRouter = createTRPCRouter({
         description: z.string(),
         visibility: z.nativeEnum(Visibility),
         tags: z.array(z.string()).default([]),
+        category: z.string().optional(),
 
         // in Chat data
         avatar: z.string().optional(),
@@ -256,6 +276,23 @@ export const botsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      if (input.category) {
+        try {
+          await ctx.prisma.category.create({
+            data: {
+              name: input.category,
+            },
+          });
+        } catch (e) {
+          if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            // Throw all errors except for duplicate category name.
+            if (e.code !== "P2002") {
+              throw e;
+            }
+          }
+        }
+      }
+
       return await ctx.prisma.bot.create({
         data: {
           name: input.title,
@@ -266,6 +303,7 @@ export const botsRouter = createTRPCRouter({
           avatar: input.avatar,
           cover: input.cover,
           characterPersona: input.persona,
+          categoryId: input.category,
           characterDialogue: input.dialogue,
           characterNsfw: input.nsfw,
           characterName: input.name,

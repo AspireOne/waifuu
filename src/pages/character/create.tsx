@@ -54,7 +54,7 @@ const CreateChatPage = () => {
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
     createBot.mutateAsync({
       ...data,
-      nsfw: data.nsfw ?? false,
+      nsfw: isSelected,
       avatar,
       cover,
       moodImagesEnabled,
@@ -104,6 +104,8 @@ const CreateChatPage = () => {
                   Only for friends
                 </SelectItem>
               </Select>
+
+              <Input label="Category" />
             </div>
 
             <Divider className="mt-4 mb-4" />
@@ -133,12 +135,7 @@ const CreateChatPage = () => {
               />
 
               <div className="flex flex-col gap-2">
-                <Switch
-                  {...register("nsfw")}
-                  defaultChecked={false}
-                  isSelected={isSelected}
-                  onValueChange={setIsSelected}
-                >
+                <Switch isSelected={isSelected} onValueChange={setIsSelected}>
                   NSFW content
                 </Switch>
                 <p className="text-small text-default-500">
@@ -161,20 +158,31 @@ const CreateChatPage = () => {
                 aria-label="Advanced mood settings"
                 subtitle={
                   <>
-                    <Checkbox 
-                      checked={moodImagesEnabled} 
-                      onChange={() => setMoodImagesEnabled(!moodImagesEnabled)} 
-                    /> 
-                    
+                    <Checkbox
+                      checked={moodImagesEnabled}
+                      onChange={() => setMoodImagesEnabled(!moodImagesEnabled)}
+                    />
                     Click to enable advanced mood settings
                   </>
                 }
                 title="Advanced mood settings"
               >
-                <FileUploadRaw label="Neutral mood image" onUpload={id => setNeutral(id)} />
-                <FileUploadRaw label="Sad mood image" onUpload={id => setSad(id)} />
-                <FileUploadRaw label="Blushed mood image" onUpload={id => setBlushed(id)} />
-                <FileUploadRaw label="Happy mood image" onUpload={id => setHappy(id)} />
+                <FileUploadRaw
+                  label="Neutral mood image"
+                  onUpload={(id) => setNeutral(id)}
+                />
+                <FileUploadRaw
+                  label="Sad mood image"
+                  onUpload={(id) => setSad(id)}
+                />
+                <FileUploadRaw
+                  label="Blushed mood image"
+                  onUpload={(id) => setBlushed(id)}
+                />
+                <FileUploadRaw
+                  label="Happy mood image"
+                  onUpload={(id) => setHappy(id)}
+                />
               </AccordionItem>
             </Accordion>
 

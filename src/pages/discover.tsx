@@ -1,6 +1,6 @@
 import {
   Button,
-  Chip,
+  Checkbox,
   Input,
   MenuItem,
   Select,
@@ -21,13 +21,12 @@ import { BsPlus } from "react-icons/bs";
 import Router from "next/router";
 import paths from "~/utils/paths";
 import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
-import { FileUploadRaw } from "~/components/shared/FileUpload";
 import { TagSelect } from "~/components/shared/TagSelect";
 
 type SearchType = {
   textFilter?: string;
   nsfw: boolean;
-  sourceFilter?: BotSource;
+  officialBots?: BotSource | null;
 };
 
 const Discover = () => {
@@ -35,7 +34,8 @@ const Discover = () => {
 
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
-    nsfw: false,
+    nsfw: true,
+    officialBots: null,
   });
 
   const toggleNsfw = () => {
@@ -45,7 +45,18 @@ const Discover = () => {
     });
   };
 
-  const bots = api.bots.getAllBots.useQuery(searchData);
+  const toggleOfficialBots = () => {
+    setSearchData({
+      ...searchData,
+      officialBots:
+        searchData.officialBots === null ? BotSource.OFFICIAL : null,
+    });
+  };
+
+  const bots = api.bots.getAllBots.useQuery({
+    ...searchData,
+    sourceFilter: searchData.officialBots,
+  });
   const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
   const conversationBots = api.bots.getAllConversationBots.useQuery({
     limit: 5,
@@ -57,7 +68,8 @@ const Discover = () => {
     const subscription = watch((value) => {
       setSearchData({
         textFilter: value.textFilter,
-        nsfw: value.nsfw ?? false,
+        nsfw: value.nsfw as boolean,
+        officialBots: value.officialBots,
       });
     });
 
@@ -122,7 +134,11 @@ const Discover = () => {
                 <p>Popular bots</p>
               </h3>
 
-              <Switch onChange={toggleNsfw} className="w-fit mx-auto mr-4">
+              <Switch
+                isSelected={searchData.nsfw}
+                onValueChange={toggleNsfw}
+                className="w-fit mx-auto mr-4"
+              >
                 NSFW
               </Switch>
             </div>
@@ -133,7 +149,7 @@ const Discover = () => {
                   <BsPlus fontSize={25} /> Create new bot
                 </Button>
 
-                <TagSelect />
+                <TagSelect onChange={(value) => {}} />
 
                 <Input
                   {...register("textFilter")}
@@ -143,11 +159,9 @@ const Discover = () => {
                   type="text"
                 />
 
-                <Select label="Display community or official bots">
-                  <MenuItem value={undefined}>All</MenuItem>
-                  <MenuItem value={BotSource.COMMUNITY}>Community</MenuItem>
-                  <MenuItem value={BotSource.OFFICIAL}>Official</MenuItem>
-                </Select>
+                <Checkbox onValueChange={toggleOfficialBots}>
+                  Only display official bots
+                </Checkbox>
               </div>
             </div>
           </form>
