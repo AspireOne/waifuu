@@ -10,6 +10,39 @@ import { toast } from "react-toastify";
 import paths from "~/utils/paths";
 import useSession from "~/hooks/useSession";
 import { useEffect } from "react";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import getOrInitFirebaseAuth from "~/lib/getFirebaseAuth";
+import { Preferences } from "@capacitor/preferences";
+
+function getCsrfToken() {
+  return document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("csrfToken"))
+    ?.split("=")[1];
+}
+
+async function signInUsingGoogleRaw() {
+  console.log("Signing in using google...");
+
+  try {
+    const result = await FirebaseAuthentication.signInWithGoogle({
+      scopes: ["email", "profile"],
+      mode: "popup",
+    });
+
+    // Sign in on the web layer using the id token.
+    const credential = GoogleAuthProvider.credential(
+      result.credential?.idToken,
+    );
+    const auth = await getOrInitFirebaseAuth();
+    await signInWithCredential(auth, credential);
+    return true;
+  } catch (e) {
+    console.error("Error signing in using Google!", e);
+    toast("Error signing in with Google!", { type: "error" });
+    return false;
+  }
+}
 
 const Login = () => {
   const router = useRouter();
@@ -23,13 +56,21 @@ const Login = () => {
   }, [session.status]);
 
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
-    onSuccess: async (data) => {
-      console.log("Successfully logged in with Google!", data);
+    onSuccess: async (data, variables, context) => {
+      console.log(
+        "Successfully logged in with Google after contacing backend!",
+        JSON.stringify(data),
+      );
+      FirebaseAuthentication.getCurrentUser().then((user) => {
+        console.log("User is", user);
+      });
+
       router.replace((redirect as string) || paths.home);
       session.refetch();
     },
-    onError: (error) => {
+    onError: async (error) => {
       console.error("Error logging in with Google!", error);
+      await Preferences.remove({ key: "idToken" });
     },
   });
 
@@ -39,31 +80,20 @@ const Login = () => {
     if (session.status === "authenticated") {
       console.warn("Tried to sign in while already being authenticated.");
     }
-    console.log("Signing in using google...");
-    try {
-      await FirebaseAuthentication.signInWithGoogle({
-        scopes: ["email", "profile"],
-        mode: "popup",
-      });
-    } catch (e) {
-      console.error("Error signing in using Google!", e);
-      toast("Error signing in with Google!", { type: "error" });
-      return;
-    }
+
+    if (!(await signInUsingGoogleRaw())) return;
 
     console.log(
       "Signed in using google, getting id token and contacting backend...",
     );
-    const idToken = await FirebaseAuthentication.getIdToken({
+
+    const { token: idToken } = await FirebaseAuthentication.getIdToken({
       forceRefresh: true,
     });
 
-    const csrfToken = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("csrfToken"))
-      ?.split("=")[1];
+    await Preferences.set({ key: "idToken", value: idToken });
 
-    if (!idToken.token) {
+    if (!idToken) {
       console.error(
         "Error getting ID token from Google! This should not happen!",
         idToken,
@@ -71,8 +101,10 @@ const Login = () => {
       return;
     }
 
+    const csrfToken = getCsrfToken();
+
     googleAuthMutation.mutate({
-      idToken: idToken.token,
+      idToken: idToken,
       csrfToken: csrfToken,
     });
   }

@@ -12,6 +12,21 @@ import superjson from "superjson";
 import { type AppRouter } from "~/server/api/root";
 import { Capacitor } from "@capacitor/core";
 import { apiBase } from "~/utils/constants";
+import { Preferences } from "@capacitor/preferences";
+
+export const globalForIdToken = globalThis as unknown as {
+  idToken: string | null | undefined;
+};
+
+async function retrieveIdTokenOrNull() {
+  try {
+    const { value } = await Preferences.get({ key: "idToken" });
+    return value;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
@@ -52,11 +67,23 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: apiBase("/api/trpc"),
-          fetch(url, options) {
+          async fetch(url, options) {
+            let idToken = globalForIdToken.idToken;
+            // keep the comparison like this, because it differentiates between null and undefined.
+            if (idToken === undefined) {
+              idToken = await retrieveIdTokenOrNull();
+              globalForIdToken.idToken = idToken;
+            }
+
             return fetch(url, {
               ...options,
               // 'include' is required for cookies to be sent to the server.
               credentials: Capacitor.isNativePlatform() ? "include" : undefined,
+              // Add authorization bearer token from Preferences.get("idToken").
+              headers: {
+                ...options?.headers,
+                Authorization: idToken ? `Bearer ${idToken}` : "",
+              },
             });
           },
         }),

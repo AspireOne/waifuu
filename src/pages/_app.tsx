@@ -1,6 +1,6 @@
 import { type AppType } from "next/app";
 import { NextUIProvider } from "@nextui-org/react";
-import { api } from "~/utils/api";
+import { api, globalForIdToken } from "~/utils/api";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -10,33 +10,33 @@ import "react-toastify/dist/ReactToastify.css";
 import "filepond/dist/filepond.min.css";
 import "~/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { Capacitor } from "@capacitor/core";
 
-import { getApp, initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import firebaseConfig from "~/lib/firebaseConfig";
-import {
-  getAuth,
-  indexedDBLocalPersistence,
-  initializeAuth,
-} from "firebase/auth";
+import getOrInitFirebaseAuth from "~/lib/getFirebaseAuth";
+import { Preferences } from "@capacitor/preferences";
 
-const MyApp: AppType<{
-  /*session: Session | null*/
-}> = ({ Component, pageProps: { /*session,*/ ...pageProps } }) => {
+const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.
   useEffect(() => {
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
 
-    let auth;
-    if (Capacitor.isNativePlatform()) {
-      auth = initializeAuth(getApp(), {
-        persistence: indexedDBLocalPersistence,
+    async function init() {
+      let auth = await getOrInitFirebaseAuth();
+      if (!auth) return;
+
+      auth.onIdTokenChanged(async (user) => {
+        // We could also delete the idToken when the user is null, but we dont want to do that.
+        if (user) {
+          const idToken = await user.getIdToken();
+          globalForIdToken.idToken = idToken;
+          await Preferences.set({ key: "idToken", value: idToken });
+        }
       });
-    } else {
-      auth = getAuth();
     }
+    init();
   }, []);
 
   return (

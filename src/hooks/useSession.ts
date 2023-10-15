@@ -3,6 +3,8 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { api } from "~/utils/api";
 import { User } from "@prisma/client";
+import getOrInitFirebaseAuth from "~/lib/getFirebaseAuth";
+import { getApp, initializeApp, getApps } from "firebase/app";
 
 type SessionUser = User;
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
@@ -26,16 +28,19 @@ export default function useSession(): {
   const [user, setUser] = useState<SessionUser | null | undefined>(undefined);
 
   useEffect(() => {
-    if (firebase.apps.length > 1 || firebase.apps.length === 0) return;
+    (async () => {
+      if (getApps.length === 0) return;
 
-    console.log("Running useSession effect");
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      console.log("Firebase auth state changed event triggered.");
-      userQuery.refetch();
-    });
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [firebase.apps.length]);
+      console.log("Registering auth in useSession.");
+      const auth = await getOrInitFirebaseAuth();
+      if (!auth) return;
+
+      auth.onAuthStateChanged((user) => {
+        console.log("Firebase auth state changed, refetching session.");
+        userQuery.refetch();
+      });
+    })();
+  }, [getApps.length]);
 
   useEffect(() => {
     if (userQuery.data) {
