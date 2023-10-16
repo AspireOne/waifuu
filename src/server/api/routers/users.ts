@@ -86,7 +86,7 @@ export const usersRouter = createTRPCRouter({
     .input(updateSelfSchema)
     .mutation(async ({ input, ctx }) => {
       const usernameInvalid =
-        input.username !== ctx.user.username &&
+        input.username && input.username !== ctx.user.username &&
         (await ctx.prisma.user.findUnique({
           where: {
             username: input.username,
