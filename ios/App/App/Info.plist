@@ -32,5 +32,10 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:24288336305:ios:b8d1ef558777bd25d80590</string>
+	<key>WKAppBoundDomains</key>
+    <array>
+      <string>www.companion-red.vercel.app</string>
+      <string>companion-red.vercel.app</string>
+    </array>
 </dict>
 </plist>

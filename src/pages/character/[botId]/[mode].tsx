@@ -1,5 +1,5 @@
 import { ChatMessage } from "~/components/chat/ChatMessage";
-import { Image } from "@nextui-org/react";
+import { Image, ScrollShadow } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import useBotChat, { Message } from "~/hooks/useBotChat";
 import Page from "~/components/Page";
@@ -8,7 +8,7 @@ import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
 import { Bot } from "@prisma/client";
 import ChatInput from "~/components/chat/ChatInput";
 import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { makeDownloadPath } from "~/utils/paths";
 import useSession from "~/hooks/useSession";
 
@@ -35,12 +35,11 @@ const BotChat = () => {
   }, []);
 
   return (
-    <Page title={bot?.name || "Loading..."}>
+    <Page className="p-0" title={bot?.name || "Loading..."}>
       {/*TODO: Make character image only the png of the char.*/}
 
       {bot && <CharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
-
       <ChatMessages
         loadingReply={chat.loadingReply}
         loadingHistory={chat.loadingMore}
@@ -62,7 +61,9 @@ const CharacterImage = ({
   bot: Bot;
   messages: Message[];
 }) => {
-  const getMoodId = () => {
+  const [moodState, setMoodState] = useState<string | null>();
+
+  const enumMoodValue = () => {
     if (!bot?.moodImagesEnabled) return null;
 
     const lastMessage = messages[messages.length - 1];
@@ -80,6 +81,15 @@ const CharacterImage = ({
       default:
         return null;
     }
+  };
+
+  const getMoodId = () => {
+    const value = enumMoodValue();
+    if (!value && moodState) return moodState;
+
+    setMoodState(value);
+    if (!value) return bot.neutralImageId;
+    return value;
   };
 
   const component = useMemo(
@@ -148,9 +158,10 @@ const ChatMessages = (props: {
   if (!props.bot) return <div></div>;
 
   return (
-    <div
+    <ScrollShadow
+      size={200}
       ref={containerRef}
-      className="flex flex-col gap-4 h-full overflow-scroll overflow-x-visible z-[30] mt-32 mb-20"
+      className="flex flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll fixed bottom-14"
     >
       {props.messages.map((message, _) => {
         const botName = props.bot!.characterName || "Them";
@@ -176,7 +187,7 @@ const ChatMessages = (props: {
 
       {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
       <div ref={lastMsgRef} />
-    </div>
+    </ScrollShadow>
   );
 };
 

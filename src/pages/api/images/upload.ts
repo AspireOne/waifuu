@@ -5,7 +5,7 @@ import * as minio from "minio";
 import { env } from "~/server/env";
 import generateUUID from "~/utils/utils";
 import { prisma } from "~/server/lib/db";
-import { getUser } from "~/pages/api/utils";
+import { retrieveUser } from "~/pages/api/utils";
 import metaHandler from "~/pages/api/metaHandler";
 
 type ProcessedFiles = Array<[string, formidable.File]>;
@@ -86,7 +86,11 @@ export default metaHandler.protected(async (req, res, ctx) => {
 
       await fs.rename(tempPath, targetFilePath);
 
-      MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, uuid, targetFilePath);
+      MinioClient.fPutObject(
+        env.MINIO_DEFAULT_BUCKET,
+        uuid,
+        targetFilePath,
+      );
 
       result.push({
         fileName: file[1].originalFilename,

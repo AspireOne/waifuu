@@ -58,7 +58,10 @@ const ChatMessage = ({ author, message, key, className, mood }: Props) => {
 
           <div>
             <p className={"font-bold"}>{author.name}</p>
-            <p dangerouslySetInnerHTML={{ __html: formattedMessage }} />
+            <p
+              className="max-w-xs overflow-ellipsis overflow-hidden"
+              dangerouslySetInnerHTML={{ __html: formattedMessage }}
+            />
           </div>
         </CardBody>
       </Card>

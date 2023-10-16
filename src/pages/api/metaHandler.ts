@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "@prisma/client";
-import { getUser } from "~/pages/api/utils";
+import { retrieveUser } from "~/pages/api/utils";
 
 export type MetaHandlerContext = {
   user: User | null;
@@ -32,7 +32,10 @@ function metaHandler<T extends MetaHandlerContext>(
     res.setHeader("Access-Control-Allow-Origin", "http://localhost");
     res.setHeader("Access-Control-Request-Method", "*");
     res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "content-type, authorization",
+    );
     res.setHeader("Referrer-Policy", "no-referrer");
     res.setHeader("Access-Control-Allow-Credentials", "true");
 
@@ -42,7 +45,7 @@ function metaHandler<T extends MetaHandlerContext>(
       return res.end();
     }
 
-    const user = await getUser(req);
+    const user = await retrieveUser(req);
 
     if (options?.protected && !user) {
       res.status(401).send("Unauthorized");

@@ -8,7 +8,7 @@ import {
 import Replicate from "replicate";
 import { env } from "~/server/env";
 import { TRPCError } from "@trpc/server";
-import { BotMode, Mood } from "@prisma/client";
+import { BotMode, Mood, Prisma } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
 import { prompts } from "~/utils/prompt";
 
@@ -26,16 +26,20 @@ export const botsRouter = createTRPCRouter({
         .object({
           sourceFilter: z.nativeEnum(BotSource).nullish(),
           textFilter: z.string().nullish(),
+          nsfw: z.boolean().default(false),
           limit: z.number().min(1).nullish(),
+          cursor: z.number().nullish(),
         })
         .optional(),
     )
     .query(async ({ input, ctx }) => {
-      return await ctx.prisma.bot.findMany({
+      const bots = await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
+        skip: !input?.cursor ? 0 : input.cursor,
         where: {
           visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
+          characterNsfw: input?.nsfw,
           ...(input?.textFilter && {
             OR: [
               {
@@ -53,7 +57,17 @@ export const botsRouter = createTRPCRouter({
             ],
           }),
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
+
+      const hasNextPage = bots.length > 0;
+
+      return {
+        bots,
+        hasNextPage,
+      }
     }),
 
   getBot: publicProcedure
@@ -85,6 +99,71 @@ export const botsRouter = createTRPCRouter({
           userId: ctx.user.id,
         },
       });
+    }),
+
+  getInitialMessage: protectedProcedure
+    .input(
+      z.object({
+        chatId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const chat = await ctx.prisma.botChat.findFirst({
+        where: {
+          id: input.chatId,
+        },
+        include: {
+          bot: true,
+          user: true,
+        },
+      });
+
+      let output;
+      try {
+        const response = (await replicate.run(
+          "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
+          {
+            input: {
+              system_prompt:
+                `Your responses must be short.\n` +
+                `${prompts.intro(
+                  chat?.bot.characterName!,
+                  chat?.bot.characterPersona!,
+                  chat?.bot.characterDialogue!,
+                )}\n` +
+                `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
+                `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
+              prompt: prompts.initialMessage(),
+            },
+          },
+        )) as string[];
+
+        output = response;
+      } catch (e) {
+        console.log(e);
+
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to generate a reply.",
+          cause: e,
+        });
+      }
+
+      const outputStr = (output as unknown as []).join("");
+
+      const botMsg = await ctx.prisma.botChatMessage.create({
+        data: {
+          chatId: input.chatId,
+          content: outputStr,
+          // @ts-ignore make this from the message in future
+          mood: Math.random() > 0.5 ? Mood.BLUSHED : Mood.HAPPY,
+          role: "BOT",
+        },
+      });
+
+      return {
+        botChatMessage: botMsg,
+      };
     }),
 
   /**
@@ -163,6 +242,25 @@ export const botsRouter = createTRPCRouter({
       return chat?.bot;
     }),
 
+  getPopularTags: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(10).default(10),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const tags = await ctx.prisma.tag.findMany({
+        take: input.limit,
+        orderBy: {
+          bots: {
+            _count: "desc",
+          },
+        },
+      });
+
+      return tags;
+    }),
+
   create: protectedProcedure
     .input(
       z.object({
@@ -172,6 +270,7 @@ export const botsRouter = createTRPCRouter({
         description: z.string(),
         visibility: z.nativeEnum(Visibility),
         tags: z.array(z.string()).default([]),
+        category: z.string().optional(),
 
         // in Chat data
         avatar: z.string().optional(),
@@ -189,6 +288,23 @@ export const botsRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input, ctx }) => {
+      if (input.category) {
+        try {
+          await ctx.prisma.category.create({
+            data: {
+              name: input.category,
+            },
+          });
+        } catch (e) {
+          if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            // Throw all errors except for duplicate category name.
+            if (e.code !== "P2002") {
+              throw e;
+            }
+          }
+        }
+      }
+
       return await ctx.prisma.bot.create({
         data: {
           name: input.title,
@@ -199,6 +315,7 @@ export const botsRouter = createTRPCRouter({
           avatar: input.avatar,
           cover: input.cover,
           characterPersona: input.persona,
+          categoryId: input.category,
           characterDialogue: input.dialogue,
           characterNsfw: input.nsfw,
           characterName: input.name,

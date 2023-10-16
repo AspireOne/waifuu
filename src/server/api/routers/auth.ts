@@ -44,11 +44,11 @@ export const authRouter = createTRPCRouter({
 
       await upsertUser(ctx.prisma, decodedIdToken);
 
-      const cookie = await createSessionCookie(input.idToken, ctx.res!);
+      //const cookie = await createSessionCookie(input.idToken, ctx.res!);
 
       console.log("Successfully signed in with Firebase.");
       return {
-        session: cookie,
+        //session: cookie,
       };
     }),
 });

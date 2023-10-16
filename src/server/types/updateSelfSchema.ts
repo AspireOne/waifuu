@@ -16,7 +16,8 @@ export default z.object({
     .email({ message: "Invalid." })
     .max(100, { message: "Too long." })
     .optional(),
-  bio: z.string().max(500, { message: "Too long." }).nullable().optional(),
-  addressedAs: z.string().max(50, { message: "Too long." }).nullable().optional(),
-  about: z.string().max(500, { message: "Too long." }).nullable().optional(),
+  bio: z.string().max(500, { message: "Too long." }).optional(),
+  addressedAs: z.string().max(50, { message: "Too long." }).optional(),
+  about: z.string().max(500, { message: "Too long." }).optional(),
+  imageUrl: z.string().max(500, { message: "Too long." }).optional(),
 });

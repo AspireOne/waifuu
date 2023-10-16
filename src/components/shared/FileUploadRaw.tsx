@@ -1,21 +1,18 @@
 import React, { ChangeEvent, useRef, useState } from "react";
+import { apiPostImage } from "~/services/apiImages";
+import { AxiosResponse } from "axios";
 
 type FileUploadRawProps = {
   onUpload: (id: string) => void;
   label: string;
 };
 
-type ApiResponseData = {
-  message: {
-    id: string;
-    fileName: string;
-  }[];
-};
-
 export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [uploading, setUploading] = useState(false);
-  const [response, setResponse] = useState<Response | null>(null);
+  const [responseSuccessful, setResponseSuccessful] = useState<
+    boolean | undefined
+  >(undefined);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target?.files?.[0];
@@ -24,24 +21,17 @@ export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
     if (file) {
       setUploading(true);
 
+      // TODO: I converted this to axios without testing, TEST IT.
       const formData = new FormData();
       formData.append("file", file);
 
       try {
-        const response = await fetch("/api/images/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (response.ok) {
-          const { message }: ApiResponseData = await response.json();
-          setResponse(response);
-          onUpload(message[0]?.id ?? "");
-        } else {
-          console.error("File upload failed");
-        }
+        const response = await apiPostImage(formData);
+        setResponseSuccessful(true);
+        onUpload(response.message[0]?.id ?? "");
       } catch (error) {
         console.error("File upload error:", error);
+        setResponseSuccessful(false);
       } finally {
         setUploading(false);
       }
@@ -54,21 +44,16 @@ export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
 
       <div
         className={`mb-10 relative rounded-md border-dashed border-2 ${
-          response?.status === 200 ? "border-green-500" : "border-gray-700"
+          responseSuccessful ? "border-green-500" : "border-gray-700"
         } p-4 cursor-pointer`}
       >
-        <form
-          encType="multipart/form-data"
-          action="/images/upload"
-        >
-          <input
-            type="file"
-            accept="image/jpeg, image/png"
-            className="hidden"
-            onChange={handleFileChange}
-            id={`fileInput_${label}`}
-          />
-        </form>
+        <input
+          type="file"
+          accept="image/jpeg, image/png"
+          className="hidden"
+          onChange={handleFileChange}
+          id={`fileInput_${label}`}
+        />
 
         <label
           htmlFor={`fileInput_${label}`}

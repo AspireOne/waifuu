@@ -85,19 +85,19 @@ export const usersRouter = createTRPCRouter({
   updateSelf: protectedProcedure
     .input(updateSelfSchema)
     .mutation(async ({ input, ctx }) => {
-      const usernameInvalid =
-        input.username && input.username !== ctx.user.username &&
-        (await ctx.prisma.user.findUnique({
+      if (input.username && input.username !== ctx.user.username) {
+        const usernameInvalid = await ctx.prisma.user.findUnique({
           where: {
             username: input.username,
           },
-        }));
-
-      if (usernameInvalid) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Username already exists.",
         });
+
+        if (usernameInvalid) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Username already exists.",
+          });
+        }
       }
 
       await ctx.prisma.user.update({

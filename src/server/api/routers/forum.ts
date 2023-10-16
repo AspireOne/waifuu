@@ -15,14 +15,14 @@ export const forumRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       let categoryName = "";
 
-      const category = await ctx.prisma.forumPostCategory.findFirst({
+      const category = await ctx.prisma.category.findFirst({
         where: {
           name: input.category,
         },
       });
 
       if (!category) {
-        const newCategory = await ctx.prisma.forumPostCategory.create({
+        const newCategory = await ctx.prisma.category.create({
           data: {
             name: input.category,
           },
@@ -120,7 +120,7 @@ export const forumRouter = createTRPCRouter({
         },
         include: {
           author: true,
-          category: true
+          category: true,
         },
       });
 

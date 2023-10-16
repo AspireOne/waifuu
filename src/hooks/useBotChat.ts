@@ -7,7 +7,7 @@ type MessageStatus = "error" | "temp";
 export type Message = {
   role: BotChatRole;
   content: string;
-  mood: Mood;
+  mood?: Mood;
   type?: MessageStatus;
   id: number;
 };
@@ -28,12 +28,28 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
 
   const fetchMore = api.bots.messages.useMutation({
     onSuccess: async (data) => {
+      if (
+        data.messages.length === 0 &&
+        data.nextCursor === undefined &&
+        !fetchInitial.isLoading
+      ) {
+        fetchInitial.mutate({ chatId });
+        return;
+      }
+
       setCursor(data.nextCursor);
       addMessages(data.messages);
     },
 
     onSettled: async () => {
       setShouldLoadMore(false);
+    },
+  });
+
+  const fetchInitial = api.bots.getInitialMessage.useMutation({
+    onSuccess: async (data) => {
+      addMessages([data.botChatMessage]);
+      fetchMore.mutate({ chatId, cursor });
     },
   });
 
@@ -117,8 +133,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
         message,
       });
     },
-    loadingReply: replyMutation.isLoading,
-
+    loadingReply: replyMutation.isLoading || fetchInitial.isLoading,
     loadMore: () => setShouldLoadMore(true),
     loadingMore: fetchMore.isLoading,
   };
