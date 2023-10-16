@@ -16,7 +16,7 @@ import { getAnalytics } from "firebase/analytics";
 import firebaseConfig from "~/lib/firebase/firebaseConfig";
 import getOrInitFirebaseAuth from "~/lib/firebase/getOrInitFirebaseAuth";
 import getOrInitFirebaseApp from "~/lib/firebase/getOrInitFirebaseApp";
-import { SessionProvider } from "~/lib/SessionProvider";
+import { SessionProvider } from "~/contexts/SessionProvider";
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.
