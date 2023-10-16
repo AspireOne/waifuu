@@ -1,6 +1,6 @@
 import { type AppType } from "next/app";
 import { NextUIProvider } from "@nextui-org/react";
-import { api, globalForIdToken } from "~/utils/api";
+import { api } from "~/utils/api";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -15,7 +15,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import firebaseConfig from "~/lib/firebaseConfig";
 import getOrInitFirebaseAuth from "~/lib/getFirebaseAuth";
-import { Preferences } from "@capacitor/preferences";
+import { setIdToken } from "~/lib/idToken";
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.
@@ -28,11 +28,11 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
       if (!auth) return;
 
       auth.onIdTokenChanged(async (user) => {
-        // We could also delete the idToken when the user is null, but we dont want to do that.
+        // We could also delete the idToken when the user is null, but we dont want to do that. The server will handle that.
         if (user) {
+          // Update globally the id token.
           const idToken = await user.getIdToken();
-          globalForIdToken.idToken = idToken;
-          await Preferences.set({ key: "idToken", value: idToken });
+          await setIdToken(idToken);
         }
       });
     }

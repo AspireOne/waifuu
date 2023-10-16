@@ -18,7 +18,7 @@ import { Visibility } from "@prisma/client";
 import Router from "next/router";
 import { api } from "~/utils/api";
 import paths from "~/utils/paths";
-import { FileUploadRaw } from "~/components/shared/FileUpload";
+import { FileUploadRaw } from "~/components/shared/FileUploadRaw";
 
 type CreateInput = {
   title: string;
