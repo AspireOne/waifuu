@@ -33,6 +33,9 @@ const Discover = () => {
     officialBots: null,
   });
 
+  const CURSOR_MOVE_AMOUNT = 2;
+  const [cursor, setCursor] = useState<number>(0);
+
   const toggleNsfw = () => {
     setSearchData({
       ...searchData,
@@ -52,7 +55,16 @@ const Discover = () => {
     ...searchData,
     sourceFilter: searchData.officialBots,
   });
-  const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
+  const forumPosts = api.forum.getAll.useQuery(
+    { take: CURSOR_MOVE_AMOUNT, skip: CURSOR_MOVE_AMOUNT + cursor },
+    {
+      onSuccess: (data) => {
+        if (data.length > 0) {
+          setCursor(cursor + CURSOR_MOVE_AMOUNT);
+        }
+      },
+    },
+  );
   const conversationBots = api.bots.getAllConversationBots.useQuery({
     limit: 5,
   });

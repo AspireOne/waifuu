@@ -15,7 +15,7 @@ export const envSchema = z.object({
 
   MINIO_ROOT_USER: z.string(),
   MINIO_ROOT_PASSWORD: z.string(),
-  DEFAULT_BUCKET: z.string(),
+  MINIO_DEFAULT_BUCKET: z.string(),
   MINIO_ACCESS_KEY: z.string(),
   MINIO_SECRET_KEY: z.string(),
 

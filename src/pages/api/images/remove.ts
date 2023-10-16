@@ -7,8 +7,8 @@ const MinioClient = new minio.Client({
   endPoint: "127.0.0.1",
   port: 9000,
   useSSL: false,
-  accessKey: env.IMAGE_MINIO_ACCESS_KEY,
-  secretKey: env.IMAGE_MINIO_SECRET_KEY,
+  accessKey: env.MINIO_ACCESS_KEY,
+  secretKey: env.MINIO_SECRET_KEY,
 });
 
 export default metaHandler.protected(async (req, res, ctx) => {
@@ -31,7 +31,7 @@ export default metaHandler.protected(async (req, res, ctx) => {
       id: params.id,
     },
   });
-  await MinioClient.removeObject(env.IMAGE_MINIO_DEFAULT_BUCKET, params.id);
+  await MinioClient.removeObject(env.MINIO_DEFAULT_BUCKET, params.id);
 
   return res.status(200).json(item);
 });
