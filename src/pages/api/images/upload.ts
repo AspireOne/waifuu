@@ -5,7 +5,6 @@ import * as minio from "minio";
 import { env } from "~/server/env";
 import generateUUID from "~/utils/utils";
 import { prisma } from "~/server/lib/db";
-import { getUser } from "~/pages/api/utils";
 import metaHandler from "~/pages/api/metaHandler";
 
 type ProcessedFiles = Array<[string, formidable.File]>;
@@ -30,8 +29,8 @@ const MinioClient = new minio.Client({
   endPoint: "127.0.0.1",
   port: 9000,
   useSSL: false,
-  accessKey: env.MINIO_ACCESS_KEY,
-  secretKey: env.MINIO_SECRET_KEY,
+  accessKey: env.IMAGE_MINIO_ACCESS_KEY,
+  secretKey: env.IMAGE_MINIO_SECRET_KEY,
 });
 
 export default metaHandler.protected(async (req, res, ctx) => {
@@ -86,7 +85,11 @@ export default metaHandler.protected(async (req, res, ctx) => {
 
       await fs.rename(tempPath, targetFilePath);
 
-      MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, uuid, targetFilePath);
+      MinioClient.fPutObject(
+        env.IMAGE_MINIO_DEFAULT_BUCKET,
+        uuid,
+        targetFilePath,
+      );
 
       result.push({
         fileName: file[1].originalFilename,
