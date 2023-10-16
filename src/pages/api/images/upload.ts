@@ -86,7 +86,11 @@ export default metaHandler.protected(async (req, res, ctx) => {
 
       await fs.rename(tempPath, targetFilePath);
 
-      MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, uuid, targetFilePath);
+      MinioClient.fPutObject(
+        env.MINIO_DEFAULT_BUCKET,
+        uuid,
+        targetFilePath,
+      );
 
       result.push({
         fileName: file[1].originalFilename,

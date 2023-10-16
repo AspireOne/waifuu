@@ -6,7 +6,7 @@ import Page from "~/components/Page";
 import { CharacterCard } from "~/components/Character/CharacterCard";
 import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
-import { BotSource } from "@prisma/client";
+import { Bot, BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
 import useSession from "~/hooks/useSession";
 import { MdForum } from "react-icons/md";
@@ -22,6 +22,7 @@ type SearchType = {
   textFilter?: string;
   nsfw: boolean;
   officialBots?: BotSource | null;
+  cursor: number;
 };
 
 const Discover = () => {
@@ -31,7 +32,9 @@ const Discover = () => {
     textFilter: undefined,
     nsfw: true,
     officialBots: null,
+    cursor: 0,
   });
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   const toggleNsfw = () => {
     setSearchData({
@@ -48,10 +51,29 @@ const Discover = () => {
     });
   };
 
-  const bots = api.bots.getAllBots.useQuery({
-    ...searchData,
-    sourceFilter: searchData.officialBots,
-  });
+  const CURSOR_LIMIT = 1;
+  const skipPage = () => {
+    setSearchData({
+      ...searchData,
+      cursor: searchData.cursor + CURSOR_LIMIT,
+    });
+  };
+
+  const [bots, setBots] = useState<Bot[]>([]);
+  api.bots.getAllBots.useQuery(
+    {
+      ...searchData,
+      sourceFilter: searchData.officialBots,
+      limit: CURSOR_LIMIT,
+    },
+    {
+      onSuccess: (data) => {
+        setBots([...bots, ...data.bots]);
+        setHasNextPage(data.hasNextPage);
+      },
+    },
+  );
+
   const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
   const conversationBots = api.bots.getAllConversationBots.useQuery({
     limit: 5,
@@ -65,6 +87,7 @@ const Discover = () => {
         textFilter: value.textFilter,
         nsfw: value.nsfw as boolean,
         officialBots: value.officialBots,
+        cursor: value.cursor as number,
       });
     });
 
@@ -162,21 +185,27 @@ const Discover = () => {
           </form>
 
           <div className="flex w-full flex-wrap gap-5">
-            {bots.data?.length === 0 && (
+            {bots?.length === 0 && (
               <p className="text-white">
                 No bots found. Try changing your search term.
               </p>
             )}
 
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-fit mx-auto">
-              {bots.data?.map((bot) => {
+              {bots.map((bot) => {
                 return <CharacterCard bot={bot} />;
               })}
             </div>
 
-            <Button variant="solid" className="w-1/2 mx-auto mb-4">
-              Load more
-            </Button>
+            {hasNextPage && (
+              <Button
+                onClick={skipPage}
+                variant="solid"
+                className="w-1/2 mx-auto mb-4"
+              >
+                Load more
+              </Button>
+            )}
           </div>
         </div>
 

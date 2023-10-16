@@ -28,12 +28,14 @@ export const botsRouter = createTRPCRouter({
           textFilter: z.string().nullish(),
           nsfw: z.boolean().default(false),
           limit: z.number().min(1).nullish(),
+          cursor: z.number().nullish(),
         })
         .optional(),
     )
     .query(async ({ input, ctx }) => {
-      return await ctx.prisma.bot.findMany({
+      const bots = await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
+        skip: !input?.cursor ? 0 : input.cursor,
         where: {
           visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
@@ -55,7 +57,17 @@ export const botsRouter = createTRPCRouter({
             ],
           }),
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
+
+      const hasNextPage = bots.length > 0;
+
+      return {
+        bots,
+        hasNextPage,
+      }
     }),
 
   getBot: publicProcedure
