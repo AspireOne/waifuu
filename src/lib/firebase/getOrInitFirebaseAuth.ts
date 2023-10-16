@@ -6,21 +6,23 @@ import {
   indexedDBLocalPersistence,
   initializeAuth,
 } from "firebase/auth";
-import { Preferences } from "@capacitor/preferences";
+import getOrInitFirebaseApp from "~/lib/firebase/getOrInitFirebaseApp";
 
 let auth: Auth | undefined;
 
-export default async function getOrInitFirebaseAuth() {
+export default function getOrInitFirebaseAuth() {
   if (auth) return auth;
+
+  getOrInitFirebaseApp();
 
   if (Capacitor.isNativePlatform()) {
     auth = initializeAuth(getApp(), {
       persistence: indexedDBLocalPersistence,
     });
-    return auth;
   } else {
     auth = getAuth();
-    await auth.setPersistence(indexedDBLocalPersistence);
-    return auth;
+    auth.setPersistence(indexedDBLocalPersistence);
   }
+
+  return auth;
 }

@@ -110,15 +110,17 @@ function PageWrapper(
   }>,
 ) {
   const router = useRouter();
-  const { user, status } = useSession();
+  const { status } = useSession();
 
   const paddingBottom = props.showingBottomNav ? "pb-20" : "pb-4";
   const paddingTop = props.showingHeader ? "pt-20" : "pt-4";
 
-  if (!props.unprotected && status === "unauthenticated") {
-    const currPath = normalizePath(router.pathname);
-    router.push(paths.login(currPath));
-  }
+  useEffect(() => {
+    if (!props.unprotected && status === "unauthenticated") {
+      const currPath = normalizePath(router.pathname);
+      router.push(paths.login(currPath));
+    }
+  }, [status, props.unprotected, router, router.pathname]);
 
   return (
     <AnimatePresence>

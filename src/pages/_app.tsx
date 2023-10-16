@@ -13,28 +13,19 @@ import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import firebaseConfig from "~/lib/firebaseConfig";
-import getOrInitFirebaseAuth from "~/lib/getFirebaseAuth";
-import { setIdToken } from "~/lib/idToken";
+import firebaseConfig from "~/lib/firebase/firebaseConfig";
+import getOrInitFirebaseAuth from "~/lib/firebase/getOrInitFirebaseAuth";
+import getOrInitFirebaseApp from "~/lib/firebase/getOrInitFirebaseApp";
+import { SessionProvider } from "~/lib/SessionProvider";
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.
   useEffect(() => {
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-
     async function init() {
-      let auth = await getOrInitFirebaseAuth();
-      if (!auth) return;
-
-      auth.onIdTokenChanged(async (user) => {
-        // We could also delete the idToken when the user is null, but we dont want to do that. The server will handle that.
-        if (user) {
-          // Update globally the id token.
-          const idToken = await user.getIdToken();
-          await setIdToken(idToken);
-        }
-      });
+      // Initialize firebase.
+      const app = getOrInitFirebaseApp();
+      const auth = getOrInitFirebaseAuth();
+      const analytics = getAnalytics(app);
     }
     init();
   }, []);
@@ -47,11 +38,13 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
         borderRadius={"0.7rem"}
       >
         <NextUIProvider>
-          {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
-          <main className={"bg-background text-foreground dark"}>
-            <ToastContainer theme={"dark"} />
-            <Component {...pageProps} />
-          </main>
+          <SessionProvider>
+            {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
+            <main className={"bg-background text-foreground dark"}>
+              <ToastContainer theme={"dark"} />
+              <Component {...pageProps} />
+            </main>
+          </SessionProvider>
         </NextUIProvider>
       </SkeletonTheme>
     </>

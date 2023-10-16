@@ -12,7 +12,7 @@ import superjson from "superjson";
 import { type AppRouter } from "~/server/api/root";
 import { Capacitor } from "@capacitor/core";
 import { apiBase } from "~/utils/constants";
-import { getIdToken } from "~/lib/idToken";
+import { getIdToken } from "~/lib/firebase/getIdToken";
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({

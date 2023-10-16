@@ -11,8 +11,8 @@ import paths from "~/utils/paths";
 import useSession from "~/hooks/useSession";
 import { useEffect } from "react";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import getOrInitFirebaseAuth from "~/lib/getFirebaseAuth";
-import { Preferences } from "@capacitor/preferences";
+import getOrInitFirebaseAuth from "~/lib/firebase/getOrInitFirebaseAuth";
+import { Capacitor } from "@capacitor/core";
 
 function getCsrfToken() {
   return document.cookie
@@ -34,7 +34,7 @@ async function signInUsingGoogleRaw() {
     const credential = GoogleAuthProvider.credential(
       result.credential?.idToken,
     );
-    const auth = await getOrInitFirebaseAuth();
+    const auth = getOrInitFirebaseAuth();
     await signInWithCredential(auth, credential);
     return true;
   } catch (e) {
@@ -61,16 +61,12 @@ const Login = () => {
         "Successfully logged in with Google after contacing backend!",
         JSON.stringify(data),
       );
-      FirebaseAuthentication.getCurrentUser().then((user) => {
-        console.log("User is", user);
-      });
 
       router.replace((redirect as string) || paths.home);
       session.refetch();
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);
-      await Preferences.remove({ key: "idToken" });
     },
   });
 
@@ -91,8 +87,6 @@ const Login = () => {
       forceRefresh: true,
     });
 
-    await Preferences.set({ key: "idToken", value: idToken });
-
     if (!idToken) {
       console.error(
         "Error getting ID token from Google! This should not happen!",
@@ -110,7 +104,7 @@ const Login = () => {
   }
 
   return (
-    <Page title={"Log in"} unprotected>
+    <Page title={"Log in"} unprotected autoBack={false}>
       <Image
         alt="background"
         loading="eager"

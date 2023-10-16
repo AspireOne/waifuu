@@ -1,7 +1,7 @@
 // frontend api client
 import axios from "axios";
 import { apiBase } from "~/utils/constants";
-import { getIdToken } from "~/lib/idToken";
+import { getIdToken } from "~/lib/firebase/getIdToken";
 
 const apiClient = axios.create({
   baseURL: apiBase(),
