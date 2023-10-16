@@ -161,7 +161,7 @@ function UsernameInput(props: {
   errorMessage?: string;
   disabled: boolean;
   isDirty: boolean;
-  value: string;
+  value?: string;
   register: (name: "username") => UseFormRegisterReturn;
 }) {
   const [usernameAvailable, setUsernameAvailable] = useState<
@@ -180,6 +180,7 @@ function UsernameInput(props: {
   });
 
   function checkAvailability() {
+    if (!props.value) return;
     usernameAvailability.mutate({ username: props.value });
   }
 

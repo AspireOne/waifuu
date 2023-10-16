@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // for vitest.
-    "types": ["vitest/globals"],
+    //"types": ["vitest/globals"],
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,

@@ -1,5 +1,6 @@
 import Pusher from "pusher-js";
 import { apiBase } from "~/utils/constants";
+import { getIdToken } from "~/lib/idToken";
 
 const pusherClient =
   Pusher.instances.length > 0
@@ -15,10 +16,16 @@ const pusherClient =
         // @ts-ignore
         userAuthentication: {
           endpoint: apiBase("/api/pusher/authenticate"),
+          headersProvider: async () => ({
+            Authorization: `Bearer ${await getIdToken()}`,
+          }),
         },
         // @ts-ignore
         channelAuthorization: {
           endpoint: apiBase("/api/pusher/authorize"),
+          headersProvider: async () => ({
+            Authorization: `Bearer ${await getIdToken()}`,
+          }),
         },
       });
 

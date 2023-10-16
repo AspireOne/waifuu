@@ -11,7 +11,7 @@ import {
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { useMemo, useState } from "react";
-import { FileUploadRaw } from "../shared/FileUpload";
+import { FileUploadRaw } from "../shared/FileUploadRaw";
 
 type CreateForumPostModalProps = {
   isOpen: boolean;
@@ -52,7 +52,10 @@ export const CreateForumPostModal = ({
           </ModalHeader>
 
           <ModalBody>
-            <FileUploadRaw label="Post banner image" onUpload={(id) => setBannerId(id)} />
+            <FileUploadRaw
+              label="Post banner image"
+              onUpload={(id) => setBannerId(id)}
+            />
             <Input {...register("title")} autoFocus placeholder="Title" />
             <Textarea {...register("content")} placeholder="Content" />
             <Input label="Post category" {...register("category")} />

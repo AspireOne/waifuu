@@ -18,15 +18,26 @@ const config = {
                 value: "http://localhost"
             }, {key: "Access-Control-Allow-Methods", value: "GET,OPTIONS,PATCH,DELETE,POST,PUT"}, {
                 key: "Access-Control-Allow-Headers",
-                value: "Origin, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+                value: "Origin, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, authorization, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
             },]
         }]
     },
 
     images: {
         // Capacitor needs static export/build -> that doesn't support optimized images -> disable it so that Capacitor works.
-        unoptimized: !process.env.NEXT_PUBLIC_BUILDING_NATIVE || Capacitor.isNativePlatform(),
+        // TODO: Flip this back.
+        unoptimized: true,
     },
+
+/*    // !TODO: Remove this!!!
+    webpack(webpackConfig) {
+        return {
+            ...webpackConfig,
+            optimization: {
+                minimize: false
+            }
+        };
+    }*/
 
     /**
      * If you are using `appDir` then you must comment the below `i18n` config out.
