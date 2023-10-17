@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, Switch } from "@nextui-org/react";
+import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
 import Image from "next/image";
 import { FaCompass } from "react-icons/fa";
 import { BiTrendingUp } from "react-icons/bi";
@@ -15,6 +15,9 @@ import Router from "next/router";
 import { paths } from "@/lib/paths";
 import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
 import { TagSelect } from "@/components/ui/TagSelect";
+import { AiOutlinePlus } from "react-icons/ai";
+import Title from "@components/ui/Title";
+import { Tooltip } from "@nextui-org/tooltip";
 
 // TODO: Refactor this shitty code
 
@@ -75,9 +78,15 @@ const Discover = () => {
   );
 
   const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
-  const conversationBots = api.bots.getAllConversationBots.useQuery({
-    limit: 5,
-  });
+  const conversationBots = api.bots.getAllUsedBots.useQuery(
+    {
+      limit: 5,
+    },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
+  );
 
   const { register, watch } = useForm<SearchType>();
 
@@ -108,23 +117,26 @@ const Discover = () => {
 
         <div className="mx-auto mt-[-120px] z-20 relative">
           <div>
-            <h1 className="title-xl">👋</h1>
+            <p className="text-2xl">👋</p>
 
             <div>
-              <h1 className="title-xl flex-wrap font-bold">Hi, {user?.name}</h1>
-              <p>Let's explore some new characters</p>
+              <Title as={"p"} bold>
+                Hi, {user?.name}
+              </Title>
+              <p className={"text-foreground-700"}>
+                Let's explore some new characters.
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="w-full">
-        <div className="mx-auto mt-10">
-          <div className="mb-5 mt-20">
-            <h3 className="flex align-center font-bold flex-row gap-2 text-2xl text-white">
-              <FaCompass className="mt-1.5" />
-              <p>Active chats</p>
-            </h3>
+        <div className="mx-auto mt-20">
+          <div className="mb-5 mt-10">
+            <Title size={"lg"} bold icon={FaCompass}>
+              Active chats
+            </Title>
 
             {conversationBots.data?.length === 0 && (
               <p className="text-foreground-500 mt-3">
@@ -146,27 +158,23 @@ const Discover = () => {
           </div>
 
           <form>
-            <div className="mt-10 flex flex-row align-center">
-              <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
-                <BiTrendingUp className="mt-1.5" />
-                <p>Popular bots</p>
-              </h3>
+            <div className="mt-10 flex flex-row align-center items-center gap-4">
+              <Title icon={BiTrendingUp} bold size={"lg"}>
+                Popular Characters
+              </Title>
 
-              <Switch
-                isSelected={searchData.nsfw}
-                onValueChange={toggleNsfw}
-                className="w-fit mx-auto mr-4"
-              >
-                NSFW
-              </Switch>
+              <Tooltip content={"Create a character"}>
+                <Button
+                  onClick={() => Router.push(paths.createBot)}
+                  isIconOnly={true}
+                >
+                  <AiOutlinePlus fontSize={25} />
+                </Button>
+              </Tooltip>
             </div>
 
             <div className="mb-5 mt-1 flex flex-col items-center gap-4">
               <div className="flex flex-col w-full gap-3">
-                <Button onClick={() => Router.push(paths.createBot)}>
-                  <BsPlus fontSize={25} /> Create new bot
-                </Button>
-
                 <TagSelect onChange={(value) => {}} />
 
                 <Input
@@ -177,9 +185,19 @@ const Discover = () => {
                   type="text"
                 />
 
-                <Checkbox onValueChange={toggleOfficialBots}>
-                  Only display official bots
-                </Checkbox>
+                <div className={"flex flex-row gap-3"}>
+                  <Checkbox onValueChange={toggleOfficialBots}>
+                    Only display official bots
+                  </Checkbox>
+
+                  <Switch
+                    isSelected={searchData.nsfw}
+                    onValueChange={toggleNsfw}
+                    className="w-fit mx-auto mr-4"
+                  >
+                    NSFW
+                  </Switch>
+                </div>
               </div>
             </div>
           </form>
@@ -210,10 +228,9 @@ const Discover = () => {
         </div>
 
         <div className="mt-5">
-          <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
-            <MdForum className="mt-1.5" />
-            <p>Popular forum posts</p>
-          </h3>
+          <Title bold size={"lg"} icon={MdForum}>
+            Popular forum posts
+          </Title>
 
           <div className="flex flex-col gap-2 mt-5">
             {forumPosts.data?.map((post) => {

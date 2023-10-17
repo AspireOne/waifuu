@@ -39,7 +39,8 @@ export const botsRouter = createTRPCRouter({
         where: {
           visibility: Visibility.PUBLIC,
           source: input?.sourceFilter ?? undefined,
-          characterNsfw: input?.nsfw,
+          // If nsfw is true, it includes ALL bots. If it's false, it includes ONLY NON-nsfw bots.
+          characterNsfw: input?.nsfw ? undefined : false,
           ...(input?.textFilter && {
             OR: [
               {
@@ -169,7 +170,7 @@ export const botsRouter = createTRPCRouter({
   /**
    * Return all bots that user has currently conversation with.
    */
-  getAllConversationBots: protectedProcedure
+  getAllUsedBots: protectedProcedure
     .input(
       z.object({
         limit: z.number().min(1).nullish(),
