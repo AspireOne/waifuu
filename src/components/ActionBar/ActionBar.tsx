@@ -103,17 +103,17 @@ function ActionButton(props: ButtonProp & { isActive: boolean }) {
     router.push(props.path);
   }
 
-  const transitionDuration = "duration-100";
+  const transitionDuration = ""; // duration-100
 
   return (
     <div className={""}>
       <Button
-        disableRipple={true}
-        onPress={handleClick}
+        disableRipple={false}
+        onPressStart={handleClick}
         className={twMerge(
-          "m-0 bg-transparent hover:bg-none h-12 duration-1000",
+          "m-0 bg-transparent hover:bg-none h-12",
           "flex flex-col items-center justify-center gap-0",
-          props.isActive ? "text-secondary-600" : "text-foreground-400",
+          props.isActive ? "text-foreground-900" : "text-foreground-400",
         )}
       >
         {props.isActive && (
