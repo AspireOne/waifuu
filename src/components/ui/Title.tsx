@@ -1,24 +1,42 @@
 import { twMerge } from "tailwind-merge";
 import React from "react";
+import { IconType } from "react-icons";
 
 export default function Title(props: {
   children: React.ReactNode;
-  as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | any;
+  /** @default "h2" */
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | any;
   /** @default "md" */
-  size: "sm" | "md" | "lg" | "xl" | "2xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
+  /** @default false */
+  bold?: boolean;
+  icon?: IconType;
 }) {
+  const size = props.size ?? "md";
+  const As = props.as ?? "h2";
+
+  let iconSize;
+  if (size === "sm") iconSize = 20;
+  else if (size === "md") iconSize = 25;
+  else if (size === "lg") iconSize = 29;
+  else if (size === "xl") iconSize = 34;
+  else if (size === "2xl") iconSize = 38;
+
   return (
-    <props.as
+    <As
       className={twMerge(
-        "font-semibold",
-        props.size === "sm" && "text-lg",
-        props.size === "md" && "text-xl",
-        props.size === "lg" && "text-2xl",
-        props.size === "xl" && "text-3xl",
+        props.bold ? "font-bold" : "font-semibold",
+        size === "sm" && "text-lg",
+        size === "md" && "text-xl",
+        size === "lg" && "text-2xl",
+        size === "xl" && "text-3xl",
+        "flex flex-row items-center gap-2",
+        props.className,
       )}
     >
+      {props.icon && <props.icon size={iconSize} />}
       {props.children}
-    </props.as>
+    </As>
   );
 }
