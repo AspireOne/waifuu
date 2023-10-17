@@ -21,7 +21,7 @@ export const AppHeader = (
     <div
       className={
         "z-[100] h-[55px] fixed top-0 left-0 right-0 " +
-        "backdrop-blur-xl bg-background/50 border-b-1 border-foreground-100 shadow"
+        "backdrop-blur-md bg-background/50 border-b-1 border-foreground-100 shadow"
       }
     >
       <div className={"flex flex-row items-center gap-5 h-full px-1"}>
