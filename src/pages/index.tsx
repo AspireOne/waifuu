@@ -6,12 +6,13 @@ import Home from "~/pages/home";
 import { useRouter } from "next/router";
 import { paths } from "~/lib/paths";
 import { Constants } from "~/lib/constants";
+import Discover from "~/pages/discover";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
 // So if we are building for a native app, we export Homepage instead.
 
 // prettier-ignore
-export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function LandingPage() {
+export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Discover : function LandingPage() {
   const router = useRouter();
   React.useEffect(() => {
     if (Capacitor.isNativePlatform()) {
