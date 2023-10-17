@@ -1,20 +1,22 @@
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import { Button } from "@nextui-org/react";
 import { BiArrowBack } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
-import { UserDropdown } from "~/components/UserDropdown";
+import { AppHeaderUserDropdown } from "~/components/AppHeader/AppHeaderUserDropdown";
+import { useSession } from "~/hooks/useSession";
 
 /**
  * Unifies page headers. Contains a back button and page title.
  * Back button can be configured to either navigate to a path, navigate to the previous page ("previous"),
  * or do nothing (null).
  */
-export default function Header(
+export const AppHeader = (
   props: PropsWithChildren<{
     onBackButtonPressed: () => void;
     backButtonEnabled: boolean;
   }>,
-) {
+) => {
+  const session = useSession();
   return (
     <div
       className={
@@ -51,8 +53,8 @@ export default function Header(
         {/*mr-2 to offset the dropdown, because it is natively slightly off.*/}
         {/*min-w-max to make it NOT shrink when title is too long*/}
         {/*User button, on the right*/}
-        <UserDropdown className={"ml-auto mr-2 min-w-max"} />
+        <AppHeaderUserDropdown className={"ml-auto mr-2 min-w-max"} />
       </div>
     </div>
   );
-}
+};

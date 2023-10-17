@@ -6,7 +6,7 @@ import { ActionBar } from "~/components/ActionBar";
 import { useSession } from "~/hooks/useSession";
 import { useRouter } from "next/router";
 import { paths } from "~/lib/paths";
-import Header from "~/components/ui/Header";
+import { AppHeader } from "src/components/AppHeader";
 import { normalizePath } from "~/utils/utils";
 
 function Page(
@@ -79,12 +79,12 @@ function Page(
       {/*TODO: PC Navbar.*/}
 
       {showHeader && (
-        <Header
+        <AppHeader
           backButtonEnabled={(autoBack && prevPathExists) || !!backPath}
           onBackButtonPressed={handleBackClick}
         >
           {props.title}
-        </Header>
+        </AppHeader>
       )}
 
       <PageWrapper

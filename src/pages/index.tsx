@@ -5,6 +5,7 @@ import { Capacitor } from "@capacitor/core";
 import Home from "~/pages/home";
 import { useRouter } from "next/router";
 import { paths } from "~/lib/paths";
+import { Constants } from "~/lib/constants";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
 // So if we are building for a native app, we export Homepage instead.
@@ -15,7 +16,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function Landing
   React.useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       // replace current path with /home without reloading and without adding a new entry to the history.
-      window.history.replaceState(null, document.title, paths.home);
+      window.history.replaceState(null, document.title, Constants.APP_INDEX_PATH);
     }
   }, []);
 

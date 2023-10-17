@@ -87,6 +87,7 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
 
     if (!userQuery.data && !userQuery.isLoading) {
       setUser(null);
+      setStatus("unauthenticated");
     }
   }, [userQuery.data]);
 

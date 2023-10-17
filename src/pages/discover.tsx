@@ -120,14 +120,14 @@ const Discover = () => {
 
       <div className="w-full">
         <div className="mx-auto mt-10">
-          <div className="mb-5 mt-7">
+          <div className="mb-5 mt-20">
             <h3 className="flex align-center font-bold flex-row gap-2 text-2xl text-white">
               <FaCompass className="mt-1.5" />
               <p>Active chats</p>
             </h3>
 
             {conversationBots.data?.length === 0 && (
-              <p className="text-white mt-3">
+              <p className="text-foreground-500 mt-3">
                 You don't have any active chats yet. Start one now!
               </p>
             )}

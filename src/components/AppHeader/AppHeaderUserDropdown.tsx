@@ -7,12 +7,12 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@nextui-org/react";
-import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
+import { AppHeaderUserDropdownSettingsDialog } from "./AppHeaderUserDropdownSettingsDialog";
 import { useSession } from "~/hooks/useSession";
 import { twMerge } from "tailwind-merge";
 
-export const UserDropdown = (props: { className?: string }) => {
-  const { user } = useSession();
+export const AppHeaderUserDropdown = (props: { className?: string }) => {
+  const { user, status } = useSession();
 
   const {
     isOpen: isSettingsOpen,
@@ -25,15 +25,17 @@ export const UserDropdown = (props: { className?: string }) => {
     else onSettingOpen();
   };
 
+  const hidden = status === "unauthenticated";
+
   return (
     <>
       <Dropdown placement="bottom-end">
-        <DropdownTrigger>
+        <DropdownTrigger className={`${hidden && "invisible"}`}>
           <Avatar
             isBordered
             as="button"
             className={twMerge("transition-transform", props.className)}
-            name={user?.name ?? "Loading..."}
+            name={user?.name ?? " "}
             size={"sm"}
             src={user?.image ?? undefined}
           />
@@ -44,12 +46,12 @@ export const UserDropdown = (props: { className?: string }) => {
             <p className="font-semibold">{user?.email}</p>
           </DropdownItem>
           <DropdownItem onClick={toggleSettingsOpen} key="settings">
-            My Settings
+            Character settings
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
 
-      <UserDropdownSettingsDialog
+      <AppHeaderUserDropdownSettingsDialog
         isOpen={isSettingsOpen}
         onOpenChange={toggleSettingsOpen}
       />

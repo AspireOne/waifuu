@@ -10,8 +10,13 @@ import { toast } from "react-toastify";
 import { paths } from "~/lib/paths";
 import { useSession } from "~/hooks/useSession";
 import { useEffect } from "react";
-import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithCredential,
+  signOut,
+} from "firebase/auth";
 import { getOrInitFirebaseAuth } from "~/lib/firebase/getOrInitFirebaseAuth";
+import { Constants } from "~/lib/constants";
 
 function getCsrfToken() {
   return document.cookie
@@ -48,11 +53,12 @@ const Login = () => {
   const session = useSession();
   const redirect = router.query.redirect;
 
+  // Check for session.user instead of session.status.
   useEffect(() => {
-    if (session.status === "authenticated") {
-      router.replace(paths.home);
+    if (session.user) {
+      router.replace((redirect as string) || Constants.APP_INDEX_PATH);
     }
-  }, [session.status]);
+  }, [session.user, session.user?.id]);
 
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: async (data, variables, context) => {
@@ -61,11 +67,13 @@ const Login = () => {
         JSON.stringify(data),
       );
 
-      router.replace((redirect as string) || paths.home);
+      router.replace((redirect as string) || Constants.APP_INDEX_PATH);
       session.refetch();
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);
+      await FirebaseAuthentication.signOut();
+      await signOut(getOrInitFirebaseAuth());
     },
   });
 

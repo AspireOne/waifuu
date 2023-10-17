@@ -22,7 +22,7 @@ type SubmitData = {
   about?: string;
 };
 
-export const UserDropdownSettingsDialog = ({
+export const AppHeaderUserDropdownSettingsDialog = ({
   isOpen,
   onOpenChange,
 }: UserSettingsDialogProps) => {

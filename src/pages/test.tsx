@@ -2,6 +2,7 @@ import Page from "~/components/Page";
 import { api } from "~/lib/api";
 import { useSession } from "~/hooks/useSession";
 import Link from "next/link";
+import { paths } from "~/lib/paths";
 
 export default function Test() {
   const health = api.general.health.useQuery();
@@ -23,8 +24,8 @@ export default function Test() {
           ? "Loading..."
           : JSON.stringify(session.user) ?? "undefined"}
       </p>
-      <Link href={"/home"}>Test link to go to homepage</Link>
-      <Link href={"/login"}>Test link to go to LOGIN</Link>
+      <Link href={paths.home}>Test link to go to homepage</Link>
+      <Link href={paths.login()}>Test link to go to LOGIN</Link>
     </Page>
   );
 }

@@ -22,13 +22,6 @@ type ButtonProp = {
 
 const buttons: ButtonProp[] = [
   {
-    path: paths.home,
-    title: "Home",
-    icon: BiHomeAlt2,
-    iconFilled: AiFillHome,
-    pathExactMatch: true,
-  },
-  {
     path: paths.discover,
     title: "Discover",
     icon: RiSearch2Line,

@@ -87,13 +87,14 @@ export default function Profile() {
           }
           src={imageUrl ?? "/assets/default_user.jpg"}
         />
-        <input
+        {/*Comment it out for now.*/}
+        {/*<input
           type="file"
           ref={fileInputRef}
           onChange={onFileChange}
           style={{ display: "none" }}
           accept="image/*"
-        />
+        />*/}
         <UsernameInput
           register={register}
           isInvalid={!!errors.username}
@@ -128,15 +129,15 @@ export default function Profile() {
         />
         <Input
           label={"Addressed As"}
-          placeholder={"Addressed As"}
+          placeholder={"How should the character address you?"}
           {...register("addressedAs")}
           isInvalid={!!errors.addressedAs}
           disabled={!user}
           errorMessage={errors.addressedAs?.message as string}
         />
         <Textarea
-          label={"About"}
-          placeholder={"What should the bots you chat with know about you?"}
+          label={"Tell us about yourself"}
+          placeholder={"What should your characters know about you?"}
           {...register("about")}
           isInvalid={!!errors.about}
           disabled={!user}
