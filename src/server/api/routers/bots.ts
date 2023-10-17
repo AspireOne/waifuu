@@ -4,13 +4,13 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "~/server/api/trpc";
+} from "@/server/api/trpc";
 import Replicate from "replicate";
-import { env } from "~/server/env";
+import { env } from "@/server/env";
 import { TRPCError } from "@trpc/server";
 import { BotMode, Mood, Prisma } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
-import { prompts } from "~/server/utils/prompt";
+import { prompts } from "@/server/utils/prompt";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,

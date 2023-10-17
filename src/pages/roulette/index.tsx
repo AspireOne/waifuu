@@ -1,10 +1,10 @@
-import Page from "~/components/Page";
+import Page from "@/components/Page";
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Button, Switch } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { paths } from "~/lib/paths";
-import { addQueryParams } from "~/utils/utils";
+import { paths } from "@/lib/paths";
+import { addQueryParams } from "@/utils/utils";
 
 export default function RRIndex() {
   const router = useRouter();

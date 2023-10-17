@@ -1,11 +1,11 @@
 import { Button, toggle } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { CreateForumPostModal } from "~/components/forum/CreateForumPostModal";
-import { ForumPostHighlight } from "~/components/forum/ForumPostHighlight";
-import { PinnedPost } from "~/components/forum/PinnedPost";
-import Page from "~/components/Page";
-import { api } from "~/lib/api";
+import { CreateForumPostModal } from "@/components/forum/CreateForumPostModal";
+import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
+import { PinnedPost } from "@/components/forum/PinnedPost";
+import Page from "@/components/Page";
+import { api } from "@/lib/api";
 
 export default function ForumPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);

@@ -1,8 +1,8 @@
-import Page from "~/components/Page";
-import { api } from "~/lib/api";
-import { useSession } from "~/hooks/useSession";
+import Page from "@/components/Page";
+import { api } from "@/lib/api";
+import { useSession } from "@/hooks/useSession";
 import Link from "next/link";
-import { paths } from "~/lib/paths";
+import { paths } from "@/lib/paths";
 
 export default function Test() {
   const health = api.general.health.useQuery();

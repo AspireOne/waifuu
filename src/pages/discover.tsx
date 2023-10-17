@@ -2,19 +2,19 @@ import { Button, Checkbox, Input, Switch } from "@nextui-org/react";
 import Image from "next/image";
 import { FaCompass } from "react-icons/fa";
 import { BiTrendingUp } from "react-icons/bi";
-import Page from "~/components/Page";
-import { CharacterCard } from "~/components/CharacterCard";
-import { api } from "~/lib/api";
+import Page from "@/components/Page";
+import { CharacterCard } from "@/components/CharacterCard";
+import { api } from "@/lib/api";
 import { useForm } from "react-hook-form";
 import { Bot, BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
-import { useSession } from "~/hooks/useSession";
+import { useSession } from "@/hooks/useSession";
 import { MdForum } from "react-icons/md";
 import { BsPlus } from "react-icons/bs";
 import Router from "next/router";
-import { paths } from "~/lib/paths";
-import { ForumPostHighlight } from "~/components/forum/ForumPostHighlight";
-import { TagSelect } from "~/components/ui/TagSelect";
+import { paths } from "@/lib/paths";
+import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
+import { TagSelect } from "@/components/ui/TagSelect";
 
 // TODO: Refactor this shitty code
 

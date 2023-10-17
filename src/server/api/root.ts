@@ -1,9 +1,9 @@
-import { generalRouter } from "~/server/api/routers/general";
-import { createTRPCRouter } from "~/server/api/trpc";
-import { botsRouter } from "~/server/api/routers/bots";
-import { usersRouter } from "~/server/api/routers/users";
-import { RRChatRouter } from "~/server/api/routers/RRChat";
-import { authRouter } from "~/server/api/routers/auth";
+import { generalRouter } from "@/server/api/routers/general";
+import { createTRPCRouter } from "@/server/api/trpc";
+import { botsRouter } from "@/server/api/routers/bots";
+import { usersRouter } from "@/server/api/routers/users";
+import { RRChatRouter } from "@/server/api/routers/RRChat";
+import { authRouter } from "@/server/api/routers/auth";
 import { forumRouter } from "./routers/forum";
 
 /**
@@ -17,7 +17,7 @@ export const appRouter = createTRPCRouter({
   users: usersRouter,
   RRChat: RRChatRouter,
   auth: authRouter,
-  forum: forumRouter
+  forum: forumRouter,
 });
 
 // export type definition of API

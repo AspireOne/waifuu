@@ -1,4 +1,4 @@
-import { apiBase } from "~/lib/api";
+import { apiBase } from "@/lib/api";
 
 /**
  * Generates a random UUID (Universally Unique Identifier).

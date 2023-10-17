@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { paths } from "~/lib/paths";
+import { paths } from "@/lib/paths";
 import { twMerge } from "tailwind-merge";
 import { Button, Skeleton as UiSkeleton } from "@nextui-org/react";
 import Skeleton from "react-loading-skeleton";

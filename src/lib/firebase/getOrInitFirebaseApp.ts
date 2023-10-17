@@ -1,5 +1,5 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { options } from "~/lib/firebase/firebaseConfig";
+import { options } from "@/lib/firebase/firebaseConfig";
 
 let firebaseApp: FirebaseApp | undefined;
 

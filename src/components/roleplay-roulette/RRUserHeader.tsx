@@ -1,4 +1,4 @@
-import PresenceChannelMember from "~/server/types/presenceChannelMember";
+import PresenceChannelMember from "@/server/types/presenceChannelMember";
 import { useRouter } from "next/router";
 import React from "react";
 import { Card, CardBody } from "@nextui-org/card";
@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsPerson } from "react-icons/bs";
-import UserProfile from "~/pages/user/[user]";
+import UserProfile from "@/pages/user/[user]";
 import { Avatar } from "@nextui-org/avatar";
 
 export default function RRUserHeader(props: {

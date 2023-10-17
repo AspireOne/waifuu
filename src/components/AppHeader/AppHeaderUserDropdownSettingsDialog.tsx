@@ -9,8 +9,8 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { api } from "~/lib/api";
-import { useSession } from "~/hooks/useSession";
+import { api } from "@/lib/api";
+import { useSession } from "@/hooks/useSession";
 
 type UserSettingsDialogProps = {
   isOpen: boolean;

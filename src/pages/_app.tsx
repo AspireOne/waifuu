@@ -1,6 +1,6 @@
 import { type AppType } from "next/app";
 import { NextUIProvider } from "@nextui-org/react";
-import { api } from "~/lib/api";
+import { api } from "@/lib/api";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -8,13 +8,13 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
 import "filepond/dist/filepond.min.css";
-import "~/styles/globals.css";
+import "@/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 import { getAnalytics } from "firebase/analytics";
-import { getOrInitFirebaseAuth } from "~/lib/firebase/getOrInitFirebaseAuth";
-import { getOrInitFirebaseApp } from "~/lib/firebase/getOrInitFirebaseApp";
-import { SessionProvider } from "~/contexts/SessionProvider";
+import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
+import { getOrInitFirebaseApp } from "@/lib/firebase/getOrInitFirebaseApp";
+import { SessionProvider } from "@/contexts/SessionProvider";
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.

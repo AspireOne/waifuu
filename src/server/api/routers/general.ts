@@ -2,9 +2,9 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "~/server/api/trpc";
+} from "@/server/api/trpc";
 import Replicate from "replicate";
-import { env } from "~/server/env";
+import { env } from "@/server/env";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,

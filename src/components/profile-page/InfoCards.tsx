@@ -1,10 +1,10 @@
 import React, { PropsWithChildren } from "react";
 import { Chip } from "@nextui-org/react";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { api } from "~/lib/api";
+import { api } from "@/lib/api";
 import { Bot } from "@prisma/client";
 import Link from "next/link";
-import { paths } from "~/lib/paths";
+import { paths } from "@/lib/paths";
 import { FaEye, FaHeart } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 

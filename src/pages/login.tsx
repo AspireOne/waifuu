@@ -2,21 +2,21 @@ import { Button, Card, Image } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
-import Page from "~/components/Page";
-import { api } from "~/lib/api";
+import Page from "@/components/Page";
+import { api } from "@/lib/api";
 import { useRouter } from "next/router";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { toast } from "react-toastify";
-import { paths } from "~/lib/paths";
-import { useSession } from "~/hooks/useSession";
+import { paths } from "@/lib/paths";
+import { useSession } from "@/hooks/useSession";
 import { useEffect } from "react";
 import {
   GoogleAuthProvider,
   signInWithCredential,
   signOut,
 } from "firebase/auth";
-import { getOrInitFirebaseAuth } from "~/lib/firebase/getOrInitFirebaseAuth";
-import { Constants } from "~/lib/constants";
+import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
+import { Constants } from "@/lib/constants";
 
 function getCsrfToken() {
   return document.cookie

@@ -3,7 +3,7 @@ import { ForumPost, User } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FaComment } from "react-icons/fa";
-import { api } from "~/lib/api";
+import { api } from "@/lib/api";
 import { PiArrowElbowRightDownBold } from "react-icons/pi";
 import { useState } from "react";
 

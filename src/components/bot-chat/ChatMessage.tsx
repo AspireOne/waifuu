@@ -30,7 +30,7 @@ const ChatMessage = ({ author, message, key, className, mood }: Props) => {
       .replace(/\*(.*?)\*/g, "<em>$1</em>")
       .replace(/__(.*?)__/g, "<strong>$1</strong>")
       .replace(/_(.*?)_/g, "<em>$1</em>")
-      .replace(/~~(.*?)~~/g, "<s>$1</s>")
+      .replace(/@@(.*?)@@/g, "<s>$1</s>")
       .replace(/`(.*?)`/g, "<code>$1</code>")
       .replace(/```(.*?)```/g, "<pre>$1</pre>");
   }, [message]);

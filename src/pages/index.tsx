@@ -1,12 +1,12 @@
 import Image from "next/image";
 import React from "react";
-import Page from "~/components/Page";
+import Page from "@/components/Page";
 import { Capacitor } from "@capacitor/core";
-import Home from "~/pages/home";
+import Home from "@/pages/home";
 import { useRouter } from "next/router";
-import { paths } from "~/lib/paths";
-import { Constants } from "~/lib/constants";
-import Discover from "~/pages/discover";
+import { paths } from "@/lib/paths";
+import { Constants } from "@/lib/constants";
+import Discover from "@/pages/discover";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
 // So if we are building for a native app, we export Homepage instead.

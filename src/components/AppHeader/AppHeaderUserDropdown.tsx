@@ -8,7 +8,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { AppHeaderUserDropdownSettingsDialog } from "./AppHeaderUserDropdownSettingsDialog";
-import { useSession } from "~/hooks/useSession";
+import { useSession } from "@/hooks/useSession";
 import { twMerge } from "tailwind-merge";
 
 export const AppHeaderUserDropdown = (props: { className?: string }) => {

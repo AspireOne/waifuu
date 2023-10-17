@@ -2,7 +2,7 @@ import {
   createOpenApiHttpHandler,
   generateOpenApiDocument,
 } from "trpc-openapi";
-import { appRouter } from "~/server/api/root";
+import { appRouter } from "@/server/api/root";
 import * as http from "http";
 
 export const openApiDocument = generateOpenApiDocument(appRouter, {

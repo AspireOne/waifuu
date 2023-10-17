@@ -1,9 +1,9 @@
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { TRPCError } from "@trpc/server";
-import pusherServer from "~/server/lib/pusherServer";
+import pusherServer from "@/server/lib/pusherServer";
 
 export type ChannelData = {
   name: string;

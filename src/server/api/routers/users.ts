@@ -2,10 +2,10 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "~/server/api/trpc";
+} from "@/server/api/trpc";
 import { z, ZodSchema } from "zod";
 import { TRPCError } from "@trpc/server";
-import updateSelfSchema from "~/server/types/updateSelfSchema";
+import updateSelfSchema from "@/server/types/updateSelfSchema";
 
 export const usersRouter = createTRPCRouter({
   getSelf: publicProcedure

@@ -2,14 +2,14 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "~/server/api/trpc";
+} from "@/server/api/trpc";
 import { z } from "zod";
-import { generateUniqueUsername } from "~/server/lib/usernameUtils";
+import { generateUniqueUsername } from "@/server/lib/usernameUtils";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { TRPCError } from "@trpc/server";
 import { NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
-import getServerFirebaseAuth from "~/server/lib/getServerFirebaseAuth";
+import getServerFirebaseAuth from "@/server/lib/getServerFirebaseAuth";
 
 export const authRouter = createTRPCRouter({
   logOut: protectedProcedure.mutation(async ({ ctx }) => {

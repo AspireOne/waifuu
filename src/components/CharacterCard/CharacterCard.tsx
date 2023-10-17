@@ -1,10 +1,10 @@
 import { Card, CardBody, Chip, Image } from "@nextui-org/react";
 import { Bot, BotMode } from "@prisma/client";
 import Link from "next/link";
-import { paths } from "~/lib/paths";
+import { paths } from "@/lib/paths";
 import { LargeText } from "../ui/LargeText";
 import { MdVerified } from "react-icons/md";
-import { makeDownloadPath } from "~/utils/utils";
+import { makeDownloadPath } from "@/utils/utils";
 
 type CharacterCardProps = {
   bot: Bot;

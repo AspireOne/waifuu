@@ -1,7 +1,7 @@
 import { createNextApiHandler } from "@trpc/server/adapters/next";
-import { appRouter } from "~/server/api/root";
-import { createTRPCContext } from "~/server/api/trpc";
-import metaHandler from "~/pages/api/metaHandler";
+import { appRouter } from "@/server/api/root";
+import { createTRPCContext } from "@/server/api/trpc";
+import metaHandler from "@/pages/api/metaHandler";
 
 // export API handler
 const nextApiHandler = createNextApiHandler({

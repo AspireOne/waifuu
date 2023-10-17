@@ -3,10 +3,10 @@ import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
-import { type AppRouter } from "~/server/api/root";
+import { type AppRouter } from "@/server/api/root";
 import { Capacitor } from "@capacitor/core";
-import { getIdToken } from "~/lib/firebase/getIdToken";
-import { Constants } from "~/lib/constants";
+import { getIdToken } from "@/lib/firebase/getIdToken";
+import { Constants } from "@/lib/constants";
 
 export const api = createTRPCNext<AppRouter>({
   config() {

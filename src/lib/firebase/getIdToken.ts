@@ -1,4 +1,4 @@
-import { getOrInitFirebaseAuth } from "~/lib/firebase/getOrInitFirebaseAuth";
+import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 
 export const getIdToken = async (): Promise<string | undefined> => {

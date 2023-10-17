@@ -6,7 +6,7 @@ import {
   indexedDBLocalPersistence,
   initializeAuth,
 } from "firebase/auth";
-import { getOrInitFirebaseApp } from "~/lib/firebase/getOrInitFirebaseApp";
+import { getOrInitFirebaseApp } from "@/lib/firebase/getOrInitFirebaseApp";
 
 let auth: Auth | undefined;
 

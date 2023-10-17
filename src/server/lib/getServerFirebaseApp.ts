@@ -1,6 +1,6 @@
 import { applicationDefault, initializeApp } from "firebase-admin/app";
 import admin from "firebase-admin";
-import { env } from "~/server/env";
+import { env } from "@/server/env";
 
 /**
  * Returns the firebase app instance for the server. If it doesn't exist, it will create it.

@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { Card, CardBody } from "@nextui-org/card";
-import Page from "~/components/Page";
-import { ConnectionStatus, useRRConnection } from "~/hooks/useRRConnection";
+import Page from "@/components/Page";
+import { ConnectionStatus, useRRConnection } from "@/hooks/useRRConnection";
 import useRRChannelConnector, {
   RRChannelSearchStatus,
-} from "~/hooks/useRRChannelConnector";
+} from "@/hooks/useRRChannelConnector";
 import { Spinner } from "@nextui-org/spinner";
-import useRRMessages from "~/hooks/useRRMessages";
-import { RRInput } from "~/components/roleplay-roulette/RRInput";
-import RRMessages from "~/components/roleplay-roulette/RRMessages";
-import RRUserHeader from "~/components/roleplay-roulette/RRUserHeader";
-import { paths } from "~/lib/paths";
+import useRRMessages from "@/hooks/useRRMessages";
+import { RRInput } from "@/components/roleplay-roulette/RRInput";
+import RRMessages from "@/components/roleplay-roulette/RRMessages";
+import RRUserHeader from "@/components/roleplay-roulette/RRUserHeader";
+import { paths } from "@/lib/paths";
 import { twMerge } from "tailwind-merge";
 
 // "RR". Stands for Roleplay Roulette.

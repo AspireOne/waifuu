@@ -2,7 +2,7 @@ import { Card } from "@nextui-org/react";
 import { ForumPost } from "@prisma/client";
 import Link from "next/link";
 import { TbPinnedFilled } from "react-icons/Tb";
-import { paths } from "~/lib/paths";
+import { paths } from "@/lib/paths";
 
 export const PinnedPost = (data: ForumPost) => {
   return (

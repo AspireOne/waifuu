@@ -12,13 +12,13 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { useMemo, useState } from "react";
-import Page from "~/components/Page";
+import Page from "@/components/Page";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Visibility } from "@prisma/client";
 import Router from "next/router";
-import { api } from "~/lib/api";
-import { paths } from "~/lib/paths";
-import { FileUploadRaw } from "~/components/ui/FileUploadRaw";
+import { api } from "@/lib/api";
+import { paths } from "@/lib/paths";
+import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
 
 type CreateInput = {
   title: string;
