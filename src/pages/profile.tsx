@@ -94,22 +94,26 @@ export default function Profile() {
           style={{ display: "none" }}
           accept="image/*"
         />*/}
-        <UsernameInput
-          register={register}
-          isInvalid={!!errors.username}
-          disabled={!user}
-          errorMessage={errors.username?.message as string}
-          value={username}
-          isDirty={!!dirtyFields.username}
-        />
-        <Input
-          label={"Name"}
-          placeholder={"John Doe"}
-          {...register("name")}
-          isInvalid={!!errors.name}
-          disabled={!user}
-          errorMessage={errors.name?.message as string}
-        />
+
+        <div className={"flex flex-row gap-4"}>
+          <UsernameInput
+            register={register}
+            isInvalid={!!errors.username}
+            disabled={!user}
+            errorMessage={errors.username?.message as string}
+            value={username}
+            isDirty={!!dirtyFields.username}
+          />
+          <Input
+            label={"Name"}
+            placeholder={"John Doe"}
+            {...register("name")}
+            isInvalid={!!errors.name}
+            disabled={!user}
+            errorMessage={errors.name?.message as string}
+          />
+        </div>
+
         <Input
           label={"Email"}
           placeholder={"john.doe@gmail.com"}
@@ -185,7 +189,7 @@ function UsernameInput(props: {
   }
 
   return (
-    <>
+    <div className={"flex flex-col gap-2 w-full"}>
       <Input
         label={"Username"}
         placeholder={"Username"}
@@ -216,6 +220,6 @@ function UsernameInput(props: {
         {usernameAvailable === false && "Not available"}
         {usernameAvailable === true && "Available"}
       </Button>
-    </>
+    </div>
   );
 }
