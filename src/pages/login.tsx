@@ -7,7 +7,6 @@ import { api } from "@/lib/api";
 import { useRouter } from "next/router";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { toast } from "react-toastify";
-import { paths } from "@/lib/paths";
 import { useSession } from "@/hooks/useSession";
 import { useEffect } from "react";
 import {

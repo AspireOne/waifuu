@@ -1,4 +1,4 @@
-import { applicationDefault, initializeApp } from "firebase-admin/app";
+import { initializeApp } from "firebase-admin/app";
 import admin from "firebase-admin";
 import { env } from "@/server/env";
 

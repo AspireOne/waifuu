@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BotChatRole, BotMode, Mood } from "@prisma/client";
+import { BotChatRole, Mood } from "@prisma/client";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 

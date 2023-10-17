@@ -4,7 +4,6 @@
  */
 
 import next_transpile_modules from "next-transpile-modules";
-import {Capacitor} from "@capacitor/core";
 
 /** @type {import("next").NextConfig} */
 const config = {

@@ -1,5 +1,5 @@
 import Page from "@/components/Page";
-import { ZodSchema, z, isDirty } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, UseFormRegisterReturn } from "react-hook-form";
 import { Avatar, Button, Input, Textarea } from "@nextui-org/react";
@@ -9,7 +9,6 @@ import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import updateSelfSchema from "@/server/types/updateSelfSchema";
-import { User } from "@prisma/client";
 
 export default function Profile() {
   const { user, refetch } = useSession();

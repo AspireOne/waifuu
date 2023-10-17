@@ -3,7 +3,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { z, ZodSchema } from "zod";
+import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import updateSelfSchema from "@/server/types/updateSelfSchema";
 

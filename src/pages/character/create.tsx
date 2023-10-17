@@ -11,7 +11,7 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Page from "@/components/Page";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Visibility } from "@prisma/client";

@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Chip, Image } from "@nextui-org/react";
+import { Card, CardBody, Chip, Image } from "@nextui-org/react";
 import { FaEye, FaHeart } from "react-icons/fa";
 import { LargeText } from "../ui/LargeText";
 import Link from "next/link";

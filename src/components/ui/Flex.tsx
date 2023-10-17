@@ -1,3 +1,5 @@
+import React from "react";
+
 type FlexProps = {
   orientation: "row" | "col";
   gap?: string;

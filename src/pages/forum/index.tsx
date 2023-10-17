@@ -1,4 +1,4 @@
-import { Button, toggle } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { CreateForumPostModal } from "@/components/forum/CreateForumPostModal";

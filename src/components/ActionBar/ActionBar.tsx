@@ -1,12 +1,11 @@
 import { useRouter } from "next/router";
 import { IconType } from "react-icons";
-import { AiFillHome, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { paths } from "@/lib/paths";
 import { twMerge } from "tailwind-merge";
 import { Button } from "@nextui-org/react";
 import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
-import { BiHomeAlt2 } from "react-icons/bi";
 import { IoChatbubbles, IoChatbubblesOutline } from "react-icons/io5";
 import { normalizePath } from "@/utils/utils";
 // import svg assets/icons/history.svg

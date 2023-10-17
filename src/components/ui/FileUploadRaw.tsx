@@ -1,6 +1,5 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { apiPostImage } from "@/services/apiImages";
-import { AxiosResponse } from "axios";
 
 type FileUploadRawProps = {
   onUpload: (id: string) => void;

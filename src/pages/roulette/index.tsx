@@ -1,6 +1,6 @@
 import Page from "@/components/Page";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
-import { Button, Switch } from "@nextui-org/react";
+import { Card, CardBody, CardFooter } from "@nextui-org/card";
+import { Button } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { paths } from "@/lib/paths";

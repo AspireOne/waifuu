@@ -1,4 +1,5 @@
 import { apiBase } from "@/lib/api";
+import React from "react";
 
 /**
  * Generates a random UUID (Universally Unique Identifier).

@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { api } from "@/lib/api";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FileUploadRaw } from "../ui/FileUploadRaw";
 
 type CreateForumPostModalProps = {

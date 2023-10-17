@@ -1,3 +1,5 @@
+import React from "react";
+
 type LargeTextProps = {
   content: string;
   maxLength: number;
