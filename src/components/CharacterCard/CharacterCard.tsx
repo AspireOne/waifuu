@@ -1,9 +1,10 @@
 import { Card, CardBody, Chip, Image } from "@nextui-org/react";
 import { Bot, BotMode } from "@prisma/client";
 import Link from "next/link";
-import paths, { makeDownloadPath } from "~/utils/paths";
-import { LargeText } from "../shared/LargeText";
+import { paths } from "~/lib/paths";
+import { LargeText } from "../ui/LargeText";
 import { MdVerified } from "react-icons/md";
+import { makeDownloadPath } from "~/utils/utils";
 
 type CharacterCardProps = {
   bot: Bot;
@@ -11,7 +12,11 @@ type CharacterCardProps = {
   chatType?: BotMode;
 };
 
-const CharacterCard = ({ bot, chatId, chatType }: CharacterCardProps) => {
+export const CharacterCard = ({
+  bot,
+  chatId,
+  chatType,
+}: CharacterCardProps) => {
   return (
     <Card className="min-w-[160px]">
       <Link href={paths.botChat(chatId ?? "", bot.id)}>
@@ -49,5 +54,3 @@ const CharacterCard = ({ bot, chatId, chatType }: CharacterCardProps) => {
     </Card>
   );
 };
-
-export { CharacterCard };

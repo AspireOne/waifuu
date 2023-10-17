@@ -1,16 +1,16 @@
-import { ChatMessage } from "~/components/chat/ChatMessage";
+import { ChatMessage } from "~/components/bot-chat/ChatMessage";
 import { Image, ScrollShadow } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import useBotChat, { Message } from "~/hooks/useBotChat";
 import Page from "~/components/Page";
 import { useBot } from "~/hooks/useBot";
-import ChatGradientOverlay from "~/components/chat/ChatGradientOverlay";
+import ChatGradientOverlay from "~/components/bot-chat/ChatGradientOverlay";
 import { Bot } from "@prisma/client";
-import ChatInput from "~/components/chat/ChatInput";
-import { ChatTypingIndicator } from "~/components/chat/ChatTypingIndicator";
+import ChatInput from "~/components/bot-chat/ChatInput";
+import { ChatTypingIndicator } from "~/components/bot-chat/ChatTypingIndicator";
 import React, { useEffect, useMemo, useState } from "react";
-import { makeDownloadPath } from "~/utils/paths";
-import useSession from "~/hooks/useSession";
+import { useSession } from "~/hooks/useSession";
+import { makeDownloadPath } from "~/utils/utils";
 
 const BotChat = () => {
   const router = useRouter();

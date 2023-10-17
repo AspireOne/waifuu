@@ -9,8 +9,8 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { api } from "~/utils/api";
-import useSession from "~/hooks/useSession";
+import { api } from "~/lib/api";
+import { useSession } from "~/hooks/useSession";
 
 type UserSettingsDialogProps = {
   isOpen: boolean;
@@ -22,7 +22,7 @@ type SubmitData = {
   about?: string;
 };
 
-export const UserSettingsDialog = ({
+export const UserDropdownSettingsDialog = ({
   isOpen,
   onOpenChange,
 }: UserSettingsDialogProps) => {

@@ -1,7 +1,7 @@
 import { Chip } from "@nextui-org/react";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 
 type TagSelectProps = {
   onChange: (value: string[]) => void;

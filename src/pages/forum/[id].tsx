@@ -10,12 +10,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaHeart, FaReply } from "react-icons/fa";
-import { ForumPostComment } from "~/components/Forum/ForumPostComment";
+import { ForumPostComment } from "~/components/forum/ForumPostComment";
 import Page from "~/components/Page";
-import { Flex } from "~/components/shared/Flex";
-import { api } from "~/utils/api";
+import { Flex } from "~/components/ui/Flex";
+import { api } from "~/lib/api";
 import moment from "moment";
-import { makeDownloadPath } from "~/utils/paths";
+import { makeDownloadPath } from "~/utils/utils";
 
 type CreateFormPostForm = {
   content: string;

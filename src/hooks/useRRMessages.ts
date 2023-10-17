@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import { PresenceChannel } from "pusher-js";
 import PresenceChannelMember from "~/server/types/presenceChannelMember";
 

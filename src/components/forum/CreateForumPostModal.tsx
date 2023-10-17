@@ -9,9 +9,9 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import { useMemo, useState } from "react";
-import { FileUploadRaw } from "../shared/FileUploadRaw";
+import { FileUploadRaw } from "../ui/FileUploadRaw";
 
 type CreateForumPostModalProps = {
   isOpen: boolean;

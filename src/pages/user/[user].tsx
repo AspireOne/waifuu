@@ -3,8 +3,8 @@
 import Page from "~/components/Page";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { api } from "~/utils/api";
-import paths from "~/utils/paths";
+import { api } from "~/lib/api";
+import { paths } from "~/lib/paths";
 import Header from "~/components/profile-page/Header";
 import InfoCards from "~/components/profile-page/InfoCards";
 

@@ -3,16 +3,15 @@ import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
 import Page from "~/components/Page";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import { useRouter } from "next/router";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { toast } from "react-toastify";
-import paths from "~/utils/paths";
-import useSession from "~/hooks/useSession";
+import { paths } from "~/lib/paths";
+import { useSession } from "~/hooks/useSession";
 import { useEffect } from "react";
 import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import getOrInitFirebaseAuth from "~/lib/firebase/getOrInitFirebaseAuth";
-import { Capacitor } from "@capacitor/core";
+import { getOrInitFirebaseAuth } from "~/lib/firebase/getOrInitFirebaseAuth";
 
 function getCsrfToken() {
   return document.cookie

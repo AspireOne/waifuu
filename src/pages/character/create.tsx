@@ -16,9 +16,9 @@ import Page from "~/components/Page";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Visibility } from "@prisma/client";
 import Router from "next/router";
-import { api } from "~/utils/api";
-import paths from "~/utils/paths";
-import { FileUploadRaw } from "~/components/shared/FileUploadRaw";
+import { api } from "~/lib/api";
+import { paths } from "~/lib/paths";
+import { FileUploadRaw } from "~/components/ui/FileUploadRaw";
 
 type CreateInput = {
   title: string;

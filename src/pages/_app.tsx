@@ -1,6 +1,6 @@
 import { type AppType } from "next/app";
 import { NextUIProvider } from "@nextui-org/react";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -11,11 +11,9 @@ import "filepond/dist/filepond.min.css";
 import "~/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
-import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import firebaseConfig from "~/lib/firebase/firebaseConfig";
-import getOrInitFirebaseAuth from "~/lib/firebase/getOrInitFirebaseAuth";
-import getOrInitFirebaseApp from "~/lib/firebase/getOrInitFirebaseApp";
+import { getOrInitFirebaseAuth } from "~/lib/firebase/getOrInitFirebaseAuth";
+import { getOrInitFirebaseApp } from "~/lib/firebase/getOrInitFirebaseApp";
 import { SessionProvider } from "~/contexts/SessionProvider";
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {

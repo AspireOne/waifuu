@@ -1,4 +1,4 @@
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import React, { useState } from "react";
 import { ChannelData } from "~/server/api/routers/RRChat";
 import { toast } from "react-toastify";

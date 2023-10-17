@@ -1,4 +1,4 @@
-import { Capacitor } from "@capacitor/core";
+import { apiBase } from "~/lib/api";
 
 /**
  * Generates a random UUID (Universally Unique Identifier).
@@ -48,4 +48,26 @@ export function applyMarkdown(text: string): React.ReactNode[] {
   }
 
   return result;
+}
+
+export function addQueryParams(
+  path: string,
+  ...params: [key: string, value: string][]
+) {
+  const url = new URL(path, window.location.origin);
+
+  params.forEach((param) => {
+    url.searchParams.append(param[0], param[1]);
+  });
+
+  return url.pathname + url.search;
+}
+
+export function normalizePath(path: string, keepSlash: boolean = true): string {
+  if (keepSlash) return path.endsWith("/") ? path : path + "/";
+  else return path.endsWith("/") ? path.slice(0, -1) : path;
+}
+
+export function makeDownloadPath(id: string): string {
+  return apiBase(`/api/images/download?id=${id}`);
 }

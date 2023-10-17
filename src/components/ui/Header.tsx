@@ -1,9 +1,8 @@
 import { PropsWithChildren } from "react";
 import { Button } from "@nextui-org/react";
 import { BiArrowBack } from "react-icons/bi";
-import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
-import { UserDropdown } from "./User/UserDropdown";
+import { UserDropdown } from "~/components/UserDropdown";
 
 /**
  * Unifies page headers. Contains a back button and page title.

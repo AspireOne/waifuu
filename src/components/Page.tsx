@@ -2,12 +2,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { PropsWithChildren, useEffect } from "react";
 import PageHead from "~/components/PageHead";
 import { twMerge } from "tailwind-merge";
-import SignInModal from "~/components/SignInModal";
 import { BottomNavbar } from "~/components/BottomNavbar";
-import useSession from "~/hooks/useSession";
+import { useSession } from "~/hooks/useSession";
 import { useRouter } from "next/router";
-import paths, { normalizePath } from "~/utils/paths";
-import Header from "~/components/Header";
+import { paths } from "~/lib/paths";
+import Header from "~/components/ui/Header";
+import { normalizePath } from "~/utils/utils";
 
 function Page(
   props: PropsWithChildren<{

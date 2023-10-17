@@ -6,9 +6,9 @@ import {
   PropsWithChildren,
 } from "react";
 import "firebase/compat/auth";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import { User } from "@prisma/client";
-import getOrInitFirebaseAuth from "~/lib/firebase/getOrInitFirebaseAuth";
+import { getOrInitFirebaseAuth } from "~/lib/firebase/getOrInitFirebaseAuth";
 
 type SessionUser = User;
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";

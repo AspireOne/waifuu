@@ -10,7 +10,7 @@ import { env } from "~/server/env";
 import { TRPCError } from "@trpc/server";
 import { BotMode, Mood, Prisma } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
-import { prompts } from "~/utils/prompt";
+import { prompts } from "~/server/utils/prompt";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
@@ -67,7 +67,7 @@ export const botsRouter = createTRPCRouter({
       return {
         bots,
         hasNextPage,
-      }
+      };
     }),
 
   getBot: publicProcedure

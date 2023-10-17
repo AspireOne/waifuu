@@ -10,4 +10,4 @@ const options: FirebaseOptions = {
   measurementId: "G-N3WCYQ93GT",
 };
 
-export default options;
+export { options };

@@ -7,8 +7,8 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@nextui-org/react";
-import { UserSettingsDialog } from "./UserSettingsDialog";
-import useSession from "~/hooks/useSession";
+import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
+import { useSession } from "~/hooks/useSession";
 import { twMerge } from "tailwind-merge";
 
 export const UserDropdown = (props: { className?: string }) => {
@@ -49,7 +49,7 @@ export const UserDropdown = (props: { className?: string }) => {
         </DropdownMenu>
       </Dropdown>
 
-      <UserSettingsDialog
+      <UserDropdownSettingsDialog
         isOpen={isSettingsOpen}
         onOpenChange={toggleSettingsOpen}
       />

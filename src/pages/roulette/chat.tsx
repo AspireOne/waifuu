@@ -7,10 +7,10 @@ import useRRChannelConnector, {
 } from "~/hooks/useRRChannelConnector";
 import { Spinner } from "@nextui-org/spinner";
 import useRRMessages from "~/hooks/useRRMessages";
-import RRInput from "~/components/character-roulette/Input";
-import RRMessages from "~/components/character-roulette/Messages";
-import RRUserHeader from "~/components/character-roulette/UserHeader";
-import paths from "~/utils/paths";
+import { RRInput } from "~/components/roleplay-roulette/RRInput";
+import RRMessages from "~/components/roleplay-roulette/RRMessages";
+import RRUserHeader from "~/components/roleplay-roulette/RRUserHeader";
+import { paths } from "~/lib/paths";
 import { twMerge } from "tailwind-merge";
 
 // "RR". Stands for Roleplay Roulette.

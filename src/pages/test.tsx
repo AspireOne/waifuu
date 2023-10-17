@@ -1,6 +1,6 @@
 import Page from "~/components/Page";
-import { api } from "~/utils/api";
-import useSession from "~/hooks/useSession";
+import { api } from "~/lib/api";
+import { useSession } from "~/hooks/useSession";
 import Link from "next/link";
 
 export default function Test() {

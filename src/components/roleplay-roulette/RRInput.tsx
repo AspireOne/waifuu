@@ -13,7 +13,7 @@ import { LuRefreshCcw } from "react-icons/lu";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { twMerge } from "tailwind-merge";
 
-export default function RRInput(props: {
+export const RRInput = (props: {
   isFirstChat: boolean;
   inChat: boolean;
   onSend: (message: string) => void;
@@ -22,7 +22,7 @@ export default function RRInput(props: {
   isSearching: boolean;
   placeholder?: string;
   className?: string;
-}) {
+}) => {
   const [input, setInput] = React.useState<string>("");
   const [confirming, setConfirming] = React.useState<boolean>(false);
 
@@ -91,7 +91,7 @@ export default function RRInput(props: {
       </div>
     </div>
   );
-}
+};
 
 function ConfirmCloseModal(props: {
   isOpen: boolean;

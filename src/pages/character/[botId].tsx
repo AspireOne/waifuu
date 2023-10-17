@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { api } from "~/utils/api";
+import { api } from "~/lib/api";
 import React, { useEffect } from "react";
-import paths, { makeDownloadPath } from "~/utils/paths";
+import { paths } from "~/lib/paths";
 import Page from "~/components/Page";
 import { BotMode } from "@prisma/client";
 import Skeleton from "react-loading-skeleton";
@@ -14,8 +14,9 @@ import {
   Spacer,
   Textarea,
 } from "@nextui-org/react";
-import { CustomRadio } from "~/components/shared/CustomRadio";
-import useSession from "~/hooks/useSession";
+import { CustomRadio } from "~/components/ui/CustomRadio";
+import { useSession } from "~/hooks/useSession";
+import { makeDownloadPath } from "~/utils/utils";
 
 // Main page of the bot for creating new chats.
 const ChatMainMenu = () => {
