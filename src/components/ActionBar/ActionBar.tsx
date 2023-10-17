@@ -48,7 +48,12 @@ const buttons: ButtonProp[] = [
   },
 ];
 
-export const BottomNavbar = (props: {}) => {
+/**
+ * The action bar on the bottom, which allows to switch pages.
+ * @param props
+ * @constructor
+ */
+export const ActionBar = (props: {}) => {
   const [activeButtId, setActiveButtId] = useState<string | null>(null);
   const router = useRouter();
 
@@ -86,7 +91,7 @@ export const BottomNavbar = (props: {}) => {
       <div className={"flex flex-row justify-between items-center"}>
         {buttons.map((button) => {
           return (
-            <NavButton
+            <ActionButton
               key={button.title}
               {...button}
               isActive={button.title === activeButtId}
@@ -98,7 +103,7 @@ export const BottomNavbar = (props: {}) => {
   );
 };
 
-function NavButton(props: ButtonProp & { isActive: boolean }) {
+function ActionButton(props: ButtonProp & { isActive: boolean }) {
   const router = useRouter();
 
   function handleClick() {

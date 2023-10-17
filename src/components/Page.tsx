@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { PropsWithChildren, useEffect } from "react";
 import PageHead from "~/components/PageHead";
 import { twMerge } from "tailwind-merge";
-import { BottomNavbar } from "~/components/BottomNavbar";
+import { ActionBar } from "~/components/ActionBar";
 import { useSession } from "~/hooks/useSession";
 import { useRouter } from "next/router";
 import { paths } from "~/lib/paths";
@@ -96,7 +96,7 @@ function Page(
         {props.children}
       </PageWrapper>
 
-      {showActionBar && <BottomNavbar />}
+      {showActionBar && <ActionBar />}
     </div>
   );
 }
