@@ -6,14 +6,14 @@ export default function Title(props: {
   children: React.ReactNode;
   /** @default "h2" */
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | any;
-  /** @default "md" */
+  /** @default "lg" */
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
   /** @default false */
   bold?: boolean;
   icon?: IconType;
 }) {
-  const size = props.size ?? "md";
+  const size = props.size ?? "lg";
   const As = props.as ?? "h2";
 
   let iconSize;

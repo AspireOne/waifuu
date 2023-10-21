@@ -120,7 +120,7 @@ const Discover = () => {
             <p className="text-2xl">👋</p>
 
             <div>
-              <Title as={"p"} bold>
+              <Title size={"md"} as={"p"} bold>
                 Hi, {user?.name}
               </Title>
               <p className={"text-foreground-700"}>
@@ -134,7 +134,7 @@ const Discover = () => {
       <div className="w-full">
         <div className="mx-auto mt-20">
           <div className="mb-5 mt-10">
-            <Title size={"lg"} bold icon={FaCompass}>
+            <Title bold icon={FaCompass}>
               Active chats
             </Title>
 
@@ -159,7 +159,7 @@ const Discover = () => {
 
           <form>
             <div className="mt-10 flex flex-row align-center items-center gap-4">
-              <Title icon={BiTrendingUp} bold size={"lg"}>
+              <Title icon={BiTrendingUp} bold>
                 Popular Characters
               </Title>
 
@@ -228,7 +228,7 @@ const Discover = () => {
         </div>
 
         <div className="mt-5">
-          <Title bold size={"lg"} icon={MdForum}>
+          <Title bold icon={MdForum}>
             Popular forum posts
           </Title>
 
