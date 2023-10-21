@@ -1,5 +1,5 @@
 /*eslint-disable*/ module.exports = {
   messages: JSON.parse(
-    '{"WR7Pwy":"I am the best","UiBU8B":"Profile updated!"}',
+    '{"WR7Pwy":"Jsem nejlepší","UiBU8B":"Profil aktualizován!"}',
   ),
 };

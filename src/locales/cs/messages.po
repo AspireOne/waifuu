@@ -15,8 +15,8 @@ msgstr ""
 
 #: src/pages/_app.tsx:72
 #~ msgid "I am the best"
-#~ msgstr ""
+#~ msgstr "Jsem nejlepší"
 
 #: src/pages/profile.tsx:21
 msgid "Profile updated!"
-msgstr ""
+msgstr "Profil aktualizován!"

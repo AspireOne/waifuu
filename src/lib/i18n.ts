@@ -8,14 +8,11 @@ type Locales = {
 
 export const locales: Locales = {
   en: "English",
-  cs: "Arabic",
+  cs: "Czech",
 };
 
-export async function dynamicActivate(locale?: LocaleCode) {
-  const { messages } = await import(`./locales/${locale}.po`);
-
-  locale ??= "en";
-
+export async function dynamicActivate(locale: LocaleCode = "en") {
+  const { messages } = await import(`../locales/${locale}/messages`);
   i18n.load(locale, messages);
   i18n.activate(locale);
 }
