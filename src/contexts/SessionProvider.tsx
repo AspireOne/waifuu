@@ -30,16 +30,18 @@ const SessionContext = createContext<SessionState>({
 
 export const SessionProvider = (props: PropsWithChildren<{}>) => {
   const [user, setUser] = useState<SessionUser | null | undefined>(undefined);
-  const [status, setStatus] = useState<SessionStatus>("loading");
-  const [firebaseAuthResolved, setFirebaseAuthResolved] = useState(false);
+  // Firebase status. This is separate from our backend user status.
+  const [fbStatus, setFbStatus] = useState<SessionStatus>("loading");
 
   const userQuery = api.users.getSelf.useQuery(
     { includeBots: false },
     {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
-      refetchInterval: 1000 * 60 * 5,
-      enabled: firebaseAuthResolved,
+      refetchOnReconnect: true,
+      refetchInterval: 1000 * 60 * 5, // 5 minutes
+      enabled: fbStatus === "authenticated",
+      retry: false,
     },
   );
 
@@ -50,11 +52,10 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
     const auth = getOrInitFirebaseAuth();
 
     const now = performance.now();
-    auth.onAuthStateChanged((user) => {
-      const status = user ? "authenticated" : "unauthenticated";
-      setStatus(status);
+    auth.onAuthStateChanged((fbUser) => {
+      const status = fbUser ? "authenticated" : "unauthenticated";
       if (status === "unauthenticated") setUser(null);
-      setFirebaseAuthResolved(true);
+      setFbStatus(status);
 
       const authEnd = performance.now();
       if (!initialTimeMeasured) {
@@ -87,13 +88,13 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
 
     if (!userQuery.data && !userQuery.isLoading) {
       setUser(null);
-      setStatus("unauthenticated");
+      setFbStatus("unauthenticated");
     }
   }, [userQuery.data]);
 
   return (
     <SessionContext.Provider
-      value={{ user, status, refetch: userQuery.refetch }}
+      value={{ user, status: fbStatus, refetch: userQuery.refetch }}
     >
       {props.children}
     </SessionContext.Provider>
