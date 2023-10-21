@@ -8,7 +8,7 @@ msgstr ""
 "Language: cs\n"
 "Project-Id-Version: companion-red\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-21 17:50\n"
+"PO-Revision-Date: 2023-10-21 18:19\n"
 "Last-Translator: \n"
 "Language-Team: Czech\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
@@ -16,9 +16,13 @@ msgstr ""
 "X-Crowdin-Project-ID: 622192\n"
 "X-Crowdin-Language: cs\n"
 "X-Crowdin-File: /main/src/locales/en/messages.po\n"
-"X-Crowdin-File-ID: 12\n"
+"X-Crowdin-File-ID: 22\n"
 
 #: src/pages/_app.tsx:72
-msgid "I am the best"
+#~ msgid "I am the best"
+#~ msgstr "I am the best"
+
+#: src/pages/profile.tsx:21
+msgid "Profile updated!"
 msgstr ""
 
