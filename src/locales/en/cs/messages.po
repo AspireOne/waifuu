@@ -8,7 +8,7 @@ msgstr ""
 "Language: cs\n"
 "Project-Id-Version: companion-red\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-21 18:19\n"
+"PO-Revision-Date: 2023-10-21 18:29\n"
 "Last-Translator: \n"
 "Language-Team: Czech\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
@@ -24,5 +24,5 @@ msgstr ""
 
 #: src/pages/profile.tsx:21
 msgid "Profile updated!"
-msgstr ""
+msgstr "Profil aktualizován!"
 
