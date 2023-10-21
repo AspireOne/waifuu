@@ -12,7 +12,7 @@ Sentry.init({
 
   // https://docs.sentry.io/platforms/javascript/guides/capacitor/
   release: "companion@1.0.0", // TODO: Put this in an env variable or smthng...
-  dist: "1",
+  //dist: "1",
 
 
   // This sets the sample rate to be 10%. You may want this to be 100% while

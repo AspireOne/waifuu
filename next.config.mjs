@@ -4,12 +4,17 @@ import {withSentryConfig} from "@sentry/nextjs";
  * for Docker builds.
  */
 
-import next_transpile_modules from "next-transpile-modules";
+//import next_transpile_modules from "next-transpile-modules";
 
 /** @type {import("next").NextConfig} */
 const config = {
     reactStrictMode: true,
-    async headers() {
+    sentry: {
+        // Disable auto instrumentation because it throws an error in trpc api handler export for some reason.
+        // The API routes can be instrumented/wrapped manually.
+        autoInstrumentServerFunctions: false,
+    },
+        async headers() {
         return [{
             // matching all API routes
             source: "/api/:path*",
@@ -29,54 +34,44 @@ const config = {
         unoptimized: true,
     },
 
-/*    // !TODO: Remove this!!!
-    webpack(webpackConfig) {
-        return {
-            ...webpackConfig,
-            optimization: {
-                minimize: false
-            }
-        };
-    }*/
-
-    /**
-     * If you are using `appDir` then you must comment the below `i18n` config out.
-     *
-     * @see https://github.com/vercel/next.js/issues/41980
-     */
-    /*i18n: {
-      locales: ["en"],
-      defaultLocale: "en",
-    },*/
+    /*    // !TODO: Remove this!!!
+        webpack(webpackConfig) {
+            return {
+                ...webpackConfig,
+                optimization: {
+                    minimize: false
+                }
+            };
+        }*/
 };
 
 // '@ionic/react', '@ionic/core', '@stencil/core',
-const withTM = next_transpile_modules([]);
+//const withTM = next_transpile_modules([]);
 
 export default withSentryConfig(config, {
 // For all available options, see:
 // https://github.com/getsentry/sentry-webpack-plugin#options
 
 // Suppresses source map uploading logs during build
-silent: true,
-org: "companion-ns",
-project: "javascript-nextjs",
+    silent: true,
+    org: "companion-ns",
+    project: "javascript-nextjs",
 }, {
 // For all available options, see:
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
 // Upload a larger set of source maps for prettier stack traces (increases build time)
-widenClientFileUpload: true,
+    widenClientFileUpload: true,
 
 // Transpiles SDK to be compatible with IE11 (increases bundle size)
-transpileClientSDK: false,
+    transpileClientSDK: false,
 
 // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-tunnelRoute: "/monitoring",
+// tunnelRoute: "/monitoring",
 
 // Hides source maps from generated client bundles
-hideSourceMaps: true,
+    hideSourceMaps: true,
 
 // Automatically tree-shake Sentry logger statements to reduce bundle size
-disableLogger: true,
+    disableLogger: true,
 });

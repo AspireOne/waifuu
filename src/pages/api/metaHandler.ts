@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "@prisma/client";
 import { retrieveUser } from "@/pages/api/utils";
+import { wrapApiHandlerWithSentry } from "@sentry/nextjs";
 
 export type MetaHandlerContext = {
   user: User | null;
@@ -52,7 +53,8 @@ function metaHandler<T extends MetaHandlerContext>(
       return;
     }
 
-    return handler(req, res, {
+    // Make the parametrizedRoute empty - it seems to be automatically added from the GET request.
+    return wrapApiHandlerWithSentry(handler, "")(req, res, {
       user: user,
     } as T);
   };
