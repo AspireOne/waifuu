@@ -13,10 +13,146 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/pages/discover.tsx:139
+msgid "Active chats"
+msgstr "Active chats"
+
+#: src/pages/profile.tsx:148
+msgid "Addressed As"
+msgstr "Addressed As"
+
+#: src/pages/profile.tsx:140
+msgid "Bio"
+msgstr "Bio"
+
+#: src/pages/contact.tsx:11
+#: src/pages/contact.tsx:16
+msgid "Contact us"
+msgstr "Contact us"
+
+#: src/components/ActionBar/ActionBar.tsx:26
+msgid "Discover"
+msgstr "Discover"
+
+#: src/pages/discover.tsx:108
+msgid "Discover Characters"
+msgstr "Discover Characters"
+
+#: src/pages/profile.tsx:132
+msgid "Email"
+msgstr "Email"
+
+#: src/pages/login.tsx:47
+msgid "Error signing in with Google!"
+msgstr "Error signing in with Google!"
+
+#: src/pages/contact.tsx:19
+msgid "Got a problem? A question? Or just want to say hi? We are here for you."
+msgstr "Got a problem? A question? Or just want to say hi? We are here for you."
+
+#: src/pages/discover.tsx:125
+msgid "Hi, {0}"
+msgstr "Hi, {0}"
+
+#: src/pages/home.tsx:7
+msgid "Home"
+msgstr "Home"
+
+#: src/pages/profile.tsx:149
+msgid "How should the character address you?"
+msgstr "How should the character address you?"
+
 #: src/pages/_app.tsx:72
 #~ msgid "I am the best"
 #~ msgstr "I am the best"
 
-#: src/pages/profile.tsx:21
+#: src/pages/profile.tsx:164
+msgid "Language"
+msgstr "Language"
+
+#: src/pages/profile.tsx:89
+msgid "Language successfully changed"
+msgstr "Language successfully changed"
+
+#: src/pages/discover.tsx:128
+msgid "Let's explore some new characters."
+msgstr "Let's explore some new characters."
+
+#: src/pages/discover.tsx:229
+msgid "Load more"
+msgstr "Load more"
+
+#: src/pages/profile.tsx:122
+msgid "Name"
+msgstr "Name"
+
+#: src/pages/discover.tsx:211
+msgid "No characters found. Try changing your search term."
+msgstr "No characters found. Try changing your search term."
+
+#: src/pages/discover.tsx:193
+msgid "Only display official characters"
+msgstr "Only display official characters"
+
+#: src/pages/discover.tsx:237
+msgid "Popular forum posts"
+msgstr "Popular forum posts"
+
+#: src/pages/discover.tsx:166
+msgid "Popular Characters"
+msgstr "Popular Characters"
+
+#: src/pages/privacy-policy.tsx:9
+#: src/pages/privacy-policy.tsx:11
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+#: src/components/ActionBar/ActionBar.tsx:38
+#: src/pages/profile.tsx:93
+msgid "Profile"
+msgstr "Profile"
+
+#: src/pages/profile.tsx:29
 msgid "Profile updated!"
 msgstr "Profile updated!"
+
+#: src/components/ActionBar/ActionBar.tsx:32
+msgid "Roulette"
+msgstr "Roulette"
+
+#: src/pages/profile.tsx:178
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: src/pages/login.tsx:146
+msgid "Sign in with google"
+msgstr "Sign in with google"
+
+#: src/pages/profile.tsx:156
+msgid "Tell us about yourself"
+msgstr "Tell us about yourself"
+
+#: src/pages/login.tsx:128
+msgid "The companion that is always by your side."
+msgstr "The companion that is always by your side."
+
+#: src/pages/profile.tsx:213
+#: src/pages/profile.tsx:214
+msgid "Username"
+msgstr "Username"
+
+#: src/server/types/updateSelfSchema.ts:7
+msgid "Username is required."
+msgstr "Username is required."
+
+#: src/pages/profile.tsx:141
+msgid "What is your special skill?"
+msgstr "What is your special skill?"
+
+#: src/pages/profile.tsx:157
+msgid "What should your characters know about you?"
+msgstr "What should your characters know about you?"
+
+#: src/pages/discover.tsx:144
+msgid "You don't have any active chats yet. Start one now!"
+msgstr "You don't have any active chats yet. Start one now!"

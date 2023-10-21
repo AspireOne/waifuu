@@ -17,8 +17,9 @@ import { getOrInitFirebaseApp } from "@/lib/firebase/getOrInitFirebaseApp";
 import { SessionProvider } from "@/contexts/SessionProvider";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { dynamicActivate } from "@lib/i18n";
-import { T } from "@lib/T";
+import { initGlobalLocale } from "@lib/i18n";
+
+initGlobalLocale();
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.
@@ -31,10 +32,6 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
     }
 
     init();
-  }, []);
-
-  useEffect(() => {
-    dynamicActivate();
   }, []);
 
   return (

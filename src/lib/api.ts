@@ -10,6 +10,8 @@ import { Constants } from "@/lib/constants";
 import { observable } from "@trpc/server/observable";
 import { toast } from "react-toastify";
 import { showErrorToast } from "@utils/utils";
+import { Preferences } from "@capacitor/preferences";
+import { getLocale } from "@lib/i18n";
 
 export const customErrorLink: TRPCLink<AppRouter> = () => {
   return ({ next, op }) => {
@@ -81,6 +83,7 @@ export const api = createTRPCNext<AppRouter>({
           url: apiBase("/api/trpc"),
           async fetch(url, options) {
             const idToken = await getIdToken();
+            const locale = getLocale();
 
             return fetch(url, {
               ...options,
@@ -90,6 +93,7 @@ export const api = createTRPCNext<AppRouter>({
               headers: {
                 ...options?.headers,
                 Authorization: idToken ? `Bearer ${idToken}` : "",
+                locale: locale,
               },
             });
           },

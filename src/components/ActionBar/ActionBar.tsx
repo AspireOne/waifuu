@@ -8,6 +8,7 @@ import { Button } from "@nextui-org/react";
 import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
 import { IoChatbubbles, IoChatbubblesOutline } from "react-icons/io5";
 import { normalizePath } from "@/utils/utils";
+import { t } from "@lingui/macro";
 // import svg assets/icons/history.svg
 
 // Mapping of paths and their icons.
@@ -22,19 +23,19 @@ type ButtonProp = {
 const buttons: ButtonProp[] = [
   {
     path: paths.discover,
-    title: "Discover",
+    title: t`Discover`,
     icon: RiSearch2Line,
     iconFilled: RiSearch2Fill,
   },
   {
     path: paths.RR,
-    title: "Roulette",
+    title: t`Roulette`,
     icon: IoChatbubblesOutline,
     iconFilled: IoChatbubbles,
   },
   {
     path: paths.profile,
-    title: "Profile",
+    title: t`Profile`,
     icon: AiOutlineUser,
     iconFilled: AiOutlineUser,
   },

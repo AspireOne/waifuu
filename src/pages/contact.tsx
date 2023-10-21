@@ -4,19 +4,22 @@ import { FiMail } from "react-icons/fi";
 import { ContactUsForm } from "@components/ContactUsForm";
 import Title from "@components/ui/Title";
 import { Card, CardBody } from "@nextui-org/card";
+import { t, Trans } from "@lingui/macro";
 
 export default (props: {}) => {
   return (
-    <Page title={"Contact us"} unprotected={true}>
+    <Page title={t`Contact us`} unprotected={true}>
       <div className="container mx-auto max-w-5xl sm:px-10 lg:px-0 mt-24 lg:mt-20">
         <div className="flex flex-col items-center lg:items-start lg:flex-row gap-20 justify-between sm:px-4">
           <div className="">
             <Title as={"h1"} className={"title-xl"}>
-              Contact us
+              <Trans>Contact us</Trans>
             </Title>
             <p className="text-xl mt-8">
-              Got a problem? A question? Or just want to say hi? We are here for
-              you.
+              <Trans>
+                Got a problem? A question? Or just want to say hi? We are here
+                for you.
+              </Trans>
             </p>
             <Socials className={"mt-8"} />
           </div>

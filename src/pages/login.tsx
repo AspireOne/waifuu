@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { toast } from "react-toastify";
 import { useSession } from "@/hooks/useSession";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   GoogleAuthProvider,
   signInWithCredential,
@@ -17,6 +17,7 @@ import {
 import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
 import { Constants } from "@/lib/constants";
 import { semanticPaths } from "@lib/paths";
+import { t, Trans } from "@lingui/macro";
 
 function getCsrfToken() {
   return document.cookie
@@ -43,7 +44,7 @@ async function signInUsingGoogleRaw() {
     return true;
   } catch (e) {
     console.error("Error signing in using Google!", e);
-    toast("Error signing in with Google!", { type: "error" });
+    toast(t`Error signing in with Google!`, { type: "error" });
     return false;
   }
 }
@@ -124,7 +125,7 @@ const Login = () => {
 
       <div className="fixed w-full max-w-[500px] left-[50%] top-15 z-30 translate-x-[-50%] p-7">
         <h1 className="text-4xl font-extrabold text-white">
-          The companion that is always by your side.
+          <Trans>The companion that is always by your side.</Trans>
         </h1>
 
         <Image
@@ -142,14 +143,14 @@ const Login = () => {
             startContent={<FcGoogle />}
             onClick={handleGoogleSignIn}
           >
-            Login with Google
+            <Trans>Sign in with google</Trans>
           </Button>
-          <Button size="lg" startContent={<AiFillFacebook />}>
+          {/*<Button size="lg" startContent={<AiFillFacebook />}>
             Login with Facebook
           </Button>
           <Button size="lg" startContent={<BsTwitter />}>
             Login with Twitter
-          </Button>
+          </Button>*/}
         </Card>
       </div>
     </Page>

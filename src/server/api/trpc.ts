@@ -30,6 +30,7 @@ interface CreateContextOptions {
   user: User | null;
   req?: NextApiRequest | null;
   res?: NextApiResponse | null;
+  locale?: string;
 }
 
 /**
@@ -47,6 +48,7 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
     user: opts.user,
     req: opts.req,
     res: opts.res,
+    locale: opts.locale,
     prisma,
   };
 };
@@ -60,7 +62,17 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
   const user = await retrieveUser(req);
-  return createInnerTRPCContext({ user, req, res });
+  /*const locale = req.headers["locale"] as string || "en";
+
+  const { messages } = await import(`../../locales/${locale}/messages`);
+  i18n.load(locale, messages);
+  i18n.activate(locale);*/
+
+  return createInnerTRPCContext({
+    user,
+    req,
+    res /*, locale: locale as LocaleCode*/,
+  });
 };
 
 /**

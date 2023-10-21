@@ -1,5 +1,5 @@
 /*eslint-disable*/ module.exports = {
   messages: JSON.parse(
-    '{"WR7Pwy":"I am the best","UiBU8B":"Profile updated!"}',
+    '{"8p9guu":"Active chats","06el8y":"Addressed As","E+oKCO":"Bio","Bhgd0l":"Contact us","Z5Bc0a":"Discover Characters","O3oNi5":"Email","SXLZXN":"Error signing in with Google!","dhvczf":"Got a problem? A question? Or just want to say hi? We are here for you.","ng2Unt":["Hi, ",["0"]],"i0qMbr":"Home","7reHkf":"How should the character address you?","WR7Pwy":"I am the best","v0TKXF":"Let\'s explore some new characters.","yQ2kGp":"Load more","6YtxFj":"Name","T0VjeF":"No characters found. Try changing your search term.","r4wqvc":"Only display official characters","sW0JGv":"Popular forum posts","TJeuIP":"Popular Characters","LcET2C":"Privacy Policy","vERlcd":"Profile","UiBU8B":"Profile updated!","IUwGEM":"Save Changes","wIYMza":"Sign in with google","H8aFPr":"Tell us about yourself","ocklXZ":"The companion that is always by your side.","7sNhEz":"Username","Gij6H9":"What is your special skill?","wr/CLC":"What should your characters know about you?","uuAKqH":"You don\'t have any active chats yet. Start one now!"}',
   ),
 };

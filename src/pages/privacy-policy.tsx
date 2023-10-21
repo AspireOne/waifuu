@@ -1,13 +1,14 @@
 import Page from "@components/Page";
 import React from "react";
 import Title from "@components/ui/Title";
+import { t } from "@lingui/macro";
 
 // TODO: Change this privacy policy with new data on release.
 export default (props: {}) => {
   return (
-    <Page title={"Privacy Policy"}>
+    <Page title={t`Privacy Policy`}>
       <Title className={"my-3"} size={"xl"}>
-        Privacy Policy
+        {t`Privacy Policy`}
       </Title>
       <p>Last updated: October 21, 2023</p>
       <p>

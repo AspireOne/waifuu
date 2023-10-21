@@ -18,6 +18,7 @@ import { TagSelect } from "@/components/ui/TagSelect";
 import { AiOutlinePlus } from "react-icons/ai";
 import Title from "@components/ui/Title";
 import { Tooltip } from "@nextui-org/tooltip";
+import { t, Trans } from "@lingui/macro";
 
 // TODO: Refactor this shitty code
 
@@ -104,7 +105,7 @@ const Discover = () => {
   }, [watch]);
 
   return (
-    <Page title="Discover Characters" showActionBar autoBack={false}>
+    <Page title={t`Discover Characters`} showActionBar autoBack={false}>
       <div className="relative">
         <Image
           alt="background"
@@ -121,10 +122,10 @@ const Discover = () => {
 
             <div>
               <Title className={"my-1"} size={"md"} as={"p"} bold>
-                Hi, {user?.name}
+                <Trans>Hi, {user?.name}</Trans>
               </Title>
               <p className={"text-foreground-700"}>
-                Let's explore some new characters.
+                <Trans>Let's explore some new characters.</Trans>
               </p>
             </div>
           </div>
@@ -135,12 +136,14 @@ const Discover = () => {
         <div className="mx-auto mt-20">
           <div className="mb-5 mt-10">
             <Title bold icon={FaCompass}>
-              Active chats
+              <Trans>Active chats</Trans>
             </Title>
 
             {conversationBots.data?.length === 0 && (
               <p className="text-foreground-500 mt-3">
-                You don't have any active chats yet. Start one now!
+                <Trans>
+                  You don't have any active chats yet. Start one now!
+                </Trans>
               </p>
             )}
 
@@ -160,7 +163,7 @@ const Discover = () => {
           <form>
             <div className="mt-10 flex flex-row align-center items-center gap-4">
               <Title icon={BiTrendingUp} bold>
-                Popular Characters
+                <Trans>Popular Characters</Trans>
               </Title>
 
               <Tooltip content={"Create a character"}>
@@ -187,7 +190,7 @@ const Discover = () => {
 
                 <div className={"flex flex-row gap-3"}>
                   <Checkbox onValueChange={toggleOfficialBots}>
-                    Only display official bots
+                    <Trans>Only display official characters</Trans>
                   </Checkbox>
 
                   <Switch
@@ -204,8 +207,10 @@ const Discover = () => {
 
           <div className="flex w-full flex-wrap gap-5">
             {bots?.length === 0 && (
-              <p className="text-white">
-                No bots found. Try changing your search term.
+              <p className="">
+                <Trans>
+                  No characters found. Try changing your search term.
+                </Trans>
               </p>
             )}
 
@@ -221,7 +226,7 @@ const Discover = () => {
                 variant="solid"
                 className="w-1/2 mx-auto mb-4"
               >
-                Load more
+                <Trans>Load more</Trans>
               </Button>
             )}
           </div>
@@ -229,7 +234,7 @@ const Discover = () => {
 
         <div className="mt-5">
           <Title bold icon={MdForum}>
-            Popular forum posts
+            <Trans>Popular forum posts</Trans>
           </Title>
 
           <div className="flex flex-col gap-2 mt-5">

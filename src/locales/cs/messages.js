@@ -1,5 +1,5 @@
 /*eslint-disable*/ module.exports = {
   messages: JSON.parse(
-    '{"WR7Pwy":"Jsem nejlepší","UiBU8B":"Profil aktualizován!"}',
+    '{"8p9guu":"Aktivní konverzace","06el8y":"Adresován jako","E+oKCO":"O mně","Bhgd0l":"Kontaktujte nás","Z5Bc0a":"Objevuj postavy","O3oNi5":"E-mailová adresa","SXLZXN":"Chyba při přihlášení přes Google!","dhvczf":"Máte problém? otázku? Nebo nás jen chcete pozdravit? Jsme tu pro vás.","ng2Unt":["Ahoj, ",["0"]],"i0qMbr":"Domů","7reHkf":"Jak by tě měla postava oslovovat?","WR7Pwy":"I am the best","v0TKXF":"Pojďme prozkoumat nějaké nové postavy.","yQ2kGp":"Načíst víc","6YtxFj":"Jméno","T0VjeF":"Nenalezeny žádné postavy. Zkus změnit hledaný výraz.","r4wqvc":"Zobrazit jen oficiální postavy","sW0JGv":"Populární příspěvky na fóru","TJeuIP":"Populární postavy","LcET2C":"Ochrana osobních údajů","vERlcd":"Profil","UiBU8B":"Profil aktualizován!","IUwGEM":"Uložit změny","wIYMza":"Přihlásit se přes Google","H8aFPr":"Řekni nám něco o sobě","ocklXZ":"Společnost, která je vždy po vašem boku.","7sNhEz":"Uživatelské jméno","Gij6H9":"Jaká je tvoje speciální dovednost?","wr/CLC":"Co by o tobě měly tvé postavy určitě vědět?","uuAKqH":"Zatím nemáš žádné aktivní chaty. Začni nějaký!"}',
   ),
 };

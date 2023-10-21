@@ -2,19 +2,30 @@ import Page from "@/components/Page";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, UseFormRegisterReturn } from "react-hook-form";
-import { Avatar, Button, Input, Textarea } from "@nextui-org/react";
+import {
+  Avatar,
+  Button,
+  Input,
+  Select,
+  SelectItem,
+  Textarea,
+} from "@nextui-org/react";
 import { useSession } from "@/hooks/useSession";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import updateSelfSchema from "@/server/types/updateSelfSchema";
-import { useLingui } from "@lingui/react";
-import { msg, t } from "@lingui/macro";
+import { t, Trans } from "@lingui/macro";
+import {
+  changeAndSaveGlobalLocale,
+  getLocale,
+  LocaleCode,
+  locales,
+} from "@lib/i18n";
 
 export default function Profile() {
   const { user, refetch } = useSession();
-  const { _ } = useLingui();
 
   const updateUserMutation = api.users.updateSelf.useMutation({
     onSuccess: (data) => {
@@ -75,8 +86,14 @@ export default function Profile() {
     }
   };
 
+  async function onlanguageSelected(e: React.ChangeEvent<HTMLSelectElement>) {
+    const locale = e.target.value;
+    await changeAndSaveGlobalLocale(locale as LocaleCode);
+    toast(t`Language successfully changed`, { type: "success" });
+  }
+
   return (
-    <Page title={"Profile"} showActionBar autoBack={false}>
+    <Page title={t`Profile`} showActionBar autoBack={false}>
       <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-4"}>
         <Avatar
           onClick={() => fileInputRef.current?.click()}
@@ -105,7 +122,7 @@ export default function Profile() {
             isDirty={!!dirtyFields.username}
           />
           <Input
-            label={"Name"}
+            label={t`Name`}
             placeholder={"John Doe"}
             {...register("name")}
             isInvalid={!!errors.name}
@@ -115,7 +132,7 @@ export default function Profile() {
         </div>
 
         <Input
-          label={"Email"}
+          label={t`Email`}
           placeholder={"john.doe@gmail.com"}
           {...register("email")}
           isInvalid={!!errors.email}
@@ -123,29 +140,41 @@ export default function Profile() {
           errorMessage={errors.email?.message as string}
         />
         <Textarea
-          label={"Bio"}
-          placeholder={"What is your special skill?"}
+          label={t`Bio`}
+          placeholder={t`What is your special skill?`}
           {...register("bio")}
           isInvalid={!!errors.bio}
           disabled={!user}
           errorMessage={errors.bio?.message as string}
         />
         <Input
-          label={"Addressed As"}
-          placeholder={"How should the character address you?"}
+          label={t`Addressed As`}
+          placeholder={t`How should the character address you?`}
           {...register("addressedAs")}
           isInvalid={!!errors.addressedAs}
           disabled={!user}
           errorMessage={errors.addressedAs?.message as string}
         />
         <Textarea
-          label={"Tell us about yourself"}
-          placeholder={"What should your characters know about you?"}
+          label={t`Tell us about yourself`}
+          placeholder={t`What should your characters know about you?`}
           {...register("about")}
           isInvalid={!!errors.about}
           disabled={!user}
           errorMessage={errors.about?.message as string}
         />
+
+        <Select
+          onChange={onlanguageSelected}
+          label={t`Language`}
+          defaultSelectedKeys={[getLocale()]}
+        >
+          {locales.map(({ code, label }) => (
+            <SelectItem key={code} value={code}>
+              {label}
+            </SelectItem>
+          ))}
+        </Select>
 
         <Button
           isLoading={updateUserMutation.isLoading}
@@ -153,7 +182,7 @@ export default function Profile() {
           type={"submit"}
           variant={"flat"}
         >
-          Save Changes
+          <Trans>Save Changes</Trans>
         </Button>
       </form>
     </Page>
@@ -188,8 +217,8 @@ function UsernameInput(props: {
   return (
     <div className={"flex flex-col gap-2 w-full"}>
       <Input
-        label={"Username"}
-        placeholder={"Username"}
+        label={t`Username`}
+        placeholder={t`Username`}
         {...props.register("username")}
         isInvalid={props.isInvalid}
         disabled={props.disabled}
