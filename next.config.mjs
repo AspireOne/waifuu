@@ -9,6 +9,16 @@ import {withSentryConfig} from "@sentry/nextjs";
 /** @type {import("next").NextConfig} */
 const config = {
     reactStrictMode: true,
+    experimental: {
+        swcPlugins: [
+            [
+                "@lingui/swc-plugin",
+                {
+                    // the same options as in .swcrc (in the root)
+                },
+            ],
+        ],
+    },
     sentry: {
         // Disable auto instrumentation because it throws an error in trpc api handler export for some reason.
         // The API routes can be instrumented/wrapped manually.

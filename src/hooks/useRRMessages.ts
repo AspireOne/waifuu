@@ -19,7 +19,7 @@ export type RRSystemMessage = {
   type: "system-message";
 };
 
-export type RRMessages = (RRMessage | RRSystemMessage)[];
+export type RRMessagesType = (RRMessage | RRSystemMessage)[];
 
 let msgId = 0;
 /**
@@ -27,7 +27,7 @@ let msgId = 0;
  */
 export default function useRRMessages(channel: PresenceChannel | null) {
   const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
-  const [messages, setMessages] = useState<RRMessages>([]);
+  const [messages, setMessages] = useState<RRMessagesType>([]);
 
   const sendMsgMutation = api.RRChat.sendMessage.useMutation({
     onMutate: () => {

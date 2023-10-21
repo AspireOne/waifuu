@@ -8,12 +8,12 @@
     "build:native": "cross-env NEXT_PUBLIC_BUILDING_NATIVE=1 next build && next export",
     "dev": "next dev",
     "dev:external": "cross-env HOST=0.0.0.0 next dev",
-    "postinstall": "prisma generate",
-    "lint": "prettier . --write",
     "start": "next start",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "prepare": "husky install"
+    "lint": "prettier . --write",
+    "postinstall": "prisma generate",
+    "prepare": "husky install",
+    "extract": "lingui extract",
+    "compile": "lingui compile"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -22,6 +22,11 @@
     "src/**/*.{js,jsx,ts,tsx,json}": [
       "prettier --write"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lingui extract $(git diff --name-only --staged) --clean"
+    }
   },
   "dependencies": {
     "@capacitor-firebase/authentication": "^5.1.0",
@@ -36,6 +41,9 @@
     "@emotion/react": "^11.11.1",
     "@formkit/auto-animate": "^0.7.0",
     "@hookform/resolvers": "^3.3.1",
+    "@lingui/conf": "^4.5.0",
+    "@lingui/core": "^4.5.0",
+    "@lingui/react": "^4.5.0",
     "@nextui-org/react": "^2.1.13",
     "@prisma/client": "^5.4.2",
     "@sentry/capacitor": "^0.14.0",
@@ -88,6 +96,9 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^5.5.0",
+    "@lingui/cli": "^4.5.0",
+    "@lingui/macro": "^4.5.0",
+    "@lingui/swc-plugin": "^4.0.4",
     "@types/formidable": "^3.4.3",
     "@types/node": "^18.18.4",
     "@types/react": "^18.2.28",

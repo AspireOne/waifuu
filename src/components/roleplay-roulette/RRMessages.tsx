@@ -1,10 +1,14 @@
-import { RRMessage, RRMessages, RRSystemMessage } from "@/hooks/useRRMessages";
+import {
+  RRMessage,
+  RRMessagesType,
+  RRSystemMessage,
+} from "@/hooks/useRRMessages";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import React from "react";
 import { Avatar } from "@nextui-org/avatar";
 import { applyMarkdown } from "@/utils/utils";
 
-export default function RRMessages(props: { messages: RRMessages }) {
+export default function RRMessages(props: { messages: RRMessagesType }) {
   if (props.messages.length === 0) return undefined;
 
   return props.messages.map((message, i) => {
