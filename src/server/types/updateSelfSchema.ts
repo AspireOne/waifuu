@@ -27,7 +27,7 @@ export default z.object({
     .optional(),
   about: z
     .string()
-    .max(500, { message: t`'About' is long.` })
+    .max(500, { message: t`'About' is too long.` })
     .optional(),
   imageUrl: z
     .string()

@@ -8,7 +8,7 @@ import {BrowserTracing} from "@sentry/nextjs";
 Sentry.init({
   dsn: "https://34c0748d79396ead34402eaea3d846c0@o4506082747482112.ingest.sentry.io/4506082817212416",
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: true, // TODO: Change this to false once you've set up Sentry.
+  debug: false,
 
   // https://docs.sentry.io/platforms/javascript/guides/capacitor/
   release: "companion@1.0.0", // TODO: Put this in an env variable or smthng...

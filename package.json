@@ -12,8 +12,14 @@
     "lint": "prettier . --write",
     "postinstall": "prisma generate",
     "prepare": "husky install",
-    "extract": "lingui extract",
-    "compile": "lingui compile"
+
+    "t:extract": "lingui extract",
+    "t:compile": "lingui compile",
+    "t:push": "crowdin push sources && crowdin push translations",
+    "t:pull": "crowdin pull && pnpm t:compile",
+    "t:pre-translate": "crowdin pre-translate --method=mt --engine-id=410300",
+    "t:sync": "pnpm t:extract && pnpm t:push && pnpm t:pull",
+    "t:sync:translate": "pnpm t:extract && pnpm t:push && pnpm t:pre-translate && pnpm t:pull"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

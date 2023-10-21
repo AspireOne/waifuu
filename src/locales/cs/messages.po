@@ -8,7 +8,7 @@ msgstr ""
 "Language: cs\n"
 "Project-Id-Version: companion-red\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-21 19:21\n"
+"PO-Revision-Date: 2023-10-21 21:59\n"
 "Last-Translator: \n"
 "Language-Team: Czech\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
@@ -18,34 +18,62 @@ msgstr ""
 "X-Crowdin-File: messages.po\n"
 "X-Crowdin-File-ID: 2\n"
 
+#: src/server/types/updateSelfSchema.ts:30
+#~ msgid "'About' is long."
+#~ msgstr "\"O všem\" je dlouhé."
+
+#: src/server/types/updateSelfSchema.ts:30
+msgid "'About' is too long."
+msgstr ""
+
+#: src/server/types/updateSelfSchema.ts:26
+msgid "'Adressed as' is too long."
+msgstr "'Adresováno jako' je příliš dlouhé."
+
+#: src/pages/roulette/index.tsx:23
+msgid "<0>What is Character Roulette?</0>Meet new people, roleplay fictional situations and spark fun conversations. Get matched with a stranger for anonymous, entertaining chats!<1/><2/>Easily skip to new matches and scenarios anytime. Unmask profiles to follow each other and turn chats into connections. Roleplay Roulette creates a space for shared imagination with the tap of a button.<3/><4/><5>How does it work?</5>When you enter a chat room, Character Roulette generates an interesting roleplay scenario or a situation to kickstart the conversation. Let your imagination run wild as you and your match improvise and build a fictional world together. From acting out funny slices of life to pretending you're secret agents on a mission, the possibilities are endless!"
+msgstr "<0>Co je Character Roulette?</0>Seznamte se s novými lidmi, hrajte fiktivní situace a podněcujte zábavné konverzace. Nechte se spárovat s cizincem pro anonymní, zábavné rozhovory! <1/> <2/> Snadno přeskakujte k novým spárováním a scénářům kdykoli. Odhalte profily pro vzájemné sledování a proměňte konverzace ve spojení. Character Roulette vytváří prostor pro sdílenou představivost jedním kliknutím. <3/> <4/> <5>Jak to funguje?</5> Když vstoupíte do chatovací místnosti, Character Roulette vygeneruje zajímavý scénář pro rolovou hru nebo situaci, aby odstartoval konverzaci. Nechte vaši představivost běžet, když vy a váš spárovaný improvizujete a společně budujete fiktivní svět. Od hraní vtipných útržků ze života až po předstírání, že jste tajní agenti na misi, možnosti jsou nekonečné!"
+
 #: src/pages/discover.tsx:139
 msgid "Active chats"
 msgstr "Aktivní konverzace"
 
-#: src/pages/profile.tsx:148
+#: src/pages/profile.tsx:151
 msgid "Addressed As"
-msgstr "Adresován jako"
+msgstr "Oslovován/a jako"
 
-#: src/pages/profile.tsx:140
+#: src/pages/profile.tsx:143
 msgid "Bio"
 msgstr "O mně"
+
+#: src/server/types/updateSelfSchema.ts:22
+msgid "Bio is too long."
+msgstr "Bio je příliš dlouhé."
 
 #: src/pages/contact.tsx:11
 #: src/pages/contact.tsx:16
 msgid "Contact us"
 msgstr "Kontaktujte nás"
 
-#: src/components/ActionBar/ActionBar.tsx:26
+#: src/components/ActionBar/ActionBar.tsx:27
 msgid "Discover"
-msgstr ""
+msgstr "Objevuj"
 
 #: src/pages/discover.tsx:108
 msgid "Discover Characters"
 msgstr "Objevuj postavy"
 
-#: src/pages/profile.tsx:132
+#: src/pages/profile.tsx:135
 msgid "Email"
 msgstr "E-mailová adresa"
+
+#: src/server/types/updateSelfSchema.ts:17
+msgid "Email is invalid."
+msgstr "E-mail je neplatný."
+
+#: src/server/types/updateSelfSchema.ts:18
+msgid "Email is too long."
+msgstr "E-mail je příliš dlouhý."
 
 #: src/pages/login.tsx:47
 msgid "Error signing in with Google!"
@@ -63,7 +91,7 @@ msgstr "Ahoj, {0}"
 msgid "Home"
 msgstr "Domů"
 
-#: src/pages/profile.tsx:149
+#: src/pages/profile.tsx:152
 msgid "How should the character address you?"
 msgstr "Jak by tě měla postava oslovovat?"
 
@@ -71,13 +99,17 @@ msgstr "Jak by tě měla postava oslovovat?"
 #~ msgid "I am the best"
 #~ msgstr "I am the best"
 
-#: src/pages/profile.tsx:164
-msgid "Language"
-msgstr ""
+#: src/server/types/updateSelfSchema.ts:34
+msgid "Image url is too long."
+msgstr "Adresa Url obrázku je příliš dlouhá."
 
-#: src/pages/profile.tsx:89
+#: src/pages/profile.tsx:169
+msgid "Language"
+msgstr "Jazyk"
+
+#: src/pages/profile.tsx:92
 msgid "Language successfully changed"
-msgstr ""
+msgstr "Jazyk byl úspěšně změněn"
 
 #: src/pages/discover.tsx:128
 msgid "Let's explore some new characters."
@@ -87,9 +119,21 @@ msgstr "Pojďme prozkoumat nějaké nové postavy."
 msgid "Load more"
 msgstr "Načíst víc"
 
-#: src/pages/profile.tsx:122
+#: src/server/types/updateSelfSchema.ts:38
+msgid "Must be a 2-letter code."
+msgstr "Musí být dvoupísmenný kód."
+
+#: src/pages/profile.tsx:125
 msgid "Name"
 msgstr "Jméno"
+
+#: src/server/types/updateSelfSchema.ts:12
+msgid "Name is required."
+msgstr "Jméno je povinné."
+
+#: src/server/types/updateSelfSchema.ts:13
+msgid "Name is too long."
+msgstr "Jméno je příliš dlouhé."
 
 #: src/pages/discover.tsx:211
 msgid "No characters found. Try changing your search term."
@@ -112,20 +156,20 @@ msgstr "Populární postavy"
 msgid "Privacy Policy"
 msgstr "Ochrana osobních údajů"
 
-#: src/components/ActionBar/ActionBar.tsx:38
-#: src/pages/profile.tsx:93
+#: src/components/ActionBar/ActionBar.tsx:39
+#: src/pages/profile.tsx:96
 msgid "Profile"
 msgstr "Profil"
 
-#: src/pages/profile.tsx:29
+#: src/pages/profile.tsx:32
 msgid "Profile updated!"
 msgstr "Profil aktualizován!"
 
-#: src/components/ActionBar/ActionBar.tsx:32
+#: src/components/ActionBar/ActionBar.tsx:33
 msgid "Roulette"
-msgstr ""
+msgstr "Ruleta"
 
-#: src/pages/profile.tsx:178
+#: src/pages/profile.tsx:185
 msgid "Save Changes"
 msgstr "Uložit změny"
 
@@ -133,7 +177,7 @@ msgstr "Uložit změny"
 msgid "Sign in with google"
 msgstr "Přihlásit se přes Google"
 
-#: src/pages/profile.tsx:156
+#: src/pages/profile.tsx:159
 msgid "Tell us about yourself"
 msgstr "Řekni nám něco o sobě"
 
@@ -141,20 +185,24 @@ msgstr "Řekni nám něco o sobě"
 msgid "The companion that is always by your side."
 msgstr "Společnost, která je vždy po vašem boku."
 
-#: src/pages/profile.tsx:213
-#: src/pages/profile.tsx:214
+#: src/pages/profile.tsx:220
+#: src/pages/profile.tsx:221
 msgid "Username"
 msgstr "Uživatelské jméno"
 
 #: src/server/types/updateSelfSchema.ts:7
 msgid "Username is required."
-msgstr ""
+msgstr "Uživatelské jméno je povinné."
 
-#: src/pages/profile.tsx:141
+#: src/server/types/updateSelfSchema.ts:8
+msgid "Username is too long."
+msgstr "Uživatelské jméno je příliš dlouhé."
+
+#: src/pages/profile.tsx:144
 msgid "What is your special skill?"
 msgstr "Jaká je tvoje speciální dovednost?"
 
-#: src/pages/profile.tsx:157
+#: src/pages/profile.tsx:160
 msgid "What should your characters know about you?"
 msgstr "Co by o tobě měly tvé postavy určitě vědět?"
 

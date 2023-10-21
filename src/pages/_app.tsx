@@ -19,8 +19,6 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { initGlobalLocale } from "@lib/i18n";
 
-initGlobalLocale();
-
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.
   useEffect(() => {
@@ -32,6 +30,7 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
     }
 
     init();
+    initGlobalLocale();
   }, []);
 
   return (

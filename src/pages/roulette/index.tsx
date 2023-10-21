@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { paths } from "@/lib/paths";
 import { addQueryParams } from "@/utils/utils";
+import Title from "@components/ui/Title";
+import { Trans } from "@lingui/macro";
 
 export default function RRIndex() {
   const router = useRouter();
@@ -18,24 +20,30 @@ export default function RRIndex() {
     <Page title={"Character Roulette"} autoBack={false} showActionBar>
       <Card>
         <CardBody>
-          <h2 className={"title mb-1"}>What is Character Roulette?</h2>
-          Meet new people, roleplay fictional situations and spark fun
-          conversations. Get matched with a stranger for anonymous, entertaining
-          chats!
-          <br />
-          <br />
-          Easily skip to new matches and scenarios anytime. Unmask profiles to
-          follow each other and turn chats into connections. Roleplay Roulette
-          creates a space for shared imagination with the tap of a button.
-          <br />
-          <br />
-          <h2 className={"title mb-1"}>How does it work?</h2>
-          When you enter a chat room, Character Roulette generates an
-          interesting roleplay scenario or a situation to kickstart the
-          conversation. Let your imagination run wild as you and your match
-          improvise and build a fictional world together. From acting out funny
-          slices of life to pretending you're secret agents on a mission, the
-          possibilities are endless!
+          <Trans>
+            <Title size={"md"} as={"h2"} className={"mb-2"}>
+              What is Character Roulette?
+            </Title>
+            Meet new people, roleplay fictional situations and spark fun
+            conversations. Get matched with a stranger for anonymous,
+            entertaining chats!
+            <br />
+            <br />
+            Easily skip to new matches and scenarios anytime. Unmask profiles to
+            follow each other and turn chats into connections. Roleplay Roulette
+            creates a space for shared imagination with the tap of a button.
+            <br />
+            <br />
+            <Title size={"md"} as={"h2"} className={"mb-2"}>
+              How does it work?
+            </Title>
+            When you enter a chat room, Character Roulette generates an
+            interesting roleplay scenario or a situation to kickstart the
+            conversation. Let your imagination run wild as you and your match
+            improvise and build a fictional world together. From acting out
+            funny slices of life to pretending you're secret agents on a
+            mission, the possibilities are endless!
+          </Trans>
         </CardBody>
         {/*TODO: Implement anonymous mode.*/}
         <CardFooter className={"flex flex-col items-start gap-4"}>

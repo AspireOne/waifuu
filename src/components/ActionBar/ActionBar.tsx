@@ -20,26 +20,29 @@ type ButtonProp = {
   pathExactMatch?: boolean;
 };
 
-const buttons: ButtonProp[] = [
-  {
-    path: paths.discover,
-    title: t`Discover`,
-    icon: RiSearch2Line,
-    iconFilled: RiSearch2Fill,
-  },
-  {
-    path: paths.RR,
-    title: t`Roulette`,
-    icon: IoChatbubblesOutline,
-    iconFilled: IoChatbubbles,
-  },
-  {
-    path: paths.profile,
-    title: t`Profile`,
-    icon: AiOutlineUser,
-    iconFilled: AiOutlineUser,
-  },
-];
+function getButtons() {
+  const buttons: ButtonProp[] = [
+    {
+      path: paths.discover,
+      title: t`Discover`,
+      icon: RiSearch2Line,
+      iconFilled: RiSearch2Fill,
+    },
+    {
+      path: paths.RR,
+      title: t`Roulette`,
+      icon: IoChatbubblesOutline,
+      iconFilled: IoChatbubbles,
+    },
+    {
+      path: paths.profile,
+      title: t`Profile`,
+      icon: AiOutlineUser,
+      iconFilled: AiOutlineUser,
+    },
+  ];
+  return buttons;
+}
 
 /**
  * The action bar on the bottom, which allows to switch pages.
@@ -57,8 +60,8 @@ export const ActionBar = (props: {}) => {
     let selectedButt: ButtonProp | null = null;
     const currPathname = normalizePath(router.pathname);
 
-    for (let i = 0; i < buttons.length; i++) {
-      const button = buttons[i]!;
+    for (let i = 0; i < getButtons.length; i++) {
+      const button = getButtons()[i]!;
       const pathname = normalizePath(button.path);
 
       if (button.pathExactMatch && pathname === currPathname) {
@@ -78,11 +81,11 @@ export const ActionBar = (props: {}) => {
   return (
     <div
       className={
-        "bg-default-50 min-h-max p-1 py-2 z-70 rounded-xl fixed left-2 right-2 bottom-2 border border-default-100 shadow"
+        "bg-default-50 min-h-max p-1 py-2 z-[100] rounded-xl fixed left-2 right-2 bottom-2 border border-default-100 shadow"
       }
     >
       <div className={"flex flex-row justify-between items-center"}>
-        {buttons.map((button) => {
+        {getButtons().map((button) => {
           return (
             <ActionButton
               key={button.title}

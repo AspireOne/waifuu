@@ -18,10 +18,10 @@ model User {
 
   bio              String?
   about            String?
-  addressedAs      String?       @default("Senpai")
+  addressedAs      String?         @default("Senpai")
   Bot              Bot[]
   ChatMessage      ChatMessage[]
-  Chat             Chat[]        @relation("ChatToUser")
+  Chat             Chat[]          @relation("ChatToUser")
   BotLikes         BotLike[]
   BotDislikes      BotDislike[]
   BotShares        BotShares[]
@@ -60,40 +60,40 @@ model MoodTable {
 enum Mood {
   NEUTRAL
   HAPPY
-  SAD 
+  SAD
   BLUSHED
 }
 
 model Bot {
-  id          String       @id @default(cuid())
-  name        String
-  description String
-  categoryId  String?
-  category    Category?    @relation(fields: [categoryId], references: [name])
-  characterName String
-  characterPersona String
+  id                String       @id @default(cuid())
+  name              String
+  description       String
+  categoryId        String?
+  category          Category?    @relation(fields: [categoryId], references: [name])
+  characterName     String
+  characterPersona  String
   characterDialogue String?
-  characterNsfw Boolean @default(false)
-  avatar      String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  cover       String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  creatorId   String?
-  tags        Tag[]
-  source      BotSource
-  visibility  Visibility
-  creator     User?        @relation(fields: [creatorId], references: [id])
-  botLikes    BotLike[]
-  botDislikes BotDislike[]
-  BotShares   BotShares[]
-  MoodTable   MoodTable?
-  BotChats    BotChat[]
+  characterNsfw     Boolean      @default(false)
+  avatar            String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  cover             String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  creatorId         String?
+  tags              Tag[]
+  source            BotSource
+  visibility        Visibility
+  creator           User?        @relation(fields: [creatorId], references: [id])
+  botLikes          BotLike[]
+  botDislikes       BotDislike[]
+  BotShares         BotShares[]
+  MoodTable         MoodTable?
+  BotChats          BotChat[]
   // Mood images
-  moodImagesEnabled Boolean @default(false)
-  sadImageId  String?
-  blushedImageId  String?
-  neutralImageId  String?
-  happyImageId    String?
+  moodImagesEnabled Boolean      @default(false)
+  sadImageId        String?
+  blushedImageId    String?
+  neutralImageId    String?
+  happyImageId      String?
 }
 
 model Tag {
@@ -169,39 +169,39 @@ model ChatMessage {
 }
 
 model Category {
-  name      String  @id @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  name       String      @id @unique
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
   ForumPosts ForumPost[]
   Bots       Bot[]
 }
 
 model ForumPost {
-  id          String         @id @default(cuid())
-  bannerImage String?
-  categoryname  String?
-  category    Category? @relation(fields: [categoryname], references: [name])
-  title       String?
-  content     String
-  author      User           @relation(fields: [authorId], references: [id])
-  authorId    String
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  likeCount   BigInt         @default(0)
-  viewCount   BigInt         @default(0)
-  likes       ForumPostLike[]
-  comments    ForumPost[]    @relation("CommentToPost")
-  parentPost  ForumPost?    @relation("CommentToPost", fields: [parentPostId], references: [id])
+  id           String          @id @default(cuid())
+  bannerImage  String?
+  categoryname String?
+  category     Category?       @relation(fields: [categoryname], references: [name])
+  title        String?
+  content      String
+  author       User            @relation(fields: [authorId], references: [id])
+  authorId     String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  likeCount    BigInt          @default(0)
+  viewCount    BigInt          @default(0)
+  likes        ForumPostLike[]
+  comments     ForumPost[]     @relation("CommentToPost")
+  parentPost   ForumPost?      @relation("CommentToPost", fields: [parentPostId], references: [id])
   parentPostId String?
 }
 
 model ForumPostLike {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   postId    String
   userId    String
   post      ForumPost @relation(fields: [postId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
 }
 
 // -> starts searching
