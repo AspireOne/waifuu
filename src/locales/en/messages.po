@@ -14,5 +14,9 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/pages/_app.tsx:72
-msgid "I am the best"
-msgstr "I am the best"
+#~ msgid "I am the best"
+#~ msgstr "I am the best"
+
+#: src/pages/profile.tsx:21
+msgid "Profile updated!"
+msgstr "Profile updated!"
