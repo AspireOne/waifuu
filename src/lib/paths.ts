@@ -18,3 +18,10 @@ export const paths = {
   forumPost: (id: string) => `/forum/${id}`,
   forum: "/forum",
 };
+
+/**
+ * Contains paths that have a specific meaning.
+ */
+export const semanticPaths = {
+  appIndex: paths.discover,
+};

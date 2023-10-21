@@ -16,6 +16,7 @@ import {
 } from "firebase/auth";
 import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
 import { Constants } from "@/lib/constants";
+import { semanticPaths } from "@lib/paths";
 
 function getCsrfToken() {
   return document.cookie
@@ -55,7 +56,7 @@ const Login = () => {
   // Check for session.user instead of session.status.
   useEffect(() => {
     if (session.user) {
-      router.replace((redirect as string) || Constants.APP_INDEX_PATH);
+      router.replace((redirect as string) || semanticPaths.appIndex);
     }
   }, [session.user, session.user?.id]);
 
@@ -66,7 +67,7 @@ const Login = () => {
         JSON.stringify(data),
       );
 
-      router.replace((redirect as string) || Constants.APP_INDEX_PATH);
+      router.replace((redirect as string) || semanticPaths.appIndex);
       session.refetch();
     },
     onError: async (error) => {

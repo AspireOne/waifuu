@@ -120,7 +120,7 @@ const Discover = () => {
             <p className="text-2xl">👋</p>
 
             <div>
-              <Title size={"md"} as={"p"} bold>
+              <Title className={"my-1"} size={"md"} as={"p"} bold>
                 Hi, {user?.name}
               </Title>
               <p className={"text-foreground-700"}>

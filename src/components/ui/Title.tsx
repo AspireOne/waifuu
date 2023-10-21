@@ -31,7 +31,8 @@ export default function Title(props: {
         size === "md" && "text-xl",
         size === "lg" && "text-2xl",
         size === "xl" && "text-3xl",
-        "flex flex-row items-center gap-2",
+        "flex flex-row items-center gap-2", // icon
+        /*"my-2",*/
         props.className,
       )}
     >
