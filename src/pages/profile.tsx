@@ -9,13 +9,16 @@ import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import updateSelfSchema from "@/server/types/updateSelfSchema";
+import { useLingui } from "@lingui/react";
+import { msg, t } from "@lingui/macro";
 
 export default function Profile() {
   const { user, refetch } = useSession();
+  const { _ } = useLingui();
 
   const updateUserMutation = api.users.updateSelf.useMutation({
     onSuccess: (data) => {
-      toast("Profile updated!", { type: "success" });
+      toast(t`Profile updated!`, { type: "success" });
       refetch();
     },
   });

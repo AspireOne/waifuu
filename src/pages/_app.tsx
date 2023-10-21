@@ -17,8 +17,8 @@ import { getOrInitFirebaseApp } from "@/lib/firebase/getOrInitFirebaseApp";
 import { SessionProvider } from "@/contexts/SessionProvider";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { Trans } from "@lingui/macro";
 import { dynamicActivate } from "@lib/i18n";
+import { T } from "@lib/T";
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize firebase.
@@ -50,7 +50,6 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
               {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
               <main className={"bg-background text-foreground dark"}>
                 <ToastContainer theme={"dark"} />
-                <Trans>I am the best</Trans>
                 <Component {...pageProps} />
               </main>
             </SessionProvider>
