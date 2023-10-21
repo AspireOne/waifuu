@@ -5,6 +5,7 @@ import { usersRouter } from "@/server/api/routers/users";
 import { RRChatRouter } from "@/server/api/routers/RRChat";
 import { authRouter } from "@/server/api/routers/auth";
 import { forumRouter } from "./routers/forum";
+import { contactRouter } from "@/server/api/routers/contact";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   RRChat: RRChatRouter,
   auth: authRouter,
   forum: forumRouter,
+  contact: contactRouter,
 });
 
 // export type definition of API

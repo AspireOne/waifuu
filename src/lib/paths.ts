@@ -10,9 +10,9 @@ export const paths = {
   profile: "/profile",
   login: (redirect?: string) =>
     "/login" + (redirect ? `?redirect=${redirect}` : ""),
-  botChatMainMenu: (botId: string) => `/character/${botId}`,
-  createBot: "/character/create",
   userProfile: (username: string) => `/user/${username}`,
+  createBot: "/character/create",
+  botChatMainMenu: (botId: string) => `/character/${botId}`,
   botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,
   forumPost: (id: string) => `/forum/${id}`,
   forum: "/forum",

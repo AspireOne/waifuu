@@ -2,6 +2,7 @@
 import axios from "axios";
 import { apiBase } from "@/lib/api";
 import { getIdToken } from "@/lib/firebase/getIdToken";
+import { showErrorToast } from "@utils/utils";
 
 const apiClient = axios.create({
   baseURL: apiBase(),
@@ -17,7 +18,12 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (err) => Promise.reject(err),
+  (error: Error) => {
+    showErrorToast(error);
+    console.error(error);
+    // Rejecting it will cause the error to be thrown in the place where it was called.
+    return Promise.reject(error);
+  },
 );
 
 export { apiClient };

@@ -78,15 +78,8 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
     },
 
     onError: (error) => {
-      toast("Something went wrong.", {
-        position: "top-center",
-        type: "error",
-      });
-      console.error(error);
-
       // setMessages(prevMessages => {
       //   return produce(prevMessages, draft => {
-
       //     if (draft.length === 0) return;
       //     const lastMessage = draft[draft.length - 1];
       //     lastMessage!.type = "error";

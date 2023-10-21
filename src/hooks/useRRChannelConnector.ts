@@ -38,9 +38,8 @@ export default function useRRChannelConnector() {
       setStatus("found");
       setChannelData(channelData);
     },
-    onError: (error) => {
+    onError: () => {
       setStatus("not-found");
-      toast(error.message, { type: "error" });
       setChannelData(null);
     },
   });

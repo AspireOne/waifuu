@@ -1,5 +1,6 @@
 import { apiBase } from "@/lib/api";
 import React from "react";
+import { toast } from "react-toastify";
 
 /**
  * Generates a random UUID (Universally Unique Identifier).
@@ -11,6 +12,12 @@ export default function generateUUID(): string {
     const r = (Math.random() * 16) | 0,
       v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
+  });
+}
+
+export function showErrorToast(error: Error) {
+  toast(error?.message || "Something went wrong", {
+    type: "error",
   });
 }
 
@@ -64,9 +71,30 @@ export function addQueryParams(
   return url.pathname + url.search;
 }
 
-export function normalizePath(path: string, keepSlash: boolean = true): string {
-  if (keepSlash) return path.endsWith("/") ? path : path + "/";
-  else return path.endsWith("/") ? path.slice(0, -1) : path;
+/**
+ * Normalizes the given path by removing leading/trailing whitespaces, converting to lowercase,
+ * converting backslashes to slashes, adding or removing trailing slashes, and replacing multiple
+ * slashes with a single slash.
+ *
+ * @param {string} path - The path to be normalized.
+ * @param {boolean} [keepSlash=false] - Whether to keep the trailing slash or not.
+ *
+ * @return {string} The normalized path.
+ */
+export function normalizePath(
+  path: string,
+  keepSlash: boolean = false,
+): string {
+  path = path.trim(); // remove leading/trailing whitespaces
+  path = path.toLowerCase(); // convert to lowercase
+  path = path.replace(/\\/g, "/"); // convert backslashes to slashes
+
+  // add/remove trailing slash.
+  if (keepSlash) path = path.endsWith("/") ? path : path + "/";
+  else path = path.endsWith("/") ? path.slice(0, -1) : path;
+
+  path = path.replace(/\/\/+/g, "/"); // replace all multiple slashes with a single slash
+  return path;
 }
 
 export function makeDownloadPath(id: string): string {

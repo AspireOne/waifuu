@@ -1,4 +1,4 @@
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import { httpBatchLink, loggerLink, TRPCLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
@@ -7,6 +7,40 @@ import { type AppRouter } from "@/server/api/root";
 import { Capacitor } from "@capacitor/core";
 import { getIdToken } from "@/lib/firebase/getIdToken";
 import { Constants } from "@/lib/constants";
+import { observable } from "@trpc/server/observable";
+import { toast } from "react-toastify";
+import { showErrorToast } from "@utils/utils";
+
+export const customErrorLink: TRPCLink<AppRouter> = () => {
+  return ({ next, op }) => {
+    return observable((observer) => {
+      return next(op).subscribe({
+        next(value) {
+          //console.log("we received value", value);
+          observer.next(value);
+        },
+        error(err) {
+          // This already logs the error to the console.
+          observer.error(err);
+
+          // Don't show error to user if they are not logged in.
+          if (
+            err?.data?.code === "UNAUTHORIZED" ||
+            // Firebase error thrown from backend. Kind of the same as unauthorized, but with a different message.
+            err?.message === "No user is signed in."
+          ) {
+            return;
+          }
+
+          showErrorToast(err);
+        },
+        complete() {
+          observer.complete();
+        },
+      });
+    });
+  };
+};
 
 export const api = createTRPCNext<AppRouter>({
   config() {
@@ -37,6 +71,7 @@ export const api = createTRPCNext<AppRouter>({
        * @see https://trpc.io/docs/links
        */
       links: [
+        customErrorLink,
         loggerLink({
           enabled: (opts) =>
             process.env.NODE_ENV === "development" ||

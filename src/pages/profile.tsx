@@ -18,9 +18,6 @@ export default function Profile() {
       toast("Profile updated!", { type: "success" });
       refetch();
     },
-    onError: (error) => {
-      toast(error.message, { type: "error" });
-    },
   });
 
   const {
@@ -177,9 +174,6 @@ function UsernameInput(props: {
   const usernameAvailability = api.users.checkUsernameAvailability.useMutation({
     onSuccess: (data) => {
       setUsernameAvailable(data);
-    },
-    onError: (error) => {
-      toast(error.message, { type: "error" });
     },
   });
 
