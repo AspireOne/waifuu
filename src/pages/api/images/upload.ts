@@ -5,7 +5,7 @@ import * as minio from "minio";
 import { env } from "@/server/env";
 import generateUUID from "@/utils/utils";
 import { prisma } from "@/server/lib/db";
-import metaHandler from "@/pages/api/metaHandler";
+import metaHandler from "@/server/lib/metaHandler";
 
 type ProcessedFiles = Array<[string, formidable.File]>;
 type ResultData = {

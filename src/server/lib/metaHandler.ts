@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "@prisma/client";
-import { retrieveUser } from "@/pages/api/utils";
+import { retrieveUser } from "@/server/utils/utils";
 import { wrapApiHandlerWithSentry } from "@sentry/nextjs";
 
 export type MetaHandlerContext = {
