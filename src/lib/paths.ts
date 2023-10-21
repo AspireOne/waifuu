@@ -8,6 +8,7 @@ export const paths = {
   RRChat: "/roulette/chat",
   discover: "/discover",
   profile: "/profile",
+  contact: "/contact",
   login: (redirect?: string) =>
     "/login" + (redirect ? `?redirect=${redirect}` : ""),
   userProfile: (username: string) => `/user/${username}`,
