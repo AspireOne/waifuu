@@ -1,8 +1,11 @@
 import { twMerge } from "tailwind-merge";
 import React from "react";
 import { Skeleton } from "@nextui-org/react";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/macro";
 
 export default function Stats(props: { className?: string }) {
+  const { _ } = useLingui();
   // Three circles, each with a number and a label below it. The middle circle will be a little bit bigger and lower.
   // They will be purple.
   return (
@@ -12,14 +15,14 @@ export default function Stats(props: { className?: string }) {
         props.className,
       )}
     >
-      <StatCircle value={12} label={"Followers"} />
+      <StatCircle value={12} label={_(msg`Followers`)} />
       <StatCircle
         value={12}
         label={"Characters"}
         main={true}
         className={"mt-10"}
       />
-      <StatCircle value={12} label={"Following"} />
+      <StatCircle value={12} label={_(msg`Following`)} />
     </div>
   );
 }

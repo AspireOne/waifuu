@@ -5,6 +5,7 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { Trans } from "@lingui/macro";
 
 const SettingsDropdown = () => {
   return (
@@ -16,10 +17,10 @@ const SettingsDropdown = () => {
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem className="text-white" key="remove">
-          Remove chat
+          <Trans>Remove chat</Trans>
         </DropdownItem>
         <DropdownItem className="text-white" key="settings">
-          Settings
+          <Trans>Settings</Trans>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

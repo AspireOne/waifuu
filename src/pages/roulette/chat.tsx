@@ -12,11 +12,14 @@ import RRMessages from "@/components/roleplay-roulette/RRMessages";
 import RRUserHeader from "@/components/roleplay-roulette/RRUserHeader";
 import { paths } from "@/lib/paths";
 import { twMerge } from "tailwind-merge";
+import { msg, t } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 // "RR". Stands for Roleplay Roulette.
 export default function RoleplayRoulette() {
+  const { _ } = useLingui();
   return (
-    <Page title={"Character Roulette"} backPath={paths.RR}>
+    <Page title={_(msg`Character Roulette`)} backPath={paths.RR}>
       <Chat />
     </Page>
   );
@@ -134,12 +137,12 @@ function getStatusStr(
   connStatus: ConnectionStatus,
   searchStatus: RRChannelSearchStatus,
 ) {
-  if (searchStatus === "searching") return "Searching...";
-  if (searchStatus === "not-found") return "No available room found!";
-  if (connStatus === "subscribing") return "Connecting...";
-  if (connStatus === "subscribed-no-user") return "Waiting for user...";
-  if (connStatus === "subscribe-failed") return "Failed to connect.";
-  if (connStatus === "subscribed-user-left") return "User left.";
-  if (connStatus === "subscribed-w-user") return "Connected.";
-  return "Click search button to chat.";
+  if (searchStatus === "searching") return t`Searching...`;
+  if (searchStatus === "not-found") return t`No available room found!`;
+  if (connStatus === "subscribing") return t`Connecting...`;
+  if (connStatus === "subscribed-no-user") return t`Waiting for user...`;
+  if (connStatus === "subscribe-failed") return t`Failed to connect.`;
+  if (connStatus === "subscribed-user-left") return t`User left.`;
+  if (connStatus === "subscribed-w-user") return t`Connected.`;
+  return t`Click search button to chat.`;
 }

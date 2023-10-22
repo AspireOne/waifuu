@@ -8,7 +8,7 @@ msgstr ""
 "Language: cs\n"
 "Project-Id-Version: companion-red\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-21 21:59\n"
+"PO-Revision-Date: 2023-10-22 10:10\n"
 "Last-Translator: \n"
 "Language-Team: Czech\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
@@ -19,20 +19,28 @@ msgstr ""
 "X-Crowdin-File-ID: 2\n"
 
 #: src/server/types/updateSelfSchema.ts:30
-#~ msgid "'About' is long."
-#~ msgstr "\"O všem\" je dlouhé."
-
-#: src/server/types/updateSelfSchema.ts:30
 msgid "'About' is too long."
-msgstr ""
+msgstr "\"O mně\" je příliš dlouhé."
 
 #: src/server/types/updateSelfSchema.ts:26
 msgid "'Adressed as' is too long."
 msgstr "'Adresováno jako' je příliš dlouhé."
 
-#: src/pages/roulette/index.tsx:23
+#: src/components/profile-page/Header.tsx:52
+msgid "'Share {0}'s profile with buddies"
+msgstr "Sdílejte profil {0} s přáteli"
+
+#: src/components/profile-page/Header.tsx:50
+msgid "{0} is active on companion."
+msgstr "{0} je aktivní v aplikaci Companion."
+
+#: src/pages/roulette/index.tsx:25
 msgid "<0>What is Character Roulette?</0>Meet new people, roleplay fictional situations and spark fun conversations. Get matched with a stranger for anonymous, entertaining chats!<1/><2/>Easily skip to new matches and scenarios anytime. Unmask profiles to follow each other and turn chats into connections. Roleplay Roulette creates a space for shared imagination with the tap of a button.<3/><4/><5>How does it work?</5>When you enter a chat room, Character Roulette generates an interesting roleplay scenario or a situation to kickstart the conversation. Let your imagination run wild as you and your match improvise and build a fictional world together. From acting out funny slices of life to pretending you're secret agents on a mission, the possibilities are endless!"
 msgstr "<0>Co je Character Roulette?</0>Seznamte se s novými lidmi, hrajte fiktivní situace a podněcujte zábavné konverzace. Nechte se spárovat s cizincem pro anonymní, zábavné rozhovory! <1/> <2/> Snadno přeskakujte k novým spárováním a scénářům kdykoli. Odhalte profily pro vzájemné sledování a proměňte konverzace ve spojení. Character Roulette vytváří prostor pro sdílenou představivost jedním kliknutím. <3/> <4/> <5>Jak to funguje?</5> Když vstoupíte do chatovací místnosti, Character Roulette vygeneruje zajímavý scénář pro rolovou hru nebo situaci, aby odstartoval konverzaci. Nechte vaši představivost běžet, když vy a váš spárovaný improvizujete a společně budujete fiktivní svět. Od hraní vtipných útržků ze života až po předstírání, že jste tajní agenti na misi, možnosti jsou nekonečné!"
+
+#: src/pages/character/create.tsx:77
+msgid "About Character"
+msgstr "O postavě"
 
 #: src/pages/discover.tsx:139
 msgid "Active chats"
@@ -42,6 +50,24 @@ msgstr "Aktivní konverzace"
 msgid "Addressed As"
 msgstr "Oslovován/a jako"
 
+#: src/pages/character/create.tsx:172
+#: src/pages/character/create.tsx:182
+msgid "Advanced mood settings"
+msgstr "Pokročilé nastavení nálady"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:9
+#: src/pages/character/[botId].tsx:93
+msgid "Adventure"
+msgstr "Dobrodružné"
+
+#: src/pages/character/[botId].tsx:90
+msgid "Adventure-style game. Let the character guide you through the story!"
+msgstr "Hra ve stylu dobrodružství. Nech postavu vést tě příběhem!"
+
+#: src/components/roleplay-roulette/RRInput.tsx:110
+msgid "Are you sure you want to end the chat?"
+msgstr "Opravdu chceš chat ukončit?"
+
 #: src/pages/profile.tsx:143
 msgid "Bio"
 msgstr "O mně"
@@ -50,10 +76,88 @@ msgstr "O mně"
 msgid "Bio is too long."
 msgstr "Bio je příliš dlouhé."
 
+#: src/components/roleplay-roulette/RRInput.tsx:114
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:16
+msgid "Casually chat with the character. Hey, how r u?"
+msgstr "Ležérně s postavou chatujte. Čau, jak je?"
+
+#: src/pages/character/create.tsx:113
+msgid "Category"
+msgstr "Kategorie"
+
+#: src/pages/character/[botId].tsx:84
+msgid "Classic chat experience, talk about your day, interests, or try to make a romantic partner!"
+msgstr "Klasický chat - mluv o svém dni, zájmech, nebo se pokus vytvořit si romantického partnera!"
+
+#: src/pages/roulette/chat.tsx:147
+msgid "Click search button to chat."
+msgstr "Pro chatování klikni na tlačítko hledání."
+
+#: src/pages/character/create.tsx:179
+msgid "Click to enable advanced mood settings"
+msgstr "Klepnutím povolíš pokročilé nastavení nálady"
+
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:70
+#: src/pages/character/create.tsx:205
+msgid "Close"
+msgstr "Zavřít"
+
+#: src/pages/forum/[id].tsx:114
+msgctxt "Create a new comment"
+msgid "Comment"
+msgstr "Komentovat"
+
+#: src/pages/forum/[id].tsx:141
+msgid "Comment"
+msgstr "Komentovat"
+
+#: src/pages/forum/[id].tsx:122
+msgid "Comments"
+msgstr "Komentáře"
+
+#: src/pages/roulette/chat.tsx:146
+msgid "Connected."
+msgstr "Připojeno."
+
+#: src/pages/roulette/chat.tsx:142
+msgid "Connecting..."
+msgstr "Připojování..."
+
 #: src/pages/contact.tsx:11
 #: src/pages/contact.tsx:16
 msgid "Contact us"
 msgstr "Kontaktujte nás"
+
+#: src/pages/character/create.tsx:164
+msgid "Cover"
+msgstr "Úvodní obrázek"
+
+#: src/pages/character/create.tsx:208
+msgid "Create"
+msgstr "Vytvořit"
+
+#: src/pages/forum/[id].tsx:135
+msgid "Create a new comment"
+msgstr "Napsat nový komentář"
+
+#: src/pages/forum/index.tsx:45
+msgid "Create a new post"
+msgstr "Vytvořit nový příspěvek"
+
+#: src/pages/character/create.tsx:72
+msgid "Create New Character"
+msgstr "Vytvořit novou postavu"
+
+#: src/components/bot-chat/ChatMessage.tsx:86
+msgid "Delete"
+msgstr "Smazat"
+
+#: src/pages/character/create.tsx:94
+msgid "Description"
+msgstr "Popis"
 
 #: src/components/ActionBar/ActionBar.tsx:27
 msgid "Discover"
@@ -62,6 +166,10 @@ msgstr "Objevuj"
 #: src/pages/discover.tsx:108
 msgid "Discover Characters"
 msgstr "Objevuj postavy"
+
+#: src/components/bot-chat/ChatMessage.tsx:83
+msgid "Edit"
+msgstr "Upravit"
 
 #: src/pages/profile.tsx:135
 msgid "Email"
@@ -75,9 +183,57 @@ msgstr "E-mail je neplatný."
 msgid "Email is too long."
 msgstr "E-mail je příliš dlouhý."
 
+#: src/components/roleplay-roulette/RRInput.tsx:123
+msgid "End Chat"
+msgstr "Ukončit chat"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:47
+msgid "Enter your email"
+msgstr "Zadejte svůj e-mail"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:59
+msgid "Enter your message..."
+msgstr "Zadejte svou zprávu..."
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:41
+msgid "Enter your name"
+msgstr "Zadejte své jméno"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:53
+msgid "Enter your phone"
+msgstr "Zadejte svůj telefon"
+
 #: src/pages/login.tsx:47
 msgid "Error signing in with Google!"
 msgstr "Chyba při přihlášení přes Google!"
+
+#: src/pages/character/create.tsx:140
+msgid "Example dialogue"
+msgstr "Ukázka dialogu"
+
+#: src/pages/roulette/chat.tsx:144
+msgid "Failed to connect."
+msgstr "Připojení se nezdařilo."
+
+#: src/components/profile-page/Stats.tsx:18
+msgid "Followers"
+msgstr "Sledující"
+
+#: src/components/profile-page/Stats.tsx:25
+msgid "Following"
+msgstr "Sleduje"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:25
+msgid "Form submitted!"
+msgstr "Formulář odeslán!"
+
+#: src/pages/forum/index.tsx:18
+msgid "Forum"
+msgstr "Fórum"
+
+#: src/pages/forum/[id].tsx:67
+msgid "Forum Post"
+msgstr "Příspěvek na fóru"
 
 #: src/pages/contact.tsx:19
 msgid "Got a problem? A question? Or just want to say hi? We are here for you."
@@ -95,13 +251,64 @@ msgstr "Domů"
 msgid "How should the character address you?"
 msgstr "Jak by tě měla postava oslovovat?"
 
-#: src/pages/_app.tsx:72
-#~ msgid "I am the best"
-#~ msgstr "I am the best"
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:56
+msgid "How you wish characters to address you..."
+msgstr "Jak si přeješ, aby tě postavy oslovovaly..."
+
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:48
+msgid "Change your user settings"
+msgstr "Změna uživatelského nastavení"
+
+#: src/pages/roulette/chat.tsx:22
+#: src/pages/roulette/index.tsx:22
+msgid "Character Roulette"
+msgstr "Roleplay Ruleta"
+
+#: src/components/AppHeader/AppHeaderUserDropdown.tsx:49
+msgid "Character settings"
+msgstr "Nastavení postavy"
+
+#: src/pages/character/create.tsx:119
+msgid "Character's character"
+msgstr "Osobnost postavy"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:14
+#: src/pages/character/[botId].tsx:87
+msgid "Chat"
+msgstr "Chat"
+
+#: src/pages/character/[botId].tsx:44
+msgid "Chat with {0}"
+msgstr "Chatovat s {0}"
+
+#: src/components/profile-page/Header.tsx:49
+msgid "Check out {0} on Companion."
+msgstr "Koukni na {0} v aplikaci Companion."
+
+#: src/pages/character/create.tsx:193
+msgid "Image for mood 'blushed'"
+msgstr "Obrázek pro náladu 'stud'"
+
+#: src/pages/character/create.tsx:197
+msgid "Image for mood 'happy'"
+msgstr "Obrázek pro náladu 'štěstí'"
+
+#: src/pages/character/create.tsx:185
+msgid "Image for mood 'neutral'"
+msgstr "Obrázek pro náladu 'neutrální'"
+
+#: src/pages/character/create.tsx:189
+msgid "Image for mood 'sad'"
+msgstr "Obrázek pro náladu 'smutek'"
 
 #: src/server/types/updateSelfSchema.ts:34
 msgid "Image url is too long."
 msgstr "Adresa Url obrázku je příliš dlouhá."
+
+#: src/pages/character/create.tsx:160
+msgctxt "New Character page category name"
+msgid "Images"
+msgstr "Obrázky"
 
 #: src/pages/profile.tsx:169
 msgid "Language"
@@ -119,10 +326,19 @@ msgstr "Pojďme prozkoumat nějaké nové postavy."
 msgid "Load more"
 msgstr "Načíst víc"
 
+#: src/pages/character/[botId].tsx:44
+#: src/pages/character/[botId]/[mode].tsx:41
+#: src/pages/forum/index.tsx:24
+#: src/pages/forum/index.tsx:50
+#: src/pages/user/[user].tsx:20
+msgid "Loading..."
+msgstr "Načítání..."
+
 #: src/server/types/updateSelfSchema.ts:38
 msgid "Must be a 2-letter code."
 msgstr "Musí být dvoupísmenný kód."
 
+#: src/pages/character/create.tsx:127
 #: src/pages/profile.tsx:125
 msgid "Name"
 msgstr "Jméno"
@@ -135,13 +351,41 @@ msgstr "Jméno je povinné."
 msgid "Name is too long."
 msgstr "Jméno je příliš dlouhé."
 
+#: src/pages/roulette/chat.tsx:141
+msgid "No available room found!"
+msgstr "Nenalazena žádná volná mistnost!"
+
+#: src/components/roleplay-roulette/RRUserHeader.tsx:62
+msgid "No bio."
+msgstr "Žádné bio."
+
+#: src/components/profile-page/InfoCards.tsx:82
+msgid "No description."
+msgstr "Žádný popis."
+
 #: src/pages/discover.tsx:211
 msgid "No characters found. Try changing your search term."
 msgstr "Nenalezeny žádné postavy. Zkus změnit hledaný výraz."
 
+#: src/pages/character/create.tsx:146
+msgid "NSFW content"
+msgstr "NSFW obsah"
+
 #: src/pages/discover.tsx:193
 msgid "Only display official characters"
 msgstr "Zobrazit jen oficiální postavy"
+
+#: src/pages/character/create.tsx:109
+msgid "Only for friends"
+msgstr "Pouze pro přátele"
+
+#: src/pages/character/create.tsx:133
+msgid "Persona"
+msgstr "Osobnost"
+
+#: src/pages/forum/index.tsx:20
+msgid "Pinned posts"
+msgstr "Připnuté příspěvky"
 
 #: src/pages/discover.tsx:237
 msgid "Popular forum posts"
@@ -156,6 +400,10 @@ msgstr "Populární postavy"
 msgid "Privacy Policy"
 msgstr "Ochrana osobních údajů"
 
+#: src/pages/character/create.tsx:106
+msgid "Private"
+msgstr "Soukromé"
+
 #: src/components/ActionBar/ActionBar.tsx:39
 #: src/pages/profile.tsx:96
 msgid "Profile"
@@ -165,18 +413,117 @@ msgstr "Profil"
 msgid "Profile updated!"
 msgstr "Profil aktualizován!"
 
+#: src/pages/character/create.tsx:103
+msgid "Public"
+msgstr "Veřejné"
+
+#: src/pages/forum/index.tsx:36
+msgid "Recent posts"
+msgstr "Nedávné příspěvky"
+
+#: src/components/bot-chat/SettingsDropdown.tsx:20
+msgid "Remove chat"
+msgstr "Odstranit chat"
+
+#: src/pages/forum/[id].tsx:125
+msgid "replies"
+msgstr "odpovědi"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:19
+#: src/pages/character/[botId].tsx:99
+msgid "Roleplay"
+msgstr "Roleplay"
+
+#: src/pages/character/[botId].tsx:96
+msgid "Roleplay with the character, feels just real!"
+msgstr "Roleplay s postavou - působí skoro skutečně!"
+
 #: src/components/ActionBar/ActionBar.tsx:33
 msgid "Roulette"
 msgstr "Ruleta"
 
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:78
 #: src/pages/profile.tsx:185
 msgid "Save Changes"
 msgstr "Uložit změny"
+
+#: src/pages/roulette/chat.tsx:140
+msgid "Searching..."
+msgstr "Hledání..."
+
+#: src/pages/character/[botId].tsx:71
+msgid "Select one of the available experiences"
+msgstr "Vyber jednu z dostupných možností"
+
+#: src/pages/character/create.tsx:99
+msgid "Select visibility"
+msgstr "Vyber viditelnost"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:73
+msgid "Send message"
+msgstr "Odeslat zprávu"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:73
+msgid "Sending..."
+msgstr "Odesílání..."
+
+#: src/components/bot-chat/SettingsDropdown.tsx:23
+msgid "Settings"
+msgstr "Nastavení"
+
+#: src/components/profile-page/Header.tsx:33
+msgid "Share"
+msgstr "Sdílet"
+
+#: src/components/bot-chat/ShareDropdown.tsx:26
+msgid "Share on Facebook"
+msgstr "Sdílet na Facebooku"
+
+#: src/components/bot-chat/ShareDropdown.tsx:23
+msgid "Share on Instagram"
+msgstr "Sdílet na Instagramu"
+
+#: src/components/bot-chat/ShareDropdown.tsx:20
+msgid "Share on Twitter"
+msgstr "Sdílet na Twitteru"
+
+#: src/components/roleplay-roulette/RRUserHeader.tsx:93
+msgid "Show Profile"
+msgstr "Zobrazit profil"
 
 #: src/pages/login.tsx:146
 msgid "Sign in with google"
 msgstr "Přihlásit se přes Google"
 
+#: src/components/AppHeader/AppHeaderUserDropdown.tsx:45
+msgid "Signed in as"
+msgstr "Přihlášen/a jako"
+
+#: src/pages/roulette/index.tsx:57
+msgid "Start"
+msgstr "Začít"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:56
+msgid "Start conversation"
+msgstr "Zahájit konverzaci"
+
+#: src/pages/character/[botId].tsx:118
+msgid "Start the chat"
+msgstr "Zahájit chat"
+
+#: src/pages/character/[botId].tsx:65
+msgid "Starting chat with {0}"
+msgstr "Zahájit chat s {0}"
+
+#: src/pages/forum/[id].tsx:143
+msgid "Submit"
+msgstr "Odeslat"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:21
+msgid "Talk with the character as if you were there with them."
+msgstr "Mluv s postavou, jako bys byl právě s ní."
+
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:64
 #: src/pages/profile.tsx:159
 msgid "Tell us about yourself"
 msgstr "Řekni nám něco o sobě"
@@ -184,6 +531,30 @@ msgstr "Řekni nám něco o sobě"
 #: src/pages/login.tsx:128
 msgid "The companion that is always by your side."
 msgstr "Společnost, která je vždy po vašem boku."
+
+#: src/pages/character/[botId]/[mode].tsx:167
+msgid "Them"
+msgstr "Oni"
+
+#: src/components/profile-page/InfoCards.tsx:54
+msgid "This user has not created any characters yet :("
+msgstr "Tento uživatel ještě nevytvořil žádné postavy :("
+
+#: src/components/profile-page/InfoCards.tsx:45
+msgid "This user has not set a bio yet. Check back later!"
+msgstr "Tento uživatel si ještě nenastavil bio. Koukni se později!"
+
+#: src/pages/character/create.tsx:87
+msgid "Title"
+msgstr "Název"
+
+#: src/components/ui/FileUploadRaw.tsx:63
+msgid "Uploading..."
+msgstr "Nahrávání..."
+
+#: src/pages/roulette/chat.tsx:145
+msgid "User left."
+msgstr "Uživatel se odpojil."
 
 #: src/pages/profile.tsx:220
 #: src/pages/profile.tsx:221
@@ -198,6 +569,10 @@ msgstr "Uživatelské jméno je povinné."
 msgid "Username is too long."
 msgstr "Uživatelské jméno je příliš dlouhé."
 
+#: src/pages/roulette/chat.tsx:143
+msgid "Waiting for user..."
+msgstr "Čekání na uživatele..."
+
 #: src/pages/profile.tsx:144
 msgid "What is your special skill?"
 msgstr "Jaká je tvoje speciální dovednost?"
@@ -206,6 +581,22 @@ msgstr "Jaká je tvoje speciální dovednost?"
 msgid "What should your characters know about you?"
 msgstr "Co by o tobě měly tvé postavy určitě vědět?"
 
+#: src/pages/character/create.tsx:149
+msgid "Whether the character will produce content not suitable for minors."
+msgstr "Zda bude postava produkovat obsah, který nemusí být vhodný pro mládež."
+
+#: src/pages/character/[botId]/[mode].tsx:168
+msgid "You"
+msgstr "Ty"
+
 #: src/pages/discover.tsx:144
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "Zatím nemáš žádné aktivní chaty. Začni nějaký!"
+
+#: src/components/roleplay-roulette/RRInput.tsx:70
+msgid "Your message..."
+msgstr "Vaše zpráva..."
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:11
+msgid "Your world, your story. You control the character, and you decide how the story will unfold."
+msgstr "Tvůj svět, tvůj příběh. Ty ovládáš postavu a je na tobě, jak se příběh rozvine."

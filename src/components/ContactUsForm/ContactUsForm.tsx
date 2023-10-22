@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { api } from "@lib/api";
 import contactFormSchema from "@/server/types/contactFormSchema";
+import { Trans, t } from "@lingui/macro";
 
 type FormValues = z.infer<typeof contactFormSchema>;
 
@@ -21,7 +22,7 @@ export const ContactUsForm = (props: { className?: string }) => {
 
   const formMutation = api.contact.submitContactForm.useMutation({
     onSuccess: () => {
-      toast.success("Form submitted!");
+      toast.success(t`Form submitted!`);
     },
     onError: (err) => {},
   });
@@ -37,25 +38,25 @@ export const ContactUsForm = (props: { className?: string }) => {
     >
       <Input
         {...register("name")}
-        placeholder="Enter your name"
+        placeholder={t`Enter your name`}
         disabled={isSubmitting || isSubmitSuccessful}
         errorMessage={errors.name?.message}
       />
       <Input
         {...register("email")}
-        placeholder="Enter your email"
+        placeholder={t`Enter your email`}
         disabled={isSubmitting || isSubmitSuccessful}
         errorMessage={errors.email?.message}
       />
       <Input
         {...register("phone")}
-        placeholder="Enter your phone"
+        placeholder={t`Enter your phone`}
         disabled={isSubmitting || isSubmitSuccessful}
         errorMessage={errors.phone?.message}
       />
       <Textarea
         {...register("message")}
-        placeholder="Enter your message..."
+        placeholder={t`Enter your message...`}
         minRows={4}
         disabled={isSubmitting || isSubmitSuccessful}
         errorMessage={errors.message?.message}
@@ -69,7 +70,7 @@ export const ContactUsForm = (props: { className?: string }) => {
           isSubmitSuccessful && "duration-1000 bg-green-500",
         )}
       >
-        {isSubmitting ? "Sending..." : "Send message"}
+        {isSubmitting ? <Trans>Sending...</Trans> : <Trans>Send message</Trans>}
       </Button>
     </form>
   );

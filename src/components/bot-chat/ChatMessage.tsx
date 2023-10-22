@@ -10,6 +10,7 @@ import { twMerge } from "tailwind-merge";
 import { Card, CardBody } from "@nextui-org/card";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Mood } from "@prisma/client";
+import { Trans } from "@lingui/macro";
 
 type Props = {
   message: string;
@@ -79,10 +80,10 @@ function MsgDropdown() {
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem className="text-white" key="edit">
-          Edit
+          <Trans>Edit</Trans>
         </DropdownItem>
         <DropdownItem key="delete" className="text-danger" color="danger">
-          Delete
+          <Trans>Delete</Trans>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

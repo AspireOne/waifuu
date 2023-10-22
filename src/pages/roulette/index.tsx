@@ -6,18 +6,20 @@ import { useState } from "react";
 import { paths } from "@/lib/paths";
 import { addQueryParams } from "@/utils/utils";
 import Title from "@components/ui/Title";
-import { Trans } from "@lingui/macro";
+import { msg, Trans } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 export default function RRIndex() {
   const router = useRouter();
   const [anonymous, setAnonymous] = useState(false);
+  const { _ } = useLingui();
 
   function handleStartClicked() {
     router.push(addQueryParams(paths.RRChat, ["anonymous", "true"]));
   }
 
   return (
-    <Page title={"Character Roulette"} autoBack={false} showActionBar>
+    <Page title={_(msg`Character Roulette`)} autoBack={false} showActionBar>
       <Card>
         <CardBody>
           <Trans>
@@ -52,7 +54,7 @@ export default function RRIndex() {
             color={"primary"}
             onClick={handleStartClicked}
           >
-            Start
+            <Trans>Start</Trans>
           </Button>
           {/*<Switch isSelected={anonymous} onValueChange={setAnonymous}>
             Anonymous mode

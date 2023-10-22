@@ -11,6 +11,8 @@ import {
 import { useForm } from "react-hook-form";
 import { api } from "@/lib/api";
 import { useSession } from "@/hooks/useSession";
+import React from "react";
+import { t, Trans } from "@lingui/macro";
 
 type UserSettingsDialogProps = {
   isOpen: boolean;
@@ -43,7 +45,7 @@ export const AppHeaderUserDropdownSettingsDialog = ({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Change your user settings
+              <Trans>Change your user settings</Trans>
             </ModalHeader>
 
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -51,7 +53,7 @@ export const AppHeaderUserDropdownSettingsDialog = ({
                 <Input
                   {...register("addressedAs")}
                   defaultValue={user?.addressedAs ?? ""}
-                  label="How you wish characters to address you..."
+                  label={t`How you wish characters to address you...`}
                 />
 
                 <Textarea
@@ -59,13 +61,13 @@ export const AppHeaderUserDropdownSettingsDialog = ({
                   className="w-full"
                   minRows={3}
                   defaultValue={user?.about ?? ""}
-                  placeholder="Tell us about yourself..."
+                  placeholder={t`Tell us about yourself`}
                 />
               </ModalBody>
 
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+                  `<Trans>Close</Trans>
                 </Button>
 
                 <Button
@@ -73,7 +75,7 @@ export const AppHeaderUserDropdownSettingsDialog = ({
                   type="submit"
                   color="primary"
                 >
-                  Save Changes
+                  <Trans>Save Changes</Trans>
                 </Button>
               </ModalFooter>
             </form>

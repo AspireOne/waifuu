@@ -7,11 +7,11 @@ type LargeTextProps = {
 
 export const LargeText = ({ content, maxLength, ...props }: LargeTextProps) => {
   return content.length > maxLength ? (
-    <p className="text-white" {...props}>
+    <p className="" {...props}>
       {content.slice(0, maxLength)}...
     </p>
   ) : (
-    <p className="text-white" {...props}>
+    <p className="" {...props}>
       {content}
     </p>
   );

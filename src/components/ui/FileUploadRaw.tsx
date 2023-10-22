@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { apiPostImage } from "@/services/apiImages";
+import { Trans } from "@lingui/macro";
 
 type FileUploadRawProps = {
   onUpload: (id: string) => void;
@@ -59,7 +60,9 @@ export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
           className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center text-gray-600"
         >
           {uploading ? (
-            <span className="text-2xl text-gray-600">Uploading...</span>
+            <span className="text-2xl text-gray-600">
+              <Trans>Uploading...</Trans>
+            </span>
           ) : (
             <span
               className={`text-2xl ${

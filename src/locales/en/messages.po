@@ -14,10 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/server/types/updateSelfSchema.ts:30
-#~ msgid "'About' is long."
-#~ msgstr "'About' is long."
-
-#: src/server/types/updateSelfSchema.ts:30
 msgid "'About' is too long."
 msgstr "'About' is too long."
 
@@ -25,9 +21,21 @@ msgstr "'About' is too long."
 msgid "'Adressed as' is too long."
 msgstr "'Adressed as' is too long."
 
-#: src/pages/roulette/index.tsx:23
+#: src/components/profile-page/Header.tsx:52
+msgid "'Share {0}'s profile with buddies"
+msgstr "'Share {0}'s profile with buddies"
+
+#: src/components/profile-page/Header.tsx:50
+msgid "{0} is active on companion."
+msgstr "{0} is active on companion."
+
+#: src/pages/roulette/index.tsx:25
 msgid "<0>What is Character Roulette?</0>Meet new people, roleplay fictional situations and spark fun conversations. Get matched with a stranger for anonymous, entertaining chats!<1/><2/>Easily skip to new matches and scenarios anytime. Unmask profiles to follow each other and turn chats into connections. Roleplay Roulette creates a space for shared imagination with the tap of a button.<3/><4/><5>How does it work?</5>When you enter a chat room, Character Roulette generates an interesting roleplay scenario or a situation to kickstart the conversation. Let your imagination run wild as you and your match improvise and build a fictional world together. From acting out funny slices of life to pretending you're secret agents on a mission, the possibilities are endless!"
 msgstr "<0>What is Character Roulette?</0>Meet new people, roleplay fictional situations and spark fun conversations. Get matched with a stranger for anonymous, entertaining chats!<1/><2/>Easily skip to new matches and scenarios anytime. Unmask profiles to follow each other and turn chats into connections. Roleplay Roulette creates a space for shared imagination with the tap of a button.<3/><4/><5>How does it work?</5>When you enter a chat room, Character Roulette generates an interesting roleplay scenario or a situation to kickstart the conversation. Let your imagination run wild as you and your match improvise and build a fictional world together. From acting out funny slices of life to pretending you're secret agents on a mission, the possibilities are endless!"
+
+#: src/pages/character/create.tsx:77
+msgid "About Character"
+msgstr "About Character"
 
 #: src/pages/discover.tsx:139
 msgid "Active chats"
@@ -37,6 +45,24 @@ msgstr "Active chats"
 msgid "Addressed As"
 msgstr "Addressed As"
 
+#: src/pages/character/create.tsx:172
+#: src/pages/character/create.tsx:182
+msgid "Advanced mood settings"
+msgstr "Advanced mood settings"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:9
+#: src/pages/character/[botId].tsx:93
+msgid "Adventure"
+msgstr "Adventure"
+
+#: src/pages/character/[botId].tsx:90
+msgid "Adventure-style game. Let the character guide you through the story!"
+msgstr "Adventure-style game. Let the character guide you through the story!"
+
+#: src/components/roleplay-roulette/RRInput.tsx:110
+msgid "Are you sure you want to end the chat?"
+msgstr "Are you sure you want to end the chat?"
+
 #: src/pages/profile.tsx:143
 msgid "Bio"
 msgstr "Bio"
@@ -45,10 +71,88 @@ msgstr "Bio"
 msgid "Bio is too long."
 msgstr "Bio is too long."
 
+#: src/components/roleplay-roulette/RRInput.tsx:114
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:16
+msgid "Casually chat with the character. Hey, how r u?"
+msgstr "Casually chat with the character. Hey, how r u?"
+
+#: src/pages/character/create.tsx:113
+msgid "Category"
+msgstr "Category"
+
+#: src/pages/character/[botId].tsx:84
+msgid "Classic chat experience, talk about your day, interests, or try to make a romantic partner!"
+msgstr "Classic chat experience, talk about your day, interests, or try to make a romantic partner!"
+
+#: src/pages/roulette/chat.tsx:147
+msgid "Click search button to chat."
+msgstr "Click search button to chat."
+
+#: src/pages/character/create.tsx:179
+msgid "Click to enable advanced mood settings"
+msgstr "Click to enable advanced mood settings"
+
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:70
+#: src/pages/character/create.tsx:205
+msgid "Close"
+msgstr "Close"
+
+#: src/pages/forum/[id].tsx:114
+msgctxt "Create a new comment"
+msgid "Comment"
+msgstr "Comment"
+
+#: src/pages/forum/[id].tsx:141
+msgid "Comment"
+msgstr "Comment"
+
+#: src/pages/forum/[id].tsx:122
+msgid "Comments"
+msgstr "Comments"
+
+#: src/pages/roulette/chat.tsx:146
+msgid "Connected."
+msgstr "Connected."
+
+#: src/pages/roulette/chat.tsx:142
+msgid "Connecting..."
+msgstr "Connecting..."
+
 #: src/pages/contact.tsx:11
 #: src/pages/contact.tsx:16
 msgid "Contact us"
 msgstr "Contact us"
+
+#: src/pages/character/create.tsx:164
+msgid "Cover"
+msgstr "Cover"
+
+#: src/pages/character/create.tsx:208
+msgid "Create"
+msgstr "Create"
+
+#: src/pages/forum/[id].tsx:135
+msgid "Create a new comment"
+msgstr "Create a new comment"
+
+#: src/pages/forum/index.tsx:45
+msgid "Create a new post"
+msgstr "Create a new post"
+
+#: src/pages/character/create.tsx:72
+msgid "Create New Character"
+msgstr "Create New Character"
+
+#: src/components/bot-chat/ChatMessage.tsx:86
+msgid "Delete"
+msgstr "Delete"
+
+#: src/pages/character/create.tsx:94
+msgid "Description"
+msgstr "Description"
 
 #: src/components/ActionBar/ActionBar.tsx:27
 msgid "Discover"
@@ -57,6 +161,10 @@ msgstr "Discover"
 #: src/pages/discover.tsx:108
 msgid "Discover Characters"
 msgstr "Discover Characters"
+
+#: src/components/bot-chat/ChatMessage.tsx:83
+msgid "Edit"
+msgstr "Edit"
 
 #: src/pages/profile.tsx:135
 msgid "Email"
@@ -70,9 +178,57 @@ msgstr "Email is invalid."
 msgid "Email is too long."
 msgstr "Email is too long."
 
+#: src/components/roleplay-roulette/RRInput.tsx:123
+msgid "End Chat"
+msgstr "End Chat"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:47
+msgid "Enter your email"
+msgstr "Enter your email"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:59
+msgid "Enter your message..."
+msgstr "Enter your message..."
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:41
+msgid "Enter your name"
+msgstr "Enter your name"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:53
+msgid "Enter your phone"
+msgstr "Enter your phone"
+
 #: src/pages/login.tsx:47
 msgid "Error signing in with Google!"
 msgstr "Error signing in with Google!"
+
+#: src/pages/character/create.tsx:140
+msgid "Example dialogue"
+msgstr "Example dialogue"
+
+#: src/pages/roulette/chat.tsx:144
+msgid "Failed to connect."
+msgstr "Failed to connect."
+
+#: src/components/profile-page/Stats.tsx:18
+msgid "Followers"
+msgstr "Followers"
+
+#: src/components/profile-page/Stats.tsx:25
+msgid "Following"
+msgstr "Following"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:25
+msgid "Form submitted!"
+msgstr "Form submitted!"
+
+#: src/pages/forum/index.tsx:18
+msgid "Forum"
+msgstr "Forum"
+
+#: src/pages/forum/[id].tsx:67
+msgid "Forum Post"
+msgstr "Forum Post"
 
 #: src/pages/contact.tsx:19
 msgid "Got a problem? A question? Or just want to say hi? We are here for you."
@@ -90,13 +246,64 @@ msgstr "Home"
 msgid "How should the character address you?"
 msgstr "How should the character address you?"
 
-#: src/pages/_app.tsx:72
-#~ msgid "I am the best"
-#~ msgstr "I am the best"
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:56
+msgid "How you wish characters to address you..."
+msgstr "How you wish characters to address you..."
+
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:48
+msgid "Change your user settings"
+msgstr "Change your user settings"
+
+#: src/pages/roulette/chat.tsx:22
+#: src/pages/roulette/index.tsx:22
+msgid "Character Roulette"
+msgstr "Character Roulette"
+
+#: src/components/AppHeader/AppHeaderUserDropdown.tsx:49
+msgid "Character settings"
+msgstr "Character settings"
+
+#: src/pages/character/create.tsx:119
+msgid "Character's character"
+msgstr "Character's character"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:14
+#: src/pages/character/[botId].tsx:87
+msgid "Chat"
+msgstr "Chat"
+
+#: src/pages/character/[botId].tsx:44
+msgid "Chat with {0}"
+msgstr "Chat with {0}"
+
+#: src/components/profile-page/Header.tsx:49
+msgid "Check out {0} on Companion."
+msgstr "Check out {0} on Companion."
+
+#: src/pages/character/create.tsx:193
+msgid "Image for mood 'blushed'"
+msgstr "Image for mood 'blushed'"
+
+#: src/pages/character/create.tsx:197
+msgid "Image for mood 'happy'"
+msgstr "Image for mood 'happy'"
+
+#: src/pages/character/create.tsx:185
+msgid "Image for mood 'neutral'"
+msgstr "Image for mood 'neutral'"
+
+#: src/pages/character/create.tsx:189
+msgid "Image for mood 'sad'"
+msgstr "Image for mood 'sad'"
 
 #: src/server/types/updateSelfSchema.ts:34
 msgid "Image url is too long."
 msgstr "Image url is too long."
+
+#: src/pages/character/create.tsx:160
+msgctxt "New Character page category name"
+msgid "Images"
+msgstr "Images"
 
 #: src/pages/profile.tsx:169
 msgid "Language"
@@ -114,10 +321,19 @@ msgstr "Let's explore some new characters."
 msgid "Load more"
 msgstr "Load more"
 
+#: src/pages/character/[botId].tsx:44
+#: src/pages/character/[botId]/[mode].tsx:41
+#: src/pages/forum/index.tsx:24
+#: src/pages/forum/index.tsx:50
+#: src/pages/user/[user].tsx:20
+msgid "Loading..."
+msgstr "Loading..."
+
 #: src/server/types/updateSelfSchema.ts:38
 msgid "Must be a 2-letter code."
 msgstr "Must be a 2-letter code."
 
+#: src/pages/character/create.tsx:127
 #: src/pages/profile.tsx:125
 msgid "Name"
 msgstr "Name"
@@ -130,13 +346,41 @@ msgstr "Name is required."
 msgid "Name is too long."
 msgstr "Name is too long."
 
+#: src/pages/roulette/chat.tsx:141
+msgid "No available room found!"
+msgstr "No available room found!"
+
+#: src/components/roleplay-roulette/RRUserHeader.tsx:62
+msgid "No bio."
+msgstr "No bio."
+
+#: src/components/profile-page/InfoCards.tsx:82
+msgid "No description."
+msgstr "No description."
+
 #: src/pages/discover.tsx:211
 msgid "No characters found. Try changing your search term."
 msgstr "No characters found. Try changing your search term."
 
+#: src/pages/character/create.tsx:146
+msgid "NSFW content"
+msgstr "NSFW content"
+
 #: src/pages/discover.tsx:193
 msgid "Only display official characters"
 msgstr "Only display official characters"
+
+#: src/pages/character/create.tsx:109
+msgid "Only for friends"
+msgstr "Only for friends"
+
+#: src/pages/character/create.tsx:133
+msgid "Persona"
+msgstr "Persona"
+
+#: src/pages/forum/index.tsx:20
+msgid "Pinned posts"
+msgstr "Pinned posts"
 
 #: src/pages/discover.tsx:237
 msgid "Popular forum posts"
@@ -151,6 +395,10 @@ msgstr "Popular Characters"
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
+#: src/pages/character/create.tsx:106
+msgid "Private"
+msgstr "Private"
+
 #: src/components/ActionBar/ActionBar.tsx:39
 #: src/pages/profile.tsx:96
 msgid "Profile"
@@ -160,18 +408,117 @@ msgstr "Profile"
 msgid "Profile updated!"
 msgstr "Profile updated!"
 
+#: src/pages/character/create.tsx:103
+msgid "Public"
+msgstr "Public"
+
+#: src/pages/forum/index.tsx:36
+msgid "Recent posts"
+msgstr "Recent posts"
+
+#: src/components/bot-chat/SettingsDropdown.tsx:20
+msgid "Remove chat"
+msgstr "Remove chat"
+
+#: src/pages/forum/[id].tsx:125
+msgid "replies"
+msgstr "replies"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:19
+#: src/pages/character/[botId].tsx:99
+msgid "Roleplay"
+msgstr "Roleplay"
+
+#: src/pages/character/[botId].tsx:96
+msgid "Roleplay with the character, feels just real!"
+msgstr "Roleplay with the character, feels just real!"
+
 #: src/components/ActionBar/ActionBar.tsx:33
 msgid "Roulette"
 msgstr "Roulette"
 
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:78
 #: src/pages/profile.tsx:185
 msgid "Save Changes"
 msgstr "Save Changes"
+
+#: src/pages/roulette/chat.tsx:140
+msgid "Searching..."
+msgstr "Searching..."
+
+#: src/pages/character/[botId].tsx:71
+msgid "Select one of the available experiences"
+msgstr "Select one of the available experiences"
+
+#: src/pages/character/create.tsx:99
+msgid "Select visibility"
+msgstr "Select visibility"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:73
+msgid "Send message"
+msgstr "Send message"
+
+#: src/components/ContactUsForm/ContactUsForm.tsx:73
+msgid "Sending..."
+msgstr "Sending..."
+
+#: src/components/bot-chat/SettingsDropdown.tsx:23
+msgid "Settings"
+msgstr "Settings"
+
+#: src/components/profile-page/Header.tsx:33
+msgid "Share"
+msgstr "Share"
+
+#: src/components/bot-chat/ShareDropdown.tsx:26
+msgid "Share on Facebook"
+msgstr "Share on Facebook"
+
+#: src/components/bot-chat/ShareDropdown.tsx:23
+msgid "Share on Instagram"
+msgstr "Share on Instagram"
+
+#: src/components/bot-chat/ShareDropdown.tsx:20
+msgid "Share on Twitter"
+msgstr "Share on Twitter"
+
+#: src/components/roleplay-roulette/RRUserHeader.tsx:93
+msgid "Show Profile"
+msgstr "Show Profile"
 
 #: src/pages/login.tsx:146
 msgid "Sign in with google"
 msgstr "Sign in with google"
 
+#: src/components/AppHeader/AppHeaderUserDropdown.tsx:45
+msgid "Signed in as"
+msgstr "Signed in as"
+
+#: src/pages/roulette/index.tsx:57
+msgid "Start"
+msgstr "Start"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:56
+msgid "Start conversation"
+msgstr "Start conversation"
+
+#: src/pages/character/[botId].tsx:118
+msgid "Start the chat"
+msgstr "Start the chat"
+
+#: src/pages/character/[botId].tsx:65
+msgid "Starting chat with {0}"
+msgstr "Starting chat with {0}"
+
+#: src/pages/forum/[id].tsx:143
+msgid "Submit"
+msgstr "Submit"
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:21
+msgid "Talk with the character as if you were there with them."
+msgstr "Talk with the character as if you were there with them."
+
+#: src/components/AppHeader/AppHeaderUserDropdownSettingsDialog.tsx:64
 #: src/pages/profile.tsx:159
 msgid "Tell us about yourself"
 msgstr "Tell us about yourself"
@@ -179,6 +526,30 @@ msgstr "Tell us about yourself"
 #: src/pages/login.tsx:128
 msgid "The companion that is always by your side."
 msgstr "The companion that is always by your side."
+
+#: src/pages/character/[botId]/[mode].tsx:167
+msgid "Them"
+msgstr "Them"
+
+#: src/components/profile-page/InfoCards.tsx:54
+msgid "This user has not created any characters yet :("
+msgstr "This user has not created any characters yet :("
+
+#: src/components/profile-page/InfoCards.tsx:45
+msgid "This user has not set a bio yet. Check back later!"
+msgstr "This user has not set a bio yet. Check back later!"
+
+#: src/pages/character/create.tsx:87
+msgid "Title"
+msgstr "Title"
+
+#: src/components/ui/FileUploadRaw.tsx:63
+msgid "Uploading..."
+msgstr "Uploading..."
+
+#: src/pages/roulette/chat.tsx:145
+msgid "User left."
+msgstr "User left."
 
 #: src/pages/profile.tsx:220
 #: src/pages/profile.tsx:221
@@ -193,6 +564,10 @@ msgstr "Username is required."
 msgid "Username is too long."
 msgstr "Username is too long."
 
+#: src/pages/roulette/chat.tsx:143
+msgid "Waiting for user..."
+msgstr "Waiting for user..."
+
 #: src/pages/profile.tsx:144
 msgid "What is your special skill?"
 msgstr "What is your special skill?"
@@ -201,6 +576,22 @@ msgstr "What is your special skill?"
 msgid "What should your characters know about you?"
 msgstr "What should your characters know about you?"
 
+#: src/pages/character/create.tsx:149
+msgid "Whether the character will produce content not suitable for minors."
+msgstr "Whether the character will produce content not suitable for minors."
+
+#: src/pages/character/[botId]/[mode].tsx:168
+msgid "You"
+msgstr "You"
+
 #: src/pages/discover.tsx:144
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "You don't have any active chats yet. Start one now!"
+
+#: src/components/roleplay-roulette/RRInput.tsx:70
+msgid "Your message..."
+msgstr "Your message..."
+
+#: src/components/bot-chat/ChatSelectTabs.tsx:11
+msgid "Your world, your story. You control the character, and you decide how the story will unfold."
+msgstr "Your world, your story. You control the character, and you decide how the story will unfold."

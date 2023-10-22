@@ -17,6 +17,8 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsPerson } from "react-icons/bs";
 import UserProfile from "@/pages/user/[user]";
 import { Avatar } from "@nextui-org/avatar";
+import { msg, Trans } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 export default function RRUserHeader(props: {
   className?: string;
@@ -24,6 +26,7 @@ export default function RRUserHeader(props: {
 }) {
   const router = useRouter();
   const [profileOpen, setProfileOpen] = React.useState<boolean>(false);
+  const { _ } = useLingui();
 
   function showProfile() {
     setProfileOpen(true);
@@ -56,7 +59,7 @@ export default function RRUserHeader(props: {
         <div className="flex flex-col flex-1">
           <h3 className="text-white">{props.user.info.username}</h3>
           <h6 className="text-gray-400 line-clamp-1">
-            {props.user.info.bio || "No bio."}
+            {props.user.info.bio || _(msg`No bio.`)}
           </h6>
         </div>
 
@@ -87,7 +90,7 @@ function HeaderUserDropdown(props: {
           key={"profile"}
           onClick={props.handleShowProfile}
         >
-          Show Profile
+          <Trans>Show Profile</Trans>
         </DropdownItem>
         {/*TODO: Implement.*/}
         {/*<DropdownItem

@@ -5,6 +5,7 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { BsShareFill } from "react-icons/bs";
+import { Trans } from "@lingui/macro";
 
 const ShareDropdown = () => {
   return (
@@ -16,13 +17,13 @@ const ShareDropdown = () => {
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem className="text-white" key="edit">
-          Share on Twitter
+          <Trans>Share on Twitter</Trans>
         </DropdownItem>
         <DropdownItem className="text-white" key="edit">
-          Share on Instagram
+          <Trans>Share on Instagram</Trans>
         </DropdownItem>
         <DropdownItem className="text-white" key="edit">
-          Share on Facebook
+          <Trans>Share on Facebook</Trans>
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>

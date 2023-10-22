@@ -3,6 +3,10 @@ import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
 import { Preferences } from "@capacitor/preferences";
 
+/**
+ * This file contains everything related to internationalization.
+ */
+
 export type LocaleCode = "en" | "cs";
 const defaultLoc: LocaleCode = "en";
 

@@ -7,14 +7,17 @@ import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import Header from "@/components/profile-page/Header";
 import InfoCards from "@/components/profile-page/InfoCards";
+import { useLingui } from "@lingui/react";
+import { msg } from "@lingui/macro";
 
 export default function UserProfile(props: { username?: string }) {
   const router = useRouter();
   const username = props.username || (router.query.user as string | undefined);
+  const { _ } = useLingui();
 
   // Needed to make the gradient stay below other elements.
   return (
-    <Page title={username || "Loading..."} unprotected>
+    <Page title={username || _(msg`Loading...`)} unprotected>
       <div
         className={
           "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-secondary-400/30 via-secondary-400/5"

@@ -12,6 +12,8 @@ import { BsFillStopCircleFill } from "react-icons/bs";
 import { LuRefreshCcw } from "react-icons/lu";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { twMerge } from "tailwind-merge";
+import { useLingui } from "@lingui/react";
+import { msg, Trans } from "@lingui/macro";
 
 export const RRInput = (props: {
   isFirstChat: boolean;
@@ -25,6 +27,7 @@ export const RRInput = (props: {
 }) => {
   const [input, setInput] = React.useState<string>("");
   const [confirming, setConfirming] = React.useState<boolean>(false);
+  const { _ } = useLingui();
 
   useEffect(() => {
     if (!props.inChat) setInput("");
@@ -64,7 +67,7 @@ export const RRInput = (props: {
         value={input}
         onValueChange={setInput}
         disabled={!props.inChat}
-        placeholder={props.placeholder ?? "Your message..."}
+        placeholder={props.placeholder ?? _(msg`Your message...`)}
         variant={"bordered"}
         className={"flex-1"}
         id={"rr-main-textarea"} // Otherwise it logs an error.
@@ -104,11 +107,13 @@ function ConfirmCloseModal(props: {
         {(onClose) => (
           <>
             <ModalHeader>
-              <h4>Are you sure you want to end the chat?</h4>
+              <h4>
+                <Trans>Are you sure you want to end the chat?</Trans>
+              </h4>
             </ModalHeader>
             <ModalFooter>
               <Button variant={"light"} color={"primary"} onClick={onClose}>
-                Cancel
+                <Trans>Cancel</Trans>
               </Button>
               <Button
                 color={"danger"}
@@ -117,7 +122,7 @@ function ConfirmCloseModal(props: {
                   props.onConfirmed();
                 }}
               >
-                End Chat
+                <Trans>End Chat</Trans>
               </Button>
             </ModalFooter>
           </>

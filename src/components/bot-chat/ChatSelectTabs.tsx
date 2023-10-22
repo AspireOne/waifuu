@@ -1,24 +1,26 @@
 import { Button, Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { BotMode } from "@prisma/client";
+import { t, Trans } from "@lingui/macro";
 
-const tabs = [
-  {
-    title: "Adventure",
-    key: BotMode.ADVENTURE,
-    description:
-      "(i) Your world, your story. You control the character, and you decide how the story will unfold.",
-  },
-  {
-    title: "Chat",
-    key: BotMode.CHAT,
-    description: "(i) Casually chat with the character. Hey, how r u?",
-  },
-  {
-    title: "Roleplay",
-    key: BotMode.ROLEPLAY,
-    description: "(i) Talk with the character as if you were there with them.",
-  },
-];
+function getTabs() {
+  return [
+    {
+      title: t`Adventure`,
+      key: BotMode.ADVENTURE,
+      description: t`Your world, your story. You control the character, and you decide how the story will unfold.`,
+    },
+    {
+      title: t`Chat`,
+      key: BotMode.CHAT,
+      description: t`Casually chat with the character. Hey, how r u?`,
+    },
+    {
+      title: t`Roleplay`,
+      key: BotMode.ROLEPLAY,
+      description: t`Talk with the character as if you were there with them.`,
+    },
+  ];
+}
 
 const ChatSelectTabs = ({
   onSelect,
@@ -37,7 +39,7 @@ const ChatSelectTabs = ({
         variant="bordered"
         aria-label="Disabled Options"
       >
-        {tabs.map((tab) => {
+        {getTabs().map((tab) => {
           return (
             <Tab key={tab.key} title={tab.title}>
               <Card>
@@ -50,7 +52,7 @@ const ChatSelectTabs = ({
                   variant="solid"
                   className="mt-1 mx-2"
                 >
-                  Start conversation
+                  <Trans>Start conversation</Trans>
                 </Button>
               </Card>
             </Tab>
