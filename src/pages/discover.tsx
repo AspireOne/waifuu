@@ -41,17 +41,21 @@ const Discover = () => {
   const [hasNextPage, setHasNextPage] = useState(true);
 
   const toggleNsfw = () => {
+    setBots([]);
     setSearchData({
       ...searchData,
       nsfw: !searchData.nsfw,
+      cursor: 0,
     });
   };
 
   const toggleOfficialBots = () => {
+    setBots([]);
     setSearchData({
       ...searchData,
       officialBots:
         searchData.officialBots === null ? BotSource.OFFICIAL : null,
+      cursor: 0,
     });
   };
 
@@ -93,11 +97,12 @@ const Discover = () => {
 
   useEffect(() => {
     const subscription = watch((value) => {
+      setBots([]);
       setSearchData({
         textFilter: value.textFilter,
         nsfw: value.nsfw as boolean,
         officialBots: value.officialBots,
-        cursor: value.cursor as number,
+        cursor: 0,
       });
     });
 
