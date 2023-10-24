@@ -80,7 +80,7 @@ const Discover = () => {
         setHasNextPage(data.hasNextPage);
       },
       refetchOnMount: false,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -155,9 +155,10 @@ const Discover = () => {
             )}
 
             <div className="flex w-full flex-row mt-3 gap-5 overflow-scroll overflow-x-visible">
-              {conversationBots.data?.map((bot) => {
+              {conversationBots.data?.map((bot, index) => {
                 return (
                   <CharacterCard
+                    key={index}
                     chatType={bot.chatType}
                     chatId={bot.chatId}
                     bot={bot}
@@ -222,8 +223,8 @@ const Discover = () => {
             )}
 
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-fit mx-auto">
-              {bots.map((bot) => {
-                return <CharacterCard bot={bot} />;
+              {bots.map((bot, index) => {
+                return <CharacterCard key={index} bot={bot} />;
               })}
             </div>
 

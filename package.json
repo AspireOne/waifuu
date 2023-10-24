@@ -19,7 +19,8 @@
     "t:pull": "crowdin pull && pnpm t:compile",
     "t:pre-translate": "crowdin pre-translate --method=mt --engine-id=410300",
     "t:sync": "pnpm t:extract && pnpm t:push && pnpm t:pull",
-    "t:sync:translate": "pnpm t:extract && pnpm t:push && pnpm t:pre-translate && pnpm t:pull"
+    "t:sync:translate": "pnpm t:extract && pnpm t:push && pnpm t:pre-translate && pnpm t:pull",
+    "prisma:reset": "prisma db push --force-reset && prisma db seed"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

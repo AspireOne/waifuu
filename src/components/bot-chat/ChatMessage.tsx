@@ -15,7 +15,6 @@ import { Trans } from "@lingui/macro";
 type Props = {
   message: string;
   className?: string;
-  key: any;
   author: {
     bot: boolean;
     avatar?: string | null;
@@ -24,7 +23,7 @@ type Props = {
   mood?: Mood;
 };
 
-const ChatMessage = ({ author, message, key, className, mood }: Props) => {
+const ChatMessage = ({ author, message, className, mood }: Props) => {
   const formattedMessage = useMemo(() => {
     return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
@@ -38,7 +37,6 @@ const ChatMessage = ({ author, message, key, className, mood }: Props) => {
 
   return (
     <div
-      key={key}
       className={twMerge(
         `flex mx-auto w-full gap-2`,
         author.bot ? "ml-0" : "mr-0 flex-row",

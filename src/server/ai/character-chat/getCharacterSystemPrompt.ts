@@ -1,35 +1,41 @@
 import { Bot, BotMode, User, BotChat } from "@prisma/client";
 import { PipelinePromptTemplate, PromptTemplate } from "langchain/prompts";
-import { Prisma } from ".prisma/client";
+import { BaseOutputParser } from "langchain/dist/schema/output_parser";
 
 const fullCharacterPrompt = PromptTemplate.fromTemplate(
-  "{introduction}\n\n{exampleDialogue}\n\n{userInfo}\n{nsfwText}",
+  "{formatInstructions} {introduction} {exampleDialogue} {userAddress} {userAbout} {nsfwText}",
 );
 
 // ------ Mode-specific introduction prompts ------ //
 const roleplayIntroductionPrompt = PromptTemplate.fromTemplate(
-  "Roleplay {characterName}, a {characterPersona}.",
+  'You are {characterName}. You casually chat with a person. Your persona: "{characterPersona}"',
 );
 
 const adventureIntroductionPrompt = PromptTemplate.fromTemplate(
-  "You are now having an adventure with the user. Lead the conversation while roleplaying {characterName}, a {characterPersona}.",
+  "You are having an adventure with a user. Lead the conversation. Be neutral, just slightly show the following persona: {characterPersona}",
 );
 
 const chatModeIntroductionPrompt = PromptTemplate.fromTemplate(
-  "You are chatting with the user. Lead the conversation like with a friend everyday. Roleplay {characterName}, a {characterPersona}.",
+  "You are having a very casual conversation with a friend. You should stay neutral, just slightly show the following persona: {characterPersona}",
 );
 // ------------------------------------------------- //
 
-const userInfoPrompt = PromptTemplate.fromTemplate(
-  "Address the user as '{addressedAs}'. Here is some context about the user: '{about}'",
+const userAboutPrompt = PromptTemplate.fromTemplate(
+  "Here is some context about the user: '{about}'.",
+);
+
+const userAddressPrompt = PromptTemplate.fromTemplate(
+  "If you need to, address the user as '{addressedAs}'.",
 );
 
 const allowNsfwPrompt = PromptTemplate.fromTemplate(
   "You {nsfwPronoun} respond in a NSFW way.",
 );
 
-// TODO
-const examplePrompt = PromptTemplate.fromExamples(
+// ------ Mode-specific examples ------ //
+
+// TODO: fill a default example and create two more example for other modes.
+const roleplayExamplePrompt = PromptTemplate.fromExamples(
   [],
   "",
   [],
@@ -37,9 +43,17 @@ const examplePrompt = PromptTemplate.fromExamples(
   "Example dialogue: ",
 );
 
+// ------------------------------------ //
+
+const emptyPrompt = PromptTemplate.fromTemplate("");
+
 export async function getCharacterSystemPrompt(
   chat: BotChat & { bot: Bot } & { user: User },
+  parser?: BaseOutputParser,
 ) {
+  const bot = chat.bot;
+  const user = chat.user;
+
   const prompt = new PipelinePromptTemplate({
     pipelinePrompts: [
       {
@@ -47,12 +61,17 @@ export async function getCharacterSystemPrompt(
         prompt: getIntroductionPrompt(chat.botMode),
       },
       {
+        // If the user does not provide an example, provide a default one.
         name: "exampleDialogue",
-        prompt: examplePrompt,
+        prompt: /*roleplayExamplePrompt*/ emptyPrompt,
       },
       {
-        name: "userInfo",
-        prompt: userInfoPrompt,
+        name: "userAddress",
+        prompt: user.addressedAs ? userAddressPrompt : emptyPrompt,
+      },
+      {
+        name: "userAbout",
+        prompt: user.about ? userAboutPrompt : emptyPrompt,
       },
       {
         name: "nsfwText",
@@ -62,10 +81,8 @@ export async function getCharacterSystemPrompt(
     finalPrompt: fullCharacterPrompt,
   });
 
-  const bot = chat.bot;
-  const user = chat.user;
-
   return await prompt.format({
+    formatInstructions: parser ? parser.getFormatInstructions() + "\n" : "",
     characterName: bot.characterName,
     characterPersona: bot.characterPersona,
     addressedAs: user.addressedAs,

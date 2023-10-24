@@ -24,8 +24,6 @@ const nextApiHandler = createNextApiHandler({
   },
   onError: ({ path, error }) => {
     console.error(`❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`);
-    console.error("stack: ", error.stack);
-    console.log("cause: ", error.cause);
   },
 });
 

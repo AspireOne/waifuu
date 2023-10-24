@@ -17,6 +17,7 @@ import { msg } from "@lingui/macro";
 const BotChat = () => {
   const router = useRouter();
   const { _ } = useLingui();
+  const session = useSession();
 
   const path = router.asPath.split("/");
   const chatId = path[path.length - 2] as string;
@@ -24,8 +25,15 @@ const BotChat = () => {
 
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
-  const { data: bot } = useBot(chatId, mode, router.isReady);
-  const chat = useBotChat(chatId, router.isReady);
+  const { data: bot } = useBot(
+    chatId,
+    mode,
+    router.isReady && session.status === "authenticated",
+  );
+  const chat = useBotChat(
+    chatId,
+    router.isReady && session.status === "authenticated",
+  );
 
   function handleScrollChange() {
     if (window.scrollY === 0) chat.loadMore();
@@ -163,15 +171,15 @@ const ChatMessages = (props: {
       ref={containerRef}
       className="flex flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll fixed bottom-14"
     >
-      {props.messages.map((message, num) => {
+      {props.messages.map((message, index) => {
         const botName = props.bot!.characterName || _(msg`Them`);
         const userName = user?.name || _(msg`You`);
         const isBot = message.role === "BOT";
 
         return (
           <ChatMessage
+            key={index}
             className={"z-[10]"}
-            key={message.id}
             author={{
               bot: isBot,
               name: isBot ? botName : userName,

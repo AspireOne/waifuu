@@ -21,10 +21,9 @@ export async function retrieveUser(req: NextApiRequest): Promise<User | null> {
         id: decodedToken.uid,
       },
     });
-    console.log("User:", user);
     return user;
   } catch (e) {
-    console.log("Error getting user:", e);
+    console.error("Error getting user:", e);
     return null;
   }
 }

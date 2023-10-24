@@ -51,14 +51,11 @@ export const api = createTRPCNext<AppRouter>({
         defaultOptions: {
           // Disable most refetching because I deem it useless and wasteful.
           queries: {
-            // These are in-line with the defaults.
             retry: 3,
             refetchInterval: false,
             refetchIntervalInBackground: false,
             refetchOnReconnect: true,
             refetchOnMount: true,
-
-            //refetchOnWindowFocus: false,
           },
         },
       },

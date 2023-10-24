@@ -11,9 +11,10 @@ const ChatTypingIndicator = (props: { className?: string }) => {
         props.className,
       )}
     >
-      {DELAYS.map((delay) => {
+      {DELAYS.map((delay, index) => {
         return (
           <motion.span
+            key={index}
             animate={{
               translateY: [1, -4, 1],
               transition: {
