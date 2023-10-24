@@ -7,7 +7,7 @@ import { useSession } from "@/hooks/useSession";
 import { useRouter } from "next/router";
 import { paths } from "@/lib/paths";
 import { AppHeader } from "src/components/AppHeader";
-import { normalizePath } from "@/utils/utils";
+import { normalizePath } from "@lib/utils";
 
 function Page(
   props: PropsWithChildren<{

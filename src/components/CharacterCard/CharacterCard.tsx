@@ -4,7 +4,7 @@ import Link from "next/link";
 import { paths } from "@/lib/paths";
 import { LargeText } from "../ui/LargeText";
 import { MdVerified } from "react-icons/md";
-import { makeDownloadPath, normalizePath } from "@/utils/utils";
+import { makeDownloadPath, normalizePath } from "@lib/utils";
 
 type CharacterCardProps = {
   bot: Bot;

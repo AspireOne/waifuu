@@ -7,7 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { Button } from "@nextui-org/react";
 import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
 import { IoChatbubbles, IoChatbubblesOutline } from "react-icons/io5";
-import { normalizePath } from "@/utils/utils";
+import { normalizePath } from "@lib/utils";
 import { t } from "@lingui/macro";
 // import svg assets/icons/history.svg
 

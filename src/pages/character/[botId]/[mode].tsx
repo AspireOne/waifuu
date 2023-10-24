@@ -10,7 +10,7 @@ import ChatInput from "@/components/bot-chat/ChatInput";
 import { ChatTypingIndicator } from "@/components/bot-chat/ChatTypingIndicator";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSession } from "@/hooks/useSession";
-import { makeDownloadPath } from "@/utils/utils";
+import { makeDownloadPath } from "@lib/utils";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/macro";
 

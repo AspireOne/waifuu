@@ -1,4 +1,4 @@
-import { apiClient } from "@/services/api";
+import { apiClient } from "@lib/apiClient";
 
 export type apiPostImageType = {
   message: {

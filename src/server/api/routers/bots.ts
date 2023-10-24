@@ -8,9 +8,11 @@ import {
 import Replicate from "replicate";
 import { env } from "@/server/env";
 import { TRPCError } from "@trpc/server";
-import { BotMode, Mood, Prisma } from "@prisma/client";
+import { BotChatRole, BotMode, Mood, Prisma } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
-import { prompts } from "@/server/utils/prompt";
+import { getCharacterSystemPrompt } from "@/server/prompts/getCharacterSystemPrompt";
+import { getInitialMessagePrompt } from "@/server/prompts/prompts";
+import { BotChatMessage } from "@prisma/client";
 
 const replicate = new Replicate({
   auth: env.REPLICATE_API_TOKEN,
@@ -125,27 +127,24 @@ export const botsRouter = createTRPCRouter({
         },
       });
 
+      if (!chat) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Chat not found.",
+        });
+      }
+
       let output;
       try {
-        const response = (await replicate.run(
+        output = (await replicate.run(
           "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
           {
             input: {
-              system_prompt:
-                `Your responses must be short.\n` +
-                `${prompts.intro(
-                  chat?.bot.characterName!,
-                  chat?.bot.characterPersona!,
-                  chat?.bot.characterDialogue!,
-                )}\n` +
-                `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
-                `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
-              prompt: prompts.initialMessage(),
+              system_prompt: getCharacterSystemPrompt(chat),
+              prompt: getInitialMessagePrompt,
             },
           },
         )) as string[];
-
-        output = response;
       } catch (e) {
         console.log(e);
 
@@ -162,7 +161,7 @@ export const botsRouter = createTRPCRouter({
         data: {
           chatId: input.chatId,
           content: outputStr,
-          // @ts-ignore make this from the message in future
+          // @ts-ignore TODO: make this from the message in future
           mood: Math.random() > 0.5 ? Mood.BLUSHED : Mood.HAPPY,
           role: "BOT",
         },
@@ -421,11 +420,12 @@ export const botsRouter = createTRPCRouter({
         }),
       ]);
 
-      const _messages = messages.map((message) => {
-        return { user: message.role === "USER", content: message.content };
-      });
-
-      const processedMessages = processMessages(_messages);
+      if (!chat) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Chat not found.",
+        });
+      }
 
       let output;
       try {
@@ -433,16 +433,8 @@ export const botsRouter = createTRPCRouter({
           "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
           {
             input: {
-              system_prompt:
-                "Your responses must be short." +
-                `${prompts.intro(
-                  chat?.bot.characterName!,
-                  chat?.bot.characterPersona!,
-                  chat?.bot.characterDialogue!,
-                )}\n` +
-                `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
-                `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
-              prompt: processedMessages,
+              system_prompt: getCharacterSystemPrompt(chat),
+              prompt: prepareMessages(messages),
             },
           },
         )) as string[];
@@ -488,15 +480,16 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const prepareMessage = (message: BotChatMessage) => {
+  return message.role === BotChatRole.USER
+    ? `[INST] ${message.content} [/INST]`
+    : `${message.content}`;
+};
+
 /**
- * Processes the messages to put it as a prompt for a bot.
+ * Processes the messages to put it as a prompt for a bot. Messages MUST be processed.
  * */
-const processMessages = (
-  messages: {
-    user: boolean;
-    content: string;
-  }[],
-) => {
+const prepareMessages = (messages: BotChatMessage[]) => {
   // In the future, the prompt will have to be altered to account for the following:
   // 1. ! The messages will have to be somehow truncated to fit into context window.
   // 2. Account for loss of context between messages (vector db / embeddings / extrahování důležitých věcí a dosazení do promptu jako kontext).
@@ -504,7 +497,9 @@ const processMessages = (
   // 4. Account for images.
   return messages
     .map((message) =>
-      message.user ? `[INST] ${message.content} [/INST]` : `${message.content}`,
+      message.role === BotChatRole.USER
+        ? `[INST] ${message.content} [/INST]`
+        : `${message.content}`,
     )
     .join("\n");
 };

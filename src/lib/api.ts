@@ -9,7 +9,7 @@ import { getIdToken } from "@/lib/firebase/getIdToken";
 import { Constants } from "@/lib/constants";
 import { observable } from "@trpc/server/observable";
 import { toast } from "react-toastify";
-import { showErrorToast } from "@utils/utils";
+import { showErrorToast } from "@lib/utils";
 import { Preferences } from "@capacitor/preferences";
 import { getLocale } from "@lib/i18n";
 

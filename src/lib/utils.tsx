@@ -1,4 +1,4 @@
-import { apiBase } from "@/lib/api";
+import { apiBase } from "@lib/api";
 import React from "react";
 import { toast } from "react-toastify";
 

@@ -50,16 +50,16 @@ msgstr "Addressed As"
 msgid "Advanced mood settings"
 msgstr "Advanced mood settings"
 
-#: src/components/bot-chat/ChatSelectTabs.tsx:9
-#: src/pages/character/[botId].tsx:93
+#: src/components/bot-chat/ChatSelectTabs.tsx:8
+#: src/pages/character/[botId].tsx:97
 msgid "Adventure"
 msgstr "Adventure"
 
-#: src/pages/character/[botId].tsx:90
+#: src/pages/character/[botId].tsx:93
 msgid "Adventure-style game. Let the character guide you through the story!"
 msgstr "Adventure-style game. Let the character guide you through the story!"
 
-#: src/components/roleplay-roulette/RRInput.tsx:110
+#: src/components/roleplay-roulette/RRInput.tsx:111
 msgid "Are you sure you want to end the chat?"
 msgstr "Are you sure you want to end the chat?"
 
@@ -71,11 +71,11 @@ msgstr "Bio"
 msgid "Bio is too long."
 msgstr "Bio is too long."
 
-#: src/components/roleplay-roulette/RRInput.tsx:114
+#: src/components/roleplay-roulette/RRInput.tsx:116
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/components/bot-chat/ChatSelectTabs.tsx:16
+#: src/components/bot-chat/ChatSelectTabs.tsx:15
 msgid "Casually chat with the character. Hey, how r u?"
 msgstr "Casually chat with the character. Hey, how r u?"
 
@@ -83,7 +83,7 @@ msgstr "Casually chat with the character. Hey, how r u?"
 msgid "Category"
 msgstr "Category"
 
-#: src/pages/character/[botId].tsx:84
+#: src/pages/character/[botId].tsx:85
 msgid "Classic chat experience, talk about your day, interests, or try to make a romantic partner!"
 msgstr "Classic chat experience, talk about your day, interests, or try to make a romantic partner!"
 
@@ -100,16 +100,16 @@ msgstr "Click to enable advanced mood settings"
 msgid "Close"
 msgstr "Close"
 
-#: src/pages/forum/[id].tsx:114
+#: src/pages/forum/[id].tsx:118
 msgctxt "Create a new comment"
 msgid "Comment"
 msgstr "Comment"
 
-#: src/pages/forum/[id].tsx:141
+#: src/pages/forum/[id].tsx:147
 msgid "Comment"
 msgstr "Comment"
 
-#: src/pages/forum/[id].tsx:122
+#: src/pages/forum/[id].tsx:126
 msgid "Comments"
 msgstr "Comments"
 
@@ -134,7 +134,7 @@ msgstr "Cover"
 msgid "Create"
 msgstr "Create"
 
-#: src/pages/forum/[id].tsx:135
+#: src/pages/forum/[id].tsx:139
 msgid "Create a new comment"
 msgstr "Create a new comment"
 
@@ -178,7 +178,7 @@ msgstr "Email is invalid."
 msgid "Email is too long."
 msgstr "Email is too long."
 
-#: src/components/roleplay-roulette/RRInput.tsx:123
+#: src/components/roleplay-roulette/RRInput.tsx:125
 msgid "End Chat"
 msgstr "End Chat"
 
@@ -226,7 +226,7 @@ msgstr "Form submitted!"
 msgid "Forum"
 msgstr "Forum"
 
-#: src/pages/forum/[id].tsx:67
+#: src/pages/forum/[id].tsx:74
 msgid "Forum Post"
 msgstr "Forum Post"
 
@@ -259,7 +259,7 @@ msgstr "Change your user settings"
 msgid "Character Roulette"
 msgstr "Character Roulette"
 
-#: src/components/AppHeader/AppHeaderUserDropdown.tsx:49
+#: src/components/AppHeader/AppHeaderUserDropdown.tsx:51
 msgid "Character settings"
 msgstr "Character settings"
 
@@ -267,8 +267,8 @@ msgstr "Character settings"
 msgid "Character's character"
 msgstr "Character's character"
 
-#: src/components/bot-chat/ChatSelectTabs.tsx:14
-#: src/pages/character/[botId].tsx:87
+#: src/components/bot-chat/ChatSelectTabs.tsx:13
+#: src/pages/character/[botId].tsx:89
 msgid "Chat"
 msgstr "Chat"
 
@@ -420,16 +420,16 @@ msgstr "Recent posts"
 msgid "Remove chat"
 msgstr "Remove chat"
 
-#: src/pages/forum/[id].tsx:125
+#: src/pages/forum/[id].tsx:129
 msgid "replies"
 msgstr "replies"
 
-#: src/components/bot-chat/ChatSelectTabs.tsx:19
-#: src/pages/character/[botId].tsx:99
+#: src/components/bot-chat/ChatSelectTabs.tsx:18
+#: src/pages/character/[botId].tsx:105
 msgid "Roleplay"
 msgstr "Roleplay"
 
-#: src/pages/character/[botId].tsx:96
+#: src/pages/character/[botId].tsx:101
 msgid "Roleplay with the character, feels just real!"
 msgstr "Roleplay with the character, feels just real!"
 
@@ -490,7 +490,7 @@ msgstr "Show Profile"
 msgid "Sign in with google"
 msgstr "Sign in with google"
 
-#: src/components/AppHeader/AppHeaderUserDropdown.tsx:45
+#: src/components/AppHeader/AppHeaderUserDropdown.tsx:46
 msgid "Signed in as"
 msgstr "Signed in as"
 
@@ -498,11 +498,11 @@ msgstr "Signed in as"
 msgid "Start"
 msgstr "Start"
 
-#: src/components/bot-chat/ChatSelectTabs.tsx:56
+#: src/components/bot-chat/ChatSelectTabs.tsx:55
 msgid "Start conversation"
 msgstr "Start conversation"
 
-#: src/pages/character/[botId].tsx:118
+#: src/pages/character/[botId].tsx:126
 msgid "Start the chat"
 msgstr "Start the chat"
 
@@ -510,11 +510,11 @@ msgstr "Start the chat"
 msgid "Starting chat with {0}"
 msgstr "Starting chat with {0}"
 
-#: src/pages/forum/[id].tsx:143
+#: src/pages/forum/[id].tsx:150
 msgid "Submit"
 msgstr "Submit"
 
-#: src/components/bot-chat/ChatSelectTabs.tsx:21
+#: src/components/bot-chat/ChatSelectTabs.tsx:20
 msgid "Talk with the character as if you were there with them."
 msgstr "Talk with the character as if you were there with them."
 
@@ -543,7 +543,7 @@ msgstr "This user has not set a bio yet. Check back later!"
 msgid "Title"
 msgstr "Title"
 
-#: src/components/ui/FileUploadRaw.tsx:63
+#: src/components/ui/FileUploadRaw.tsx:64
 msgid "Uploading..."
 msgstr "Uploading..."
 
@@ -592,6 +592,6 @@ msgstr "You don't have any active chats yet. Start one now!"
 msgid "Your message..."
 msgstr "Your message..."
 
-#: src/components/bot-chat/ChatSelectTabs.tsx:11
+#: src/components/bot-chat/ChatSelectTabs.tsx:10
 msgid "Your world, your story. You control the character, and you decide how the story will unfold."
 msgstr "Your world, your story. You control the character, and you decide how the story will unfold."

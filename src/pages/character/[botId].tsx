@@ -9,7 +9,7 @@ import { Card } from "@nextui-org/card";
 import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
 import { CustomRadio } from "@/components/ui/CustomRadio";
 import { useSession } from "@/hooks/useSession";
-import { makeDownloadPath } from "@/utils/utils";
+import { makeDownloadPath } from "@lib/utils";
 import { useLingui } from "@lingui/react";
 import { msg, Trans } from "@lingui/macro";
 

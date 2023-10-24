@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { apiPostImage } from "@/services/apiImages";
+import { apiPostImage } from "@/api-routes/apiImages";
 import { Trans } from "@lingui/macro";
 
 type FileUploadRawProps = {
