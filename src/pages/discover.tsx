@@ -79,6 +79,8 @@ const Discover = () => {
         setBots([...bots, ...data.bots]);
         setHasNextPage(data.hasNextPage);
       },
+      refetchOnMount: false,
+      refetchOnWindowFocus: false
     },
   );
 

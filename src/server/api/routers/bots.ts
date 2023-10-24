@@ -33,37 +33,43 @@ export const botsRouter = createTRPCRouter({
         .optional(),
     )
     .query(async ({ input, ctx }) => {
+      // TODO: Remake this better
+      const query = {
+        visibility: Visibility.PUBLIC,
+        source: input?.sourceFilter ?? undefined,
+        characterNsfw: input?.nsfw ? undefined : false,
+        ...(input?.textFilter && {
+          OR: [
+            {
+              name: {
+                contains: input?.textFilter ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: input?.textFilter ?? undefined,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }),
+      };
+
       const bots = await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         skip: !input?.cursor ? 0 : input.cursor,
-        where: {
-          visibility: Visibility.PUBLIC,
-          source: input?.sourceFilter ?? undefined,
-          // If nsfw is true, it includes ALL bots. If it's false, it includes ONLY NON-nsfw bots.
-          characterNsfw: input?.nsfw ? undefined : false,
-          ...(input?.textFilter && {
-            OR: [
-              {
-                name: {
-                  contains: input?.textFilter ?? undefined,
-                  mode: "insensitive",
-                },
-              },
-              {
-                description: {
-                  contains: input?.textFilter ?? undefined,
-                  mode: "insensitive",
-                },
-              },
-            ],
-          }),
-        },
+        where: query as any,
         orderBy: {
           createdAt: "desc",
         },
       });
 
-      const hasNextPage = bots.length > 0;
+      const count = await ctx.prisma.bot.count({
+        where: query as any,
+      });
+
+      const hasNextPage = count > (input?.limit || 0) + (input?.cursor || 0);
 
       return {
         bots,
