@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { api } from "~/utils/api";
+import { api } from "@/lib/api";
 import { PresenceChannel } from "pusher-js";
-import PresenceChannelMember from "~/server/types/presenceChannelMember";
+import PresenceChannelMember from "@/server/types/presenceChannelMember";
 
 export type RRMessage = {
   content: string;
@@ -19,7 +19,7 @@ export type RRSystemMessage = {
   type: "system-message";
 };
 
-export type RRMessages = (RRMessage | RRSystemMessage)[];
+export type RRMessagesType = (RRMessage | RRSystemMessage)[];
 
 let msgId = 0;
 /**
@@ -27,7 +27,7 @@ let msgId = 0;
  */
 export default function useRRMessages(channel: PresenceChannel | null) {
   const [prevChannelName, setPrevChannelName] = useState<string | null>(null);
-  const [messages, setMessages] = useState<RRMessages>([]);
+  const [messages, setMessages] = useState<RRMessagesType>([]);
 
   const sendMsgMutation = api.RRChat.sendMessage.useMutation({
     onMutate: () => {

@@ -2,10 +2,10 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "~/server/api/trpc";
-import { z, ZodSchema } from "zod";
+} from "@/server/api/trpc";
+import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import updateSelfSchema from "~/server/types/updateSelfSchema";
+import updateSelfSchema from "@/server/types/updateSelfSchema";
 
 export const usersRouter = createTRPCRouter({
   getSelf: publicProcedure
@@ -17,7 +17,7 @@ export const usersRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       if (!ctx.user?.id) return null;
 
-      return await ctx.prisma.user.findUnique({
+      const user = await ctx.prisma.user.findUnique({
         where: {
           id: ctx.user?.id,
         },
@@ -31,6 +31,12 @@ export const usersRouter = createTRPCRouter({
           }),
         },
       });
+
+      if (user && !user.image) {
+        user.image =
+          "https://user-images.githubusercontent.com/57546404/275817598-fd2c2c4b-108a-4ea3-a451-614d79afd405.jpg";
+      }
+      return user;
     }),
 
   getPublic: publicProcedure
@@ -59,7 +65,9 @@ export const usersRouter = createTRPCRouter({
       return {
         id: user.id,
         name: user.name,
-        image: user.image,
+        image:
+          user.image ??
+          "https://user-images.githubusercontent.com/57546404/275817598-fd2c2c4b-108a-4ea3-a451-614d79afd405.jpg",
         bots: user.Bot,
         username: user.username,
         bio: user.bio,

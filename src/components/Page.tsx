@@ -1,13 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { PropsWithChildren, useEffect } from "react";
-import PageHead from "~/components/PageHead";
+import PageHead from "@/components/PageHead";
 import { twMerge } from "tailwind-merge";
-import SignInModal from "~/components/SignInModal";
-import { BottomNavbar } from "~/components/BottomNavbar";
-import useSession from "~/hooks/useSession";
+import { ActionBar } from "@/components/ActionBar";
+import { useSession } from "@/hooks/useSession";
 import { useRouter } from "next/router";
-import paths, { normalizePath } from "~/utils/paths";
-import Header from "~/components/Header";
+import { paths } from "@/lib/paths";
+import { AppHeader } from "src/components/AppHeader";
+import { normalizePath } from "@lib/utils";
 
 function Page(
   props: PropsWithChildren<{
@@ -79,12 +79,12 @@ function Page(
       {/*TODO: PC Navbar.*/}
 
       {showHeader && (
-        <Header
+        <AppHeader
           backButtonEnabled={(autoBack && prevPathExists) || !!backPath}
           onBackButtonPressed={handleBackClick}
         >
           {props.title}
-        </Header>
+        </AppHeader>
       )}
 
       <PageWrapper
@@ -96,7 +96,7 @@ function Page(
         {props.children}
       </PageWrapper>
 
-      {showActionBar && <BottomNavbar />}
+      {showActionBar && <ActionBar />}
     </div>
   );
 }
@@ -110,15 +110,17 @@ function PageWrapper(
   }>,
 ) {
   const router = useRouter();
-  const { user, status } = useSession();
+  const { status } = useSession();
 
   const paddingBottom = props.showingBottomNav ? "pb-20" : "pb-4";
   const paddingTop = props.showingHeader ? "pt-20" : "pt-4";
 
-  if (!props.unprotected && status === "unauthenticated") {
-    const currPath = normalizePath(router.pathname);
-    router.push(paths.login(currPath));
-  }
+  useEffect(() => {
+    if (!props.unprotected && status === "unauthenticated") {
+      const currPath = normalizePath(router.pathname);
+      router.push(paths.login(currPath));
+    }
+  }, [status, props.unprotected, router, router.pathname]);
 
   return (
     <AnimatePresence>

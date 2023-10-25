@@ -2,17 +2,22 @@ import { Button, Card, Image } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
 import { AiFillFacebook } from "react-icons/ai";
 import { BsTwitter } from "react-icons/bs";
-import Page from "~/components/Page";
-import { api } from "~/utils/api";
+import Page from "@/components/Page";
+import { api } from "@/lib/api";
 import { useRouter } from "next/router";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { toast } from "react-toastify";
-import paths from "~/utils/paths";
-import useSession from "~/hooks/useSession";
-import { useEffect } from "react";
-import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
-import getOrInitFirebaseAuth from "~/lib/getFirebaseAuth";
-import { Preferences } from "@capacitor/preferences";
+import { useSession } from "@/hooks/useSession";
+import React, { useEffect } from "react";
+import {
+  GoogleAuthProvider,
+  signInWithCredential,
+  signOut,
+} from "firebase/auth";
+import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
+import { Constants } from "@/lib/constants";
+import { semanticPaths } from "@lib/paths";
+import { t, Trans } from "@lingui/macro";
 
 function getCsrfToken() {
   return document.cookie
@@ -34,12 +39,12 @@ async function signInUsingGoogleRaw() {
     const credential = GoogleAuthProvider.credential(
       result.credential?.idToken,
     );
-    const auth = await getOrInitFirebaseAuth();
+    const auth = getOrInitFirebaseAuth();
     await signInWithCredential(auth, credential);
     return true;
   } catch (e) {
     console.error("Error signing in using Google!", e);
-    toast("Error signing in with Google!", { type: "error" });
+    toast(t`Error signing in with Google!`, { type: "error" });
     return false;
   }
 }
@@ -47,13 +52,14 @@ async function signInUsingGoogleRaw() {
 const Login = () => {
   const router = useRouter();
   const session = useSession();
-  const redirect = router.query.redirect;
+  const redirect = router.query.redirect as string;
 
+  // Check for session.user instead of session.status.
   useEffect(() => {
-    if (session.status === "authenticated") {
-      router.replace(paths.home);
+    if (session.user) {
+      router.replace(redirect || semanticPaths.appIndex);
     }
-  }, [session.status]);
+  }, [session.user, session.user?.id]);
 
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: async (data, variables, context) => {
@@ -61,16 +67,16 @@ const Login = () => {
         "Successfully logged in with Google after contacing backend!",
         JSON.stringify(data),
       );
-      FirebaseAuthentication.getCurrentUser().then((user) => {
-        console.log("User is", user);
-      });
 
-      router.replace((redirect as string) || paths.home);
+      //router.replace((redirect as string) || semanticPaths.appIndex);
+      // redirect to "redirect" using window.location.href while reloading the page.
+      window.location.href = redirect || semanticPaths.appIndex;
       session.refetch();
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);
-      await Preferences.remove({ key: "idToken" });
+      await FirebaseAuthentication.signOut();
+      await signOut(getOrInitFirebaseAuth());
     },
   });
 
@@ -91,8 +97,6 @@ const Login = () => {
       forceRefresh: true,
     });
 
-    await Preferences.set({ key: "idToken", value: idToken });
-
     if (!idToken) {
       console.error(
         "Error getting ID token from Google! This should not happen!",
@@ -110,7 +114,7 @@ const Login = () => {
   }
 
   return (
-    <Page title={"Log in"} unprotected>
+    <Page title={"Log in"} unprotected autoBack={false}>
       <Image
         alt="background"
         loading="eager"
@@ -123,7 +127,7 @@ const Login = () => {
 
       <div className="fixed w-full max-w-[500px] left-[50%] top-15 z-30 translate-x-[-50%] p-7">
         <h1 className="text-4xl font-extrabold text-white">
-          The companion that is always by your side.
+          <Trans>The companion that is always by your side.</Trans>
         </h1>
 
         <Image
@@ -141,14 +145,14 @@ const Login = () => {
             startContent={<FcGoogle />}
             onClick={handleGoogleSignIn}
           >
-            Login with Google
+            <Trans>Sign in with google</Trans>
           </Button>
-          <Button size="lg" startContent={<AiFillFacebook />}>
+          {/*<Button size="lg" startContent={<AiFillFacebook />}>
             Login with Facebook
           </Button>
           <Button size="lg" startContent={<BsTwitter />}>
             Login with Twitter
-          </Button>
+          </Button>*/}
         </Card>
       </div>
     </Page>

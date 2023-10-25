@@ -1,3 +1,5 @@
+import { Trans, t, msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 import {
   Button,
   Chip,
@@ -6,22 +8,23 @@ import {
   ModalContent,
   Textarea,
 } from "@nextui-org/react";
+import { FaHeart, FaReply } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaHeart, FaReply } from "react-icons/fa";
-import { ForumPostComment } from "~/components/Forum/ForumPostComment";
-import Page from "~/components/Page";
-import { Flex } from "~/components/shared/Flex";
-import { api } from "~/utils/api";
+import { ForumPostComment } from "@/components/forum/ForumPostComment";
+import { Flex } from "@/components/ui/Flex";
+import Page from "@/components/Page";
+import { api } from "@/lib/api";
 import moment from "moment";
-import { makeDownloadPath } from "~/utils/paths";
+import { makeDownloadPath } from "@lib/utils";
 
 type CreateFormPostForm = {
   content: string;
 };
 
 export default function ForumPostPage() {
+  const { _ } = useLingui();
   const { id } = useRouter().query;
 
   const [commentInputOpen, setCommentInputOpen] = useState(false);
@@ -68,7 +71,7 @@ export default function ForumPostPage() {
   };
 
   return (
-    <Page title="Forum Post" className="space-y-4">
+    <Page title={_(msg`Forum Post`)} className="space-y-4">
       <header className="w-full">
         <Image
           isLoading={post.isLoading}
@@ -112,16 +115,18 @@ export default function ForumPostPage() {
 
           <Button onClick={() => setCommentInputOpen(true)} color="primary">
             <FaReply />
-            Comment
+            <Trans context={"Create a new comment"}>Comment</Trans>
           </Button>
         </div>
       </header>
 
       <section className="flex flex-col gap-2">
         <div className="flex flex-row gap-2 align-center mt-4">
-          <h1 className="text-xl font-bold">Comments</h1>
+          <h1 className="text-xl font-bold">
+            <Trans>Comments</Trans>
+          </h1>
           <label className="mt-0.5 text-gray-500">
-            {postComments.data?.length} replies
+            {postComments.data?.length} <Trans>replies</Trans>
           </label>
         </div>
 
@@ -130,14 +135,19 @@ export default function ForumPostPage() {
           onClose={() => setCommentInputOpen(false)}
         >
           <ModalContent className="p-3">
-            <h1 className="text-lg font-bold">Create a new comment</h1>
+            <h1 className="text-lg font-bold">
+              <Trans>Create a new comment</Trans>
+            </h1>
             <form
               className="flex flex-col gap-2"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <Textarea {...register("content")} placeholder="Comment" />
+              <Textarea
+                {...register("content")}
+                placeholder={_(msg`Comment`)}
+              />
               <Button isLoading={createCommentMutation.isLoading} type="submit">
-                Submit
+                <Trans>Submit</Trans>
               </Button>
             </form>
           </ModalContent>

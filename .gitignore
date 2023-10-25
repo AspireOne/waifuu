@@ -50,3 +50,5 @@ service-account.json
 .minio.sys
 uploads
 volumes
+# Sentry Config File
+.sentryclirc

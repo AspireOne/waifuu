@@ -1,7 +1,8 @@
 import { createNextApiHandler } from "@trpc/server/adapters/next";
-import { appRouter } from "~/server/api/root";
-import { createTRPCContext } from "~/server/api/trpc";
-import metaHandler from "~/pages/api/metaHandler";
+import { appRouter } from "@/server/api/root";
+import { createTRPCContext } from "@/server/api/trpc";
+import metaHandler from "@/server/lib/metaHandler";
+import { toast } from "react-toastify";
 
 // export API handler
 const nextApiHandler = createNextApiHandler({
@@ -21,14 +22,9 @@ const nextApiHandler = createNextApiHandler({
       },
     };
   },
-  onError:
-    process.env.NODE_ENV === "development"
-      ? ({ path, error }) => {
-          console.error(
-            `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
-          );
-        }
-      : undefined,
+  onError: ({ path, error }) => {
+    console.error(`❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`);
+  },
 });
 
 export default metaHandler.public(nextApiHandler);

@@ -2,11 +2,10 @@ import { promises as fs } from "fs";
 import path from "path";
 import * as formidable from "formidable";
 import * as minio from "minio";
-import { env } from "~/server/env";
-import generateUUID from "~/utils/utils";
-import { prisma } from "~/server/lib/db";
-import { retrieveUser } from "~/pages/api/utils";
-import metaHandler from "~/pages/api/metaHandler";
+import { env } from "@/server/env";
+import generateUUID from "@lib/utils";
+import { prisma } from "@/server/lib/db";
+import metaHandler from "@/server/lib/metaHandler";
 
 type ProcessedFiles = Array<[string, formidable.File]>;
 type ResultData = {

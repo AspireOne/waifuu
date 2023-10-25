@@ -1,23 +1,30 @@
 import Image from "next/image";
 import React from "react";
-import Page from "~/components/Page";
+import Page from "@/components/Page";
 import { Capacitor } from "@capacitor/core";
-import Home from "~/pages/home";
 import { useRouter } from "next/router";
-import paths from "~/utils/paths";
+import { Constants } from "@/lib/constants";
+import Discover from "@/pages/discover";
+import { useSession } from "@hooks/useSession";
+import { semanticPaths } from "@lib/paths";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
 // So if we are building for a native app, we export Homepage instead.
 
 // prettier-ignore
-export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Home : function LandingPage() {
+export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Discover : function LandingPage() {
+  const {status, user} = useSession();
   const router = useRouter();
+
   React.useEffect(() => {
     if (Capacitor.isNativePlatform()) {
-      // replace current path with /home without reloading and without adding a new entry to the history.
-      window.history.replaceState(null, document.title, paths.home);
+      router.replace(semanticPaths.appIndex);
     }
   }, []);
+
+  React.useEffect(() => {
+    if (status === "authenticated") router.push(semanticPaths.appIndex);
+  }, [status]);
 
   // Todo: meta description.
   return (

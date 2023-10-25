@@ -1,6 +1,6 @@
 import * as minio from "minio";
-import { env } from "~/server/env";
-import metaHandler from "~/pages/api/metaHandler";
+import { env } from "@/server/env";
+import metaHandler from "@/server/lib/metaHandler";
 
 const MinioClient = new minio.Client({
   endPoint: "127.0.0.1",

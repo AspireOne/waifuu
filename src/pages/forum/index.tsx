@@ -1,11 +1,12 @@
-import { Button, toggle } from "@nextui-org/react";
+import { Trans, t } from "@lingui/macro";
+import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { CreateForumPostModal } from "~/components/Forum/CreateForumPostModal";
-import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
-import { PinnedPost } from "~/components/Forum/PinnedPost";
-import Page from "~/components/Page";
-import { api } from "~/utils/api";
+import { CreateForumPostModal } from "@/components/forum/CreateForumPostModal";
+import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
+import { PinnedPost } from "@/components/forum/PinnedPost";
+import Page from "@/components/Page";
+import { api } from "@/lib/api";
 
 export default function ForumPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
@@ -14,10 +15,14 @@ export default function ForumPage() {
   const posts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
 
   return (
-    <Page title="Forum" unprotected>
-      <h1 className="text-xl font-bold">Pinned posts</h1>
+    <Page title={t`Forum`} unprotected>
+      <h1 className="text-xl font-bold">
+        <Trans>Pinned posts</Trans>
+      </h1>
       {posts.isLoading || !posts.data ? (
-        <p>Loading...</p>
+        <p>
+          <Trans>Loading...</Trans>
+        </p>
       ) : (
         <div className="flex flex-col gap-2 mt-5">
           {posts.data.map((item) => {
@@ -27,7 +32,9 @@ export default function ForumPage() {
       )}
 
       <div className="flex flex-row gap-2 mt-7">
-        <h1 className="text-xl font-bold">Recent posts</h1>
+        <h1 className="text-xl font-bold">
+          <Trans>Recent posts</Trans>
+        </h1>
         <Button
           onClick={toggleCreatePostOpen}
           variant="bordered"
@@ -35,11 +42,13 @@ export default function ForumPage() {
           className="w-fit mx-auto mr-0"
         >
           <FaPlus />
-          Create new post
+          <Trans>Create a new post</Trans>
         </Button>
       </div>
       {posts.isLoading || !posts.data ? (
-        <p>Loading...</p>
+        <p>
+          <Trans>Loading...</Trans>
+        </p>
       ) : (
         <div className="flex flex-col gap-2 mt-5">
           {posts.data.map((item) => {

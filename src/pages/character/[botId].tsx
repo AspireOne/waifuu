@@ -1,53 +1,53 @@
 import { useRouter } from "next/router";
-import { api } from "~/utils/api";
-import React, { useEffect } from "react";
-import paths, { makeDownloadPath } from "~/utils/paths";
-import Page from "~/components/Page";
+import { api } from "@/lib/api";
+import React from "react";
+import { paths } from "@/lib/paths";
+import Page from "@/components/Page";
 import { BotMode } from "@prisma/client";
 import Skeleton from "react-loading-skeleton";
 import { Card } from "@nextui-org/card";
-import {
-  Button,
-  Image,
-  Input,
-  RadioGroup,
-  Spacer,
-  Textarea,
-} from "@nextui-org/react";
-import { CustomRadio } from "~/components/shared/CustomRadio";
-import useSession from "~/hooks/useSession";
+import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
+import { CustomRadio } from "@/components/ui/CustomRadio";
+import { useSession } from "@/hooks/useSession";
+import { makeDownloadPath } from "@lib/utils";
+import { useLingui } from "@lingui/react";
+import { msg, Trans } from "@lingui/macro";
+import { useForm } from "react-hook-form";
+
+type FormProps = {
+  botMode: BotMode;
+  userContext: string;
+};
 
 // Main page of the bot for creating new chats.
 const ChatMainMenu = () => {
   const router = useRouter();
   const { botId } = router.query;
   const { user } = useSession();
+  const { _ } = useLingui();
 
-  const createBotChat = api.bots.createBotChat.useMutation();
+  const createBotChat = api.bots.createBotChat.useMutation({
+    onSuccess: (data) => {
+      router.push(paths.botChat(data.id, bot.data?.id ?? ""));
+    },
+  });
   const bot = api.bots.getBot.useQuery({ botId: botId as string });
 
-  const [botMode, setBotMode] = React.useState<BotMode>(BotMode.CHAT);
+  const { register, setValue, handleSubmit } = useForm<FormProps>();
 
-  const onSubmit = () => {
+  const onSubmit = (data: FormProps) => {
     if (!bot.data || !bot.data?.id) return;
 
-    createBotChat.mutateAsync(
-      {
-        botId: bot.data.id,
-        botMode,
-      },
-      {
-        onSuccess(data) {
-          router.push(paths.botChat(data.id, bot.data?.id ?? ""));
-        },
-      },
-    );
+    createBotChat.mutate({
+      botId: bot.data.id,
+      ...data,
+    });
   };
 
   return (
     <Page
       title={
-        bot.isLoading ? "Loading Character..." : `Chat with ${bot.data?.name}`
+        bot.isLoading ? _(msg`Loading...`) : _(msg`Chat with ${bot.data?.name}`)
       }
       className={"space-y-12"}
     >
@@ -68,60 +68,70 @@ const ChatMainMenu = () => {
               <Spacer x={2} y={2} />
 
               <h1 className="title-2xl font-semibold">
-                Starting chat with{" "}
-                {bot.isLoading ? <Skeleton /> : bot.data?.name}
+                <Trans>
+                  Starting chat with{" "}
+                  {bot.isLoading ? <Skeleton /> : bot.data?.name}
+                </Trans>
               </h1>
               <p className="text-gray-400">
-                Select one of the available chat types
+                <Trans>Select one of the available experiences</Trans>
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-3">
           <RadioGroup
-            value={botMode}
-            onValueChange={(value) => setBotMode(value as BotMode)}
+            onValueChange={(value) => setValue("botMode", value as BotMode)}
             className="w-full"
           >
             <CustomRadio
-              description="Classic chat experience, talk about your day, interests or try to make romantic partner!"
+              description={_(
+                msg`Classic chat experience, talk about your day, interests, or try to make a romantic partner!`,
+              )}
               value={BotMode.CHAT}
             >
-              Chat
+              <Trans>Chat</Trans>
             </CustomRadio>
             <CustomRadio
-              description="Go for a funny adventure like in the characters natural environment"
+              description={_(
+                msg`Adventure-style game. Let the character guide you through the story!`,
+              )}
               value={BotMode.ADVENTURE}
             >
-              Adventure
+              <Trans>Adventure</Trans>
             </CustomRadio>
             <CustomRadio
-              description="Roleplay with the character, feels just real!"
+              description={_(
+                msg`Roleplay with the character, feels just real!`,
+              )}
               value={BotMode.ROLEPLAY}
             >
-              Roleplay
+              <Trans>Roleplay</Trans>
             </CustomRadio>
           </RadioGroup>
 
           <Spacer y={7} />
 
           <Textarea
-            label="Your context"
-            description="This is default context for bot, meaning they will remember everything you'll type here"
+            {...register("userContext")}
+            label={_(`Your context`)}
+            description={_(
+              `This is the default context for the character - they will remember everything you'll type here.`,
+            )}
             defaultValue={user?.about ?? ""}
           />
-        </div>
 
-        <div className="p-3">
-          <Button
-            isLoading={createBotChat.isLoading}
-            onClick={onSubmit}
-            className="w-full"
-          >
-            Start the chat
-          </Button>
-        </div>
+          <div className="p-3 mt-4">
+            <Button
+              isLoading={createBotChat.isLoading}
+              type="submit"
+              className="w-full"
+            >
+              <Trans>Start the chat</Trans>
+            </Button>
+          </div>
+        </form>
       </Card>
     </Page>
   );

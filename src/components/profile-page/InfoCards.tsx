@@ -1,12 +1,13 @@
 import React, { PropsWithChildren } from "react";
 import { Chip } from "@nextui-org/react";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { api } from "~/utils/api";
+import { api } from "@/lib/api";
 import { Bot } from "@prisma/client";
 import Link from "next/link";
-import paths from "~/utils/paths";
+import { paths } from "@/lib/paths";
 import { FaEye, FaHeart } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
+import { Trans } from "@lingui/macro";
 
 function InfoCard(
   props: PropsWithChildren<{
@@ -40,13 +41,19 @@ export default function InfoCards(props: { username?: string }) {
     <>
       <InfoCard isLoaded={!isInitialLoading} title={"Bio"} className={"mt-20"}>
         <p>
-          {user?.bio || "This user has not set a bio yet. Check back later!"}
+          {user?.bio || (
+            <Trans>This user has not set a bio yet. Check back later!</Trans>
+          )}
         </p>
       </InfoCard>
 
       <InfoCard isLoaded={!isInitialLoading} title={"Characters"}>
         {hasBots && <BotList bots={user!.bots} />}
-        {!hasBots && <p>This user has not created any characters yet :(</p>}
+        {!hasBots && (
+          <p>
+            <Trans>This user has not created any characters yet :(</Trans>
+          </p>
+        )}
       </InfoCard>
     </>
   );
@@ -72,7 +79,7 @@ function BotList(props: { bots: Bot[] }) {
               <div className={"flex max-w-xs flex-col"}>
                 <p className={"line-clamp-1 text-lg font-bold"}>{bot.name}</p>
                 <p className={"line-clamp-2"}>
-                  {bot.description || "No description."}
+                  {bot.description || <Trans>No description.</Trans>}
                 </p>
               </div>
             </div>
@@ -83,7 +90,7 @@ function BotList(props: { bots: Bot[] }) {
                 color="default"
                 className={"px-3"}
               >
-                Likes
+                {/*<Trans>Likes</Trans>*/}
               </Chip>
               <Chip
                 startContent={<FaEye />}
@@ -91,7 +98,7 @@ function BotList(props: { bots: Bot[] }) {
                 color="default"
                 className={"px-3"}
               >
-                Views
+                {/*<Trans>Views</Trans>*/}
               </Chip>
             </div>
           </Card>

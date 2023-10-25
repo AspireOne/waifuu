@@ -11,14 +11,16 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { useMemo, useState } from "react";
-import Page from "~/components/Page";
+import { useState } from "react";
+import Page from "@/components/Page";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Visibility } from "@prisma/client";
 import Router from "next/router";
-import { api } from "~/utils/api";
-import paths from "~/utils/paths";
-import { FileUploadRaw } from "~/components/shared/FileUploadRaw";
+import { api } from "@/lib/api";
+import { paths } from "@/lib/paths";
+import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
+import { msg, Trans } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 
 type CreateInput = {
   title: string;
@@ -32,6 +34,7 @@ type CreateInput = {
 };
 
 const CreateChatPage = () => {
+  const { _ } = useLingui();
   const [isSelected, setIsSelected] = useState(false);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [cover, setCover] = useState<string | undefined>(undefined);
@@ -66,11 +69,13 @@ const CreateChatPage = () => {
   };
 
   return (
-    <Page title="Create a new character">
+    <Page title={_(msg`Create New Character`)}>
       <form onSubmit={handleSubmit(submitHandler)}>
         <Card>
           <div className="p-4">
-            <h2 className="text-xl mb-4">About</h2>
+            <h2 className="text-xl mb-4">
+              <Trans>About Character</Trans>
+            </h2>
 
             <div className="flex flex-col gap-4">
               <FileUploadRaw onUpload={(id) => setAvatar(id)} label="Avatar" />
@@ -79,108 +84,117 @@ const CreateChatPage = () => {
                 {...register("title")}
                 isRequired
                 type="text"
-                label="Title"
+                label={_(msg`Title`)}
               />
 
               <Textarea
                 {...register("description")}
                 isRequired
                 type="text"
-                label="Description"
+                label={_(msg`Description`)}
               />
 
               <Select
                 {...register("visibility")}
-                label="Select visibility"
+                label={_(msg`Select visibility`)}
                 isRequired
               >
                 <SelectItem key={Visibility.PUBLIC} value={Visibility.PUBLIC}>
-                  Public
+                  <Trans>Public</Trans>
                 </SelectItem>
                 <SelectItem key={Visibility.PRIVATE} value={Visibility.PRIVATE}>
-                  Private
+                  <Trans>Private</Trans>
                 </SelectItem>
                 <SelectItem key={Visibility.LINK} value={Visibility.LINK}>
-                  Only for friends
+                  <Trans>Only for friends</Trans>
                 </SelectItem>
               </Select>
 
-              <Input label="Category" />
+              <Input label={_(msg`Category`)} />
             </div>
 
             <Divider className="mt-4 mb-4" />
 
-            <h2 className="text-xl mb-4">Character's character</h2>
+            <h2 className="text-xl mb-4">
+              <Trans>Character's character</Trans>
+            </h2>
 
             <div className="flex flex-col gap-4">
               <Input
                 {...register("name")}
                 isRequired
                 type="text"
-                label="Name"
+                label={_(msg`Name`)}
               />
 
               <Textarea
                 {...register("persona")}
                 isRequired
-                label="Persona"
+                label={_(msg`Persona`)}
                 labelPlacement="outside"
               />
 
               <Textarea
                 {...register("dialogue")}
                 isRequired
-                label="Example dialogue"
+                label={_(msg`Example dialogue`)}
                 labelPlacement="outside"
               />
 
               <div className="flex flex-col gap-2">
                 <Switch isSelected={isSelected} onValueChange={setIsSelected}>
-                  NSFW content
+                  <Trans>NSFW content</Trans>
                 </Switch>
                 <p className="text-small text-default-500">
-                  Character will produce content {!isSelected && "not"} suitable
-                  for minors
+                  <Trans>
+                    Whether the character will produce content not suitable for
+                    minors.
+                  </Trans>
                 </p>
               </div>
             </div>
 
             <Divider className="mt-4 mb-4" />
 
-            <h2 className="text-xl mb-3">Images</h2>
-            <FileUploadRaw onUpload={(id) => setCover(id)} label="Cover" />
+            <h2 className="text-xl mb-3">
+              <Trans context={"New Character page category name"}>Images</Trans>
+            </h2>
+            <FileUploadRaw
+              onUpload={(id) => setCover(id)}
+              label={_(msg`Cover`)}
+            />
 
             <Divider className="mt-4 mb-4" />
 
             <Accordion>
               <AccordionItem
                 key="1"
-                aria-label="Advanced mood settings"
+                aria-label={_(msg`Advanced mood settings`)}
                 subtitle={
                   <>
                     <Checkbox
                       checked={moodImagesEnabled}
                       onChange={() => setMoodImagesEnabled(!moodImagesEnabled)}
                     />
-                    Click to enable advanced mood settings
+                    <Trans>Click to enable advanced mood settings</Trans>
                   </>
                 }
-                title="Advanced mood settings"
+                title={_(msg`Advanced mood settings`)}
               >
                 <FileUploadRaw
-                  label="Neutral mood image"
+                  label={_(msg`Image for mood 'neutral'`)}
                   onUpload={(id) => setNeutral(id)}
                 />
                 <FileUploadRaw
-                  label="Sad mood image"
+                  label={_(msg`Image for mood 'sad'`)}
                   onUpload={(id) => setSad(id)}
                 />
                 <FileUploadRaw
-                  label="Blushed mood image"
+                  label={_(msg`Image for mood 'blushed'`)}
                   onUpload={(id) => setBlushed(id)}
                 />
                 <FileUploadRaw
-                  label="Happy mood image"
+                  label={_(msg`Image for mood 'happy'`)}
                   onUpload={(id) => setHappy(id)}
                 />
               </AccordionItem>
@@ -188,10 +202,10 @@ const CreateChatPage = () => {
 
             <div className="flex flex-row w-fit mx-auto mr-0 gap-2 mt-5">
               <Button color="primary" variant="bordered">
-                Close
+                <Trans>Close</Trans>
               </Button>
               <Button type="submit" color="primary">
-                Create
+                <Trans>Create</Trans>
               </Button>
             </div>
           </div>

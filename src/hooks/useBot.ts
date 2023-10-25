@@ -1,8 +1,4 @@
-import { BotMode } from "@prisma/client";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { api } from "~/utils/api";
-import paths from "~/utils/paths";
+import { api } from "@/lib/api";
 
 /**
  * Custom hook that fetches the specified bot and redirects if the bot or mode is invalid.

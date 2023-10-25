@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { BotChatRole, BotMode, Mood } from "@prisma/client";
-import { api } from "~/utils/api";
+import { BotChatRole, Mood } from "@prisma/client";
+import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 
 type MessageStatus = "error" | "temp";
@@ -17,6 +17,7 @@ const chatCache = new Map<string, Message[]>();
 /**
  * Allows interaction with a chatbot.
  *
+ * @param chatId
  * @param {boolean} [enabled=true] - Flag indicating whether this is at all active. Can be used to postpone
  * querying or loading before the botId or botMode is available.
  * @returns {Object} An object containing chat messages and functions to interact with the chat.
@@ -78,15 +79,8 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
     },
 
     onError: (error) => {
-      toast("Something went wrong.", {
-        position: "top-center",
-        type: "error",
-      });
-      console.error(error);
-
       // setMessages(prevMessages => {
       //   return produce(prevMessages, draft => {
-
       //     if (draft.length === 0) return;
       //     const lastMessage = draft[draft.length - 1];
       //     lastMessage!.type = "error";

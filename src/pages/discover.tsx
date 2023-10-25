@@ -2,19 +2,23 @@ import { Button, Checkbox, Input, Switch } from "@nextui-org/react";
 import Image from "next/image";
 import { FaCompass } from "react-icons/fa";
 import { BiTrendingUp } from "react-icons/bi";
-import Page from "~/components/Page";
-import { CharacterCard } from "~/components/Character/CharacterCard";
-import { api } from "~/utils/api";
+import Page from "@/components/Page";
+import { CharacterCard } from "@/components/CharacterCard";
+import { api } from "@/lib/api";
 import { useForm } from "react-hook-form";
-import { BotSource } from "@prisma/client";
+import { Bot, BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
-import useSession from "~/hooks/useSession";
+import { useSession } from "@/hooks/useSession";
 import { MdForum } from "react-icons/md";
-import { BsPlus } from "react-icons/bs";
 import Router from "next/router";
-import paths from "~/utils/paths";
-import { ForumPostHighlight } from "~/components/Forum/ForumPostHighlight";
-import { TagSelect } from "~/components/shared/TagSelect";
+import { paths } from "@/lib/paths";
+import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
+import { TagSelect } from "@/components/ui/TagSelect";
+import { AiOutlinePlus } from "react-icons/ai";
+import Title from "@components/ui/Title";
+import { Tooltip } from "@nextui-org/tooltip";
+import { t, Trans } from "@lingui/macro";
+import { discoveredBotStore } from "@/stores";
 
 // TODO: Refactor this shitty code
 
@@ -22,50 +26,64 @@ type SearchType = {
   textFilter?: string;
   nsfw: boolean;
   officialBots?: BotSource | null;
+  cursor: number;
 };
 
 const Discover = () => {
   const { user } = useSession();
+  const discoveredBots = discoveredBotStore.getState();
 
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
     nsfw: true,
     officialBots: null,
+    cursor: 0,
   });
 
-  const CURSOR_MOVE_AMOUNT = 2;
-  const [cursor, setCursor] = useState<number>(0);
-
   const toggleNsfw = () => {
+    discoveredBots.clearDiscoveredBots();
     setSearchData({
       ...searchData,
       nsfw: !searchData.nsfw,
+      cursor: 0,
     });
   };
 
   const toggleOfficialBots = () => {
+    discoveredBots.clearDiscoveredBots();
     setSearchData({
       ...searchData,
       officialBots:
         searchData.officialBots === null ? BotSource.OFFICIAL : null,
+      cursor: 0,
     });
   };
 
-  const bots = api.bots.getAllBots.useQuery({
-    ...searchData,
-    sourceFilter: searchData.officialBots,
-  });
-  const forumPosts = api.forum.getAll.useQuery(
-    { take: CURSOR_MOVE_AMOUNT, skip: CURSOR_MOVE_AMOUNT + cursor },
+  const CURSOR_LIMIT = 1;
+
+  const skipPage = () => {
+    setSearchData({
+      ...searchData,
+      cursor: searchData.cursor + CURSOR_LIMIT,
+    });
+  };
+
+  api.bots.getAllBots.useQuery(
+    {
+      ...searchData,
+      sourceFilter: searchData.officialBots,
+      limit: CURSOR_LIMIT,
+    },
     {
       onSuccess: (data) => {
-        if (data.length > 0) {
-          setCursor(cursor + CURSOR_MOVE_AMOUNT);
-        }
+        discoveredBots.addDiscoveredBots(data.bots);
+        discoveredBots.setHasNextDiscoveredPage(data.hasNextPage);
       },
     },
   );
-  const conversationBots = api.bots.getAllConversationBots.useQuery({
+
+  const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
+  const conversationBots = api.bots.getAllUsedBots.useQuery({
     limit: 5,
   });
 
@@ -73,10 +91,12 @@ const Discover = () => {
 
   useEffect(() => {
     const subscription = watch((value) => {
+      discoveredBots.clearDiscoveredBots();
       setSearchData({
         textFilter: value.textFilter,
         nsfw: value.nsfw as boolean,
         officialBots: value.officialBots,
+        cursor: 0,
       });
     });
 
@@ -84,7 +104,7 @@ const Discover = () => {
   }, [watch]);
 
   return (
-    <Page title="Discover Characters" showActionBar autoBack={false}>
+    <Page title={t`Discover Characters`} showActionBar autoBack={false}>
       <div className="relative">
         <Image
           alt="background"
@@ -97,34 +117,40 @@ const Discover = () => {
 
         <div className="mx-auto mt-[-120px] z-20 relative">
           <div>
-            <h1 className="title-xl">👋</h1>
+            <p className="text-2xl">👋</p>
 
             <div>
-              <h1 className="title-xl flex-wrap font-bold">Hi, {user?.name}</h1>
-              <p>Let's explore some new characters</p>
+              <Title className={"my-1"} size={"md"} as={"p"} bold>
+                <Trans>Hi, {user?.name}</Trans>
+              </Title>
+              <p className={"text-foreground-700"}>
+                <Trans>Let's explore some new characters.</Trans>
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="w-full">
-        <div className="mx-auto mt-10">
-          <div className="mb-5 mt-7">
-            <h3 className="flex align-center font-bold flex-row gap-2 text-2xl text-white">
-              <FaCompass className="mt-1.5" />
-              <p>Active chats</p>
-            </h3>
+        <div className="mx-auto mt-20">
+          <div className="mb-5 mt-10">
+            <Title bold icon={FaCompass}>
+              <Trans>Active chats</Trans>
+            </Title>
 
             {conversationBots.data?.length === 0 && (
-              <p className="text-white mt-3">
-                You don't have any active chats yet. Start one now!
+              <p className="text-foreground-500 mt-3">
+                <Trans>
+                  You don't have any active chats yet. Start one now!
+                </Trans>
               </p>
             )}
 
             <div className="flex w-full flex-row mt-3 gap-5 overflow-scroll overflow-x-visible">
-              {conversationBots.data?.map((bot) => {
+              {conversationBots.data?.map((bot, index) => {
                 return (
                   <CharacterCard
+                    key={index}
                     chatType={bot.chatType}
                     chatId={bot.chatId}
                     bot={bot}
@@ -135,27 +161,23 @@ const Discover = () => {
           </div>
 
           <form>
-            <div className="mt-10 flex flex-row align-center">
-              <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
-                <BiTrendingUp className="mt-1.5" />
-                <p>Popular bots</p>
-              </h3>
+            <div className="mt-10 flex flex-row align-center items-center gap-4">
+              <Title icon={BiTrendingUp} bold>
+                <Trans>Popular Characters</Trans>
+              </Title>
 
-              <Switch
-                isSelected={searchData.nsfw}
-                onValueChange={toggleNsfw}
-                className="w-fit mx-auto mr-4"
-              >
-                NSFW
-              </Switch>
+              <Tooltip content={"Create a character"}>
+                <Button
+                  onClick={() => Router.push(paths.createBot)}
+                  isIconOnly={true}
+                >
+                  <AiOutlinePlus fontSize={25} />
+                </Button>
+              </Tooltip>
             </div>
 
             <div className="mb-5 mt-1 flex flex-col items-center gap-4">
               <div className="flex flex-col w-full gap-3">
-                <Button onClick={() => Router.push(paths.createBot)}>
-                  <BsPlus fontSize={25} /> Create new bot
-                </Button>
-
                 <TagSelect onChange={(value) => {}} />
 
                 <Input
@@ -166,37 +188,54 @@ const Discover = () => {
                   type="text"
                 />
 
-                <Checkbox onValueChange={toggleOfficialBots}>
-                  Only display official bots
-                </Checkbox>
+                <div className={"flex flex-row gap-3"}>
+                  <Checkbox onValueChange={toggleOfficialBots}>
+                    <Trans>Only display official characters</Trans>
+                  </Checkbox>
+
+                  <Switch
+                    isSelected={searchData.nsfw}
+                    onValueChange={toggleNsfw}
+                    className="w-fit mx-auto mr-4"
+                  >
+                    NSFW
+                  </Switch>
+                </div>
               </div>
             </div>
           </form>
 
           <div className="flex w-full flex-wrap gap-5">
-            {bots.data?.length === 0 && (
-              <p className="text-white">
-                No bots found. Try changing your search term.
+            {discoveredBots.discovered?.length === 0 && (
+              <p className="">
+                <Trans>
+                  No characters found. Try changing your search term.
+                </Trans>
               </p>
             )}
 
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-fit mx-auto">
-              {bots.data?.map((bot) => {
-                return <CharacterCard bot={bot} />;
+              {discoveredBots.discovered.map((bot, index) => {
+                return <CharacterCard key={index} bot={bot} />;
               })}
             </div>
 
-            <Button variant="solid" className="w-1/2 mx-auto mb-4">
-              Load more
-            </Button>
+            {discoveredBots.hasNextDiscoveredPage && (
+              <Button
+                onClick={skipPage}
+                variant="solid"
+                className="w-1/2 mx-auto mb-4"
+              >
+                <Trans>Load more</Trans>
+              </Button>
+            )}
           </div>
         </div>
 
         <div className="mt-5">
-          <h3 className="mb-3 mt-2 font-bold flex flex-row gap-2 text-2xl text-white">
-            <MdForum className="mt-1.5" />
-            <p>Popular forum posts</p>
-          </h3>
+          <Title bold icon={MdForum}>
+            <Trans>Popular forum posts</Trans>
+          </Title>
 
           <div className="flex flex-col gap-2 mt-5">
             {forumPosts.data?.map((post) => {

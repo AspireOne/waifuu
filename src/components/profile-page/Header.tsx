@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import paths from "~/utils/paths";
+import { paths } from "@/lib/paths";
 import { twMerge } from "tailwind-merge";
 import { Button, Skeleton as UiSkeleton } from "@nextui-org/react";
 import Skeleton from "react-loading-skeleton";
+import { msg, Trans } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { Share } from "@capacitor/share";
+import { Capacitor } from "@capacitor/core";
 
 function Avatar(props: { image: string | null | undefined }) {
   return (
@@ -20,14 +24,13 @@ function Avatar(props: { image: string | null | undefined }) {
   );
 }
 
-function Buttons(props: { onClick: () => void }) {
+function Buttons(props: { onShare: () => void }) {
   // TODO: Implement follow button.
-  // TODO: Implement Ionic share.
   return (
     <div className={"flex flex-row justify-center gap-4"}>
       {/*<Button className={"w-32"}>Follow</Button>*/}
-      <Button className={"w-32"} variant={"bordered"} onClick={props.onClick}>
-        Share
+      <Button className={"w-32"} variant={"bordered"} onClick={props.onShare}>
+        <Trans>Share</Trans>
       </Button>
     </div>
   );
@@ -39,14 +42,21 @@ export default function Header(props: {
   className?: string;
 }) {
   const [link, setLink] = useState<string | undefined>();
+  const { _ } = useLingui();
 
-  function handleCopyClicked() {
-    // TODO: Ionic copy.
-    navigator.clipboard.writeText(link!);
-    toast("Copied link to clipboard!", {
+  async function handleShare() {
+    await Share.share({
+      title: _(msg`Check out ${props.username} on Companion.`),
+      text: _(msg`${props.username} is active on companion.`),
+      url: paths.userProfile(props.username!),
+      dialogTitle: _(msg`'Share ${props.username}'s profile with buddies`),
+    });
+
+    /*navigator.clipboard.writeText(link!);
+    toast(_(msg`Copied link to clipboard!`), {
       type: "success",
       autoClose: 1000,
-    });
+    });*/
   }
 
   useEffect(() => {
@@ -64,7 +74,7 @@ export default function Header(props: {
           {!props.username && <Skeleton inline width={"70%"} />}
         </h3>
 
-        <Buttons onClick={handleCopyClicked} />
+        <Buttons onShare={handleShare} />
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 // Generate an username based on user.name if present, user.email if user.name is not present, and random
 // if neither are present. The username should be checked using prisma for uniqueness.
-import { prisma } from "~/server/lib/db";
+import { prisma } from "@/server/lib/db";
 
 // prettier-ignore
 const usernameBases: string[] = [

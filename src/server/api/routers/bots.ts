@@ -4,17 +4,18 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "~/server/api/trpc";
-import Replicate from "replicate";
-import { env } from "~/server/env";
+} from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { BotMode, Mood, Prisma } from "@prisma/client";
+import { BotChatRole, BotMode, Mood, Prisma } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
-import { prompts } from "~/utils/prompt";
-
-const replicate = new Replicate({
-  auth: env.REPLICATE_API_TOKEN,
-});
+import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
+import { getInitialMessagePrompt } from "@/server/ai/character-chat/prompts";
+import {
+  OutputFixingParser,
+  StructuredOutputParser,
+} from "langchain/output_parsers";
+import { llama13b } from "@/server/ai/shared/models/llama13b";
+import { fixingLlm } from "@/server/ai/shared/models/outputFixingLLM";
 
 export const botsRouter = createTRPCRouter({
   /**
@@ -28,34 +29,53 @@ export const botsRouter = createTRPCRouter({
           textFilter: z.string().nullish(),
           nsfw: z.boolean().default(false),
           limit: z.number().min(1).nullish(),
+          cursor: z.number().nullish(),
         })
         .optional(),
     )
     .query(async ({ input, ctx }) => {
-      return await ctx.prisma.bot.findMany({
+      // TODO: Remake this better
+      const query = {
+        visibility: Visibility.PUBLIC,
+        source: input?.sourceFilter ?? undefined,
+        characterNsfw: input?.nsfw ? undefined : false,
+        ...(input?.textFilter && {
+          OR: [
+            {
+              name: {
+                contains: input?.textFilter ?? undefined,
+                mode: "insensitive",
+              },
+            },
+            {
+              description: {
+                contains: input?.textFilter ?? undefined,
+                mode: "insensitive",
+              },
+            },
+          ],
+        }),
+      };
+
+      const bots = await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
-        where: {
-          visibility: Visibility.PUBLIC,
-          source: input?.sourceFilter ?? undefined,
-          characterNsfw: input?.nsfw,
-          ...(input?.textFilter && {
-            OR: [
-              {
-                name: {
-                  contains: input?.textFilter ?? undefined,
-                  mode: "insensitive",
-                },
-              },
-              {
-                description: {
-                  contains: input?.textFilter ?? undefined,
-                  mode: "insensitive",
-                },
-              },
-            ],
-          }),
+        skip: !input?.cursor ? 0 : input.cursor,
+        where: query as any,
+        orderBy: {
+          createdAt: "desc",
         },
       });
+
+      const count = await ctx.prisma.bot.count({
+        where: query as any,
+      });
+
+      const hasNextPage = count > (input?.limit || 0) + (input?.cursor || 0);
+
+      return {
+        bots,
+        hasNextPage,
+      };
     }),
 
   getBot: publicProcedure
@@ -77,6 +97,7 @@ export const botsRouter = createTRPCRouter({
       z.object({
         botId: z.string(),
         botMode: z.nativeEnum(BotMode),
+        userContext: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -85,6 +106,7 @@ export const botsRouter = createTRPCRouter({
           botId: input.botId,
           botMode: input.botMode,
           userId: ctx.user.id,
+          userContext: input.userContext,
         },
       });
     }),
@@ -106,45 +128,23 @@ export const botsRouter = createTRPCRouter({
         },
       });
 
-      let output;
-      try {
-        const response = (await replicate.run(
-          "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
-          {
-            input: {
-              system_prompt:
-                `Your responses must be short.\n` +
-                `${prompts.intro(
-                  chat?.bot.characterName!,
-                  chat?.bot.characterPersona!,
-                  chat?.bot.characterDialogue!,
-                )}\n` +
-                `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
-                `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
-              prompt: prompts.initialMessage(),
-            },
-          },
-        )) as string[];
-
-        output = response;
-      } catch (e) {
-        console.log(e);
-
+      if (!chat) {
         throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to generate a reply.",
-          cause: e,
+          code: "NOT_FOUND",
+          message: "Chat not found.",
         });
       }
 
-      const outputStr = (output as unknown as []).join("");
+      const output = await llama13b.run({
+        system_prompt: await getCharacterSystemPrompt(chat),
+        prompt: getInitialMessagePrompt,
+      });
 
       const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
           chatId: input.chatId,
-          content: outputStr,
-          // @ts-ignore make this from the message in future
-          mood: Math.random() > 0.5 ? Mood.BLUSHED : Mood.HAPPY,
+          content: output,
+          mood: "HAPPY",
           role: "BOT",
         },
       });
@@ -157,7 +157,7 @@ export const botsRouter = createTRPCRouter({
   /**
    * Return all bots that user has currently conversation with.
    */
-  getAllConversationBots: protectedProcedure
+  getAllUsedBots: protectedProcedure
     .input(
       z.object({
         limit: z.number().min(1).nullish(),
@@ -402,36 +402,40 @@ export const botsRouter = createTRPCRouter({
         }),
       ]);
 
-      const _messages = messages.map((message) => {
-        return { user: message.role === "USER", content: message.content };
-      });
+      if (!chat) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Chat not found.",
+        });
+      }
 
-      const processedMessages = processMessages(_messages);
+      /*const outputParser = StructuredOutputParser.fromZodSchema(
+        z.object({
+          reply: z.string().min(1).describe("The reply to the user."),
+          mood: z.nativeEnum(Mood).describe("The sentiment of the reply."),
+        }),
+      );*/
+      /*const outputFixingParser = OutputFixingParser.fromLLM(
+        fixingLlm,
+        outputParser,
+      );*/
+
+      console.log(
+        "CREATED SYSTEM PROMPT: ",
+        await getCharacterSystemPrompt(chat),
+      );
 
       let output;
       try {
-        const response = (await replicate.run(
-          "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
-          {
-            input: {
-              system_prompt:
-                "Your responses must be short." +
-                `${prompts.intro(
-                  chat?.bot.characterName!,
-                  chat?.bot.characterPersona!,
-                  chat?.bot.characterDialogue!,
-                )}\n` +
-                `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
-                `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
-              prompt: processedMessages,
-            },
-          },
-        )) as string[];
-
-        output = response;
+        output = await llama13b.run({
+          system_prompt: await getCharacterSystemPrompt(
+            chat,
+            /*outputParser,*/
+          ),
+          prompt: messages,
+        });
       } catch (e) {
         console.log(e);
-
         // remove the user message from db.
         await ctx.prisma.botChatMessage.delete({
           where: {
@@ -446,14 +450,11 @@ export const botsRouter = createTRPCRouter({
         });
       }
 
-      const outputStr = (output as unknown as []).join("");
-      const mood = outputStr.split(" ").pop() as Mood | undefined;
-
       const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
           chatId: input.chatId,
-          content: outputStr,
-          mood: Math.random() > 0.5 ? Mood.BLUSHED : Mood.HAPPY,
+          content: output,
+          mood: "HAPPY",
           role: "BOT",
         },
       });
@@ -468,24 +469,3 @@ export const botsRouter = createTRPCRouter({
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
-/**
- * Processes the messages to put it as a prompt for a bot.
- * */
-const processMessages = (
-  messages: {
-    user: boolean;
-    content: string;
-  }[],
-) => {
-  // In the future, the prompt will have to be altered to account for the following:
-  // 1. ! The messages will have to be somehow truncated to fit into context window.
-  // 2. Account for loss of context between messages (vector db / embeddings / extrahování důležitých věcí a dosazení do promptu jako kontext).
-  // 3. Account for loss of system message context / loss of character (reminding every x messages?)
-  // 4. Account for images.
-  return messages
-    .map((message) =>
-      message.user ? `[INST] ${message.content} [/INST]` : `${message.content}`,
-    )
-    .join("\n");
-};

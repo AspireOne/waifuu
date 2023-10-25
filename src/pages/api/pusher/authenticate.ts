@@ -1,6 +1,6 @@
-import pusher from "~/server/lib/pusherServer";
-import PresenceChannelMember from "~/server/types/presenceChannelMember";
-import metaHandler from "~/pages/api/metaHandler";
+import pusher from "@/server/lib/pusherServer";
+import PresenceChannelMember from "@/server/types/presenceChannelMember";
+import metaHandler from "@/server/lib/metaHandler";
 
 export default metaHandler.protected((req, res, ctx) => {
   const socketId = req.body.socket_id;
