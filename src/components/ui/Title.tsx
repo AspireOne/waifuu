@@ -9,12 +9,13 @@ export default function Title(props: {
   /** @default "lg" */
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
-  /** @default false (semibold) */
+  /** @default true */
   bold?: boolean;
   icon?: IconType;
   sideElements?: React.ReactNode;
 }) {
   const size = props.size ?? "lg";
+  const bold = props.bold ?? true;
   const As = props.as ?? "h2";
 
   let iconSize;
@@ -27,7 +28,7 @@ export default function Title(props: {
   return (
     <As
       className={twMerge(
-        props.bold ? "font-bold" : "font-semibold",
+        bold ? "font-bold" : "font-semibold",
         size === "sm" && "text-lg",
         size === "md" && "text-xl",
         size === "lg" && "text-2xl",

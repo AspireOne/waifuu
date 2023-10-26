@@ -124,7 +124,7 @@ export const PopularCharactersDiscoverCategory = () => {
           {discoveredBots.hasNextDiscoveredPage && (
             <Button
               onClick={skipPage}
-              variant="solid"
+              variant="faded"
               className="w-full sm:w-[200px] mx-auto"
             >
               <Trans>Load more</Trans>

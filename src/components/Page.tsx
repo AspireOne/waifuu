@@ -39,7 +39,7 @@ function Page(
 ) {
   // Set default values for props.
   const unprotected = props.unprotected ?? false;
-  const showActionBar = props.showActionBar ?? false;
+  const showActionBar = false; // props.showActionBar ?? false; // TODO: Change it back.
   const showHeader = props.showHeader ?? true;
   const autoBack = props.autoBack ?? true;
   const backPath = props.backPath;

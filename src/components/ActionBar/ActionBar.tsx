@@ -29,12 +29,12 @@ function getButtons() {
       icon: RiSearch2Line,
       iconFilled: RiSearch2Fill,
     },
-    {
+    /*{
       path: paths.RR,
       title: t`Roulette`,
       icon: IoChatbubblesOutline,
       iconFilled: IoChatbubbles,
-    },
+    },*/
     {
       path: paths.profile,
       title: t`Profile`,
