@@ -9,9 +9,10 @@ export default function Title(props: {
   /** @default "lg" */
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
-  /** @default false */
+  /** @default false (semibold) */
   bold?: boolean;
   icon?: IconType;
+  sideElements?: React.ReactNode;
 }) {
   const size = props.size ?? "lg";
   const As = props.as ?? "h2";
@@ -32,7 +33,7 @@ export default function Title(props: {
         size === "lg" && "text-2xl",
         size === "xl" && "text-3xl",
         "flex flex-row items-center gap-2", // icon
-        /*"my-2",*/
+        "mb-4",
         props.className,
       )}
     >

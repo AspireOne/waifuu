@@ -18,7 +18,7 @@ export const CharacterCard = ({
   chatType,
 }: CharacterCardProps) => {
   return (
-    <Card className="min-w-[160px]">
+    <Card className="min-w-[160px] max-w-fit">
       <Link href={normalizePath(paths.botChat(chatId ?? "", bot.id))}>
         <div>
           <Image

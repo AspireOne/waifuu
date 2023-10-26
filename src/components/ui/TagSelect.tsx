@@ -26,8 +26,12 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
 
   const isTagToggled = (value: string): boolean => tags.includes(value);
 
-  if (fetchedTags.isLoading || !fetchedTags.data) {
-    return <Skeleton inline count={10} width={50} height={20} />;
+  if (
+    fetchedTags.isLoading ||
+    !fetchedTags.data ||
+    fetchedTags.data.length === 0
+  ) {
+    return <></>;
   }
 
   return (
@@ -38,7 +42,7 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
             variant={isTagToggled(tag.name) ? "solid" : "bordered"}
             key={tag.name}
             onClick={() => onTagToggle(tag.name)}
-            className="cursor-pointer bg-opacity-70 w-fit mt-2 mx-auto"
+            className="cursor-pointer bg-opacity-70 w-fit mx-auto"
           >
             {tag.name}
           </Chip>
