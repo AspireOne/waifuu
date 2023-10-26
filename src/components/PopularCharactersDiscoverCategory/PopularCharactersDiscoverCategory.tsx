@@ -52,9 +52,7 @@ export const PopularCharactersDiscoverCategory = () => {
     },
   );
 
-  const skipPage = () => {
-    setCursor((prev) => prev + CURSOR_LIMIT);
-  };
+  const skipPage = () => setCursor((prev) => prev + CURSOR_LIMIT);
 
   return (
     <div>
