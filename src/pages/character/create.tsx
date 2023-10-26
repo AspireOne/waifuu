@@ -19,13 +19,14 @@ import Router from "next/router";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
-import { msg, Trans } from "@lingui/macro";
+import { msg, t, Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 
 type CreateInput = {
   title: string;
   description: string;
   visibility: Visibility;
+  category: string;
 
   name: string;
   persona: string;
@@ -59,6 +60,7 @@ const CreateChatPage = () => {
       ...data,
       nsfw: isSelected,
       avatar,
+      category: data.category,
       cover,
       moodImagesEnabled,
       sadImageId: sad,
@@ -100,17 +102,17 @@ const CreateChatPage = () => {
                 isRequired
               >
                 <SelectItem key={Visibility.PUBLIC} value={Visibility.PUBLIC}>
-                  <Trans>Public</Trans>
+                  {t`Public`}
                 </SelectItem>
                 <SelectItem key={Visibility.PRIVATE} value={Visibility.PRIVATE}>
-                  <Trans>Private</Trans>
+                  {t`Private`}
                 </SelectItem>
                 <SelectItem key={Visibility.LINK} value={Visibility.LINK}>
-                  <Trans>Only for friends</Trans>
+                  {t`Only for friends`}
                 </SelectItem>
               </Select>
 
-              <Input label={_(msg`Category`)} />
+              <Input {...register("category")} label={_(msg`Category`)} />
             </div>
 
             <Divider className="mt-4 mb-4" />

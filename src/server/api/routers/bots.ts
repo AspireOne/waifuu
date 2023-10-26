@@ -28,6 +28,7 @@ export const botsRouter = createTRPCRouter({
           sourceFilter: z.nativeEnum(BotSource).nullish(),
           textFilter: z.string().nullish(),
           nsfw: z.boolean().default(false),
+          categories: z.array(z.string()).default([]),
           limit: z.number().min(1).nullish(),
           cursor: z.number().nullish(),
         })
@@ -39,6 +40,11 @@ export const botsRouter = createTRPCRouter({
         visibility: Visibility.PUBLIC,
         source: input?.sourceFilter ?? undefined,
         characterNsfw: input?.nsfw ? undefined : false,
+        ...(input?.categories.length !== 0 && {
+          categoryId: {
+            in: input?.categories,
+          },
+        }),
         ...(input?.textFilter && {
           OR: [
             {
@@ -60,7 +66,9 @@ export const botsRouter = createTRPCRouter({
       const bots = await ctx.prisma.bot.findMany({
         take: input?.limit || undefined,
         skip: !input?.cursor ? 0 : input.cursor,
-        where: query as any,
+        where: {
+          ...(query as any),
+        },
         orderBy: {
           createdAt: "desc",
         },
@@ -237,10 +245,10 @@ export const botsRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input, ctx }) => {
-      const tags = await ctx.prisma.tag.findMany({
+      const tags = await ctx.prisma.category.findMany({
         take: input.limit,
         orderBy: {
-          bots: {
+          Bots: {
             _count: "desc",
           },
         },

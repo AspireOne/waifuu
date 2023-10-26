@@ -18,6 +18,7 @@ type SearchType = {
   textFilter?: string;
   nsfw: boolean;
   onlyOfficial?: boolean;
+  categories?: string[];
 };
 
 const CURSOR_LIMIT = 1;
@@ -27,6 +28,7 @@ export const PopularCharactersDiscoverCategory = () => {
     textFilter: undefined,
     nsfw: true,
     onlyOfficial: false,
+    categories: [],
   });
   const [cursor, setCursor] = useState<number>(0);
 
@@ -58,18 +60,21 @@ export const PopularCharactersDiscoverCategory = () => {
     <div>
       <ParametersHeader
         searchData={searchData}
-        onTagsChange={() => {}}
+        // prettier-ignore
+        onTagsChange={value => setSearchData(prev => {
+          prev.categories = value;
+        })}
         // prettier-ignore
         onOnlyOfficialChange={value => setSearchData(prev => {
-          prev.onlyOfficial = value
+          prev.onlyOfficial = value;
         })}
         // prettier-ignore
         onNsfwChange={value => setSearchData(prev => {
-          prev.nsfw = value
+          prev.nsfw = value;
         })}
         // prettier-ignore
         onTextFilterChange={value => setSearchData(prev => {
-          prev.textFilter = value
+          prev.textFilter = value;
         })}
       />
 
@@ -84,9 +89,9 @@ export const PopularCharactersDiscoverCategory = () => {
           </p>
         )}
 
-        <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-full mx-auto">
+        <div className="gap-4 flex flex-wrap w-full mx-auto">
           {bots.discovered.map((bot, index) => {
-            return <CharacterCard key={index} bot={bot} />;
+            return <CharacterCard bottom key={index} bot={bot} />;
           })}
         </div>
 

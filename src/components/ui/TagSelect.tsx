@@ -39,10 +39,11 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
       {fetchedTags.data.map((tag) => {
         return (
           <Chip
+            size="lg"
             variant={isTagToggled(tag.name) ? "solid" : "bordered"}
             key={tag.name}
             onClick={() => onTagToggle(tag.name)}
-            className="cursor-pointer bg-opacity-70 w-fit mx-auto"
+            className="cursor-pointer bg-opacity-70"
           >
             {tag.name}
           </Chip>
