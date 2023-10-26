@@ -15,6 +15,23 @@ export default function generateUUID(): string {
   });
 }
 
+/**
+ * Generates a random alphanumeric string of custom length.
+ * @param {number} length - The length of the string to generate.
+ * @returns {string} A randomly generated alphanumeric string.
+ */
+export function generateID(length: number): string {
+  let id = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (let i = 0; i < length; i += 1) {
+    id += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return id;
+}
+
 export function showErrorToast(error: Error) {
   toast(error?.message || "Something went wrong", {
     type: "error",

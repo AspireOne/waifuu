@@ -14,7 +14,7 @@ import {
   signInWithCredential,
   signOut,
 } from "firebase/auth";
-import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
+import { getOrInitFirebaseAuth } from "@/lib/firebase";
 import { Constants } from "@/lib/constants";
 import { semanticPaths } from "@lib/paths";
 import { t, Trans } from "@lingui/macro";
