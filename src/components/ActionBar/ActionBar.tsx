@@ -9,6 +9,7 @@ import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
 import { IoChatbubbles, IoChatbubblesOutline } from "react-icons/io5";
 import { normalizePath } from "@lib/utils";
 import { t } from "@lingui/macro";
+import { Capacitor } from "@capacitor/core";
 // import svg assets/icons/history.svg
 
 // Mapping of paths and their icons.
@@ -57,25 +58,26 @@ export const ActionBar = (props: {}) => {
     // Make the path that starts with the current path and matches the largest part of it active.
     // Example: If we have paths "hi.com/user/21" and "hi.com/user", and the current path is "hi.com/user/21",
     // then the active path should be "hi.com/user/21".'
-    let selectedButt: ButtonProp | null = null;
+    let activeButton: ButtonProp | null = null;
     const currPathname = normalizePath(router.pathname);
 
-    for (let i = 0; i < getButtons.length; i++) {
+    // Check which button is active.
+    for (let i = 0; i < getButtons().length; i++) {
       const button = getButtons()[i]!;
       const pathname = normalizePath(button.path);
 
       if (button.pathExactMatch && pathname === currPathname) {
-        selectedButt = button;
+        activeButton = button;
         break;
       }
 
       if (
         currPathname.startsWith(pathname) &&
-        (selectedButt?.path?.length ?? 0) < pathname.length
+        (activeButton?.path?.length ?? 0) < pathname.length
       )
-        selectedButt = button;
+        activeButton = button;
     }
-    setActiveButtId(selectedButt?.title ?? null);
+    setActiveButtId(activeButton?.title ?? null);
   }, [router.pathname]);
 
   return (
@@ -103,8 +105,12 @@ function ActionButton(props: ButtonProp & { isActive: boolean }) {
   const router = useRouter();
 
   function handleClick() {
-    // TODO: Replace if in ionic app.
-    router.push(props.path);
+    // Because of back button binding.
+    if (Capacitor.isNativePlatform()) {
+      router.replace(props.path);
+    } else {
+      router.push(props.path);
+    }
   }
 
   const transitionDuration = ""; // duration-100
