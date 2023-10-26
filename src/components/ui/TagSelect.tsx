@@ -35,7 +35,8 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
   }
 
   return (
-    <div className="flex flex-row gap-1 overflow-scroll overflow-scroll-y">
+    /*pb-1 because otherwise the scrollbar collides.*/
+    <div className="flex flex-row items-center gap-1 overflow-x-scroll w-full pb-1">
       {fetchedTags.data.map((tag: Category) => {
         return (
           <Chip
