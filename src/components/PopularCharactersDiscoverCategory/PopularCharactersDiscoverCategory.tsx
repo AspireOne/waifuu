@@ -61,7 +61,7 @@ export const PopularCharactersDiscoverCategory = () => {
     });
   };
 
-  const CURSOR_LIMIT = 1;
+  const CURSOR_LIMIT = 10;
 
   const skipPage = () => {
     setSearchData({
