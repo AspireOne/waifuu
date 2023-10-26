@@ -8,7 +8,7 @@ import { Button, Spacer } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { paths } from "@lib/paths";
 
-export const ForumPostsDiscoverCategory = (props: {}) => {
+export const ForumPostsDiscoverCategory = () => {
   const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export const ForumPostsDiscoverCategory = (props: {}) => {
 
       <Spacer y={3} />
 
-      <div className="flex flex-col gap-2 ">
+      <div className="flex flex-wrap gap-4 ">
         {forumPosts.data?.map((post) => {
           return <ForumPostHighlight {...post} />;
         })}

@@ -1,21 +1,15 @@
 import { z } from "zod";
-
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
 import { TRPCError } from "@trpc/server";
-import { BotChatRole, BotMode, Mood, Prisma } from "@prisma/client";
+import { BotMode, Prisma } from "@prisma/client";
 import { BotSource, Visibility } from "@prisma/client";
 import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
 import { getInitialMessagePrompt } from "@/server/ai/character-chat/prompts";
-import {
-  OutputFixingParser,
-  StructuredOutputParser,
-} from "langchain/output_parsers";
 import { llama13b } from "@/server/ai/shared/models/llama13b";
-import { fixingLlm } from "@/server/ai/shared/models/outputFixingLLM";
 
 export const botsRouter = createTRPCRouter({
   /**
@@ -40,11 +34,6 @@ export const botsRouter = createTRPCRouter({
         visibility: Visibility.PUBLIC,
         source: input?.sourceFilter ?? undefined,
         characterNsfw: input?.nsfw ? undefined : false,
-        ...(input?.categories.length !== 0 && {
-          categoryId: {
-            in: input?.categories,
-          },
-        }),
         ...(input?.textFilter && {
           OR: [
             {
@@ -68,6 +57,13 @@ export const botsRouter = createTRPCRouter({
         skip: !input?.cursor ? 0 : input.cursor,
         where: {
           ...(query as any),
+          ...(input?.categories.length !== 0 && {
+            category: {
+              name: {
+                in: input?.categories ?? undefined,
+              },
+            },
+          }),
         },
         orderBy: {
           createdAt: "desc",

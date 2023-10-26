@@ -2,6 +2,7 @@ import { Chip } from "@nextui-org/react";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { api } from "@/lib/api";
+import { Category } from "@prisma/client";
 
 type TagSelectProps = {
   onChange: (value: string[]) => void;
@@ -11,13 +12,12 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
   const [tags, setTags] = useState<string[]>([]);
 
   const onTagToggle = (value: string): void => {
-    if (tags.includes(value)) {
-      setTags(tags.filter((tag) => tag !== value));
-    } else {
-      setTags([...tags, value]);
-    }
+    const newValue = tags.includes(value)
+      ? tags.filter((tag) => tag !== value)
+      : [...tags, value];
 
-    onChange(tags);
+    setTags(newValue);
+    onChange(newValue);
   };
 
   const fetchedTags = api.bots.getPopularTags.useQuery({
@@ -36,7 +36,7 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
 
   return (
     <div className="flex flex-row gap-1 overflow-scroll overflow-scroll-y">
-      {fetchedTags.data.map((tag) => {
+      {fetchedTags.data.map((tag: Category) => {
         return (
           <Chip
             size="lg"

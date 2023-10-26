@@ -18,7 +18,7 @@ export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
   }
 
   return (
-    <Card>
+    <Card className="w-full md:max-w-[400px]">
       <CardBody onClick={onClick}>
         <div className="flex flex-row gap-2 mb-2">
           <h1 className="text-lg text-left font-bold">{post.title}</h1>
