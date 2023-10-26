@@ -19,7 +19,10 @@ export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
 
   return (
     <Card className="w-full md:max-w-[400px]">
-      <CardBody onClick={onClick}>
+      <CardBody
+        onClick={onClick}
+        className={"cursor-pointer hover:bg-default-100"}
+      >
         <div className="flex flex-row gap-2 mb-2">
           <h1 className="text-lg text-left font-bold">{post.title}</h1>
           <div className="flex flex-row gap-2 w-fit mx-auto mr-0 mt-1.5">
