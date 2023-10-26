@@ -93,7 +93,8 @@ export default function Profile() {
   }
 
   return (
-    <Page title={t`Profile`} showActionBar autoBack={false}>
+    /*TODO: Change to false when action bar is again implemented.*/
+    <Page title={t`Profile`} showActionBar autoBack={true}>
       <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-4"}>
         <Avatar
           onClick={() => fileInputRef.current?.click()}
