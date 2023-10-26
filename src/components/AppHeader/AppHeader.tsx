@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react";
 import { Button } from "@nextui-org/react";
 import { BiArrowBack } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
-import { AppHeaderUserDropdown } from "@/components/AppHeader/AppHeaderUserDropdown";
+import { UserDropdown } from "@components/AppHeader/UserDropdown";
 import { useSession } from "@/hooks/useSession";
 
 /**
@@ -53,7 +53,7 @@ export const AppHeader = (
         {/*mr-2 to offset the dropdown, because it is natively slightly off.*/}
         {/*min-w-max to make it NOT shrink when title is too long*/}
         {/*User button, on the right*/}
-        <AppHeaderUserDropdown className={"ml-auto mr-2 min-w-max"} />
+        <UserDropdown className={"ml-auto mr-2 min-w-max"} />
       </div>
     </div>
   );

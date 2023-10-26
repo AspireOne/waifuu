@@ -6,13 +6,18 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@nextui-org/react";
-import { AppHeaderUserDropdownSettingsDialog } from "./AppHeaderUserDropdownSettingsDialog";
+import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
 import { useSession } from "@/hooks/useSession";
 import { twMerge } from "tailwind-merge";
 import { Trans } from "@lingui/macro";
+import { useRouter } from "next/router";
+import { paths } from "@lib/paths";
+import { AiOutlineUser } from "react-icons/ai";
+import { LiaFantasyFlightGames } from "react-icons/lia";
 
-export const AppHeaderUserDropdown = (props: { className?: string }) => {
+export const UserDropdown = (props: { className?: string }) => {
   const { user, status } = useSession();
+  const router = useRouter();
 
   const {
     isOpen: isSettingsOpen,
@@ -29,7 +34,7 @@ export const AppHeaderUserDropdown = (props: { className?: string }) => {
 
   return (
     <>
-      <Dropdown placement="bottom-end">
+      <Dropdown placement="bottom-end" size={"lg"}>
         <DropdownTrigger className={`${hidden && "invisible"}`}>
           <Avatar
             isBordered
@@ -41,19 +46,29 @@ export const AppHeaderUserDropdown = (props: { className?: string }) => {
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">
-          <DropdownItem key="profile" className="h-14 gap-2">
+          <DropdownItem isDisabled={true} key="profile" className="h-14 gap-2">
             <p className="font-semibold">
               <Trans>Signed in as</Trans>
             </p>
             <p className="font-semibold">{user?.email}</p>
           </DropdownItem>
-          <DropdownItem onClick={toggleSettingsOpen} key="settings">
+          <DropdownItem
+            startContent={<AiOutlineUser />}
+            onClick={() => router.push(paths.profile)}
+          >
+            <Trans>My profile</Trans>
+          </DropdownItem>
+          <DropdownItem
+            startContent={<LiaFantasyFlightGames />}
+            onClick={toggleSettingsOpen}
+            key="settings"
+          >
             <Trans>Character settings</Trans>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
 
-      <AppHeaderUserDropdownSettingsDialog
+      <UserDropdownSettingsDialog
         isOpen={isSettingsOpen}
         onOpenChange={toggleSettingsOpen}
       />

@@ -3,7 +3,7 @@ import { BiTrendingUp } from "react-icons/bi";
 import { Trans } from "@lingui/macro";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { paths } from "@lib/paths";
 import { AiOutlinePlus } from "react-icons/ai";
 import { TagSelect } from "@components/ui/TagSelect";
@@ -13,113 +13,151 @@ import { discoveredBotStore } from "@/stores";
 import { api } from "@lib/api";
 import { useImmer } from "use-immer";
 import { useEffect, useState } from "react";
+import { useSession } from "@contexts/SessionProvider";
+import { useForm } from "react-hook-form";
+import { CharacterCardSkeleton } from "@components/CharacterCard/CharacterCardSkeleton";
 
 type SearchType = {
   textFilter?: string;
   nsfw: boolean;
-  onlyOfficial?: boolean;
-  categories?: string[];
+  officialBots?: BotSource | null;
+  cursor: number;
+  categories: string[];
 };
 
-const CURSOR_LIMIT = 1;
-
 export const PopularCharactersDiscoverCategory = () => {
-  const [searchData, setSearchData] = useImmer<SearchType>({
+  const discoveredBots = discoveredBotStore.getState();
+
+  const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
     nsfw: true,
-    onlyOfficial: false,
+    officialBots: "OFFICIAL",
     categories: [],
+    cursor: 0,
   });
-  const [cursor, setCursor] = useState<number>(0);
 
-  const bots = discoveredBotStore.getState();
+  const toggleNsfw = () => {
+    discoveredBots.clearDiscoveredBots();
+    setSearchData({
+      ...searchData,
+      nsfw: !searchData.nsfw,
+      cursor: 0,
+    });
+  };
 
-  useEffect(() => {
-    bots.clearDiscoveredBots();
-    setCursor(0);
-  }, [searchData]);
+  const toggleOfficialBots = () => {
+    discoveredBots.clearDiscoveredBots();
+    setSearchData({
+      ...searchData,
+      officialBots:
+        searchData.officialBots === null ? BotSource.OFFICIAL : null,
+      cursor: 0,
+    });
+  };
 
-  const { isRefetching } = api.bots.getAllBots.useQuery(
+  const CURSOR_LIMIT = 1;
+
+  const skipPage = () => {
+    setSearchData({
+      ...searchData,
+      cursor: searchData.cursor + CURSOR_LIMIT,
+    });
+  };
+
+  api.bots.getAllBots.useQuery(
     {
       ...searchData,
-      cursor,
-      sourceFilter: searchData.onlyOfficial ? BotSource.OFFICIAL : undefined,
+      sourceFilter: searchData.officialBots,
       limit: CURSOR_LIMIT,
     },
     {
       onSuccess: (data) => {
-        bots.addDiscoveredBots(data.bots);
-        bots.setHasNextDiscoveredPage(data.hasNextPage);
+        discoveredBots.addDiscoveredBots(data.bots);
+        discoveredBots.setHasNextDiscoveredPage(data.hasNextPage);
       },
     },
   );
 
-  const skipPage = () => setCursor((prev) => prev + CURSOR_LIMIT);
+  const { register, watch } = useForm<SearchType>();
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      discoveredBots.clearDiscoveredBots();
+      setSearchData({
+        textFilter: value.textFilter,
+        nsfw: value.nsfw as boolean,
+        officialBots: value.officialBots,
+        cursor: 0,
+        categories: [],
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   return (
     <div>
-      <ParametersHeader
-        searchData={searchData}
-        // prettier-ignore
-        onTagsChange={value => setSearchData(prev => {
-          prev.categories = value;
-        })}
-        // prettier-ignore
-        onOnlyOfficialChange={value => setSearchData(prev => {
-          prev.onlyOfficial = value;
-        })}
-        // prettier-ignore
-        onNsfwChange={value => setSearchData(prev => {
-          prev.nsfw = value;
-        })}
-        // prettier-ignore
-        onTextFilterChange={value => setSearchData(prev => {
-          prev.textFilter = value;
-        })}
-      />
+      <form>
+        <ParametersHeader
+          onNsfwChange={toggleNsfw}
+          onOnlyOfficialChange={toggleOfficialBots}
+          register={register}
+          searchData={searchData}
+          onTagsChange={(value) => {
+            discoveredBots.clearDiscoveredBots();
+            setSearchData({
+              ...searchData,
+              categories: value,
+              cursor: 0,
+            });
+          }}
+        />
 
-      <Spacer y={6} />
+        <Spacer y={6} />
 
-      <div className="flex w-full flex-wrap gap-5">
-        {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
+        <div className="flex w-full flex-wrap gap-5">
+          {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
 
-        {bots.discovered?.length === 0 && !isRefetching && (
-          <p className="">
-            <Trans>No characters found. Try changing your search term.</Trans>
-          </p>
-        )}
+          {/*&& !isRefetching*/}
+          {discoveredBots.discovered.length === 0 && (
+            <p className="">
+              <Trans>No characters found. Try changing your search term.</Trans>
+            </p>
+          )}
 
-        <div className="gap-4 flex flex-wrap w-full mx-auto">
-          {bots.discovered.map((bot, index) => {
-            return <CharacterCard bottom key={index} bot={bot} />;
-          })}
+          <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-full mx-auto">
+            {discoveredBots.discovered.map((bot, index) => {
+              return <CharacterCard key={index} bot={bot} />;
+            })}
+          </div>
+
+          {discoveredBots.hasNextDiscoveredPage && (
+            <Button
+              onClick={skipPage}
+              variant="faded"
+              className="w-full sm:w-[200px] mx-auto"
+            >
+              <Trans>Load more</Trans>
+            </Button>
+          )}
         </div>
-
-        {bots.hasNextDiscoveredPage && (
-          <Button
-            onClick={skipPage}
-            variant="solid"
-            className="w-full sm:w-[200px] mx-auto"
-          >
-            <Trans>Load more</Trans>
-          </Button>
-        )}
-      </div>
+      </form>
     </div>
   );
 };
 
 const ParametersHeader = (props: {
   onTagsChange: (tags: string[]) => void;
+  register: any;
   onOnlyOfficialChange: (value: boolean) => void;
   onNsfwChange: (value: boolean) => void;
-  onTextFilterChange: (value: string) => void;
+  /*onTextFilterChange: (value: string) => void;*/
   searchData: SearchType;
 }) => {
   const router = useRouter();
 
   return (
-    <div>
+    <form>
       <Title icon={BiTrendingUp} bold>
         <Trans>Popular Characters</Trans>
         <Tooltip content={"Create a character"}>
@@ -138,7 +176,8 @@ const ParametersHeader = (props: {
           <TagSelect onChange={props.onTagsChange} />
 
           <Input
-            onValueChange={props.onTextFilterChange}
+            {...props.register("textFilter")}
+            /*onValueChange={props.onTextFilterChange}*/
             label="Search by name"
             placeholder="Enter your search term..."
             className="flex-1 rounded-lg text-white"
@@ -148,7 +187,7 @@ const ParametersHeader = (props: {
           <div className={"flex flex-row gap-3"}>
             <Checkbox
               onValueChange={props.onOnlyOfficialChange}
-              checked={props.searchData.onlyOfficial}
+              checked={props.searchData.officialBots === BotSource.OFFICIAL}
             >
               <Trans>Only display official characters</Trans>
             </Checkbox>
@@ -163,6 +202,6 @@ const ParametersHeader = (props: {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
