@@ -3,7 +3,7 @@ import { BiTrendingUp } from "react-icons/bi";
 import { Trans } from "@lingui/macro";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { paths } from "@lib/paths";
 import { AiOutlinePlus } from "react-icons/ai";
 import { TagSelect } from "@components/ui/TagSelect";
@@ -11,11 +11,8 @@ import { CharacterCard } from "@components/CharacterCard";
 import { BotSource } from "@prisma/client";
 import { discoveredBotStore } from "@/stores";
 import { api } from "@lib/api";
-import { useImmer } from "use-immer";
 import { useEffect, useState } from "react";
-import { useSession } from "@contexts/SessionProvider";
 import { useForm } from "react-hook-form";
-import { CharacterCardSkeleton } from "@components/CharacterCard/CharacterCardSkeleton";
 
 type SearchType = {
   textFilter?: string;
@@ -41,6 +38,15 @@ export const PopularCharactersDiscoverCategory = () => {
     setSearchData({
       ...searchData,
       nsfw: !searchData.nsfw,
+      cursor: 0,
+    });
+  };
+
+  const onCategoryChange = (value: string[]) => {
+    discoveredBots.clearDiscoveredBots();
+    setSearchData({
+      ...searchData,
+      categories: value,
       cursor: 0,
     });
   };
@@ -103,14 +109,7 @@ export const PopularCharactersDiscoverCategory = () => {
           onOnlyOfficialChange={toggleOfficialBots}
           register={register}
           searchData={searchData}
-          onTagsChange={(value) => {
-            discoveredBots.clearDiscoveredBots();
-            setSearchData({
-              ...searchData,
-              categories: value,
-              cursor: 0,
-            });
-          }}
+          onTagsChange={onCategoryChange}
         />
 
         <Spacer y={6} />
@@ -180,7 +179,7 @@ const ParametersHeader = (props: {
             /*onValueChange={props.onTextFilterChange}*/
             label="Search by name"
             placeholder="Enter your search term..."
-            className="flex-1 rounded-lg text-white"
+            className="flex-1 rounded-lg sm:w-96 text-white"
             type="text"
           />
 

@@ -20,7 +20,7 @@ export const ForumPostsDiscoverCategory = (props: {}) => {
 
       <Button
         variant={"faded"}
-        className={"w-full"}
+        className={"w-full sm:w-60"}
         onClick={() => router.push(paths.forum)}
       >
         <Trans>Browse more</Trans>

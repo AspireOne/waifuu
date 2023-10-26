@@ -17,52 +17,54 @@ export default function ForumPage() {
 
   return (
     <Page title={t`Forum`} unprotected>
-      <Title>
-        <Trans>Pinned posts</Trans>
-      </Title>
-      {posts.isLoading || !posts.data ? (
-        <p>
-          <Trans>Loading...</Trans>
-        </p>
-      ) : (
-        <div className="flex flex-col gap-2">
-          {posts.data.map((item) => {
-            return <PinnedPost key={item.id} {...item} />;
-          })}
-        </div>
-      )}
+      <div className="md:w-[600px] mx-auto">
+        <Title>
+          <Trans>Pinned posts</Trans>
+        </Title>
+        {posts.isLoading || !posts.data ? (
+          <p>
+            <Trans>Loading...</Trans>
+          </p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {posts.data.map((item) => {
+              return <PinnedPost key={item.id} {...item} />;
+            })}
+          </div>
+        )}
 
-      <Spacer y={6} />
+        <Spacer y={6} />
 
-      <Title className={"justify-between"}>
-        <Trans>Recent</Trans>
-        <Button
-          onClick={toggleCreatePostOpen}
-          variant="bordered"
-          size="md"
-          className="ml-auto"
-          startContent={<FaPlus />}
-        >
-          <Trans>Create a new post</Trans>
-        </Button>
-      </Title>
+        <Title className={"justify-between"}>
+          <Trans>Recent</Trans>
+          <Button
+            onClick={toggleCreatePostOpen}
+            variant="bordered"
+            size="md"
+            className="ml-auto"
+            startContent={<FaPlus />}
+          >
+            <Trans>Create a new post</Trans>
+          </Button>
+        </Title>
 
-      {posts.isLoading || !posts.data ? (
-        <p>
-          <Trans>Loading...</Trans>
-        </p>
-      ) : (
-        <div className="flex flex-col gap-2">
-          {posts.data.map((item) => {
-            return <ForumPostHighlight key={item.id} {...item} />;
-          })}
-        </div>
-      )}
+        {posts.isLoading || !posts.data ? (
+          <p>
+            <Trans>Loading...</Trans>
+          </p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {posts.data.map((item) => {
+              return <ForumPostHighlight key={item.id} {...item} />;
+            })}
+          </div>
+        )}
 
-      <CreateForumPostModal
-        isOpen={isCreatePostOpen}
-        onToggle={toggleCreatePostOpen}
-      />
+        <CreateForumPostModal
+          isOpen={isCreatePostOpen}
+          onToggle={toggleCreatePostOpen}
+        />
+      </div>
     </Page>
   );
 }
