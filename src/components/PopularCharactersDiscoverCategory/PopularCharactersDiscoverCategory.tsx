@@ -3,7 +3,7 @@ import { BiTrendingUp } from "react-icons/bi";
 import { Trans } from "@lingui/macro";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { paths } from "@lib/paths";
 import { AiOutlinePlus } from "react-icons/ai";
 import { TagSelect } from "@components/ui/TagSelect";
@@ -12,7 +12,7 @@ import { BotSource } from "@prisma/client";
 import { discoveredBotStore } from "@/stores";
 import { api } from "@lib/api";
 import { useImmer } from "use-immer";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type SearchType = {
   textFilter?: string;
@@ -28,17 +28,19 @@ export const PopularCharactersDiscoverCategory = () => {
     nsfw: true,
     onlyOfficial: false,
   });
+  const [cursor, setCursor] = useState<number>(0);
+
+  const bots = discoveredBotStore.getState();
 
   useEffect(() => {
     bots.clearDiscoveredBots();
-    bots.setCursor(0);
+    setCursor(0);
   }, [searchData]);
 
-  const bots = discoveredBotStore.getState();
   const { isRefetching } = api.bots.getAllBots.useQuery(
     {
       ...searchData,
-      cursor: bots.cursor,
+      cursor,
       sourceFilter: searchData.onlyOfficial ? BotSource.OFFICIAL : undefined,
       limit: CURSOR_LIMIT,
     },
@@ -51,13 +53,11 @@ export const PopularCharactersDiscoverCategory = () => {
   );
 
   const skipPage = () => {
-    alert(1);
-    bots.setCursor(bots.cursor + CURSOR_LIMIT);
+    setCursor((prev) => prev + CURSOR_LIMIT);
   };
 
   return (
     <div>
-      {bots.cursor}
       <ParametersHeader
         searchData={searchData}
         onTagsChange={() => {}}
