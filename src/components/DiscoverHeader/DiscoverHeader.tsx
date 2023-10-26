@@ -9,7 +9,7 @@ export const DiscoverHeader = (props: {}) => {
 
   return (
     /*mb is to offset the absolute position.*/
-    <div className="relative mb-14">
+    <div className="relative mb-10">
       <Image
         alt="background"
         loading="eager"

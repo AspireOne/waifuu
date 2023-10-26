@@ -8,120 +8,32 @@ import { paths } from "@lib/paths";
 import { AiOutlinePlus } from "react-icons/ai";
 import { TagSelect } from "@components/ui/TagSelect";
 import { CharacterCard } from "@components/CharacterCard";
-import { useForm, UseFormRegisterReturn } from "react-hook-form";
 import { BotSource } from "@prisma/client";
 import { discoveredBotStore } from "@/stores";
-import { useEffect, useState } from "react";
 import { api } from "@lib/api";
-import { CharacterCardSkeleton } from "@components/CharacterCard/CharacterCardSkeleton";
+import { useImmer } from "use-immer";
 
 type SearchType = {
   textFilter?: string;
   nsfw: boolean;
-  officialBots?: BotSource | null;
+  onlyOfficial?: boolean;
   cursor: number;
 };
 
-function ActionHeader(props: {
-  onTagsChange: (tags: string[]) => void;
-  onOnlyOfficialChange: (onlyOfficial: boolean) => void;
-  onNsfwChange: (allow: boolean) => void;
-  register: UseFormRegisterReturn<string>;
-  searchData: SearchType;
-}) {
-  const router = useRouter();
-
-  return (
-    <div>
-      <Title icon={BiTrendingUp} bold>
-        <Trans>Popular Characters</Trans>
-        <Tooltip content={"Create a character"}>
-          <Button
-            className={"ml-auto md:ml-0"}
-            onClick={() => router.push(paths.createBot)}
-            isIconOnly={true}
-          >
-            <AiOutlinePlus fontSize={25} />
-          </Button>
-        </Tooltip>
-      </Title>
-
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex flex-col w-full gap-3">
-          <TagSelect onChange={props.onTagsChange} />
-
-          <Input
-            {...props.register}
-            label="Search by name"
-            placeholder="Enter your search term..."
-            className="flex-1 rounded-lg text-white"
-            type="text"
-          />
-
-          <div className={"flex flex-row gap-3"}>
-            <Checkbox
-              onValueChange={props.onOnlyOfficialChange}
-              checked={props.searchData.officialBots === BotSource.OFFICIAL}
-            >
-              <Trans>Only display official characters</Trans>
-            </Checkbox>
-
-            <Switch
-              isSelected={props.searchData.nsfw}
-              onValueChange={props.onNsfwChange}
-              className="ml-auto w-fit"
-            >
-              NSFW
-            </Switch>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
+const CURSOR_LIMIT = 1;
 export const PopularCharactersDiscoverCategory = (props: {}) => {
-  const { register, watch } = useForm<SearchType>();
-  const bots = discoveredBotStore.getState();
-  const [searchData, setSearchData] = useState<SearchType>({
+  const [searchData, setSearchData] = useImmer<SearchType>({
     textFilter: undefined,
     nsfw: true,
-    officialBots: null,
+    onlyOfficial: false,
     cursor: 0,
   });
 
-  const toggleNsfw = () => {
-    bots.clearDiscoveredBots();
-    setSearchData({
-      ...searchData,
-      nsfw: !searchData.nsfw,
-      cursor: 0,
-    });
-  };
-
-  const toggleOfficialBots = () => {
-    bots.clearDiscoveredBots();
-    setSearchData({
-      ...searchData,
-      officialBots:
-        searchData.officialBots === null ? BotSource.OFFICIAL : null,
-      cursor: 0,
-    });
-  };
-
-  const CURSOR_LIMIT = 1;
-
-  const skipPage = () => {
-    setSearchData({
-      ...searchData,
-      cursor: searchData.cursor + CURSOR_LIMIT,
-    });
-  };
-
+  const bots = discoveredBotStore.getState();
   const { isRefetching } = api.bots.getAllBots.useQuery(
     {
       ...searchData,
-      sourceFilter: searchData.officialBots,
+      sourceFilter: searchData.onlyOfficial ? BotSource.OFFICIAL : undefined,
       limit: CURSOR_LIMIT,
     },
     {
@@ -133,33 +45,34 @@ export const PopularCharactersDiscoverCategory = (props: {}) => {
     },
   );
 
-  useEffect(() => {
-    const subscription = watch((value) => {
-      setSearchData({
-        textFilter: value.textFilter,
-        nsfw: value.nsfw as boolean,
-        officialBots: value.officialBots,
-        cursor: 0,
-      });
+  const skipPage = () =>
+    setSearchData((prev) => {
+      prev.cursor += CURSOR_LIMIT;
     });
 
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
   return (
-    <form>
-      <ActionHeader
-        register={register("textFilter")}
-        onTagsChange={() => {}}
-        onOnlyOfficialChange={toggleOfficialBots}
+    <div>
+      <ParametersHeader
         searchData={searchData}
-        onNsfwChange={toggleNsfw}
+        onTagsChange={() => {}}
+        // prettier-ignore
+        onOnlyOfficialChange={value => setSearchData(prev => {
+          prev.onlyOfficial = value
+        })}
+        // prettier-ignore
+        onNsfwChange={value => setSearchData(prev => {
+          prev.nsfw = value
+        })}
+        // prettier-ignore
+        onTextFilterChange={value => setSearchData(prev => {
+          prev.textFilter = value
+        })}
       />
 
       <Spacer y={6} />
 
       <div className="flex w-full flex-wrap gap-5">
-        {isRefetching && <CharacterCardSkeleton inline count={5} />}
+        {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
 
         {bots.discovered?.length === 0 && !isRefetching && (
           <p className="">
@@ -183,6 +96,64 @@ export const PopularCharactersDiscoverCategory = (props: {}) => {
           </Button>
         )}
       </div>
-    </form>
+    </div>
+  );
+};
+
+const ParametersHeader = (props: {
+  onTagsChange: (tags: string[]) => void;
+  onOnlyOfficialChange: (value: boolean) => void;
+  onNsfwChange: (value: boolean) => void;
+  onTextFilterChange: (value: string) => void;
+  searchData: SearchType;
+}) => {
+  const router = useRouter();
+
+  return (
+    <div>
+      <Title icon={BiTrendingUp} bold>
+        <Trans>Popular Characters</Trans>
+        <Tooltip content={"Create a character"}>
+          <Button
+            className={"ml-auto md:ml-0"}
+            onClick={() => router.push(paths.createBot)}
+            isIconOnly={true}
+          >
+            <AiOutlinePlus fontSize={25} />
+          </Button>
+        </Tooltip>
+      </Title>
+
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col w-full gap-3">
+          <TagSelect onChange={props.onTagsChange} />
+
+          <Input
+            onValueChange={props.onTextFilterChange}
+            label="Search by name"
+            placeholder="Enter your search term..."
+            className="flex-1 rounded-lg text-white"
+            type="text"
+          />
+
+          <div className={"flex flex-row gap-3"}>
+            <Checkbox
+              onValueChange={props.onOnlyOfficialChange}
+              checked={props.searchData.onlyOfficial}
+            >
+              <Trans>Only display official characters</Trans>
+            </Checkbox>
+
+            <Switch
+              isSelected={props.searchData.nsfw}
+              onValueChange={props.onNsfwChange}
+              className="ml-auto w-fit"
+            >
+              <Trans>NSFW</Trans>
+            </Switch>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
