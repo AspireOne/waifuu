@@ -70,11 +70,11 @@ export const botsRouter = createTRPCRouter({
         where: query as any,
       });
 
-      const hasNextPage = count > (input?.limit || 0) + (input?.cursor || 0);
+      const nextCursor = count > (input?.limit || 0) + (input?.cursor || 0);
 
       return {
         bots,
-        hasNextPage,
+        hasNextPage: nextCursor,
       };
     }),
 

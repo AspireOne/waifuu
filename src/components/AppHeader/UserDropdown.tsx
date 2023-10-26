@@ -6,12 +6,12 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@nextui-org/react";
-import { AppHeaderUserDropdownSettingsDialog } from "./AppHeaderUserDropdownSettingsDialog";
+import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
 import { useSession } from "@/hooks/useSession";
 import { twMerge } from "tailwind-merge";
 import { Trans } from "@lingui/macro";
 
-export const AppHeaderUserDropdown = (props: { className?: string }) => {
+export const UserDropdown = (props: { className?: string }) => {
   const { user, status } = useSession();
 
   const {
@@ -41,7 +41,7 @@ export const AppHeaderUserDropdown = (props: { className?: string }) => {
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">
-          <DropdownItem key="profile" className="h-14 gap-2">
+          <DropdownItem isDisabled={true} key="profile" className="h-14 gap-2">
             <p className="font-semibold">
               <Trans>Signed in as</Trans>
             </p>
@@ -50,10 +50,13 @@ export const AppHeaderUserDropdown = (props: { className?: string }) => {
           <DropdownItem onClick={toggleSettingsOpen} key="settings">
             <Trans>Character settings</Trans>
           </DropdownItem>
+          <DropdownItem>
+            <Trans>My profile</Trans>
+          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
 
-      <AppHeaderUserDropdownSettingsDialog
+      <UserDropdownSettingsDialog
         isOpen={isSettingsOpen}
         onOpenChange={toggleSettingsOpen}
       />
