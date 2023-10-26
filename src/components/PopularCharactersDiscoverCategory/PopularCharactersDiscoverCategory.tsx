@@ -12,46 +12,52 @@ import { BotSource } from "@prisma/client";
 import { discoveredBotStore } from "@/stores";
 import { api } from "@lib/api";
 import { useImmer } from "use-immer";
+import { useEffect, useMemo, useState } from "react";
 
 type SearchType = {
   textFilter?: string;
   nsfw: boolean;
   onlyOfficial?: boolean;
-  cursor: number;
 };
 
 const CURSOR_LIMIT = 1;
-export const PopularCharactersDiscoverCategory = (props: {}) => {
+
+export const PopularCharactersDiscoverCategory = () => {
   const [searchData, setSearchData] = useImmer<SearchType>({
     textFilter: undefined,
     nsfw: true,
     onlyOfficial: false,
-    cursor: 0,
   });
+
+  useEffect(() => {
+    bots.clearDiscoveredBots();
+    bots.setCursor(0);
+  }, [searchData]);
 
   const bots = discoveredBotStore.getState();
   const { isRefetching } = api.bots.getAllBots.useQuery(
     {
       ...searchData,
+      cursor: bots.cursor,
       sourceFilter: searchData.onlyOfficial ? BotSource.OFFICIAL : undefined,
       limit: CURSOR_LIMIT,
     },
     {
       onSuccess: (data) => {
-        bots.clearDiscoveredBots();
         bots.addDiscoveredBots(data.bots);
         bots.setHasNextDiscoveredPage(data.hasNextPage);
       },
     },
   );
 
-  const skipPage = () =>
-    setSearchData((prev) => {
-      prev.cursor += CURSOR_LIMIT;
-    });
+  const skipPage = () => {
+    alert(1);
+    bots.setCursor(bots.cursor + CURSOR_LIMIT);
+  };
 
   return (
     <div>
+      {bots.cursor}
       <ParametersHeader
         searchData={searchData}
         onTagsChange={() => {}}

@@ -1,6 +1,5 @@
 import Page from "@/components/Page";
-import { useSession } from "@/hooks/useSession";
-import { t, Trans } from "@lingui/macro";
+import { t } from "@lingui/macro";
 import { DiscoverHeader } from "@components/DiscoverHeader";
 import { ActiveChatsDiscoverCategory } from "src/components/ActiveChatsDiscoverCategory";
 import { PopularCharactersDiscoverCategory } from "src/components/PopularCharactersDiscoverCategory";
@@ -8,8 +7,6 @@ import { ForumPostsDiscoverCategory } from "src/components/ForumPostsDiscoverCat
 import { Spacer } from "@nextui-org/react";
 
 const Discover = () => {
-  const { user } = useSession();
-
   return (
     <Page title={t`Discover Characters`} showActionBar autoBack={false}>
       <DiscoverHeader />

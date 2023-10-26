@@ -12,6 +12,8 @@ export type DiscoveredBotStore = {
   clearDiscoveredBots: VoidFunction;
   hasNextDiscoveredPage: boolean;
   setHasNextDiscoveredPage: (hasNext: boolean) => void;
+  cursor: number;
+  setCursor: (cursor: number) => void;
 };
 
 export const discoveredBotStore = createStore<DiscoveredBotStore>((set) => ({
@@ -29,4 +31,9 @@ export const discoveredBotStore = createStore<DiscoveredBotStore>((set) => ({
   hasNextDiscoveredPage: false,
   setHasNextDiscoveredPage: (hasNext: boolean) =>
     set({ hasNextDiscoveredPage: hasNext }),
+  cursor: 0,
+  setCursor: (cursor: number) =>
+    set((state) => {
+      return { cursor, discovered: state.discovered };
+    }),
 }));
