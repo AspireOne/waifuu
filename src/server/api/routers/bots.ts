@@ -266,6 +266,7 @@ export const botsRouter = createTRPCRouter({
 
         // in Chat data
         avatar: z.string().optional(),
+        backgroundImage: z.string().optional(),
         name: z.string(),
         persona: z.string(),
         dialogue: z.string(),
@@ -307,6 +308,7 @@ export const botsRouter = createTRPCRouter({
           avatar: input.avatar,
           cover: input.cover,
           characterPersona: input.persona,
+          backgroundImage: input.backgroundImage,
           categoryId: input.category,
           characterDialogue: input.dialogue,
           characterNsfw: input.nsfw,

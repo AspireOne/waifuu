@@ -60,6 +60,12 @@ export const CharacterCard = ({
               </Chip>
             )}
           </div>
+
+          {bottom && bot.moodImagesEnabled && (
+            <Chip className="mt-2 w-fit mx-auto" color="primary" variant="dot">
+              Custom emotions
+            </Chip>
+          )}
         </CardBody>
 
         {bottom ? (

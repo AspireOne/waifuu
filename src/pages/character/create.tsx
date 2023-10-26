@@ -39,6 +39,7 @@ const CreateChatPage = () => {
   const [isSelected, setIsSelected] = useState(false);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [cover, setCover] = useState<string | undefined>(undefined);
+  const [background, setBackground] = useState<string | undefined>(undefined);
 
   // Mood states
   const [moodImagesEnabled, setMoodImagesEnabled] = useState(false);
@@ -59,6 +60,7 @@ const CreateChatPage = () => {
     createBot.mutateAsync({
       ...data,
       nsfw: isSelected,
+      backgroundImage: background,
       avatar,
       category: data.category,
       cover,
@@ -167,6 +169,10 @@ const CreateChatPage = () => {
             <FileUploadRaw
               onUpload={(id) => setCover(id)}
               label={_(msg`Cover`)}
+            />
+            <FileUploadRaw
+              onUpload={(id) => setBackground(id)}
+              label="Background image"
             />
 
             <Divider className="mt-4 mb-4" />
