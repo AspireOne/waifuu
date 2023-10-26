@@ -97,6 +97,7 @@ export const botsRouter = createTRPCRouter({
       z.object({
         botId: z.string(),
         botMode: z.nativeEnum(BotMode),
+        userContext: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -105,6 +106,7 @@ export const botsRouter = createTRPCRouter({
           botId: input.botId,
           botMode: input.botMode,
           userId: ctx.user.id,
+          userContext: input.userContext,
         },
       });
     }),

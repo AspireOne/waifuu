@@ -1,4 +1,4 @@
-import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
+import { Button, Checkbox, Input, Switch } from "@nextui-org/react";
 import Image from "next/image";
 import { FaCompass } from "react-icons/fa";
 import { BiTrendingUp } from "react-icons/bi";
@@ -10,7 +10,6 @@ import { Bot, BotSource } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useSession } from "@/hooks/useSession";
 import { MdForum } from "react-icons/md";
-import { BsPlus } from "react-icons/bs";
 import Router from "next/router";
 import { paths } from "@/lib/paths";
 import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
@@ -19,6 +18,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import Title from "@components/ui/Title";
 import { Tooltip } from "@nextui-org/tooltip";
 import { t, Trans } from "@lingui/macro";
+import { discoveredBotStore } from "@/stores";
 
 // TODO: Refactor this shitty code
 
@@ -31,6 +31,7 @@ type SearchType = {
 
 const Discover = () => {
   const { user } = useSession();
+  const discoveredBots = discoveredBotStore.getState();
 
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
@@ -38,10 +39,9 @@ const Discover = () => {
     officialBots: null,
     cursor: 0,
   });
-  const [hasNextPage, setHasNextPage] = useState(true);
 
   const toggleNsfw = () => {
-    setBots([]);
+    discoveredBots.clearDiscoveredBots();
     setSearchData({
       ...searchData,
       nsfw: !searchData.nsfw,
@@ -50,7 +50,7 @@ const Discover = () => {
   };
 
   const toggleOfficialBots = () => {
-    setBots([]);
+    discoveredBots.clearDiscoveredBots();
     setSearchData({
       ...searchData,
       officialBots:
@@ -60,6 +60,7 @@ const Discover = () => {
   };
 
   const CURSOR_LIMIT = 1;
+
   const skipPage = () => {
     setSearchData({
       ...searchData,
@@ -67,7 +68,6 @@ const Discover = () => {
     });
   };
 
-  const [bots, setBots] = useState<Bot[]>([]);
   api.bots.getAllBots.useQuery(
     {
       ...searchData,
@@ -76,30 +76,22 @@ const Discover = () => {
     },
     {
       onSuccess: (data) => {
-        setBots([...bots, ...data.bots]);
-        setHasNextPage(data.hasNextPage);
+        discoveredBots.addDiscoveredBots(data.bots);
+        discoveredBots.setHasNextDiscoveredPage(data.hasNextPage);
       },
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
     },
   );
 
   const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
-  const conversationBots = api.bots.getAllUsedBots.useQuery(
-    {
-      limit: 5,
-    },
-    {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-    },
-  );
+  const conversationBots = api.bots.getAllUsedBots.useQuery({
+    limit: 5,
+  });
 
   const { register, watch } = useForm<SearchType>();
 
   useEffect(() => {
     const subscription = watch((value) => {
-      setBots([]);
+      discoveredBots.clearDiscoveredBots();
       setSearchData({
         textFilter: value.textFilter,
         nsfw: value.nsfw as boolean,
@@ -214,7 +206,7 @@ const Discover = () => {
           </form>
 
           <div className="flex w-full flex-wrap gap-5">
-            {bots?.length === 0 && (
+            {discoveredBots.discovered?.length === 0 && (
               <p className="">
                 <Trans>
                   No characters found. Try changing your search term.
@@ -223,12 +215,12 @@ const Discover = () => {
             )}
 
             <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-fit mx-auto">
-              {bots.map((bot, index) => {
+              {discoveredBots.discovered.map((bot, index) => {
                 return <CharacterCard key={index} bot={bot} />;
               })}
             </div>
 
-            {hasNextPage && (
+            {discoveredBots.hasNextDiscoveredPage && (
               <Button
                 onClick={skipPage}
                 variant="solid"

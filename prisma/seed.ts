@@ -3,7 +3,7 @@ import {BotSource, PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const aqua = await prisma.bot.upsert({
+  await prisma.bot.upsert({
     where: { id: "official-public" },
     update: {},
     create: {

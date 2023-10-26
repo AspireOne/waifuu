@@ -20,16 +20,16 @@ const chatModeIntroductionPrompt = PromptTemplate.fromTemplate(
 );
 // ------------------------------------------------- //
 
-const userAboutPrompt = PromptTemplate.fromTemplate(
-  "Here is some context about the user: '{about}'.",
-);
-
 const userAddressPrompt = PromptTemplate.fromTemplate(
   "If you need to, address the user as '{addressedAs}'.",
 );
 
 const allowNsfwPrompt = PromptTemplate.fromTemplate(
   "You {nsfwPronoun} respond in a NSFW way.",
+);
+
+const userContextPrompt = PromptTemplate.fromTemplate(
+  "Here is some context about the user: '{userContext}'.",
 );
 
 // ------ Mode-specific examples ------ //
@@ -71,7 +71,7 @@ export async function getCharacterSystemPrompt(
       },
       {
         name: "userAbout",
-        prompt: user.about ? userAboutPrompt : emptyPrompt,
+        prompt: userContextPrompt || emptyPrompt,
       },
       {
         name: "nsfwText",
@@ -88,6 +88,7 @@ export async function getCharacterSystemPrompt(
     addressedAs: user.addressedAs,
     about: user.about,
     nsfwPronoun: bot.characterNsfw ? "can" : "should not",
+    userContext: chat.userContext || user.about,
   });
 }
 

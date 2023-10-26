@@ -133,6 +133,7 @@ model BotShares {
 model BotChat {
   id       String           @id @default(cuid())
   botMode  BotMode
+  userContext String?
   botId    String
   userId   String
   bot      Bot              @relation(fields: [botId], references: [id])
