@@ -51,7 +51,7 @@ const ChatMainMenu = () => {
       }
       className={"space-y-12"}
     >
-      <Card className="z-20">
+      <Card className="z-20 mx-auto md:w-[600px]">
         <div className="flex flex-col text-center gap-2 p-3">
           <Spacer y={2} />
           <Image

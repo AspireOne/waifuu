@@ -72,7 +72,10 @@ const CreateChatPage = () => {
 
   return (
     <Page title={_(msg`Create New Character`)}>
-      <form onSubmit={handleSubmit(submitHandler)}>
+      <form
+        className="md:w-[600px] mx-auto"
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <Card>
           <div className="p-4">
             <h2 className="text-xl mb-4">

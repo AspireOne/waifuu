@@ -21,7 +21,7 @@ export const CharacterCard = ({
   bottom,
 }: CharacterCardProps) => {
   return (
-    <Card className="p-3">
+    <Card className="p-3 w-full min-w-[220px] sm:max-w-[220px]">
       <Link href={normalizePath(paths.botChat(chatId ?? "", bot.id))}>
         <Spacer y={2} />
         <Image
@@ -33,9 +33,9 @@ export const CharacterCard = ({
           height={100}
         />
 
-        <CardBody>
+        <CardBody className="min-w-[190px]">
           <b className="text-md flex flex-row text-white text-center mx-auto">
-            <p>{bot.name}</p>
+            <p className="text-center mx-auto w-fit">{bot.name}</p>
 
             {bot.source === BotSource.OFFICIAL && (
               <MdVerified fontSize={23} className="ml-2 text-primary" />
@@ -43,7 +43,7 @@ export const CharacterCard = ({
           </b>
           {!chatType && (
             <LargeText
-              className="table text-center w-[150px] text-sm mt-2"
+              className="table mx-auto text-center w-[150px] text-sm mt-2"
               content={bot.description}
               maxLength={35}
             />

@@ -166,36 +166,38 @@ const ChatMessages = (props: {
   if (!props.bot) return <div></div>;
 
   return (
-    <ScrollShadow
-      size={200}
-      ref={containerRef}
-      className="flex flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll fixed bottom-14"
-    >
-      {props.messages.map((message, index) => {
-        const botName = props.bot!.characterName || _(msg`Them`);
-        const userName = user?.name || _(msg`You`);
-        const isBot = message.role === "BOT";
+    <div className="fixed left-0 bottom-14 md:w-full z-30">
+      <ScrollShadow
+        size={200}
+        ref={containerRef}
+        className="flex md:w-[500px] mx-auto flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll"
+      >
+        {props.messages.map((message, index) => {
+          const botName = props.bot!.characterName || _(msg`Them`);
+          const userName = user?.name || _(msg`You`);
+          const isBot = message.role === "BOT";
 
-        return (
-          <ChatMessage
-            key={index}
-            className={"z-[10]"}
-            author={{
-              bot: isBot,
-              name: isBot ? botName : userName,
-              avatar: isBot
-                ? makeDownloadPath(props.bot?.avatar!)
-                : user?.image,
-            }}
-            message={message.content}
-            mood={message.mood}
-          />
-        );
-      })}
+          return (
+            <ChatMessage
+              key={index}
+              className={"z-[10]"}
+              author={{
+                bot: isBot,
+                name: isBot ? botName : userName,
+                avatar: isBot
+                  ? makeDownloadPath(props.bot?.avatar!)
+                  : user?.image,
+              }}
+              message={message.content}
+              mood={message.mood}
+            />
+          );
+        })}
 
-      {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
-      <div ref={lastMsgRef} />
-    </ScrollShadow>
+        {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
+        <div ref={lastMsgRef} />
+      </ScrollShadow>
+    </div>
   );
 };
 

@@ -125,9 +125,9 @@ export const PopularCharactersDiscoverCategory = () => {
             </p>
           )}
 
-          <div className="grid gap-4 grid-cols-2 md:grid-cols-4 w-full mx-auto">
+          <div className="gap-4 flex flex-wrap w-full mx-auto">
             {discoveredBots.discovered.map((bot, index) => {
-              return <CharacterCard key={index} bot={bot} />;
+              return <CharacterCard bottom key={index} bot={bot} />;
             })}
           </div>
 

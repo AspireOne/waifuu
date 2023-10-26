@@ -4,8 +4,8 @@ import Image from "next/image";
 import Title from "@components/ui/Title";
 import { Trans } from "@lingui/macro";
 
-export const DiscoverHeader = (props: {}) => {
-  const { user, status } = useSession();
+export const DiscoverHeader = () => {
+  const { user } = useSession();
 
   return (
     /*mb is to offset the absolute position.*/
@@ -20,17 +20,15 @@ export const DiscoverHeader = (props: {}) => {
       />
 
       <div className="mx-auto mt-[-120px] z-20 relative">
-        <div>
-          <p className="text-2xl">👋</p>
+        <p className="text-2xl md:text-4xl">👋</p>
 
-          <div>
-            <Title className={"my-1"} size={"md"} as={"p"} bold>
-              <Trans>Hi, {user?.name}</Trans>
-            </Title>
-            <p className={"text-foreground-700"}>
-              <Trans>Let's explore some new characters.</Trans>
-            </p>
-          </div>
+        <div>
+          <Title className={"my-1 text-2xl md:text-4xl"} as={"p"} bold>
+            <Trans>Hi, {user?.name}</Trans>
+          </Title>
+          <p className="text-foreground-700 text-lg md:text-xl ">
+            <Trans>Let's explore some new characters.</Trans>
+          </p>
         </div>
       </div>
     </div>
