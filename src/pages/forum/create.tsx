@@ -2,8 +2,6 @@ import Page from "@/components/Page";
 import { Trans, t } from "@lingui/macro";
 import { Button, Card, Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default () => {
   const { handleSubmit, register } = useForm();
