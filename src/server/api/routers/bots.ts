@@ -132,7 +132,7 @@ export const botsRouter = createTRPCRouter({
           {
             input: {
               system_prompt:
-                `Your responses must be short.\n` +
+                prompts.format +
                 `${prompts.intro(
                   chat?.bot.characterName!,
                   chat?.bot.characterPersona!,
@@ -140,7 +140,7 @@ export const botsRouter = createTRPCRouter({
                 )}\n` +
                 `${prompts.nsfw(chat?.bot.characterNsfw!)}\n` +
                 `${prompts.user(chat?.user.about!, chat?.user.addressedAs!)}\n`,
-              prompt: prompts.initialMessage(),
+              prompt: prompts.format + " " + prompts.initialMessage(),
             },
           },
         )) as string[];
@@ -157,6 +157,8 @@ export const botsRouter = createTRPCRouter({
       }
 
       const outputStr = (output as unknown as []).join("");
+      console.log(outputStr);
+      console.log(JSON.parse(outputStr));
 
       const botMsg = await ctx.prisma.botChatMessage.create({
         data: {
@@ -434,7 +436,7 @@ export const botsRouter = createTRPCRouter({
           {
             input: {
               system_prompt:
-                "Your responses must be short." +
+                prompts.format +
                 `${prompts.intro(
                   chat?.bot.characterName!,
                   chat?.bot.characterPersona!,
@@ -466,6 +468,7 @@ export const botsRouter = createTRPCRouter({
       }
 
       const outputStr = (output as unknown as []).join("");
+      console.log(outputStr);
       const mood = outputStr.split(" ").pop() as Mood | undefined;
 
       const botMsg = await ctx.prisma.botChatMessage.create({

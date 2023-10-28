@@ -1,6 +1,8 @@
 import { BotMode } from "@prisma/client";
 
 export const prompts = {
+  format: "You must format all your responses as JSON in the following format: {\"message\": \"Example message!\", \"mood\": \"NEUTRAL | BLUSHED | ANGRY | HAPPY | SAD\"}",
+  
   roleplay: (chatType: BotMode) => {
     switch (chatType) {
       case BotMode.ADVENTURE:
