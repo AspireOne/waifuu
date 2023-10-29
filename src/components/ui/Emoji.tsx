@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 type Props = {
-  name: "chat" | "sparkles" | "globe" | "gem" | "money";
+  name: "chat" | "sparkles" | "globe" | "gem" | "money" | "blossom";
   className?: string;
 };
 

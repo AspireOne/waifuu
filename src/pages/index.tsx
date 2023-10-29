@@ -12,15 +12,15 @@ import { Spacer } from "@nextui-org/react";
 const topBarArr = [
   {
     name: "Home",
-    link: "/",
+    scrollTo: 0,
   },
   {
-    name: "Discover",
-    link: "/discover",
+    name: "Pricing",
+    scrollTo: 500,
   },
   {
-    name: "About",
-    link: "/about",
+    name: "Start",
+    scrollTo: 2000,
   },
 ];
 
@@ -40,7 +40,9 @@ const TopBar = () => {
         ])}
       >
         {topBarArr.map((item) => (
-          <div className="bg-[#606060] p-2 px-4 rounded-full">Bubble</div>
+          <div key={item.name} className="bg-[#606060] p-2 px-4 rounded-full">
+            {item.name}
+          </div>
         ))}
       </div>
     </div>
@@ -50,21 +52,21 @@ const TopBar = () => {
 const Header = () => {
   return (
     <header className="text-center">
-      <h1 className="text-6xl w-fit mx-auto font-bold flex flex-row gap-3">
+      <h1 className="text-8xl w-fit mx-auto font-bold flex flex-row gap-6">
         <p>Meet</p>
-        <Emoji className="w-[60px] h-[60px]" name="chat" />
+        <Emoji className="w-[100px] h-[100px]" name="chat" />
         <p>Companion</p>
       </h1>
 
-      <Spacer y={3} />
+      <Spacer y={5} />
 
-      <h2 className="w-fit mx-auto text-3xl flex flex-row gap-2">
+      <h2 className="w-fit mx-auto text-5xl flex flex-row gap-2">
         <p className="font-light">The virtual</p>
         <p className="text-gray-400 font-bold">friend</p>
       </h2>
 
       <Spacer y={20} />
-      <button className="mx-auto bg-transparent border-2 flex flex-row gap-2 bg-[#8D8D8D] bg-opacity-20 px-10 border-[#A0A0A0] rounded-full p-2">
+      <button className="mx-auto border-2 flex flex-row gap-2 bg-[#8D8D8D] bg-opacity-20 px-10 border-[#A0A0A0] rounded-full p-2">
         <Emoji name="sparkles" className="h-7 w-7" />
         <p className="mt-0.5 font-semibold">Try it out</p>
       </button>
@@ -184,6 +186,23 @@ const PayPlans = () => {
   );
 };
 
+const CompanionUsage = () => {
+  return (
+    <div>
+      <div className="w-[230px] relative top-10 h-[150px] bg-gray-600" />
+      <div className="w-[230px] relative top-10 left-96 h-[150px] bg-gray-600" />
+      <div className="w-[230px] relative top-[-200px] left-[800px] h-[150px] bg-gray-600" />
+      <div className="w-fit text-5xl text-center mx-auto">
+        <h1 className="flex font-bold flex-row gap-2">
+          <Emoji name="blossom" className="w-[50px] h-[50px]" />
+          <p>Companion</p>
+        </h1>
+        <p>can do</p>
+      </div>
+    </div>
+  );
+};
+
 const Footer = () => {
   return (
     <footer className="text-center">
@@ -253,7 +272,10 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Discover : function Lan
       <Spacer y={40} />
       <PayPlans />
       <Spacer y={40} />
+      <CompanionUsage />
+      <Spacer y={40} />
       <Footer />
+      <Spacer y={40} />
     </Page>
   );
 }
