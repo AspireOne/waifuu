@@ -5,7 +5,7 @@
   "scripts": {
     "build:prod": "next build && prisma migrate deploy",
     "build:native": "cross-env NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
-    "dev": "next dev",
+    "dev": "cross-env NEXT_PUBLIC_DEVELOPMENT=1 next dev",
     "dev:external": "cross-env HOST=0.0.0.0 next dev",
     "start": "next start",
     "lint": "prettier . --write",

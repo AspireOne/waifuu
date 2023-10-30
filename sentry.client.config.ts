@@ -7,19 +7,16 @@ import {BrowserTracing} from "@sentry/nextjs";
 
 Sentry.init({
   dsn: "https://34c0748d79396ead34402eaea3d846c0@o4506082747482112.ingest.sentry.io/4506082817212416",
-  // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
+  enabled: !process.env.NEXT_PUBLIC_DEVELOPMENT,
 
   // https://docs.sentry.io/platforms/javascript/guides/capacitor/
   release: "companion@1.0.0", // TODO: Put this in an env variable or smthng...
   //dist: "1",
 
-
-  // This sets the sample rate to be 10%. You may want this to be 100% while
-  // in development and sample at a lower rate in production.
+  // 10%.
   replaysSessionSampleRate: 0.1,
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 0.8,
+  // 100% because our user base is small.
+  tracesSampleRate: 1.0,
   replaysOnErrorSampleRate: 1.0,
 
   // You can remove this option if you're not planning to use the Sentry Session Replay feature:
