@@ -9,9 +9,15 @@ import { Card } from "@nextui-org/card";
 import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
 import { CustomRadio } from "@/components/ui/CustomRadio";
 import { useSession } from "@/hooks/useSession";
-import { makeDownloadPath } from "@/utils/utils";
+import { makeDownloadPath } from "@lib/utils";
 import { useLingui } from "@lingui/react";
 import { msg, Trans } from "@lingui/macro";
+import { useForm } from "react-hook-form";
+
+type FormProps = {
+  botMode: BotMode;
+  userContext: string;
+};
 
 // Main page of the bot for creating new chats.
 const ChatMainMenu = () => {
@@ -27,14 +33,14 @@ const ChatMainMenu = () => {
   });
   const bot = api.bots.getBot.useQuery({ botId: botId as string });
 
-  const [botMode, setBotMode] = React.useState<BotMode>(BotMode.CHAT);
+  const { register, setValue, handleSubmit } = useForm<FormProps>();
 
-  const onSubmit = () => {
+  const onSubmit = (data: FormProps) => {
     if (!bot.data || !bot.data?.id) return;
 
     createBotChat.mutate({
       botId: bot.data.id,
-      botMode,
+      ...data,
     });
   };
 
@@ -45,7 +51,7 @@ const ChatMainMenu = () => {
       }
       className={"space-y-12"}
     >
-      <Card className="z-20">
+      <Card className="z-20 mx-auto md:w-[600px]">
         <div className="flex flex-col text-center gap-2 p-3">
           <Spacer y={2} />
           <Image
@@ -74,10 +80,9 @@ const ChatMainMenu = () => {
           </div>
         </div>
 
-        <div className="p-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-3">
           <RadioGroup
-            value={botMode}
-            onValueChange={(value) => setBotMode(value as BotMode)}
+            onValueChange={(value) => setValue("botMode", value as BotMode)}
             className="w-full"
           >
             <CustomRadio
@@ -109,23 +114,24 @@ const ChatMainMenu = () => {
           <Spacer y={7} />
 
           <Textarea
+            {...register("userContext")}
             label={_(`Your context`)}
             description={_(
               `This is the default context for the character - they will remember everything you'll type here.`,
             )}
             defaultValue={user?.about ?? ""}
           />
-        </div>
 
-        <div className="p-3">
-          <Button
-            isLoading={createBotChat.isLoading}
-            onClick={onSubmit}
-            className="w-full"
-          >
-            <Trans>Start the chat</Trans>
-          </Button>
-        </div>
+          <div className="p-3 mt-4">
+            <Button
+              isLoading={createBotChat.isLoading}
+              type="submit"
+              className="w-full"
+            >
+              <Trans>Start the chat</Trans>
+            </Button>
+          </div>
+        </form>
       </Card>
     </Page>
   );

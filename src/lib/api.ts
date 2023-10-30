@@ -1,17 +1,18 @@
-import { httpBatchLink, loggerLink, TRPCLink } from "@trpc/client";
+import { httpBatchLink, httpLink, loggerLink, TRPCLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
 import { type AppRouter } from "@/server/api/root";
 import { Capacitor } from "@capacitor/core";
-import { getIdToken } from "@/lib/firebase/getIdToken";
+import { getIdToken } from "@/lib/firebase";
 import { Constants } from "@/lib/constants";
 import { observable } from "@trpc/server/observable";
 import { toast } from "react-toastify";
-import { showErrorToast } from "@utils/utils";
+import generateUUID, { generateID, showErrorToast } from "@lib/utils";
 import { Preferences } from "@capacitor/preferences";
 import { getLocale } from "@lib/i18n";
+import { getAuth } from "firebase/auth";
 
 export const customErrorLink: TRPCLink<AppRouter> = () => {
   return ({ next, op }) => {
@@ -51,14 +52,11 @@ export const api = createTRPCNext<AppRouter>({
         defaultOptions: {
           // Disable most refetching because I deem it useless and wasteful.
           queries: {
-            // These are in-line with the defaults.
             retry: 3,
             refetchInterval: false,
             refetchIntervalInBackground: false,
             refetchOnReconnect: true,
             refetchOnMount: true,
-
-            //refetchOnWindowFocus: false,
           },
         },
       },
@@ -75,21 +73,23 @@ export const api = createTRPCNext<AppRouter>({
       links: [
         customErrorLink,
         loggerLink({
-          enabled: (opts) =>
-            process.env.NODE_ENV === "development" ||
-            (opts.direction === "down" && opts.result instanceof Error),
+          enabled: (opts) => {
+            return (
+              process.env.NODE_ENV === "development" ||
+              (opts.direction === "down" && opts.result instanceof Error)
+            );
+          },
         }),
-        httpBatchLink({
+        httpLink({
           url: apiBase("/api/trpc"),
           async fetch(url, options) {
-            const idToken = await getIdToken();
+            let idToken = await getIdToken();
             const locale = getLocale();
 
             return fetch(url, {
               ...options,
               // 'include' is required for cookies to be sent to the server.
               credentials: Capacitor.isNativePlatform() ? "include" : undefined,
-              // Add authorization bearer token from Preferences.get("idToken").
               headers: {
                 ...options?.headers,
                 Authorization: idToken ? `Bearer ${idToken}` : "",

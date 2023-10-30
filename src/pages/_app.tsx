@@ -12,25 +12,25 @@ import "@/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 
 import { getAnalytics } from "firebase/analytics";
-import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
-import { getOrInitFirebaseApp } from "@/lib/firebase/getOrInitFirebaseApp";
 import { SessionProvider } from "@/contexts/SessionProvider";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { initGlobalLocale } from "@lib/i18n";
+import { getOrInitFirebaseApp, getOrInitFirebaseAuth } from "@lib/firebase";
 
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
-  // Initialize firebase.
+  // Initialize app.
   useEffect(() => {
     async function init() {
       // Initialize firebase.
       const app = getOrInitFirebaseApp();
       const auth = getOrInitFirebaseAuth();
       const analytics = getAnalytics(app);
+
+      await initGlobalLocale();
     }
 
     init();
-    initGlobalLocale();
   }, []);
 
   return (

@@ -7,7 +7,7 @@ import { useSession } from "@/hooks/useSession";
 import { useRouter } from "next/router";
 import { paths } from "@/lib/paths";
 import { AppHeader } from "src/components/AppHeader";
-import { normalizePath } from "@/utils/utils";
+import { normalizePath } from "@lib/utils";
 
 function Page(
   props: PropsWithChildren<{
@@ -39,7 +39,7 @@ function Page(
 ) {
   // Set default values for props.
   const unprotected = props.unprotected ?? false;
-  const showActionBar = props.showActionBar ?? false;
+  const showActionBar = false; // props.showActionBar ?? false; // TODO: Change it back.
   const showHeader = props.showHeader ?? true;
   const autoBack = props.autoBack ?? true;
   const backPath = props.backPath;

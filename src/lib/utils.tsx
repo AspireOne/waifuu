@@ -1,4 +1,4 @@
-import { apiBase } from "@/lib/api";
+import { apiBase } from "@lib/api";
 import React from "react";
 import { toast } from "react-toastify";
 
@@ -13,6 +13,23 @@ export default function generateUUID(): string {
       v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+}
+
+/**
+ * Generates a random alphanumeric string of custom length.
+ * @param {number} length - The length of the string to generate.
+ * @returns {string} A randomly generated alphanumeric string.
+ */
+export function generateID(length: number): string {
+  let id = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (let i = 0; i < length; i += 1) {
+    id += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  return id;
 }
 
 export function showErrorToast(error: Error) {
@@ -99,4 +116,13 @@ export function normalizePath(
 
 export function makeDownloadPath(id: string): string {
   return apiBase(`/api/images/download?id=${id}`);
+}
+
+export function isUrl(str: string): boolean {
+  try {
+    new URL(str);
+    return true;
+  } catch (_) {
+    return false;
+  }
 }

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type DrawerStore = {
+export type DrawerStore = {
   isOpen: boolean;
   toggle: () => void;
 };

@@ -19,13 +19,14 @@ import Router from "next/router";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
-import { msg, Trans } from "@lingui/macro";
+import { msg, t, Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 
 type CreateInput = {
   title: string;
   description: string;
   visibility: Visibility;
+  category: string;
 
   name: string;
   persona: string;
@@ -38,6 +39,7 @@ const CreateChatPage = () => {
   const [isSelected, setIsSelected] = useState(false);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [cover, setCover] = useState<string | undefined>(undefined);
+  const [background, setBackground] = useState<string | undefined>(undefined);
 
   // Mood states
   const [moodImagesEnabled, setMoodImagesEnabled] = useState(false);
@@ -58,7 +60,9 @@ const CreateChatPage = () => {
     createBot.mutateAsync({
       ...data,
       nsfw: isSelected,
+      backgroundImage: background,
       avatar,
+      category: data.category,
       cover,
       moodImagesEnabled,
       sadImageId: sad,
@@ -70,7 +74,10 @@ const CreateChatPage = () => {
 
   return (
     <Page title={_(msg`Create New Character`)}>
-      <form onSubmit={handleSubmit(submitHandler)}>
+      <form
+        className="md:w-[600px] mx-auto"
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <Card>
           <div className="p-4">
             <h2 className="text-xl mb-4">
@@ -100,17 +107,17 @@ const CreateChatPage = () => {
                 isRequired
               >
                 <SelectItem key={Visibility.PUBLIC} value={Visibility.PUBLIC}>
-                  <Trans>Public</Trans>
+                  {t`Public`}
                 </SelectItem>
                 <SelectItem key={Visibility.PRIVATE} value={Visibility.PRIVATE}>
-                  <Trans>Private</Trans>
+                  {t`Private`}
                 </SelectItem>
                 <SelectItem key={Visibility.LINK} value={Visibility.LINK}>
-                  <Trans>Only for friends</Trans>
+                  {t`Only for friends`}
                 </SelectItem>
               </Select>
 
-              <Input label={_(msg`Category`)} />
+              <Input {...register("category")} label={_(msg`Category`)} />
             </div>
 
             <Divider className="mt-4 mb-4" />
@@ -162,6 +169,10 @@ const CreateChatPage = () => {
             <FileUploadRaw
               onUpload={(id) => setCover(id)}
               label={_(msg`Cover`)}
+            />
+            <FileUploadRaw
+              onUpload={(id) => setBackground(id)}
+              label="Background image"
             />
 
             <Divider className="mt-4 mb-4" />

@@ -8,13 +8,14 @@ import {
 import "firebase/compat/auth";
 import { api } from "@/lib/api";
 import { User } from "@prisma/client";
-import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
+import { getOrInitFirebaseAuth } from "@/lib/firebase";
 
 type SessionUser = User;
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 
 let authSubscribed: boolean = false;
-let initialTimeMeasured: boolean = false;
+let fbTimeMeasured: boolean = false;
+let queryTimeMeasured: boolean = false;
 
 type SessionState = {
   user: SessionUser | null | undefined;
@@ -50,26 +51,30 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
     authSubscribed = true;
 
     const auth = getOrInitFirebaseAuth();
+    const fbStart = performance.now();
 
-    const now = performance.now();
     auth.onAuthStateChanged((fbUser) => {
       const status = fbUser ? "authenticated" : "unauthenticated";
-      if (status === "unauthenticated") setUser(null);
+      if (!fbUser) setUser(null);
       setFbStatus(status);
 
-      const authEnd = performance.now();
-      if (!initialTimeMeasured) {
-        console.log(`Auth state changed: ${status}`);
-        console.log(`Firebase auth state change took: ${authEnd - now}ms`);
+      console.log(`Auth state changed: ${status}`);
+
+      const fbEnd = performance.now();
+      if (!fbTimeMeasured) {
+        console.log(
+          `Firebase initial Auth state change took: ${fbEnd - fbStart}ms`,
+        );
+        fbTimeMeasured = true;
       }
 
       userQuery.refetch().then(() => {
         const queryEnd = performance.now();
-        if (!initialTimeMeasured) {
+        if (!queryTimeMeasured) {
           console.log(
-            `User fetch from our backend took: ${queryEnd - authEnd}ms`,
+            `User fetch from our backend took: ${queryEnd - fbEnd}ms`,
           );
-          initialTimeMeasured = true;
+          queryTimeMeasured = true;
         }
       });
     });

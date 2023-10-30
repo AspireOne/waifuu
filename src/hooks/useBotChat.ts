@@ -17,6 +17,7 @@ const chatCache = new Map<string, Message[]>();
 /**
  * Allows interaction with a chatbot.
  *
+ * @param chatId
  * @param {boolean} [enabled=true] - Flag indicating whether this is at all active. Can be used to postpone
  * querying or loading before the botId or botMode is available.
  * @returns {Object} An object containing chat messages and functions to interact with the chat.

@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { paths } from "@/lib/paths";
-import { addQueryParams } from "@/utils/utils";
+import { addQueryParams } from "@lib/utils";
 import Title from "@components/ui/Title";
 import { msg, Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";

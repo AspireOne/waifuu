@@ -3,7 +3,7 @@ import path from "path";
 import * as formidable from "formidable";
 import * as minio from "minio";
 import { env } from "@/server/env";
-import generateUUID from "@/utils/utils";
+import generateUUID from "@lib/utils";
 import { prisma } from "@/server/lib/db";
 import metaHandler from "@/server/lib/metaHandler";
 

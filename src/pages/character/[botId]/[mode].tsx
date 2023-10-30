@@ -10,13 +10,14 @@ import ChatInput from "@/components/bot-chat/ChatInput";
 import { ChatTypingIndicator } from "@/components/bot-chat/ChatTypingIndicator";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSession } from "@/hooks/useSession";
-import { makeDownloadPath } from "@/utils/utils";
+import { isUrl, makeDownloadPath } from "@lib/utils";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/macro";
 
 const BotChat = () => {
   const router = useRouter();
   const { _ } = useLingui();
+  const session = useSession();
 
   const path = router.asPath.split("/");
   const chatId = path[path.length - 2] as string;
@@ -24,8 +25,15 @@ const BotChat = () => {
 
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
-  const { data: bot } = useBot(chatId, mode, router.isReady);
-  const chat = useBotChat(chatId, router.isReady);
+  const { data: bot } = useBot(
+    chatId,
+    mode,
+    router.isReady && session.status === "authenticated",
+  );
+  const chat = useBotChat(
+    chatId,
+    router.isReady && session.status === "authenticated",
+  );
 
   function handleScrollChange() {
     if (window.scrollY === 0) chat.loadMore();
@@ -158,36 +166,49 @@ const ChatMessages = (props: {
   if (!props.bot) return <div></div>;
 
   return (
-    <ScrollShadow
-      size={200}
-      ref={containerRef}
-      className="flex flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll fixed bottom-14"
-    >
-      {props.messages.map((message, num) => {
-        const botName = props.bot!.characterName || _(msg`Them`);
-        const userName = user?.name || _(msg`You`);
-        const isBot = message.role === "BOT";
+    <div>
+      <Image
+        className="z-0 w-full h-full object-cover fixed top-0"
+        src={
+          isUrl(props.bot.backgroundImage ?? "")
+            ? (props.bot.backgroundImage as string)
+            : makeDownloadPath(props.bot.backgroundImage as string)
+        }
+      />
 
-        return (
-          <ChatMessage
-            className={"z-[10]"}
-            key={message.id}
-            author={{
-              bot: isBot,
-              name: isBot ? botName : userName,
-              avatar: isBot
-                ? makeDownloadPath(props.bot?.avatar!)
-                : user?.image,
-            }}
-            message={message.content}
-            mood={message.mood}
-          />
-        );
-      })}
+      <div className="fixed left-0 bottom-14 md:w-full z-30">
+        <ScrollShadow
+          size={200}
+          ref={containerRef}
+          className="flex md:w-[500px] mx-auto flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll"
+        >
+          {props.messages.map((message, index) => {
+            const botName = props.bot!.characterName || _(msg`Them`);
+            const userName = user?.name || _(msg`You`);
+            const isBot = message.role === "BOT";
 
-      {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
-      <div ref={lastMsgRef} />
-    </ScrollShadow>
+            return (
+              <ChatMessage
+                key={index}
+                className={"z-[10]"}
+                author={{
+                  bot: isBot,
+                  name: isBot ? botName : userName,
+                  avatar: isBot
+                    ? makeDownloadPath(props.bot?.avatar!)
+                    : user?.image,
+                }}
+                message={message.content}
+                mood={message.mood}
+              />
+            );
+          })}
+
+          {props.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
+          <div ref={lastMsgRef} />
+        </ScrollShadow>
+      </div>
+    </div>
   );
 };
 

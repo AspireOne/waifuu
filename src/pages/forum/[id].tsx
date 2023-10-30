@@ -17,7 +17,7 @@ import { Flex } from "@/components/ui/Flex";
 import Page from "@/components/Page";
 import { api } from "@/lib/api";
 import moment from "moment";
-import { makeDownloadPath } from "@/utils/utils";
+import { makeDownloadPath } from "@lib/utils";
 
 type CreateFormPostForm = {
   content: string;

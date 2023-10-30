@@ -1,5 +1,5 @@
 import Pusher from "pusher-js";
-import { getIdToken } from "@/lib/firebase/getIdToken";
+import { getIdToken } from "@/lib/firebase";
 import { apiBase } from "@/lib/api";
 
 const pusherClient =

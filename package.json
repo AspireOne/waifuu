@@ -19,7 +19,8 @@
     "t:pull": "crowdin pull && pnpm t:compile",
     "t:pre-translate": "crowdin pre-translate --method=mt --engine-id=410300",
     "t:sync": "pnpm t:extract && pnpm t:push && pnpm t:pull",
-    "t:sync:translate": "pnpm t:extract && pnpm t:push && pnpm t:pre-translate && pnpm t:pull"
+    "t:sync:translate": "pnpm t:extract && pnpm t:push && pnpm t:pre-translate && pnpm t:pull",
+    "prisma:reset": "prisma db push --force-reset && prisma db seed"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -80,6 +81,7 @@
     "framer-motion": "^10.16.4",
     "google-auth-library": "^9.1.0",
     "immer": "^10.0.3",
+    "langchain": "^0.0.171",
     "minio": "^7.1.3",
     "moment": "^2.29.4",
     "next": "^13.5.4",
@@ -98,6 +100,7 @@
     "superjson": "^1.13.3",
     "tailwind-merge": "^1.14.0",
     "trpc-openapi": "^1.2.0",
+    "use-immer": "^0.9.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.4",
     "zustand": "^4.4.3"

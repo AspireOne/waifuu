@@ -14,7 +14,7 @@ import {
   signInWithCredential,
   signOut,
 } from "firebase/auth";
-import { getOrInitFirebaseAuth } from "@/lib/firebase/getOrInitFirebaseAuth";
+import { getOrInitFirebaseAuth } from "@/lib/firebase";
 import { Constants } from "@/lib/constants";
 import { semanticPaths } from "@lib/paths";
 import { t, Trans } from "@lingui/macro";
@@ -52,12 +52,12 @@ async function signInUsingGoogleRaw() {
 const Login = () => {
   const router = useRouter();
   const session = useSession();
-  const redirect = router.query.redirect;
+  const redirect = router.query.redirect as string;
 
   // Check for session.user instead of session.status.
   useEffect(() => {
     if (session.user) {
-      router.replace((redirect as string) || semanticPaths.appIndex);
+      router.replace(redirect || semanticPaths.appIndex);
     }
   }, [session.user, session.user?.id]);
 
@@ -68,7 +68,9 @@ const Login = () => {
         JSON.stringify(data),
       );
 
-      router.replace((redirect as string) || semanticPaths.appIndex);
+      //router.replace((redirect as string) || semanticPaths.appIndex);
+      // redirect to "redirect" using window.location.href while reloading the page.
+      window.location.href = redirect || semanticPaths.appIndex;
       session.refetch();
     },
     onError: async (error) => {
