@@ -1,6 +1,6 @@
 import { NextApiRequest } from "next";
 import { prisma } from "@/server/lib/db";
-import getServerFirebaseAuth from "@/server/lib/getServerFirebaseAuth";
+import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { User } from "@prisma/client";
 
 /**
@@ -12,7 +12,7 @@ export async function retrieveUser(req: NextApiRequest): Promise<User | null> {
   if (!idToken) return null;
 
   try {
-    const decodedToken = await getServerFirebaseAuth().verifyIdToken(idToken);
+    const decodedToken = await serverFirebaseAuth().verifyIdToken(idToken);
 
     if (!decodedToken.uid) return null;
 

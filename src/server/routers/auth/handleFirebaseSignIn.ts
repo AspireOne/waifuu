@@ -1,6 +1,6 @@
 import { publicProcedure } from "@/server/lib/trpc";
 import { z } from "zod";
-import getServerFirebaseAuth from "@/server/lib/getServerFirebaseAuth";
+import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { PrismaClient } from "@prisma/client";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { generateUniqueUsername } from "@/server/lib/usernameUtils";
@@ -19,7 +19,7 @@ export default publicProcedure
   )
   .mutation(async ({ input, ctx }) => {
     // Get the user data.
-    const decodedIdToken = await getServerFirebaseAuth().verifyIdToken(
+    const decodedIdToken = await serverFirebaseAuth().verifyIdToken(
       input.idToken,
     );
 
@@ -110,7 +110,7 @@ async function createSessionCookie(
   idToken: string,
   res: NextApiResponse,
 ): Promise<string> {
-  const cookie = await getServerFirebaseAuth().createSessionCookie(idToken, {
+  const cookie = await serverFirebaseAuth().createSessionCookie(idToken, {
     // 2 weeks.
     expiresIn: 60 * 60 * 24 * 14 * 1000,
   });
