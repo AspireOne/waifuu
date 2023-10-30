@@ -26,7 +26,7 @@ const ChatMainMenu = () => {
   const { user } = useSession();
   const { _ } = useLingui();
 
-  const createBotChat = api.bots.createBotChat.useMutation({
+  const createBotChat = api.chat.createBotChat.useMutation({
     onSuccess: (data) => {
       router.push(paths.botChat(data.id, bot.data?.id ?? ""));
     },

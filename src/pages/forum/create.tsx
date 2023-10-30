@@ -4,7 +4,7 @@ import { Button, Card, Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 
 export default () => {
-  const { handleSubmit, register } = useForm();
+  const { register } = useForm();
 
   return (
     <Page title="Create new forum post" showHeader autoBack>

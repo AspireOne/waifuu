@@ -27,7 +27,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
   const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
   const [cursor, setCursor] = useState<number | undefined>(undefined);
 
-  const fetchMore = api.bots.messages.useMutation({
+  const fetchMore = api.chat.messages.useMutation({
     onSuccess: async (data) => {
       if (
         data.messages.length === 0 &&
@@ -47,7 +47,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
     },
   });
 
-  const fetchInitial = api.bots.getInitialMessage.useMutation({
+  const fetchInitial = api.chat.getInitialMessage.useMutation({
     onSuccess: async (data) => {
       addMessages([data.botChatMessage]);
       fetchMore.mutate({ chatId, cursor });
@@ -66,7 +66,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
     }
   }, [shouldLoadMore, fetchMore.isLoading, chatId, enabled]);
 
-  const replyMutation = api.bots.genReply.useMutation({
+  const replyMutation = api.chat.genReply.useMutation({
     onMutate: async (variables) => {
       addMessages([
         {

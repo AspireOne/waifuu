@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { pusherClient } from "@/lib/pusherClient";
 import { PresenceChannel } from "pusher-js";
-import PresenceChannelMember from "@/server/types/presenceChannelMember";
+import PresenceChannelMember from "@/server/shared/presenceChannelMember";
 
 export type ConnectionStatus =
   | "no-channel"

@@ -1,57 +1,43 @@
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "@/server/api/trpc";
+import { publicProcedure } from "@/server/lib/trpc";
 import { z } from "zod";
-import { generateUniqueUsername } from "@/server/lib/usernameUtils";
+import getServerFirebaseAuth from "@/server/lib/getServerFirebaseAuth";
+import { PrismaClient } from "@prisma/client";
 import { DecodedIdToken } from "firebase-admin/auth";
+import { generateUniqueUsername } from "@/server/lib/usernameUtils";
 import { TRPCError } from "@trpc/server";
 import { NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-import getServerFirebaseAuth from "@/server/lib/getServerFirebaseAuth";
 
-export const authRouter = createTRPCRouter({
-  logOut: protectedProcedure.mutation(async ({ ctx }) => {
-    // Remove the session cookie.
-    ctx.res?.setHeader(
-      "Set-Cookie",
-      `session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0`,
-    );
-    return undefined;
-  }),
-  // Handles signIn from frontend's CapacitorGoogleAuth plugin in accordance with NextAuth.
-  // Creates an user or updates their data.
-  // TODO: Abstract this out for other OAuth providers? (Apple...)
-  handleFirebaseSignIn: publicProcedure
-    .input(
-      z.object({
-        idToken: z.string(),
-        csrfToken: z.string().nullish(),
-      }),
-    )
-    .mutation(async ({ input, ctx }) => {
-      // Get the user data.
-      const decodedIdToken = await getServerFirebaseAuth().verifyIdToken(
-        input.idToken,
-      );
-
-      await verifyRequest(
-        decodedIdToken.auth_time,
-        input.csrfToken,
-        ctx.req?.cookies["csrfToken"]!,
-      );
-
-      await upsertUser(ctx.prisma, decodedIdToken);
-
-      //const cookie = await createSessionCookie(input.idToken, ctx.res!);
-
-      console.log("Successfully signed in with Firebase.");
-      return {
-        //session: cookie,
-      };
+// Handles signIn from frontend's CapacitorGoogleAuth plugin in accordance with NextAuth.
+// Creates an user or updates their data.
+// TODO: Abstract this out for other OAuth providers? (Apple...)
+export default publicProcedure
+  .input(
+    z.object({
+      idToken: z.string(),
+      csrfToken: z.string().nullish(),
     }),
-});
+  )
+  .mutation(async ({ input, ctx }) => {
+    // Get the user data.
+    const decodedIdToken = await getServerFirebaseAuth().verifyIdToken(
+      input.idToken,
+    );
+
+    await verifyRequest(
+      decodedIdToken.auth_time,
+      input.csrfToken,
+      ctx.req?.cookies["csrfToken"]!,
+    );
+
+    await upsertUser(ctx.prisma, decodedIdToken);
+
+    //const cookie = await createSessionCookie(input.idToken, ctx.res!);
+
+    console.log("Successfully signed in with Firebase.");
+    return {
+      //session: cookie,
+    };
+  });
 
 /**
  * Creates a user if they don't exist.

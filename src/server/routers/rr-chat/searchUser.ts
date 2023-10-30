@@ -1,75 +1,54 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { protectedProcedure } from "@/server/lib/trpc";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
-import { TRPCError } from "@trpc/server";
-import pusherServer from "@/server/lib/pusherServer";
-
-export type ChannelData = {
-  name: string;
-  topic: string;
-};
+import { ChannelData } from "@/server/shared/channelData";
 
 const POLLING_TIME_SECS = 15;
 
-export const RRChatRouter = createTRPCRouter({
-  // user starts searching
-  // -> if someone already exists, remove him and assign them to a chat. Return ChatId.
-  // -> if no one exists, add to the db and start polling.
-  // -> If assigned to a chat during search, it will be polled. Return chatID.
-  // -> If not assigned to a chat, remove from the db and return null.
-  /**
-   * Pairs with an available user, or polls (searches) for a specific amount of time before returning.
-   */
-  searchUser: protectedProcedure
-    .output(
-      z
-        .object({
-          name: z.string(),
-          topic: z.string(),
-        })
-        .nullable(),
-    )
-    .mutation(async ({ ctx }) => {
-      const { id: userId } = ctx.user;
-      const db = ctx.prisma;
+/**
+ * Pairs with an available user, or polls (searches) for a specific amount of time before returning.
+ */
+export default protectedProcedure
+  .output(
+    z
+      .object({
+        name: z.string(),
+        topic: z.string(),
+      })
+      .nullable(),
+  )
+  .mutation(async ({ ctx }) => {
+    const { id: userId } = ctx.user;
+    const db = ctx.prisma;
 
-      if (await isUserPolling(db, userId)) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "User is already polling for a chat.",
-        });
-      }
-
-      // Find some other user that is searching too.
-      const availableUser = await findUserInQueue(db, userId);
-
-      // If found, assign them both to a channel and return that channel.
-      if (availableUser) {
-        const data = generateChannelData();
-        await assignDataToUsers(db, userId, availableUser.userId, data);
-        return data;
-      }
-
-      // If no available user found, add this user to queue and start checking.
-      await addUserToQueue(db, userId);
-      const channelData = await pollForChannel(db, userId);
-      if (channelData) return channelData;
-
-      // If no channel has been assigned, remove this user from the queue and return null.
-      await removeUserFromQueue(db, userId);
-      return null;
-    }),
-
-  sendMessage: protectedProcedure
-    .input(z.object({ channel: z.string(), message: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      await pusherServer.trigger(input.channel, "message", {
-        message: input.message,
-        from: ctx.user.id,
+    if (await isUserPolling(db, userId)) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "User is already polling for a chat.",
       });
-    }),
-});
+    }
+
+    // Find some other user that is searching too.
+    const availableUser = await findUserInQueue(db, userId);
+
+    // If found, assign them both to a channel and return that channel.
+    if (availableUser) {
+      const data = generateChannelData();
+      await assignDataToUsers(db, userId, availableUser.userId, data);
+      return data;
+    }
+
+    // If no available user found, add this user to queue and start checking.
+    await addUserToQueue(db, userId);
+    const channelData = await pollForChannel(db, userId);
+    if (channelData) return channelData;
+
+    // If no channel has been assigned, remove this user from the queue and return null.
+    await removeUserFromQueue(db, userId);
+    return null;
+  });
 
 async function isUserPolling(db: PrismaClient, userId: string) {
   const user = await db.rRChatQueue.findFirst({
@@ -187,7 +166,7 @@ async function findUserInQueue(db: PrismaClient, userId: string) {
   });
 }
 
-export function generateChannelData(): ChannelData {
+function generateChannelData(): ChannelData {
   const channel = "presence-room-" + uuidv4();
   const topic =
     "You land in a room with a stranger. You find out it is kiss-shot wokuna blade-under-heart";
