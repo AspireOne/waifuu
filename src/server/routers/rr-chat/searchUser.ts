@@ -3,7 +3,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
-import { ChannelData } from "@/server/routers/rr-chat/index";
+import { ChannelData } from "@/server/shared/channelData";
 
 const POLLING_TIME_SECS = 15;
 

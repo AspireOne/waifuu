@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { api } from "@lib/api";
-import contactFormSchema from "@/server/types/contactFormSchema";
+import contactFormSchema from "@/server/shared/contactFormSchema";
 import { Trans, t } from "@lingui/macro";
 
 type FormValues = z.infer<typeof contactFormSchema>;

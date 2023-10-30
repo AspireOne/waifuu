@@ -1,6 +1,8 @@
 import { generateOpenApiDocument } from "trpc-openapi";
 import { appRouter } from "@/server/routers/root";
 
+// TODO: Here a separate nodejs server?
+
 export const openApiDocument = generateOpenApiDocument(appRouter, {
   title: "tRPC OpenAPI",
   version: "1.0.0",

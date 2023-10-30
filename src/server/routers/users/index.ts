@@ -5,7 +5,7 @@ import {
 } from "@/server/lib/trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import updateSelfSchema from "@/server/types/updateSelfSchema";
+import updateSelfSchema from "@/server/shared/updateSelfSchema";
 import getSelf from "@/server/routers/users/getSelf";
 import getPublic from "@/server/routers/users/getPublic";
 import checkUsernameAvailability from "@/server/routers/users/checkUsernameAvailability";

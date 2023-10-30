@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import React, { useState } from "react";
-import { ChannelData } from "@/server/routers/rr-chat";
+import { ChannelData } from "@/server/shared/channelData";
 
 export type RRChannelSearchStatus = "searching" | "found" | "not-found" | null;
 /**

@@ -1,5 +1,5 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import updateSelfSchema from "@/server/types/updateSelfSchema";
+import updateSelfSchema from "@/server/shared/updateSelfSchema";
 import { TRPCError } from "@trpc/server";
 
 export default protectedProcedure

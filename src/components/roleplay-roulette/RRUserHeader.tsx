@@ -1,4 +1,4 @@
-import PresenceChannelMember from "@/server/types/presenceChannelMember";
+import PresenceChannelMember from "@/server/shared/presenceChannelMember";
 import { useRouter } from "next/router";
 import React from "react";
 import { Card, CardBody } from "@nextui-org/card";

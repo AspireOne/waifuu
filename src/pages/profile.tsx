@@ -15,7 +15,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-import updateSelfSchema from "@/server/types/updateSelfSchema";
+import updateSelfSchema from "@/server/shared/updateSelfSchema";
 import { t, Trans } from "@lingui/macro";
 import {
   changeAndSaveGlobalLocale,

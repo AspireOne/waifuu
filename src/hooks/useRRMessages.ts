@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { PresenceChannel } from "pusher-js";
-import PresenceChannelMember from "@/server/types/presenceChannelMember";
+import PresenceChannelMember from "@/server/shared/presenceChannelMember";
 
 export type RRMessage = {
   content: string;
