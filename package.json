@@ -66,6 +66,7 @@
     "@trpc/server": "^10.40.0",
     "@types/cors": "^2.8.14",
     "@types/uuid": "^9.0.5",
+    "@zilliz/milvus2-sdk-node": "^2.3.3",
     "autoprefixer": "^10.4.16",
     "axios": "^1.5.1",
     "cors": "^2.8.5",
