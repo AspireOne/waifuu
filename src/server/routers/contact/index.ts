@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "@/server/lib/trpc";
 import contactFormSchema from "@/server/types/contactFormSchema";
 
 export const contactRouter = createTRPCRouter({

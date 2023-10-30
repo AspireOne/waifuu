@@ -1,4 +1,4 @@
-import { publicProcedure } from "@/server/api/trpc";
+import { publicProcedure } from "@/server/lib/trpc";
 import { z } from "zod";
 import getServerFirebaseAuth from "@/server/lib/getServerFirebaseAuth";
 import { PrismaClient } from "@prisma/client";

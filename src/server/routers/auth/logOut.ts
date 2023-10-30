@@ -1,4 +1,4 @@
-import { protectedProcedure } from "@/server/api/trpc";
+import { protectedProcedure } from "@/server/lib/trpc";
 
 export default protectedProcedure.mutation(async ({ ctx }) => {
   // Remove the session cookie.
