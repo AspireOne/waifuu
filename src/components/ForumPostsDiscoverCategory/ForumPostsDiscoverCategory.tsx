@@ -29,8 +29,8 @@ export const ForumPostsDiscoverCategory = () => {
       <Spacer y={3} />
 
       <div className="flex flex-wrap gap-4 ">
-        {forumPosts.data?.map((post) => {
-          return <ForumPostHighlight {...post} />;
+        {forumPosts.data?.map((post, index) => {
+          return <ForumPostHighlight key={index} {...post} />;
         })}
       </div>
     </div>

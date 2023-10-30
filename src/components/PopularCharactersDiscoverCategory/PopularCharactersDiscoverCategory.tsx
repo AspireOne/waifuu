@@ -156,7 +156,7 @@ const ParametersHeader = (props: {
   const router = useRouter();
 
   return (
-    <form>
+    <div>
       <Title icon={BiTrendingUp} bold>
         <Trans>Popular Characters</Trans>
         <Tooltip content={"Create a character"}>
@@ -201,6 +201,6 @@ const ParametersHeader = (props: {
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
