@@ -30,6 +30,15 @@ model User {
   BotChats         BotChat[]
   ForumPosts       ForumPost[]
   ForumPostLikes   ForumPostLike[]
+  Quota            UserQuota?
+}
+
+model UserQuota {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  quotaToDay DateTime @default(now())
+  messages  Int      @default(0)
 }
 
 model Asset {

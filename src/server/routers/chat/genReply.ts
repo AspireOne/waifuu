@@ -3,6 +3,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
 import { llama13b } from "@/server/ai/shared/models/llama13b";
+import { handleQuota } from "@/server/utils/quota";
 
 export default protectedProcedure
   .input(
@@ -12,6 +13,13 @@ export default protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input }) => {
+    if(!await handleQuota(ctx.user)) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You have exceeded your daily quota.",
+      });
+    };
+
     // Create a new message from the input user provided
     const userMsg = await ctx.prisma.botChatMessage.create({
       data: {

@@ -52,7 +52,7 @@ const TopBar = () => {
 const Header = () => {
   return (
     <header className="text-center">
-      <h1 className="text-8xl w-fit mx-auto font-bold flex flex-row gap-6">
+      <h1 className="text-8xl w-fit mx-auto font-black flex flex-row gap-6">
         <p>Meet</p>
         <Emoji className="w-[100px] h-[100px]" name="chat" />
         <p>Companion</p>
@@ -186,18 +186,50 @@ const PayPlans = () => {
   );
 };
 
+const CompanionUsageCard = ({ specialClass }: { specialClass?: string }) => {
+  return (
+    <div 
+      className={
+        twMerge([
+          "w-[230px] bg-gray-600 h-[150px] rounded-lg",
+          specialClass
+        ])
+      } 
+    >
+      <div 
+        className={twMerge([
+          "relative -bottom-28 -right-32 bg-red-500 rounded-lg w-fit",
+          "flex flex-row gap-2 text-lg font-bold p-2"
+        ])}
+      >
+        <Emoji className="h-7 w-7" name="blossom" />
+        Roleplay
+      </div>
+    </div>
+  )
+}
+
 const CompanionUsage = () => {
   return (
     <div>
-      <div className="w-[230px] relative top-10 h-[150px] bg-gray-600" />
-      <div className="w-[230px] relative top-10 left-96 h-[150px] bg-gray-600" />
-      <div className="w-[230px] relative top-[-200px] left-[800px] h-[150px] bg-gray-600" />
+      <div className="flex w-fit mx-auto flex-row gap-60 mb-9">
+        <CompanionUsageCard specialClass="mt-16" />
+        <CompanionUsageCard />
+        <CompanionUsageCard specialClass="mt-16" />
+      </div>
+
       <div className="w-fit text-5xl text-center mx-auto">
-        <h1 className="flex font-bold flex-row gap-2">
-          <Emoji name="blossom" className="w-[50px] h-[50px]" />
-          <p>Companion</p>
-        </h1>
-        <p>can do</p>
+          <h1 className="flex flex-row gap-2">
+            <Emoji name="blossom" className="w-[50px] h-[50px]" />
+            <p>Companion</p>
+          </h1>
+          <p className="font-bold">can do</p>
+        </div>
+
+      <div className="flex w-fit mx-auto flex-row gap-60 mt-9">
+        <CompanionUsageCard />
+        <CompanionUsageCard specialClass="mt-16" />
+        <CompanionUsageCard />
       </div>
     </div>
   );
@@ -255,6 +287,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Discover : function Lan
   // }, [status]);
 
   // Todo: meta description.
+
   return (
     <Page
       className="bg-[#303030] text-white bg-contain bg-no-repeat bg-[url('/assets/indexbackground.png')]"
@@ -265,17 +298,13 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Discover : function Lan
     >
       <TopBar />
 
-      <Spacer y={40} />
-      <Header />
-      <Spacer y={40} />
-      <Features />
-      <Spacer y={40} />
-      <PayPlans />
-      <Spacer y={40} />
-      <CompanionUsage />
-      <Spacer y={40} />
-      <Footer />
-      <Spacer y={40} />
+      {[Header, Features, PayPlans, CompanionUsage, Footer].map((item, i) => (
+        <React.Fragment key={i}>
+          {i === 0 && <Spacer y={40} />}
+          {item()}
+          {i !== 0 && <Spacer y={40} />}
+        </React.Fragment>
+      ))}
     </Page>
   );
 }

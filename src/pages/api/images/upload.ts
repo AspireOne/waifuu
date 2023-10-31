@@ -33,6 +33,16 @@ const MinioClient = new minio.Client({
   secretKey: env.MINIO_SECRET_KEY,
 });
 
+function convertToMinioName(inputString: string): string {
+  const sanitizedString = inputString.replace(/[^a-zA-Z0-9\-_.~]/g, '');
+
+  if (Buffer.from(sanitizedString).length > 1024) {
+    throw new Error("Object name exceeds the maximum length of 1024 bytes.");
+  }
+
+  return sanitizedString.replace(/(^[-_~.]+|[-_~.]+$)/g, '');
+}
+
 export default metaHandler.protected(async (req, res, ctx) => {
   let status = 200;
   let resultBody: Response = { status: ResponseCode.OK, message: null };
@@ -78,18 +88,19 @@ export default metaHandler.protected(async (req, res, ctx) => {
     for (const file of files) {
       if (!file[1].originalFilename) return;
 
-      const uuid = generateUUID();
+      // Use convertToMinioName to generate the MinIO object name
+      const objectName = convertToMinioName(file[1].originalFilename);
 
       const tempPath = file[1].filepath;
       const targetFilePath = targetPath + file[1].originalFilename;
 
       await fs.rename(tempPath, targetFilePath);
 
-      MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, uuid, targetFilePath);
+      MinioClient.fPutObject(env.MINIO_DEFAULT_BUCKET, objectName, targetFilePath);
 
       result.push({
         fileName: file[1].originalFilename,
-        id: uuid,
+        id: objectName, // Use the generated object name as the ID
       });
     }
 

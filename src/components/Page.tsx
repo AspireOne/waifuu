@@ -140,7 +140,7 @@ function PageWrapper(
       >
         <div
           className={twMerge(
-            "mx-auto max-w-[1500px] px-4 sm:px-8 md:px-14 lg:px-14",
+            "mx-auto px-4 sm:px-8 md:px-14 lg:px-14",
             paddingTop,
             paddingBottom,
             props.className,

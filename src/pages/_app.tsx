@@ -4,6 +4,7 @@ import { api } from "@/lib/api";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { SkeletonTheme } from "react-loading-skeleton";
+import NextJSFontLoader from '@next/font/local';
 
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -44,9 +45,11 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
           <I18nProvider i18n={i18n}>
             <SessionProvider>
               {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
-              <main className={"bg-background text-foreground dark"}>
+              <main className={`bg-background text-foreground dark`}>
+                <div className="font-inter">
                 <ToastContainer theme={"dark"} />
-                <Component {...pageProps} />
+                <Component  {...pageProps} />
+                </div>
               </main>
             </SessionProvider>
           </I18nProvider>
