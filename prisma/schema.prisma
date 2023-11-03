@@ -132,25 +132,26 @@ model BotShares {
 }
 
 model BotChat {
-  id       String           @id @default(cuid())
-  botMode  BotMode
+  id          String           @id @default(cuid())
+  botMode     BotMode
   userContext String?
-  botId    String
-  userId   String
-  bot      Bot              @relation(fields: [botId], references: [id])
-  user     User             @relation(fields: [userId], references: [id])
-  messages BotChatMessage[]
+  botId       String
+  userId      String
+  bot         Bot              @relation(fields: [botId], references: [id])
+  user        User             @relation(fields: [userId], references: [id])
+  messages    BotChatMessage[]
 }
 
 model BotChatMessage {
-  id        Int         @id @default(autoincrement())
-  chat      BotChat     @relation(fields: [chatId], references: [id])
-  chatId    String
-  content   String
-  mood      Mood        @default(NEUTRAL)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  role      BotChatRole
+  id         Int         @id @default(autoincrement())
+  chat       BotChat     @relation(fields: [chatId], references: [id])
+  chatId     String
+  content    String
+  mood       Mood        @default(NEUTRAL)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  role       BotChatRole
+  remembered Boolean     @default(false)
 }
 
 model Chat {

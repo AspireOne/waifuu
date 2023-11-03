@@ -5,7 +5,7 @@ export const envSchema = z.object({
 
   // Your local Postgres server (for local testing), or remote postgres for prod.
   DATABASE_URL: z.string().url(),
-  REPLICATE_API_TOKEN: z.string(),
+  REPLICATE_API_KEY: z.string(),
 
   // PUSHER_APP_ID: z.string(),
   // PUSHER_SECRET: z.string(),

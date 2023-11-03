@@ -3,53 +3,35 @@ import { PipelinePromptTemplate, PromptTemplate } from "langchain/prompts";
 import { BaseOutputParser } from "langchain/dist/schema/output_parser";
 
 const fullCharacterPrompt = PromptTemplate.fromTemplate(
-  "{formatInstructions} {introduction} {exampleDialogue} {userAddress} {userAbout} {nsfwText}",
+  "{introduction}\n\n{userPronounsPrompt} {userContextPrompt}",
 );
 
 // ------ Mode-specific introduction prompts ------ //
 const roleplayIntroductionPrompt = PromptTemplate.fromTemplate(
-  'You are {characterName}. You casually chat with a person. Your persona: "{characterPersona}"',
+  'Roleplay a character and casually talk with a user. This is your character: "{characterPersona}".',
 );
 
 const adventureIntroductionPrompt = PromptTemplate.fromTemplate(
-  "You are having an adventure with a user. Lead the conversation. Be neutral, just slightly show the following persona: {characterPersona}",
+  "You are having a DND-like adventure with a user. Lead the story - you are the dungeon master.",
 );
 
 const chatModeIntroductionPrompt = PromptTemplate.fromTemplate(
-  "You are having a very casual conversation with a friend. You should stay neutral, just slightly show the following persona: {characterPersona}",
+  'You are having a totally casual discord chat with a friend. Stay neutral, just slightly show the following persona: "{characterPersona}".',
 );
 // ------------------------------------------------- //
 
-const userAddressPrompt = PromptTemplate.fromTemplate(
-  "If you need to, address the user as '{addressedAs}'.",
-);
-
-const allowNsfwPrompt = PromptTemplate.fromTemplate(
-  "You {nsfwPronoun} respond in a NSFW way.",
+const userPronounsPrompt = PromptTemplate.fromTemplate(
+  "The user wishes to be addressed as '{userPronouns}'.",
 );
 
 const userContextPrompt = PromptTemplate.fromTemplate(
-  "Here is some context about the user: '{userContext}'.",
+  "Note this additional info about the user: '{userContext}'.",
 );
-
-// ------ Mode-specific examples ------ //
-
-// TODO: fill a default example and create two more example for other modes.
-const roleplayExamplePrompt = PromptTemplate.fromExamples(
-  [],
-  "",
-  [],
-  ", ",
-  "Example dialogue: ",
-);
-
-// ------------------------------------ //
 
 const emptyPrompt = PromptTemplate.fromTemplate("");
 
 export async function getCharacterSystemPrompt(
   chat: BotChat & { bot: Bot } & { user: User },
-  parser?: BaseOutputParser,
 ) {
   const bot = chat.bot;
   const user = chat.user;
@@ -60,35 +42,24 @@ export async function getCharacterSystemPrompt(
         name: "introduction",
         prompt: getIntroductionPrompt(chat.botMode),
       },
+      // TODO: Example.
       {
-        // If the user does not provide an example, provide a default one.
-        name: "exampleDialogue",
-        prompt: /*roleplayExamplePrompt*/ emptyPrompt,
+        name: "userPronounsPrompt",
+        prompt: user.addressedAs ? userPronounsPrompt : emptyPrompt,
       },
       {
-        name: "userAddress",
-        prompt: user.addressedAs ? userAddressPrompt : emptyPrompt,
-      },
-      {
-        name: "userAbout",
+        name: "userContextPrompt",
         prompt: userContextPrompt || emptyPrompt,
       },
-      {
-        name: "nsfwText",
-        prompt: allowNsfwPrompt,
-      },
+      // Here we intentionally omit NSFW prompt. The LLM will output NSFW only if the user explicitly prompts it to anyways.
     ],
     finalPrompt: fullCharacterPrompt,
   });
 
   return await prompt.format({
-    formatInstructions: parser ? parser.getFormatInstructions() + "\n" : "",
-    characterName: bot.characterName,
     characterPersona: bot.characterPersona,
-    addressedAs: user.addressedAs,
-    about: user.about,
-    nsfwPronoun: bot.characterNsfw ? "can" : "should not",
-    userContext: chat.userContext || user.about,
+    userPronouns: user.addressedAs,
+    userContext: user.about,
   });
 }
 

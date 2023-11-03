@@ -1,7 +1,7 @@
 import { protectedProcedure } from "@/server/lib/trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { llama13b } from "@/server/ai/shared/models/llama13b";
+import { llama13b } from "@/server/ai/models/llama13b";
 import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
 import { getInitialMessagePrompt } from "@/server/ai/character-chat/prompts";
 

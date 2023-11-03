@@ -9,7 +9,7 @@ const globalForReplicate = globalThis as unknown as {
 export const replicate =
   globalForReplicate.replicate ??
   new Replicate({
-    auth: env.REPLICATE_API_TOKEN,
+    auth: env.REPLICATE_API_KEY,
   });
 
 if (process.env.NODE_ENV !== "production")

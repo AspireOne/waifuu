@@ -1,6 +1,5 @@
-import { replicate } from "@/server/ai/shared/replicate";
+import { replicate } from "@/server/lib/replicate";
 import { BotChatRole } from "@prisma/client";
-import { BaseOutputParser } from "langchain/dist/schema/output_parser";
 
 type Message = {
   role: BotChatRole;

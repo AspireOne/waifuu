@@ -1,24 +1,12 @@
 import { protectedProcedure } from "@/server/lib/trpc";
 import updateSelfSchema from "@/server/shared/updateSelfSchema";
 import { TRPCError } from "@trpc/server";
+import { Prisma, PrismaClient, User } from "@prisma/client";
 
 export default protectedProcedure
   .input(updateSelfSchema)
   .mutation(async ({ input, ctx }) => {
-    if (input.username && input.username !== ctx.user.username) {
-      const usernameInvalid = await ctx.prisma.user.findUnique({
-        where: {
-          username: input.username,
-        },
-      });
-
-      if (usernameInvalid) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Username already exists.",
-        });
-      }
-    }
+    await validate(ctx.user, ctx.prisma, input.username);
 
     await ctx.prisma.user.update({
       where: {
@@ -33,3 +21,20 @@ export default protectedProcedure
       },
     });
   });
+
+async function validate(user: User, db: PrismaClient, username?: string) {
+  if (!username || username === user.username) return;
+
+  const usernameInvalid = await db.user.findUnique({
+    where: {
+      username: username,
+    },
+  });
+
+  if (usernameInvalid) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Username already exists.",
+    });
+  }
+}

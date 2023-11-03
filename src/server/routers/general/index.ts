@@ -6,10 +6,6 @@ import {
 import Replicate from "replicate";
 import { env } from "@/server/env";
 
-const replicate = new Replicate({
-  auth: env.REPLICATE_API_TOKEN,
-});
-
 export const generalRouter = createTRPCRouter({
   health: publicProcedure
     .meta({ openapi: { method: "GET", path: "/health" } })
