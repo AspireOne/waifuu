@@ -49,7 +49,7 @@ export async function getCharacterSystemPrompt(
       },
       {
         name: "userContextPrompt",
-        prompt: userContextPrompt || emptyPrompt,
+        prompt: user.about ? userContextPrompt : emptyPrompt,
       },
       // Here we intentionally omit NSFW prompt. The LLM will output NSFW only if the user explicitly prompts it to anyways.
     ],

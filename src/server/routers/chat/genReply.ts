@@ -45,6 +45,20 @@ export default protectedProcedure
       });
     }
 
+    // Push the new message to the msg history.
+    messages.push({
+      content: input.message,
+      chatId: input.chatId,
+
+      // Bogus data (not important):
+      role: "USER",
+      id: 1,
+      remembered: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      mood: "HAPPY",
+    });
+
     console.log("System Prompt: ", await getCharacterSystemPrompt(chat));
     // prettier-ignore
     console.log("messages total text length: ", messages.reduce((acc, msg) => acc + msg.content.length, 0));

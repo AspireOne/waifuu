@@ -63,7 +63,7 @@ export const UserDropdown = (props: { className?: string }) => {
             onClick={toggleSettingsOpen}
             key="settings"
           >
-            <Trans>Character settings</Trans>
+            <Trans>General character settings</Trans>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
