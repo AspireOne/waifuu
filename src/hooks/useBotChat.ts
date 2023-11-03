@@ -4,6 +4,7 @@ import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 
 type MessageStatus = "error" | "temp";
+
 export type Message = {
   role: BotChatRole;
   content: string;
@@ -20,7 +21,7 @@ const chatCache = new Map<string, Message[]>();
  * @param chatId
  * @param {boolean} [enabled=true] - Flag indicating whether this is at all active. Can be used to postpone
  * querying or loading before the botId or botMode is available.
- * @returns {Object} An object containing chat messages and functions to interact with the chat.
+ * @returns An object containing chat messages and functions to interact with the chat.
  */
 export default function useBotChat(chatId: string, enabled: boolean = true) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -29,28 +30,8 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
 
   const fetchMore = api.chat.messages.useMutation({
     onSuccess: async (data) => {
-      if (
-        data.messages.length === 0 &&
-        data.nextCursor === undefined &&
-        !fetchInitial.isLoading
-      ) {
-        fetchInitial.mutate({ chatId });
-        return;
-      }
-
       setCursor(data.nextCursor);
       addMessages(data.messages);
-    },
-
-    onSettled: async () => {
-      setShouldLoadMore(false);
-    },
-  });
-
-  const fetchInitial = api.chat.getInitialMessage.useMutation({
-    onSuccess: async (data) => {
-      addMessages([data.botChatMessage]);
-      fetchMore.mutate({ chatId, cursor });
     },
   });
 
@@ -63,6 +44,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
   useEffect(() => {
     if (shouldLoadMore && !fetchMore.isLoading && !!chatId && enabled) {
       fetchMore.mutate({ chatId, cursor });
+      setShouldLoadMore(false);
     }
   }, [shouldLoadMore, fetchMore.isLoading, chatId, enabled]);
 
@@ -88,10 +70,10 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
       // });
     },
 
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data) => {
       const updatedMessages = messages
         .filter((message) => message.id !== Number.MAX_SAFE_INTEGER)
-        .concat([data.userMessage, data.botChatMessage])
+        .concat([data.userMessage, data.message])
         .filter(
           (value, index, self) =>
             self.findIndex((m) => m.id === value.id) === index,
@@ -119,7 +101,6 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
 
   return {
     messages,
-
     postMessage: (message: string) => {
       if (!enabled || !chatId) return;
       replyMutation.mutate({
@@ -127,7 +108,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
         message,
       });
     },
-    loadingReply: replyMutation.isLoading || fetchInitial.isLoading,
+    loadingReply: replyMutation.isLoading,
     loadMore: () => setShouldLoadMore(true),
     loadingMore: fetchMore.isLoading,
   };

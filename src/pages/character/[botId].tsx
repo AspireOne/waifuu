@@ -19,7 +19,7 @@ type FormProps = {
   userContext: string;
 };
 
-// Main page of the bot for creating new chats.
+/** Main page of the bot for creating new chats. */
 const ChatMainMenu = () => {
   const router = useRouter();
   const { botId } = router.query;

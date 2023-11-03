@@ -14,6 +14,7 @@ import { isUrl, makeDownloadPath } from "@lib/utils";
 import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/macro";
 
+/** This is the actual chat page (e.g. chat with Aqua on mode Roleplay). */
 const BotChat = () => {
   const router = useRouter();
   const { _ } = useLingui();

@@ -57,7 +57,7 @@ const CreateChatPage = () => {
 
   const { register, handleSubmit } = useForm<CreateInput>();
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
-    createBot.mutateAsync({
+    createBot.mutate({
       ...data,
       nsfw: isSelected,
       backgroundImage: background,

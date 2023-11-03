@@ -3,8 +3,8 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
 import { llama13b } from "@/server/ai/models/llama13b";
-import { BotChatMessage } from "@prisma/client";
 // Yes, this does show error. There is no typescript version.
+// @ts-ignore
 import llamaTokenizer from "llama-tokenizer-js";
 
 export default protectedProcedure
