@@ -2,14 +2,13 @@ import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
 import { User } from "@prisma/client";
 import "firebase/compat/auth";
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 
 type SessionUser = User;
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 
 let authSubscribed = false;
 let fbTimeMeasured = false;
-let queryTimeMeasured = false;
 
 type SessionState = {
   user: SessionUser | null | undefined;
@@ -45,8 +44,8 @@ export const SessionProvider = (props: PropsWithChildren) => {
     authSubscribed = true;
 
     const auth = getOrInitFirebaseAuth();
-    const fbStart = performance.now();
 
+    console.time("firebase auth");
     auth.onAuthStateChanged((fbUser) => {
       const status = fbUser ? "authenticated" : "unauthenticated";
       if (!fbUser) setUser(null);
@@ -54,18 +53,14 @@ export const SessionProvider = (props: PropsWithChildren) => {
 
       console.log(`Auth state changed: ${status}`);
 
-      const fbEnd = performance.now();
       if (!fbTimeMeasured) {
-        console.log(`Firebase initial Auth state change took: ${fbEnd - fbStart}ms`);
+        console.timeEnd("firebase auth");
         fbTimeMeasured = true;
       }
 
+      console.time("user fetch");
       userQuery.refetch().then(() => {
-        const queryEnd = performance.now();
-        if (!queryTimeMeasured) {
-          console.log(`User fetch from our backend took: ${queryEnd - fbEnd}ms`);
-          queryTimeMeasured = true;
-        }
+        console.timeEnd("user fetch");
       });
     });
   }, []);
