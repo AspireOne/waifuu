@@ -8,8 +8,8 @@
     "dev": "cross-env NEXT_PUBLIC_DEVELOPMENT=1 next dev",
     "dev:external": "cross-env HOST=0.0.0.0 next dev",
     "start": "next start",
-    "lint": "pnpm dlx @biomejs/biome lint --write ./src",
-    "format": "pnpm dlx @biomejs/biome format --write ./src",
+    "lint": "biome lint --write ./src",
+    "format": "biome format --write ./src",
     "postinstall": "prisma generate",
     "prepare": "husky install",
     "t:extract": "lingui extract",
@@ -27,7 +27,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,po}": [
-      "pnpm dlx @biomejs/biome check --apply",
+      "biome check --apply",
       "lingui extract --clean"
     ]
   },
