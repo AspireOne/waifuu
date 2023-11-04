@@ -19,8 +19,8 @@ export default publicProcedure
       .optional(),
   )
   .query(async ({ input, ctx }) => {
-    // TODO: Remake this better
-    const query = {
+    // This should be remade better ig...
+    const queryWhere = {
       visibility: Visibility.PUBLIC,
       source: input?.sourceFilter ?? undefined,
       characterNsfw: input?.nsfw ? undefined : false,
@@ -42,11 +42,11 @@ export default publicProcedure
       }),
     };
 
-    const bots = await ctx.prisma.bot.findMany({
+    const query = ctx.prisma.bot.findMany({
       take: input?.limit || undefined,
       skip: !input?.cursor ? 0 : input.cursor,
       where: {
-        ...(query as any),
+        ...(queryWhere as any),
         ...(input?.categories.length !== 0 && {
           category: {
             name: {
@@ -60,9 +60,12 @@ export default publicProcedure
       },
     });
 
-    const count = await ctx.prisma.bot.count({
-      where: query as any,
-    });
+    const [bots, count] = await Promise.all([
+      query,
+      ctx.prisma.bot.count({
+        where: queryWhere as any,
+      }),
+    ]);
 
     const nextCursor = count > (input?.limit || 0) + (input?.cursor || 0);
 

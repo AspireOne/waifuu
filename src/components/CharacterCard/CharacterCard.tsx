@@ -9,6 +9,7 @@ import { FaHeart } from "react-icons/fa";
 
 type CharacterCardProps = {
   bot: Bot;
+  likes?: number;
   chatId?: string;
   chatType?: BotMode;
   bottom?: boolean;
@@ -19,6 +20,7 @@ export const CharacterCard = ({
   chatId,
   chatType,
   bottom,
+  likes,
 }: CharacterCardProps) => {
   return (
     <Card className="p-3 w-full min-w-[220px] sm:max-w-[220px]">
@@ -68,21 +70,23 @@ export const CharacterCard = ({
           )}
         </CardBody>
 
-        {bottom ? (
+        {bottom && (
           <div className="flex flex-row px-4 items-end">
             <div className="mx-auto ml-0 w-fit">
               <Chip variant="flat">{bot.characterNsfw ? "NSFW" : "SFW"}</Chip>
             </div>
 
-            <div className="mx-auto mr-0 w-fit flex flex-row gap-2">
-              <p>2.3k</p>
-              <div>
-                <Spacer y={1} />
-                <FaHeart color="red" />
+            {likes && (
+              <div className="mx-auto mr-0 w-fit flex flex-row gap-2">
+                <p>{likes}</p>
+                <div>
+                  <Spacer y={1} />
+                  <FaHeart color="red" />
+                </div>
               </div>
-            </div>
+            )}
           </div>
-        ) : null}
+        )}
       </Link>
     </Card>
   );
