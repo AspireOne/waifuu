@@ -71,7 +71,7 @@ async function saveToVectorDb(props: {
 }) {
   const pinecone = new Pinecone({
     environment: "gcp-starter",
-    apiKey: "b9f794c8-1023-40ff-9fa9-590fb59fdb1b",
+    apiKey: process.env.PINECONE_API_KEY as string,
   });
 
   const sentenceEmbeddings = new HuggingFaceInferenceEmbeddings({
