@@ -1,9 +1,9 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
-import { TRPCError } from "@trpc/server";
-import { PrismaClient } from "@prisma/client";
-import { v4 as uuidv4 } from "uuid";
 import { ChannelData } from "@/server/shared/channelData";
+import { PrismaClient } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
+import { v4 as uuidv4 } from "uuid";
+import { z } from "zod";
 
 const POLLING_TIME_SECS = 15;
 
@@ -64,12 +64,9 @@ async function isUserPolling(db: PrismaClient, userId: string) {
 }
 
 // Poll for x seconds, checking every 1 second if a channel has been assigned to this user.
-async function pollForChannel(
-  db: PrismaClient,
-  userId: string,
-): Promise<ChannelData | null> {
+async function pollForChannel(db: PrismaClient, userId: string): Promise<ChannelData | null> {
   // Vercel's max timeout is 10 seconds, so we need to poll for less time.
-  const pollingSeconds = !!process.env.VERCEL ? 7 : POLLING_TIME_SECS;
+  const pollingSeconds = process.env.VERCEL ? 7 : POLLING_TIME_SECS;
   for (let i = 0; i < pollingSeconds; i++) {
     // Wait for 1 second before next check. This MUST be at the top of the loop, so that we don't wait for 1 second
     // after the last check, which causes a lot of trouble.
@@ -89,8 +86,7 @@ async function pollForChannel(
       },
     });
 
-    if (poll?.channel && poll?.topic)
-      return { name: poll.channel, topic: poll.topic };
+    if (poll?.channel && poll?.topic) return { name: poll.channel, topic: poll.topic };
   }
   return null;
 }
@@ -167,7 +163,7 @@ async function findUserInQueue(db: PrismaClient, userId: string) {
 }
 
 function generateChannelData(): ChannelData {
-  const channel = "presence-room-" + uuidv4();
+  const channel = `presence-room-${uuidv4()}`;
   const topic =
     "You land in a room with a stranger. You find out it is kiss-shot wokuna blade-under-heart";
   return { name: channel, topic: topic };

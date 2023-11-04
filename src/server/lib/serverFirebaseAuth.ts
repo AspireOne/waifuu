@@ -3,5 +3,5 @@ import { getAuth } from "firebase-admin/auth";
 
 export const serverFirebaseAuth = () => {
   const app = serverFirebaseApp();
-  return getAuth(app!);
+  return getAuth(app);
 };

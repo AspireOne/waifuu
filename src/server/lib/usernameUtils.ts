@@ -4,25 +4,60 @@ import { prisma } from "@/server/lib/db";
 
 // prettier-ignore
 const usernameBases: string[] = [
-  "star", "wolf", "stone",
-  "steel", "shadow", "light",
-  "magic", "legend", "myth",
-  "blade", "shield",
-  "cupcake", "giant", "phoenix",
-  "raven", "saber", "thunder",
-  "master", "king",
-  "queen", "prince", "princess",
-  "warrior", "wizard", "witch",
-  "hunter", "hero",
-  "angel", "ghost", "spirit",
-  "soul", "sage", "saint",
-  "reaper", "rebel", "rogue",
-  "ranger", "paladin", "ninja",
-  "monk", "mage", "knight",
-  "jedi", "guardian", "goddess",
-  "god", "goblin", "elf",
-  "dwarf", "dragon", "demon",
-  "jester", "joker", "juggler",
+  "star",
+  "wolf",
+  "stone",
+  "steel",
+  "shadow",
+  "light",
+  "magic",
+  "legend",
+  "myth",
+  "blade",
+  "shield",
+  "cupcake",
+  "giant",
+  "phoenix",
+  "raven",
+  "saber",
+  "thunder",
+  "master",
+  "king",
+  "queen",
+  "prince",
+  "princess",
+  "warrior",
+  "wizard",
+  "witch",
+  "hunter",
+  "hero",
+  "angel",
+  "ghost",
+  "spirit",
+  "soul",
+  "sage",
+  "saint",
+  "reaper",
+  "rebel",
+  "rogue",
+  "ranger",
+  "paladin",
+  "ninja",
+  "monk",
+  "mage",
+  "knight",
+  "jedi",
+  "guardian",
+  "goddess",
+  "god",
+  "goblin",
+  "elf",
+  "dwarf",
+  "dragon",
+  "demon",
+  "jester",
+  "joker",
+  "juggler",
 ];
 
 /**
@@ -31,21 +66,20 @@ const usernameBases: string[] = [
  * @param email - The user's email.
  * @returns A promise that resolves to the generated unique username.
  */
-export async function generateUniqueUsername(
-  name?: string,
-  email?: string,
-): Promise<string> {
-  let base: string = "";
+export async function generateUniqueUsername(name?: string, email?: string): Promise<string> {
+  let base = "";
 
   // First try to choose a base based on the user's name or email.
   if (name) {
     base = normalize(name);
-  } else if (email) {
+  } else if (email?.includes("@")) {
+    // biome-ignore lint/style/noNonNullAssertion: This will not be null.
     base = normalize(email.split("@")[0]!);
   }
 
   // If the normalized base is too short, choose a random base.
   if (!base || base.length < 3) {
+    // biome-ignore lint/style/noNonNullAssertion: This will never be null.
     base = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
   }
 
@@ -53,7 +87,7 @@ export async function generateUniqueUsername(
   const usedSuffixes: string[] = [];
   for (let i = 0; i < 100; i++) {
     const suffix = generateSuffix(usedSuffixes);
-    let username = base + suffix;
+    const username = base + suffix;
     const unique = await isUsernameUnique(username);
     if (unique) return username;
   }

@@ -2,8 +2,8 @@
  * Returns all public bots.
  * */
 import { publicProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
 import { BotSource, Visibility } from "@prisma/client";
+import { z } from "zod";
 
 export default publicProcedure
   .input(

@@ -1,17 +1,7 @@
-import {
-  FirebaseApp,
-  FirebaseOptions,
-  getApp,
-  initializeApp,
-} from "firebase/app";
-import {
-  Auth,
-  getAuth,
-  indexedDBLocalPersistence,
-  initializeAuth,
-} from "firebase/auth";
-import { Capacitor } from "@capacitor/core";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { Capacitor } from "@capacitor/core";
+import { FirebaseApp, FirebaseOptions, getApp, initializeApp } from "firebase/app";
+import { Auth, getAuth, indexedDBLocalPersistence, initializeAuth } from "firebase/auth";
 
 let app: FirebaseApp | undefined;
 let auth: Auth | undefined;

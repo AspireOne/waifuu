@@ -27,6 +27,5 @@ export const discoveredBotStore = createStore<DiscoveredBotStore>((set) => ({
     }),
   clearDiscoveredBots: () => set({ discovered: [] }),
   hasNextDiscoveredPage: false,
-  setHasNextDiscoveredPage: (hasNext: boolean) =>
-    set({ hasNextDiscoveredPage: hasNext }),
+  setHasNextDiscoveredPage: (hasNext: boolean) => set({ hasNextDiscoveredPage: hasNext }),
 }));

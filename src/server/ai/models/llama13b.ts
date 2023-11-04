@@ -19,7 +19,7 @@ const run = async (input: {
 
   if (typeof input.prompt === "string") {
     formattedPrompt = input.prompt;
-  } else if (input.prompt instanceof Array) {
+  } else if (Array.isArray(input.prompt)) {
     formattedPrompt = formatMessages(input.prompt);
   } else {
     formattedPrompt = formatMessage(input.prompt);

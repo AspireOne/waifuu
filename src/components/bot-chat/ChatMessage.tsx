@@ -1,16 +1,10 @@
-import { useMemo } from "react";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Image,
-} from "@nextui-org/react";
-import { twMerge } from "tailwind-merge";
-import { Card, CardBody } from "@nextui-org/card";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { Mood } from "@prisma/client";
 import { Trans } from "@lingui/macro";
+import { Card, CardBody } from "@nextui-org/card";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image } from "@nextui-org/react";
+import { Mood } from "@prisma/client";
+import { useMemo } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   message: string;
@@ -38,7 +32,7 @@ const ChatMessage = ({ author, message, className, mood }: Props) => {
   return (
     <div
       className={twMerge(
-        `flex mx-auto w-full gap-2`,
+        "flex mx-auto w-full gap-2",
         author.bot ? "ml-0" : "mr-0 flex-row",
         className,
       )}

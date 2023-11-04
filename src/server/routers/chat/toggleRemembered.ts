@@ -1,11 +1,11 @@
-import { protectedProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
-import { TRPCError } from "@trpc/server";
-import { BotChatMessage } from "@prisma/client";
-import { PineconeStore } from "langchain/dist/vectorstores/pinecone";
-import { Pinecone } from "@pinecone-database/pinecone";
-import { HuggingFaceInferenceEmbeddings } from "langchain/embeddings/hf";
 import { preProcess } from "@/server/ai/vectordb/vectorDb";
+import { protectedProcedure } from "@/server/lib/trpc";
+import { Pinecone } from "@pinecone-database/pinecone";
+import { BotChatMessage } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
+import { PineconeStore } from "langchain/dist/vectorstores/pinecone";
+import { HuggingFaceInferenceEmbeddings } from "langchain/embeddings/hf";
+import { z } from "zod";
 
 export default protectedProcedure
   .input(
@@ -15,7 +15,7 @@ export default protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input }) => {
-    const message = await ctx.prisma.botChatMessage.findUnique({
+    let message = await ctx.prisma.botChatMessage.findUnique({
       where: {
         id: input.messageId,
       },
@@ -26,9 +26,11 @@ export default protectedProcedure
           },
         },
       },
-    })!;
+    });
 
     validate(message);
+    // biome-ignore lint/style/noNonNullAssertion: The validate function is checking if it is null.
+    message = message!;
 
     // Save to postgres.
     await ctx.prisma.botChatMessage.update({
@@ -36,18 +38,18 @@ export default protectedProcedure
         id: input.messageId,
       },
       data: {
-        remembered: !message!.remembered,
+        remembered: !message?.remembered,
       },
     });
 
     // Save to Vector DB.
-    message!.remembered
-      ? await deleteFromVectorDb(message!)
+    message.remembered
+      ? await deleteFromVectorDb(message)
       : await saveToVectorDb({
-          message: message!,
-          userId: ctx.user!.id,
-          botId: message!.chat.bot.id,
-          botMode: message!.chat.botMode,
+          message: message,
+          userId: ctx.user.id,
+          botId: message.chat.bot.id,
+          botMode: message.chat.botMode,
         });
 
     return {

@@ -1,8 +1,7 @@
-import * as React from "react";
-import { useSession } from "@contexts/SessionProvider";
-import Image from "next/image";
 import Title from "@components/ui/Title";
+import { useSession } from "@contexts/SessionProvider";
 import { Trans } from "@lingui/macro";
+import Image from "next/image";
 
 export const DiscoverHeader = () => {
   const { user } = useSession();

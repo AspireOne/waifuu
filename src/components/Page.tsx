@@ -1,13 +1,13 @@
-import { AnimatePresence, motion } from "framer-motion";
-import React, { PropsWithChildren, useEffect } from "react";
-import PageHead from "@/components/PageHead";
-import { twMerge } from "tailwind-merge";
 import { ActionBar } from "@/components/ActionBar";
+import PageHead from "@/components/PageHead";
 import { useSession } from "@/hooks/useSession";
-import { useRouter } from "next/router";
 import { paths } from "@/lib/paths";
-import { AppHeader } from "src/components/AppHeader";
 import { normalizePath } from "@lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
+import React, { PropsWithChildren, useEffect } from "react";
+import { AppHeader } from "src/components/AppHeader";
+import { twMerge } from "tailwind-merge";
 
 function Page(
   props: PropsWithChildren<{

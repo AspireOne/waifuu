@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { paths } from "@/lib/paths";
-import { twMerge } from "tailwind-merge";
-import { Button, Skeleton as UiSkeleton } from "@nextui-org/react";
-import Skeleton from "react-loading-skeleton";
-import { msg, Trans } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+
 import { Share } from "@capacitor/share";
-import { Capacitor } from "@capacitor/core";
+import { Trans, msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { Button, Skeleton as UiSkeleton } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+
+import { twMerge } from "tailwind-merge";
 
 function Avatar(props: { image: string | null | undefined }) {
   return (
@@ -15,11 +15,7 @@ function Avatar(props: { image: string | null | undefined }) {
       className={"mx-auto mb-6 h-40 w-40 rounded-full border-3 border-gray-100"}
       isLoaded={props.image !== undefined}
     >
-      <img
-        className={twMerge("h-full w-full")}
-        src={props.image || undefined}
-        alt="avatar"
-      />
+      <img className={twMerge("h-full w-full")} src={props.image || undefined} alt="avatar" />
     </UiSkeleton>
   );
 }

@@ -1,8 +1,7 @@
-import { Chip } from "@nextui-org/react";
-import { useState } from "react";
-import Skeleton from "react-loading-skeleton";
 import { api } from "@/lib/api";
+import { Chip } from "@nextui-org/react";
 import { Category } from "@prisma/client";
+import { useState } from "react";
 
 type TagSelectProps = {
   onChange: (value: string[]) => void;
@@ -12,9 +11,7 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
   const [tags, setTags] = useState<string[]>([]);
 
   const onTagToggle = (value: string): void => {
-    const newValue = tags.includes(value)
-      ? tags.filter((tag) => tag !== value)
-      : [...tags, value];
+    const newValue = tags.includes(value) ? tags.filter((tag) => tag !== value) : [...tags, value];
 
     setTags(newValue);
     onChange(newValue);
@@ -26,11 +23,7 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
 
   const isTagToggled = (value: string): boolean => tags.includes(value);
 
-  if (
-    fetchedTags.isLoading ||
-    !fetchedTags.data ||
-    fetchedTags.data.length === 0
-  ) {
+  if (fetchedTags.isLoading || !fetchedTags.data || fetchedTags.data.length === 0) {
     return <></>;
   }
 

@@ -1,17 +1,9 @@
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from "@/server/lib/trpc";
-import Replicate from "replicate";
-import { env } from "@/server/env";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/lib/trpc";
 
 export const generalRouter = createTRPCRouter({
-  health: publicProcedure
-    .meta({ openapi: { method: "GET", path: "/health" } })
-    .query(() => {
-      return "ok";
-    }),
+  health: publicProcedure.meta({ openapi: { method: "GET", path: "/health" } }).query(() => {
+    return "ok";
+  }),
 
   dbHealth: publicProcedure
     .meta({ openapi: { method: "GET", path: "/db-health" } })

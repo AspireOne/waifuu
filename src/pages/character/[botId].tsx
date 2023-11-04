@@ -10,7 +10,7 @@ import { Card } from "@nextui-org/card";
 import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
 import { BotMode } from "@prisma/client";
 import { useRouter } from "next/router";
-import React from "react";
+
 import { useForm } from "react-hook-form";
 import Skeleton from "react-loading-skeleton";
 
@@ -76,7 +76,10 @@ const ChatMainMenu = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-3">
-          <RadioGroup onValueChange={(value) => setValue("botMode", value as BotMode)} className="w-full">
+          <RadioGroup
+            onValueChange={(value) => setValue("botMode", value as BotMode)}
+            className="w-full"
+          >
             <CustomRadio
               description={_(
                 msg`Classic chat experience, talk about your day, interests, or try to make a romantic partner!`,
@@ -86,7 +89,9 @@ const ChatMainMenu = () => {
               <Trans>Chat</Trans>
             </CustomRadio>
             <CustomRadio
-              description={_(msg`Adventure-style game. Let the character guide you through the story!`)}
+              description={_(
+                msg`Adventure-style game. Let the character guide you through the story!`,
+              )}
               value={BotMode.ADVENTURE}
             >
               <Trans>Adventure</Trans>

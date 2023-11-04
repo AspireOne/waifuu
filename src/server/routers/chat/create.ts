@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { BotMode } from "@prisma/client";
 import { protectedProcedure } from "@/server/lib/trpc";
+import { BotMode } from "@prisma/client";
+import { z } from "zod";
 
 export default protectedProcedure
   .input(

@@ -1,7 +1,7 @@
-import { i18n } from "@lingui/core";
 import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
 import { Preferences } from "@capacitor/preferences";
+import { i18n } from "@lingui/core";
 
 /**
  * This file contains everything related to internationalization.
@@ -62,6 +62,7 @@ async function getMostSuitableLocale(): Promise<LocaleCode> {
     if (isLocaleSupported(value)) return value as LocaleCode;
   } else {
     for (let i = 0; i < navigator.languages.length; i++) {
+      // biome-ignore lint/style/noNonNullAssertion: Will not be null.
       const lang = navigator.languages[i]!;
       if (isLocaleSupported(lang)) return lang as LocaleCode;
     }

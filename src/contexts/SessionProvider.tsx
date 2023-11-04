@@ -1,21 +1,15 @@
-import {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  PropsWithChildren,
-} from "react";
-import "firebase/compat/auth";
 import { api } from "@/lib/api";
-import { User } from "@prisma/client";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
+import { User } from "@prisma/client";
+import "firebase/compat/auth";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type SessionUser = User;
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 
-let authSubscribed: boolean = false;
-let fbTimeMeasured: boolean = false;
-let queryTimeMeasured: boolean = false;
+let authSubscribed = false;
+let fbTimeMeasured = false;
+let queryTimeMeasured = false;
 
 type SessionState = {
   user: SessionUser | null | undefined;
@@ -29,7 +23,7 @@ const SessionContext = createContext<SessionState>({
   refetch: () => {},
 });
 
-export const SessionProvider = (props: PropsWithChildren<{}>) => {
+export const SessionProvider = (props: PropsWithChildren) => {
   const [user, setUser] = useState<SessionUser | null | undefined>(undefined);
   // Firebase status. This is separate from our backend user status.
   const [fbStatus, setFbStatus] = useState<SessionStatus>("loading");
@@ -62,18 +56,14 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
 
       const fbEnd = performance.now();
       if (!fbTimeMeasured) {
-        console.log(
-          `Firebase initial Auth state change took: ${fbEnd - fbStart}ms`,
-        );
+        console.log(`Firebase initial Auth state change took: ${fbEnd - fbStart}ms`);
         fbTimeMeasured = true;
       }
 
       userQuery.refetch().then(() => {
         const queryEnd = performance.now();
         if (!queryTimeMeasured) {
-          console.log(
-            `User fetch from our backend took: ${queryEnd - fbEnd}ms`,
-          );
+          console.log(`User fetch from our backend took: ${queryEnd - fbEnd}ms`);
           queryTimeMeasured = true;
         }
       });
@@ -98,9 +88,7 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
   }, [userQuery.data]);
 
   return (
-    <SessionContext.Provider
-      value={{ user, status: fbStatus, refetch: userQuery.refetch }}
-    >
+    <SessionContext.Provider value={{ user, status: fbStatus, refetch: userQuery.refetch }}>
       {props.children}
     </SessionContext.Provider>
   );

@@ -8,7 +8,8 @@
     "dev": "cross-env NEXT_PUBLIC_DEVELOPMENT=1 next dev",
     "dev:external": "cross-env HOST=0.0.0.0 next dev",
     "start": "next start",
-    "lint": "biome lint --write ./src",
+    "lint": "biome lint --apply ./src",
+    "lint:unsafe": "biome lint --apply-unsafe ./src",
     "format": "biome format --write ./src",
     "postinstall": "prisma generate",
     "prepare": "husky install",
@@ -26,10 +27,9 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,po}": [
-      "biome check --apply",
-      "lingui extract --clean"
-    ]
+    "src/**/*.{js,jsx,ts,tsx}": "biome format --log-level none --write",
+    "src/**/*.{js, jsx,ts,tsx}": "lingui extract --clean",
+    "src/**/*.{ts,tsx}": "tsc-files --noEmit"
   },
   "dependencies": {
     "@capacitor-firebase/authentication": "^5.2.0",
@@ -128,6 +128,7 @@
     "postcss": "^8.4.31",
     "prisma": "^5.5.2",
     "tailwindcss": "^3.3.5",
+    "tsc-files": "^1.1.4",
     "typescript": "^5.2.2"
   },
   "ct3aMetadata": {

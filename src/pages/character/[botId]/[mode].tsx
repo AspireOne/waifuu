@@ -1,18 +1,18 @@
-import { ChatMessage } from "@/components/bot-chat/ChatMessage";
-import { Image, ScrollShadow } from "@nextui-org/react";
-import { useRouter } from "next/router";
-import useBotChat, { Message } from "@/hooks/useBotChat";
 import Page from "@/components/Page";
-import { useBot } from "@/hooks/useBot";
 import ChatGradientOverlay from "@/components/bot-chat/ChatGradientOverlay";
-import { Bot } from "@prisma/client";
 import ChatInput from "@/components/bot-chat/ChatInput";
+import { ChatMessage } from "@/components/bot-chat/ChatMessage";
 import { ChatTypingIndicator } from "@/components/bot-chat/ChatTypingIndicator";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useBot } from "@/hooks/useBot";
+import useBotChat, { Message } from "@/hooks/useBotChat";
 import { useSession } from "@/hooks/useSession";
 import { isUrl, makeDownloadPath } from "@lib/utils";
-import { useLingui } from "@lingui/react";
 import { msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { Image, ScrollShadow } from "@nextui-org/react";
+import { Bot } from "@prisma/client";
+import { useRouter } from "next/router";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /** This is the actual chat page (e.g. chat with Aqua on mode Roleplay). */
 const BotChat = () => {
@@ -26,15 +26,8 @@ const BotChat = () => {
 
   const mode = (router.query.mode as string | undefined)?.toUpperCase();
 
-  const { data: bot } = useBot(
-    chatId,
-    mode,
-    router.isReady && session.status === "authenticated",
-  );
-  const chat = useBotChat(
-    chatId,
-    router.isReady && session.status === "authenticated",
-  );
+  const { data: bot } = useBot(chatId, mode, router.isReady && session.status === "authenticated");
+  const chat = useBotChat(chatId, router.isReady && session.status === "authenticated");
 
   function handleScrollChange() {
     if (window.scrollY === 0) chat.loadMore();
@@ -143,10 +136,7 @@ const ChatMessages = (props: {
     if (deferredScrollFix) {
       setDeferredScrollFix(false);
       if (!containerRef.current) return;
-      window.scrollTo(
-        0,
-        containerRef.current.scrollHeight - scrollPosBeforeLoad,
-      );
+      window.scrollTo(0, containerRef.current.scrollHeight - scrollPosBeforeLoad);
     }
   }, [props.loadingHistory, deferredScrollFix]);
 
@@ -164,7 +154,7 @@ const ChatMessages = (props: {
     }
   }, [props.messages]);
 
-  if (!props.bot) return <div></div>;
+  if (!props.bot) return <div />;
 
   return (
     <div>
@@ -184,20 +174,18 @@ const ChatMessages = (props: {
           className="flex md:w-[500px] mx-auto flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll"
         >
           {props.messages.map((message, index) => {
-            const botName = props.bot!.characterName || _(msg`Them`);
+            const botName = props.bot?.characterName || _(msg`Them`);
             const userName = user?.name || _(msg`You`);
             const isBot = message.role === "BOT";
 
             return (
               <ChatMessage
-                key={index}
+                key={message.id}
                 className={"z-[10]"}
                 author={{
                   bot: isBot,
                   name: isBot ? botName : userName,
-                  avatar: isBot
-                    ? makeDownloadPath(props.bot?.avatar!)
-                    : user?.image,
+                  avatar: isBot ? makeDownloadPath(props.bot?.avatar!) : user?.image,
                 }}
                 message={message.content}
                 mood={message.mood}

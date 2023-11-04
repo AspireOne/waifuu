@@ -7,13 +7,7 @@
 // Then they can start talking directly in their role.
 
 // TODO: Translate :(
-export type TopicTags =
-  | "Anime"
-  | "Isekai"
-  | "NSFW"
-  | "Real World"
-  | "Strategy"
-  | "Mystery";
+export type TopicTags = "Anime" | "Isekai" | "NSFW" | "Real World" | "Strategy" | "Mystery";
 
 type Topic = {
   tags: TopicTags[];

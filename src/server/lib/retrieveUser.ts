@@ -1,7 +1,7 @@
-import { NextApiRequest } from "next";
 import { prisma } from "@/server/lib/db";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { User } from "@prisma/client";
+import { NextApiRequest } from "next";
 
 /**
  * Gets the current user from DB.

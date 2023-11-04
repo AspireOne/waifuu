@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from "react";
+import { useSession } from "@/hooks/useSession";
+import { UserDropdown } from "@components/AppHeader/UserDropdown";
 import { Button } from "@nextui-org/react";
+import { PropsWithChildren } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
-import { UserDropdown } from "@components/AppHeader/UserDropdown";
-import { useSession } from "@/hooks/useSession";
 
 /**
  * Unifies page headers. Contains a back button and page title.
@@ -29,24 +29,14 @@ export const AppHeader = (
         <Button
           variant={"light"}
           isIconOnly
-          onClick={
-            props.backButtonEnabled ? props.onBackButtonPressed : undefined
-          }
-          className={twMerge(
-            "p-0 mr-auto",
-            !props.backButtonEnabled && "invisible",
-          )}
+          onClick={props.backButtonEnabled ? props.onBackButtonPressed : undefined}
+          className={twMerge("p-0 mr-auto", !props.backButtonEnabled && "invisible")}
         >
           <BiArrowBack size={25} />
         </Button>
 
         {/*Text, absolute, centered*/}
-        <h2
-          className={twMerge(
-            "my-auto mx-auto text-center text-xl line-clamp-1 flex-1",
-            "",
-          )}
-        >
+        <h2 className={twMerge("my-auto mx-auto text-center text-xl line-clamp-1 flex-1", "")}>
           {props.children}
         </h2>
 

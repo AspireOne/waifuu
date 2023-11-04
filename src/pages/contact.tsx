@@ -1,12 +1,12 @@
-import React from "react";
-import Page from "@components/Page";
-import { FiMail } from "react-icons/fi";
 import { ContactUsForm } from "@components/ContactUsForm";
+import Page from "@components/Page";
 import Title from "@components/ui/Title";
+import { Trans, t } from "@lingui/macro";
 import { Card, CardBody } from "@nextui-org/card";
-import { t, Trans } from "@lingui/macro";
 
-export default (props: {}) => {
+import { FiMail } from "react-icons/fi";
+
+export default () => {
   return (
     <Page title={t`Contact us`} unprotected={true}>
       <div className="container mx-auto max-w-5xl sm:px-10 lg:px-0 mt-24 lg:mt-20">
@@ -16,10 +16,7 @@ export default (props: {}) => {
               <Trans>Contact us</Trans>
             </Title>
             <p className="text-xl mt-8">
-              <Trans>
-                Got a problem? A question? Or just want to say hi? We are here
-                for you.
-              </Trans>
+              <Trans>Got a problem? A question? Or just want to say hi? We are here for you.</Trans>
             </p>
             <Socials className={"mt-8"} />
           </div>
@@ -38,7 +35,7 @@ export default (props: {}) => {
 
 function Socials(props: { className?: string }) {
   return (
-    <div className={props.className + " text-lg"}>
+    <div className={`${props.className} text-lg`}>
       <ContactInfoItem icon={<FiMail />} href="mailto:matejpesl1@gmail.com">
         matejpesl1@gmail.com
       </ContactInfoItem>

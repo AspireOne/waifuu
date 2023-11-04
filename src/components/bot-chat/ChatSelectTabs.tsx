@@ -1,6 +1,6 @@
+import { Trans, t } from "@lingui/macro";
 import { Button, Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { BotMode } from "@prisma/client";
-import { t, Trans } from "@lingui/macro";
 
 function getTabs() {
   return [

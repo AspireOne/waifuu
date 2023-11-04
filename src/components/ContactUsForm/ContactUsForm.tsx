@@ -1,13 +1,13 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import contactFormSchema from "@/server/shared/contactFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { api } from "@lib/api";
+import { Trans, t } from "@lingui/macro";
+import { Button, Input, Textarea } from "@nextui-org/react";
+
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-import { Button, Input, Textarea } from "@nextui-org/react";
-import { api } from "@lib/api";
-import contactFormSchema from "@/server/shared/contactFormSchema";
-import { Trans, t } from "@lingui/macro";
+import * as z from "zod";
 
 type FormValues = z.infer<typeof contactFormSchema>;
 
@@ -65,10 +65,7 @@ export const ContactUsForm = (props: { className?: string }) => {
       <Button
         type="submit"
         disabled={isSubmitting || isSubmitSuccessful}
-        className={twMerge(
-          "w-full",
-          isSubmitSuccessful && "duration-1000 bg-green-500",
-        )}
+        className={twMerge("w-full", isSubmitSuccessful && "duration-1000 bg-green-500")}
       >
         {isSubmitting ? <Trans>Sending...</Trans> : <Trans>Send message</Trans>}
       </Button>

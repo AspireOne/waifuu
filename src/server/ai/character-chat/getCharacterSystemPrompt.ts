@@ -1,6 +1,6 @@
-import { Bot, BotMode, User, BotChat } from "@prisma/client";
+import { Bot, BotChat, BotMode, User } from "@prisma/client";
+
 import { PipelinePromptTemplate, PromptTemplate } from "langchain/prompts";
-import { BaseOutputParser } from "langchain/dist/schema/output_parser";
 
 const fullCharacterPrompt = PromptTemplate.fromTemplate(
   "{introduction}\n\n{userPronounsPrompt} {userContextPrompt}",
@@ -30,9 +30,7 @@ const userContextPrompt = PromptTemplate.fromTemplate(
 
 const emptyPrompt = PromptTemplate.fromTemplate("");
 
-export async function getCharacterSystemPrompt(
-  chat: BotChat & { bot: Bot } & { user: User },
-) {
+export async function getCharacterSystemPrompt(chat: BotChat & { bot: Bot } & { user: User }) {
   const bot = chat.bot;
   const user = chat.user;
 

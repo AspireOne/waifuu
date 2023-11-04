@@ -1,23 +1,16 @@
-import { Button, Card, Image } from "@nextui-org/react";
-import { FcGoogle } from "react-icons/fc";
-import { AiFillFacebook } from "react-icons/ai";
-import { BsTwitter } from "react-icons/bs";
 import Page from "@/components/Page";
-import { api } from "@/lib/api";
-import { useRouter } from "next/router";
-import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
-import { toast } from "react-toastify";
 import { useSession } from "@/hooks/useSession";
-import React, { useEffect } from "react";
-import {
-  GoogleAuthProvider,
-  signInWithCredential,
-  signOut,
-} from "firebase/auth";
+import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
-import { Constants } from "@/lib/constants";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { semanticPaths } from "@lib/paths";
-import { t, Trans } from "@lingui/macro";
+import { Trans, t } from "@lingui/macro";
+import { Button, Card, Image } from "@nextui-org/react";
+import { GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 function getCsrfToken() {
   return document.cookie
@@ -36,9 +29,7 @@ async function signInUsingGoogleRaw() {
     });
 
     // Sign in on the web layer using the id token.
-    const credential = GoogleAuthProvider.credential(
-      result.credential?.idToken,
-    );
+    const credential = GoogleAuthProvider.credential(result.credential?.idToken);
     const auth = getOrInitFirebaseAuth();
     await signInWithCredential(auth, credential);
     return true;
@@ -59,7 +50,7 @@ const Login = () => {
     if (session.user) {
       router.replace(redirect || semanticPaths.appIndex);
     }
-  }, [session.user, session.user?.id]);
+  }, [session.user, session.user?.id, redirect, router]);
 
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: async (data, variables, context) => {
@@ -89,19 +80,14 @@ const Login = () => {
 
     if (!(await signInUsingGoogleRaw())) return;
 
-    console.log(
-      "Signed in using google, getting id token and contacting backend...",
-    );
+    console.log("Signed in using google, getting id token and contacting backend...");
 
     const { token: idToken } = await FirebaseAuthentication.getIdToken({
       forceRefresh: true,
     });
 
     if (!idToken) {
-      console.error(
-        "Error getting ID token from Google! This should not happen!",
-        idToken,
-      );
+      console.error("Error getting ID token from Google! This should not happen!", idToken);
       return;
     }
 
@@ -140,11 +126,7 @@ const Login = () => {
         />
 
         <Card className="flex-column flex gap-3 p-2">
-          <Button
-            size="lg"
-            startContent={<FcGoogle />}
-            onClick={handleGoogleSignIn}
-          >
+          <Button size="lg" startContent={<FcGoogle />} onClick={handleGoogleSignIn}>
             <Trans>Sign in with google</Trans>
           </Button>
           {/*<Button size="lg" startContent={<AiFillFacebook />}>

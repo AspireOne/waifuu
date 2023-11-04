@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { BotChatRole, Mood } from "@prisma/client";
 import { api } from "@/lib/api";
-import { toast } from "react-toastify";
+import { BotChatRole, Mood } from "@prisma/client";
+import { useEffect, useState } from "react";
 
 type MessageStatus = "error" | "temp";
 
@@ -23,7 +22,7 @@ const chatCache = new Map<string, Message[]>();
  * querying or loading before the botId or botMode is available.
  * @returns An object containing chat messages and functions to interact with the chat.
  */
-export default function useBotChat(chatId: string, enabled: boolean = true) {
+export default function useBotChat(chatId: string, enabled = true) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [shouldLoadMore, setShouldLoadMore] = useState<boolean>(false);
   const [cursor, setCursor] = useState<number | undefined>(undefined);
@@ -74,10 +73,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
       const updatedMessages = messages
         .filter((message) => message.id !== Number.MAX_SAFE_INTEGER)
         .concat([data.userMessage, data.message])
-        .filter(
-          (value, index, self) =>
-            self.findIndex((m) => m.id === value.id) === index,
-        )
+        .filter((value, index, self) => self.findIndex((m) => m.id === value.id) === index)
         .sort((a, b) => a.id - b.id);
 
       setMessages(updatedMessages);
@@ -90,10 +86,7 @@ export default function useBotChat(chatId: string, enabled: boolean = true) {
       .concat(newMessages)
       .sort((a, b) => a.id - b.id)
       .reverse()
-      .filter(
-        (value, index, self) =>
-          self.findIndex((m) => m.id === value.id) === index,
-      )
+      .filter((value, index, self) => self.findIndex((m) => m.id === value.id) === index)
       .reverse();
 
     setMessages(() => combinedArr);

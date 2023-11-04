@@ -1,14 +1,14 @@
 // public user profile page containing centered image, name, bio, link, and public characters.
 
 import Page from "@/components/Page";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
 import Header from "@/components/profile-page/Header";
 import InfoCards from "@/components/profile-page/InfoCards";
-import { useLingui } from "@lingui/react";
+import { api } from "@/lib/api";
+import { paths } from "@/lib/paths";
 import { msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function UserProfile(props: { username?: string }) {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function UserProfile(props: { username?: string }) {
         className={
           "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-secondary-400/30 via-secondary-400/5"
         }
-      ></div>
+      />
       <div className={"relative z-[1]"}>
         <Content username={username} />
       </div>
@@ -38,10 +38,7 @@ function Content(props: { username?: string }) {
     data: user,
     isLoading,
     isInitialLoading,
-  } = api.users.getPublic.useQuery(
-    { username: username! },
-    { enabled: !!username },
-  );
+  } = api.users.getPublic.useQuery({ username: username! }, { enabled: !!username });
 
   // If user does not exist, redirect.
   useEffect(() => {
@@ -49,7 +46,7 @@ function Content(props: { username?: string }) {
       router.replace(paths.discover);
       return;
     }
-  }, [username, user, router.isReady]);
+  }, [user, isLoading, router]);
 
   return (
     <>

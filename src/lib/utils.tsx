@@ -9,8 +9,8 @@ import { toast } from "react-toastify";
  */
 export default function generateUUID(): string {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0,
-      v = c === "x" ? r : (r & 0x3) | 0x8;
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
@@ -22,8 +22,7 @@ export default function generateUUID(): string {
  */
 export function generateID(length: number): string {
   let id = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   for (let i = 0; i < length; i += 1) {
     id += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -43,15 +42,15 @@ export function showErrorToast(error: Error) {
  * @example "Hello *world*! I am **Kate**" -> ["Hello ", <i>world</i>, "!", " I am ", <b>Kate</b>]
  */
 export function applyMarkdown(text: string): React.ReactNode[] {
-  let result: (string | React.ReactNode)[] = [];
+  const result: (string | React.ReactNode)[] = [];
 
   if (!text) return result;
 
   // Regular expression to match *, **, ` and the text between them
-  let regex = /(\*\*[^*]*\*\*)|(\*[^*]*\*)|(`[^`]*`)/g;
-  let splits = text.split(regex);
+  const regex = /(\*\*[^*]*\*\*)|(\*[^*]*\*)|(`[^`]*`)/g;
+  const splits = text.split(regex);
 
-  for (let split of splits) {
+  for (const split of splits) {
     if (!split) continue;
 
     if (split.startsWith("**") && split.endsWith("**")) {
@@ -75,15 +74,12 @@ export function applyMarkdown(text: string): React.ReactNode[] {
   return result;
 }
 
-export function addQueryParams(
-  path: string,
-  ...params: [key: string, value: string][]
-) {
+export function addQueryParams(path: string, ...params: [key: string, value: string][]) {
   const url = new URL(path, window.location.origin);
 
-  params.forEach((param) => {
+  for (const param of params) {
     url.searchParams.append(param[0], param[1]);
-  });
+  }
 
   return url.pathname + url.search;
 }
@@ -98,20 +94,18 @@ export function addQueryParams(
  *
  * @return {string} The normalized path.
  */
-export function normalizePath(
-  path: string,
-  keepSlash: boolean = false,
-): string {
-  path = path.trim(); // remove leading/trailing whitespaces
-  path = path.toLowerCase(); // convert to lowercase
-  path = path.replace(/\\/g, "/"); // convert backslashes to slashes
+export function normalizePath(path: string, keepSlash = false): string {
+  let norm = path;
+  norm = norm.trim(); // remove leading/trailing whitespaces
+  norm = norm.toLowerCase(); // convert to lowercase
+  norm = norm.replace(/\\/g, "/"); // convert backslashes to slashes
 
   // add/remove trailing slash.
-  if (keepSlash) path = path.endsWith("/") ? path : path + "/";
-  else path = path.endsWith("/") ? path.slice(0, -1) : path;
+  if (keepSlash) norm = norm.endsWith("/") ? norm : `${norm}/`;
+  else norm = norm.endsWith("/") ? norm.slice(0, -1) : norm;
 
-  path = path.replace(/\/\/+/g, "/"); // replace all multiple slashes with a single slash
-  return path;
+  norm = norm.replace(/\/\/+/g, "/"); // replace all multiple slashes with a single slash
+  return norm;
 }
 
 export function makeDownloadPath(id: string): string {

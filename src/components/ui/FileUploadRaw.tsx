@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useState } from "react";
-import { apiPostImage } from "@services/imageService";
 import { Trans } from "@lingui/macro";
+import { apiPostImage } from "@services/imageService";
+import { ChangeEvent, useState } from "react";
 
 type FileUploadRawProps = {
   onUpload: (id: string) => void;
@@ -10,9 +10,7 @@ type FileUploadRawProps = {
 export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [uploading, setUploading] = useState(false);
-  const [responseSuccessful, setResponseSuccessful] = useState<
-    boolean | undefined
-  >(undefined);
+  const [responseSuccessful, setResponseSuccessful] = useState<boolean | undefined>(undefined);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target?.files?.[0];
@@ -66,8 +64,7 @@ export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
           ) : (
             <span
               className={`text-2xl ${
-                selectedFile?.name &&
-                "text-sm w-3/4 overflow-hidden text-center"
+                selectedFile?.name && "text-sm w-3/4 overflow-hidden text-center"
               }`}
             >
               {selectedFile?.name ?? "Browse"}

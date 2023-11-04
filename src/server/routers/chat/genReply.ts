@@ -1,11 +1,11 @@
-import { protectedProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
-import { TRPCError } from "@trpc/server";
 import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
 import { llama13b } from "@/server/ai/models/llama13b";
+import { protectedProcedure } from "@/server/lib/trpc";
+import { TRPCError } from "@trpc/server";
 // Yes, this does show error. There is no typescript version.
 // @ts-ignore
 import llamaTokenizer from "llama-tokenizer-js";
+import { z } from "zod";
 
 export default protectedProcedure
   .input(
@@ -61,9 +61,15 @@ export default protectedProcedure
 
     console.log("System Prompt: ", await getCharacterSystemPrompt(chat));
     // prettier-ignore
-    console.log("messages total text length: ", messages.reduce((acc, msg) => acc + msg.content.length, 0));
+    console.log(
+      "messages total text length: ",
+      messages.reduce((acc, msg) => acc + msg.content.length, 0),
+    );
     // prettier-ignore
-    console.log("messages total token count: ", llamaTokenizer.encode(messages.map((msg) => msg.content)).length);
+    console.log(
+      "messages total token count: ",
+      llamaTokenizer.encode(messages.map((msg) => msg.content)).length,
+    );
 
     let output;
     try {

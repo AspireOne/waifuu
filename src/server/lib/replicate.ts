@@ -1,5 +1,5 @@
-import Replicate from "replicate";
 import { env } from "@/server/env";
+import Replicate from "replicate";
 
 const globalForReplicate = globalThis as unknown as {
   replicate: Replicate | undefined;
@@ -12,5 +12,4 @@ export const replicate =
     auth: env.REPLICATE_API_KEY,
   });
 
-if (process.env.NODE_ENV !== "production")
-  globalForReplicate.replicate = replicate;
+if (process.env.NODE_ENV !== "production") globalForReplicate.replicate = replicate;

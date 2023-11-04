@@ -1,3 +1,6 @@
+import { useSession } from "@/hooks/useSession";
+import { api } from "@/lib/api";
+import { Trans, t } from "@lingui/macro";
 import {
   Button,
   Input,
@@ -8,11 +11,8 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
+
 import { useForm } from "react-hook-form";
-import { api } from "@/lib/api";
-import { useSession } from "@/hooks/useSession";
-import React from "react";
-import { t, Trans } from "@lingui/macro";
 
 type UserSettingsDialogProps = {
   isOpen: boolean;
@@ -24,10 +24,7 @@ type SubmitData = {
   about?: string;
 };
 
-export const UserDropdownSettingsDialog = ({
-  isOpen,
-  onOpenChange,
-}: UserSettingsDialogProps) => {
+export const UserDropdownSettingsDialog = ({ isOpen, onOpenChange }: UserSettingsDialogProps) => {
   const { user, refetch } = useSession();
 
   const selfUpdate = api.users.updateSelf.useMutation({
@@ -70,11 +67,7 @@ export const UserDropdownSettingsDialog = ({
                   `<Trans>Close</Trans>
                 </Button>
 
-                <Button
-                  isLoading={selfUpdate.isLoading}
-                  type="submit"
-                  color="primary"
-                >
+                <Button isLoading={selfUpdate.isLoading} type="submit" color="primary">
                   <Trans>Save Changes</Trans>
                 </Button>
               </ModalFooter>

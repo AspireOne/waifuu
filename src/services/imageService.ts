@@ -7,7 +7,7 @@ export type apiPostImageType = {
   }[];
 };
 
-export async function apiPostImage(data: any): Promise<apiPostImageType> {
+export async function apiPostImage(data: unknown): Promise<apiPostImageType> {
   const res = await apiClient.post("/images/upload", data);
   return res.data;
 }

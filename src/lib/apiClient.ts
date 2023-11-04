@@ -1,9 +1,9 @@
-// frontend api client
-import axios from "axios";
 import { apiBase } from "@lib/api";
 import { getIdToken } from "@lib/firebase";
-import { showErrorToast } from "@lib/utils";
 import { getLocale } from "@lib/i18n";
+import { showErrorToast } from "@lib/utils";
+// frontend api client
+import axios from "axios";
 
 const apiClient = axios.create({
   baseURL: apiBase(),

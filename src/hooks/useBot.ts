@@ -4,15 +4,8 @@ import { api } from "@/lib/api";
  * Custom hook that fetches the specified bot and redirects if the bot or mode is invalid.
  * @param enabled Whether the query should be enabled. Can be used to postpone the query until botId or mode is ready.
  */
-const useBot = (
-  chatId: string | undefined,
-  mode: string | undefined,
-  enabled: boolean = true,
-) => {
-  const bot = api.bots.getBotByChatId.useQuery(
-    { chatId: chatId! },
-    { enabled: enabled },
-  );
+const useBot = (chatId: string | undefined, mode: string | undefined, enabled = true) => {
+  const bot = api.bots.getBotByChatId.useQuery({ chatId: chatId! }, { enabled: enabled });
 
   // useEffect(() => {
   //   if (!enabled) return;

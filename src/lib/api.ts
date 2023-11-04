@@ -1,18 +1,16 @@
-import { httpBatchLink, httpLink, loggerLink, TRPCLink } from "@trpc/client";
+import { TRPCLink, httpLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
+import { CONSTANTS } from "@/lib/constants";
+import { getIdToken } from "@/lib/firebase";
 import { type AppRouter } from "@/server/routers/root";
 import { Capacitor } from "@capacitor/core";
-import { getIdToken } from "@/lib/firebase";
-import { Constants } from "@/lib/constants";
-import { observable } from "@trpc/server/observable";
-import { toast } from "react-toastify";
-import generateUUID, { generateID, showErrorToast } from "@lib/utils";
-import { Preferences } from "@capacitor/preferences";
+
 import { getLocale } from "@lib/i18n";
-import { getAuth } from "firebase/auth";
+import { showErrorToast } from "@lib/utils";
+import { observable } from "@trpc/server/observable";
 
 export const customErrorLink: TRPCLink<AppRouter> = () => {
   return ({ next, op }) => {
@@ -83,7 +81,7 @@ export const api = createTRPCNext<AppRouter>({
         httpLink({
           url: apiBase("/api/trpc"),
           async fetch(url, options) {
-            let idToken = await getIdToken();
+            const idToken = await getIdToken();
             const locale = getLocale();
 
             return fetch(url, {
@@ -113,16 +111,16 @@ export const api = createTRPCNext<AppRouter>({
  * @param path Path to append to base URL, e.g. "/api/bots"
  * @returns {string} The full API URL
  *
- * @example Constants.apiBase("/api/bots") // "https://companion-red.vercel.app/api/bots"
- * @example Constants.apiBase() // "https://companion-red.vercel.app/api"
+ * @example apiBase("/api/bots") // "https://companion-red.vercel.app/api/bots"
+ * @example apiBase() // "https://companion-red.vercel.app/api"
  **/
 export const apiBase = (path?: string): string => {
-  const base = getBaseServerUrl() + "/api";
+  const base = `${getBaseServerUrl()}/api`;
   if (!path) return base;
 
   if (path.startsWith("/api")) path = path.slice(4);
   if (path.startsWith("api")) path = path.slice(3);
-  if (!path.startsWith("/")) path = "/" + path;
+  if (!path.startsWith("/")) path = `/${path}`;
 
   return base + path;
 };
@@ -130,7 +128,7 @@ export const apiBase = (path?: string): string => {
 const getBaseServerUrl = () => {
   // Mobile = use the hosted prod server instead of localhost.
   if (Capacitor.isNativePlatform()) {
-    return Constants.SERVER_URL;
+    return CONSTANTS.SERVER_URL;
   }
 
   // Browser = relative URL.
@@ -139,7 +137,7 @@ const getBaseServerUrl = () => {
   // Web Server - Production. (Can oly be web server - android/ios don't have backend and browser always has window).
   if (process.env.NODE_ENV === "production") {
     if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-    return Constants.SERVER_URL;
+    return CONSTANTS.SERVER_URL;
   }
   // Web Server - Development.
   return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost.

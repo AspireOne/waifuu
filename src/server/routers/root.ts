@@ -1,12 +1,12 @@
-import { generalRouter } from "@/server/routers/general";
 import { createTRPCRouter } from "@/server/lib/trpc";
-import { botsRouter } from "@/server/routers/bots";
-import { usersRouter } from "@/server/routers/users";
-import { RRChatRouter } from "@/server/routers/rr-chat";
 import { authRouter } from "@/server/routers/auth";
-import { forumRouter } from "./forum";
-import { contactRouter } from "@/server/routers/contact";
+import { botsRouter } from "@/server/routers/bots";
 import { chatRouter } from "@/server/routers/chat";
+import { contactRouter } from "@/server/routers/contact";
+import { generalRouter } from "@/server/routers/general";
+import { RRChatRouter } from "@/server/routers/rr-chat";
+import { usersRouter } from "@/server/routers/users";
+import { forumRouter } from "./forum";
 
 /**
  * This is the primary router for your server.

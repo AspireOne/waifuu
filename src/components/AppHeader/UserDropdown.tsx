@@ -1,3 +1,6 @@
+import { useSession } from "@/hooks/useSession";
+import { paths } from "@lib/paths";
+import { Trans } from "@lingui/macro";
 import {
   Avatar,
   Dropdown,
@@ -6,14 +9,11 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@nextui-org/react";
-import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
-import { useSession } from "@/hooks/useSession";
-import { twMerge } from "tailwind-merge";
-import { Trans } from "@lingui/macro";
 import { useRouter } from "next/router";
-import { paths } from "@lib/paths";
 import { AiOutlineUser } from "react-icons/ai";
 import { LiaFantasyFlightGames } from "react-icons/lia";
+import { twMerge } from "tailwind-merge";
+import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
 
 export const UserDropdown = (props: { className?: string }) => {
   const { user, status } = useSession();
@@ -52,10 +52,7 @@ export const UserDropdown = (props: { className?: string }) => {
             </p>
             <p className="font-semibold">{user?.email}</p>
           </DropdownItem>
-          <DropdownItem
-            startContent={<AiOutlineUser />}
-            onClick={() => router.push(paths.profile)}
-          >
+          <DropdownItem startContent={<AiOutlineUser />} onClick={() => router.push(paths.profile)}>
             <Trans>My profile</Trans>
           </DropdownItem>
           <DropdownItem
@@ -68,10 +65,7 @@ export const UserDropdown = (props: { className?: string }) => {
         </DropdownMenu>
       </Dropdown>
 
-      <UserDropdownSettingsDialog
-        isOpen={isSettingsOpen}
-        onOpenChange={toggleSettingsOpen}
-      />
+      <UserDropdownSettingsDialog isOpen={isSettingsOpen} onOpenChange={toggleSettingsOpen} />
     </>
   );
 };

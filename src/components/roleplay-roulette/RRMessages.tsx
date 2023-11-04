@@ -1,21 +1,18 @@
-import {
-  RRMessage,
-  RRMessagesType,
-  RRSystemMessage,
-} from "@/hooks/useRRMessages";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import React from "react";
-import { Avatar } from "@nextui-org/avatar";
+import { RRMessage, RRMessagesType, RRSystemMessage } from "@/hooks/useRRMessages";
 import { applyMarkdown } from "@lib/utils";
+import { Avatar } from "@nextui-org/avatar";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
 export default function RRMessages(props: { messages: RRMessagesType }) {
   if (props.messages.length === 0) return undefined;
 
   return props.messages.map((message, i) => {
     // prettier-ignore
-    return message.type === "message"
-      ? <Message message={message}/>
-      : <SystemMessage message={message}/>
+    return message.type === "message" ? (
+      <Message message={message} />
+    ) : (
+      <SystemMessage message={message} />
+    );
   });
 }
 

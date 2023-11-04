@@ -1,10 +1,10 @@
-import { protectedProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
-import { llama13b } from "@/server/ai/models/llama13b";
 import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
 import { initialMessagePrompt } from "@/server/ai/character-chat/prompts";
+import { llama13b } from "@/server/ai/models/llama13b";
+import { protectedProcedure } from "@/server/lib/trpc";
 import { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 
 /**
  * Retrieves messages with a bot.
@@ -38,8 +38,7 @@ export default protectedProcedure
       await createInitialMessage(input.chatId, ctx.prisma);
     }
 
-    const nextCursor =
-      messages.length > 0 ? messages[messages.length - 1]?.id : undefined;
+    const nextCursor = messages.length > 0 ? messages[messages.length - 1]?.id : undefined;
 
     return {
       messages: messages.reverse(),

@@ -1,13 +1,13 @@
-import React, { PropsWithChildren } from "react";
-import { Chip } from "@nextui-org/react";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { api } from "@/lib/api";
+import { paths } from "@/lib/paths";
+import { Trans } from "@lingui/macro";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Chip } from "@nextui-org/react";
 import { Bot } from "@prisma/client";
 import Link from "next/link";
-import { paths } from "@/lib/paths";
+import { PropsWithChildren } from "react";
 import { FaEye, FaHeart } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
-import { Trans } from "@lingui/macro";
 
 function InfoCard(
   props: PropsWithChildren<{
@@ -40,15 +40,11 @@ export default function InfoCards(props: { username?: string }) {
   return (
     <>
       <InfoCard isLoaded={!isInitialLoading} title={"Bio"} className={"mt-20"}>
-        <p>
-          {user?.bio || (
-            <Trans>This user has not set a bio yet. Check back later!</Trans>
-          )}
-        </p>
+        <p>{user?.bio || <Trans>This user has not set a bio yet. Check back later!</Trans>}</p>
       </InfoCard>
 
       <InfoCard isLoaded={!isInitialLoading} title={"Characters"}>
-        {hasBots && <BotList bots={user!.bots} />}
+        {hasBots && <BotList bots={user?.bots} />}
         {!hasBots && (
           <p>
             <Trans>This user has not created any characters yet :(</Trans>
@@ -65,11 +61,7 @@ function BotList(props: { bots: Bot[] }) {
     <Card className={""}>
       {props.bots?.map((bot) => (
         <Link href={paths.botChatMainMenu(bot.id)} key={bot.id}>
-          <Card
-            className={
-              "relative flex flex-col gap-4 border border-gray-700 bg-zinc-800 p-2"
-            }
-          >
+          <Card className={"relative flex flex-col gap-4 border border-gray-700 bg-zinc-800 p-2"}>
             <div className={"flex flex-row gap-3"}>
               <img
                 className={"aspect-square h-16 w-16 rounded-xl"}
@@ -84,20 +76,10 @@ function BotList(props: { bots: Bot[] }) {
               </div>
             </div>
             <div className={"inline-flex gap-2"}>
-              <Chip
-                startContent={<FaHeart />}
-                variant="faded"
-                color="default"
-                className={"px-3"}
-              >
+              <Chip startContent={<FaHeart />} variant="faded" color="default" className={"px-3"}>
                 {/*<Trans>Likes</Trans>*/}
               </Chip>
-              <Chip
-                startContent={<FaEye />}
-                variant="faded"
-                color="default"
-                className={"px-3"}
-              >
+              <Chip startContent={<FaEye />} variant="faded" color="default" className={"px-3"}>
                 {/*<Trans>Views</Trans>*/}
               </Chip>
             </div>

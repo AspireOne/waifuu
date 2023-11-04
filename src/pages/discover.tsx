@@ -1,10 +1,10 @@
 import Page from "@/components/Page";
-import { t } from "@lingui/macro";
 import { DiscoverHeader } from "@components/DiscoverHeader";
-import { ActiveChatsDiscoverCategory } from "src/components/ActiveChatsDiscoverCategory";
-import { PopularCharactersDiscoverCategory } from "src/components/PopularCharactersDiscoverCategory";
-import { ForumPostsDiscoverCategory } from "src/components/ForumPostsDiscoverCategory";
+import { t } from "@lingui/macro";
 import { Spacer } from "@nextui-org/react";
+import { ActiveChatsDiscoverCategory } from "src/components/ActiveChatsDiscoverCategory";
+import { ForumPostsDiscoverCategory } from "src/components/ForumPostsDiscoverCategory";
+import { PopularCharactersDiscoverCategory } from "src/components/PopularCharactersDiscoverCategory";
 
 const Discover = () => {
   return (

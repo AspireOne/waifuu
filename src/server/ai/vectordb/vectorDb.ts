@@ -1,12 +1,10 @@
 import { franc } from "franc-min";
-import stopword from "stopword";
-import tokenizer from "wink-tokenizer";
 import lemmatizer from "lemmatizer";
 import removeAccents from "remove-accents";
+import stopword from "stopword";
+import tokenizer from "wink-tokenizer";
 
-type DataPurpose =
-  | "long-term-memory-augmentation"
-  | "short-term-memory-augmentation";
+type DataPurpose = "long-term-memory-augmentation" | "short-term-memory-augmentation";
 
 // - Lemmatize
 // - Remove stop words
@@ -17,9 +15,7 @@ type DataPurpose =
 // TODO: Test this function.
 function preProcess(text: string): string {
   // Tokenization
-  const tokens: string[] = new tokenizer()
-    .tokenize(text)
-    .map((t) => t.value.toLowerCase());
+  const tokens: string[] = new tokenizer().tokenize(text).map((t) => t.value.toLowerCase());
 
   console.log("=>(vectorDb.ts:19) tokens", tokens);
 

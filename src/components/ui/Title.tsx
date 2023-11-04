@@ -1,11 +1,11 @@
-import { twMerge } from "tailwind-merge";
 import React from "react";
 import { IconType } from "react-icons";
+import { twMerge } from "tailwind-merge";
 
 export default function Title(props: {
   children: React.ReactNode;
   /** @default "h2" */
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | any;
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | string;
   /** @default "lg" */
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
@@ -26,6 +26,7 @@ export default function Title(props: {
   else if (size === "2xl") iconSize = 38;
 
   return (
+    // @ts-ignore
     <As
       className={twMerge(
         bold ? "font-bold" : "font-semibold",

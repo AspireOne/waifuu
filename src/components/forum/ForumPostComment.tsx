@@ -1,11 +1,11 @@
+import { api } from "@/lib/api";
 import { Button, Card, Modal, ModalContent, Textarea } from "@nextui-org/react";
 import { ForumPost, User } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { FaComment } from "react-icons/fa";
-import { api } from "@/lib/api";
-import { PiArrowElbowRightDownBold } from "react-icons/pi";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { FaComment } from "react-icons/fa";
+import { PiArrowElbowRightDownBold } from "react-icons/pi";
 
 type Post = ForumPost & {
   author: User;
@@ -71,7 +71,7 @@ export const ForumPostComment = ({
   };
 
   return (
-    <Card style={{ background: makeStylesBackground() }} className={`p-4 mt-3`}>
+    <Card style={{ background: makeStylesBackground() }} className={"p-4 mt-3"}>
       <div className="flex flex-row gap-5">
         <div className="flex flex-row gap-2">
           {/* <Image
@@ -133,10 +133,7 @@ export const ForumPostComment = ({
       <Modal isOpen={isOpen} onClose={onCommentToggle}>
         <ModalContent className="p-3">
           <h1 className="text-lg font-bold">Create a new comment</h1>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-2"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
             <Textarea {...register("content")} placeholder="Comment" />
             <Button isLoading={createCommentMutation.isLoading} type="submit">
               Submit

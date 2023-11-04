@@ -10,7 +10,7 @@ import { Tooltip } from "@nextui-org/tooltip";
 import { BotSource } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { UseFormRegisterReturn, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTrendingUp } from "react-icons/bi";
 
@@ -124,7 +124,7 @@ export const PopularCharactersDiscoverCategory = () => {
           )}
 
           <div className="gap-4 flex flex-wrap w-full mx-auto">
-            {discoveredBots.discovered.map((bot, index) => {
+            {discoveredBots.discovered.map((bot) => {
               return <CharacterCard bottom key={bot.id} bot={bot} />;
             })}
           </div>
@@ -142,7 +142,8 @@ export const PopularCharactersDiscoverCategory = () => {
 
 const ParametersHeader = (props: {
   onTagsChange: (tags: string[]) => void;
-  register: any;
+  // biome-ignore lint/suspicious/noExplicitAny:
+  register: (name: any) => UseFormRegisterReturn;
   onOnlyOfficialChange: (value: boolean) => void;
   onNsfwChange: (value: boolean) => void;
   /*onTextFilterChange: (value: string) => void;*/

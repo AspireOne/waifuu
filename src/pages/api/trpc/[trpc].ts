@@ -1,8 +1,7 @@
-import { createNextApiHandler } from "@trpc/server/adapters/next";
-import { appRouter } from "@/server/routers/root";
-import { createTRPCContext } from "@/server/lib/trpc";
 import metaHandler from "@/server/lib/metaHandler";
-import { toast } from "react-toastify";
+import { createTRPCContext } from "@/server/lib/trpc";
+import { appRouter } from "@/server/routers/root";
+import { createNextApiHandler } from "@trpc/server/adapters/next";
 
 // export API handler
 const nextApiHandler = createNextApiHandler({

@@ -1,28 +1,17 @@
 import Page from "@/components/Page";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm, UseFormRegisterReturn } from "react-hook-form";
-import {
-  Avatar,
-  Button,
-  Input,
-  Select,
-  SelectItem,
-  Textarea,
-} from "@nextui-org/react";
 import { useSession } from "@/hooks/useSession";
-import React, { useEffect, useMemo, useRef, useState } from "react";
 import { api } from "@/lib/api";
+import updateSelfSchema from "@/server/shared/updateSelfSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LocaleCode, changeAndSaveGlobalLocale, getLocale, locales } from "@lib/i18n";
+import { Trans, t } from "@lingui/macro";
+import { Avatar, Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { User } from "@prisma/client";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { SubmitHandler, UseFormRegisterReturn, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-import updateSelfSchema from "@/server/shared/updateSelfSchema";
-import { t, Trans } from "@lingui/macro";
-import {
-  changeAndSaveGlobalLocale,
-  getLocale,
-  LocaleCode,
-  locales,
-} from "@lib/i18n";
+import { z } from "zod";
 
 export default function Profile() {
   const { user, refetch } = useSession();
@@ -45,16 +34,16 @@ export default function Profile() {
   } = useForm<z.infer<typeof updateSelfSchema>>({
     resolver: zodResolver(updateSelfSchema),
     mode: "all",
-    defaultValues: useMemo(() => getCurrentUserValues(), [user]),
+    defaultValues: useMemo(() => getCurrentUserValues(user), [user]),
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageUrl = watch("imageUrl");
   const username = watch("username");
 
-  useEffect(() => reset(getCurrentUserValues()), [user]);
+  useEffect(() => reset(getCurrentUserValues(user)), [user, reset]);
 
-  function getCurrentUserValues() {
+  function getCurrentUserValues(user?: User | null) {
     return {
       username: user?.username || "",
       name: user?.name || "",
@@ -201,9 +190,7 @@ function UsernameInput(props: {
   value?: string;
   register: (name: "username") => UseFormRegisterReturn;
 }) {
-  const [usernameAvailable, setUsernameAvailable] = useState<
-    undefined | boolean
-  >(undefined);
+  const [usernameAvailable, setUsernameAvailable] = useState<undefined | boolean>(undefined);
 
   useEffect(() => setUsernameAvailable(undefined), [props.value]);
 
@@ -231,9 +218,7 @@ function UsernameInput(props: {
 
       <Button
         onClick={checkAvailability}
-        isDisabled={
-          !props.isDirty || usernameAvailability.isLoading || props.isInvalid
-        }
+        isDisabled={!props.isDirty || usernameAvailability.isLoading || props.isInvalid}
         size={"sm"}
         className={twMerge("text-left", !props.isDirty && "hidden")}
         variant={"flat"}

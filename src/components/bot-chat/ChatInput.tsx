@@ -1,8 +1,8 @@
-import { twMerge } from "tailwind-merge";
 import { Button } from "@nextui-org/react";
-import { RiSendPlane2Fill } from "react-icons/ri";
 import { useState } from "react";
+import { RiSendPlane2Fill } from "react-icons/ri";
 import TextareaAutosize from "react-textarea-autosize";
+import { twMerge } from "tailwind-merge";
 
 const ChatInput = (props: {
   placeholder?: string;
@@ -45,9 +45,7 @@ const ChatInput = (props: {
         isIconOnly
         className={twMerge(
           "h-12 w-16",
-          props.disabled
-            ? "bg-zinc-800 dark:bg-zinc-500"
-            : "bg-black dark:bg-white",
+          props.disabled ? "bg-zinc-800 dark:bg-zinc-500" : "bg-black dark:bg-white",
         )}
         onClick={handleClick}
       >

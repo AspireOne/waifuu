@@ -1,8 +1,9 @@
 import { BotMode } from "@prisma/client";
 
 export const prompts = {
-  format: "You must format all your responses as JSON in the following format: {\"message\": \"Example message!\", \"mood\": \"NEUTRAL | BLUSHED | ANGRY | HAPPY | SAD\"}",
-  
+  format:
+    'You must format all your responses as JSON in the following format: {"message": "Example message!", "mood": "NEUTRAL | BLUSHED | ANGRY | HAPPY | SAD"}',
+
   roleplay: (chatType: BotMode) => {
     switch (chatType) {
       case BotMode.ADVENTURE:
@@ -22,17 +23,13 @@ export const prompts = {
     return "You cannot respond in a NSFW way.";
   },
 
-  intro: (
-    characterName: string,
-    characterPersona: string,
-    characterDialogue?: string,
-  ) => {
+  intro: (characterName: string, characterPersona: string, characterDialogue?: string) => {
     return `
             You are ${characterName}, a ${characterPersona}.\n\n
             ${
               characterDialogue &&
               characterDialogue.length > 0 &&
-              "Example dialogue with the character: " + characterDialogue
+              `Example dialogue with the character: ${characterDialogue}`
             }
         `;
   },

@@ -1,5 +1,5 @@
-import { generateOpenApiDocument } from "trpc-openapi";
 import { appRouter } from "@/server/routers/root";
+import { generateOpenApiDocument } from "trpc-openapi";
 
 // TODO: Here a separate nodejs server?
 
