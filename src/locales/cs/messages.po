@@ -322,7 +322,7 @@ msgstr "Jazyk byl úspěšně změněn"
 msgid "Let's explore some new characters."
 msgstr "Pojďme prozkoumat nějaké nové postavy."
 
-#: src/pages/discover.tsx:229
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:134
 msgid "Load more"
 msgstr "Načíst víc"
 
@@ -363,15 +363,19 @@ msgstr "Žádné bio."
 msgid "No description."
 msgstr "Žádný popis."
 
-#: src/pages/discover.tsx:211
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:122
 msgid "No characters found. Try changing your search term."
 msgstr "Nenalezeny žádné postavy. Zkus změnit hledaný výraz."
+
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:194
+msgid "NSFW"
+msgstr ""
 
 #: src/pages/character/create.tsx:146
 msgid "NSFW content"
 msgstr "NSFW obsah"
 
-#: src/pages/discover.tsx:193
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:186
 msgid "Only display official characters"
 msgstr "Zobrazit jen oficiální postavy"
 
@@ -391,7 +395,7 @@ msgstr "Připnuté příspěvky"
 msgid "Popular forum posts"
 msgstr "Populární příspěvky na fóru"
 
-#: src/pages/discover.tsx:166
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:156
 msgid "Popular Characters"
 msgstr "Populární postavy"
 

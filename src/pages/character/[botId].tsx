@@ -1,18 +1,18 @@
-import { useRouter } from "next/router";
-import { api } from "@/lib/api";
-import React from "react";
-import { paths } from "@/lib/paths";
 import Page from "@/components/Page";
-import { BotMode } from "@prisma/client";
-import Skeleton from "react-loading-skeleton";
-import { Card } from "@nextui-org/card";
-import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
 import { CustomRadio } from "@/components/ui/CustomRadio";
 import { useSession } from "@/hooks/useSession";
+import { api } from "@/lib/api";
+import { paths } from "@/lib/paths";
 import { makeDownloadPath } from "@lib/utils";
+import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { msg, Trans } from "@lingui/macro";
+import { Card } from "@nextui-org/card";
+import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
+import { BotMode } from "@prisma/client";
+import { useRouter } from "next/router";
+import React from "react";
 import { useForm } from "react-hook-form";
+import Skeleton from "react-loading-skeleton";
 
 type FormProps = {
   botMode: BotMode;
@@ -46,9 +46,7 @@ const ChatMainMenu = () => {
 
   return (
     <Page
-      title={
-        bot.isLoading ? _(msg`Loading...`) : _(msg`Chat with ${bot.data?.name}`)
-      }
+      title={bot.isLoading ? _(msg`Loading...`) : _(msg`Chat with ${bot.data?.name}`)}
       className={"space-y-12"}
     >
       <Card className="z-20 mx-auto md:w-[600px]">
@@ -68,10 +66,7 @@ const ChatMainMenu = () => {
               <Spacer x={2} y={2} />
 
               <h1 className="title-2xl font-semibold">
-                <Trans>
-                  Starting chat with{" "}
-                  {bot.isLoading ? <Skeleton /> : bot.data?.name}
-                </Trans>
+                <Trans>Starting chat with {bot.isLoading ? <Skeleton /> : bot.data?.name}</Trans>
               </h1>
               <p className="text-gray-400">
                 <Trans>Select one of the available experiences</Trans>
@@ -81,10 +76,7 @@ const ChatMainMenu = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-3">
-          <RadioGroup
-            onValueChange={(value) => setValue("botMode", value as BotMode)}
-            className="w-full"
-          >
+          <RadioGroup onValueChange={(value) => setValue("botMode", value as BotMode)} className="w-full">
             <CustomRadio
               description={_(
                 msg`Classic chat experience, talk about your day, interests, or try to make a romantic partner!`,
@@ -94,17 +86,13 @@ const ChatMainMenu = () => {
               <Trans>Chat</Trans>
             </CustomRadio>
             <CustomRadio
-              description={_(
-                msg`Adventure-style game. Let the character guide you through the story!`,
-              )}
+              description={_(msg`Adventure-style game. Let the character guide you through the story!`)}
               value={BotMode.ADVENTURE}
             >
               <Trans>Adventure</Trans>
             </CustomRadio>
             <CustomRadio
-              description={_(
-                msg`Roleplay with the character, feels just real!`,
-              )}
+              description={_(msg`Roleplay with the character, feels just real!`)}
               value={BotMode.ROLEPLAY}
             >
               <Trans>Roleplay</Trans>
@@ -115,7 +103,7 @@ const ChatMainMenu = () => {
 
           <Textarea
             {...register("userContext")}
-            label={_(`Your context`)}
+            label={_(msg`Your context`)}
             description={_(
               `This is the default context for the character - they will remember everything you'll type here.`,
             )}
@@ -123,11 +111,7 @@ const ChatMainMenu = () => {
           />
 
           <div className="p-3 mt-4">
-            <Button
-              isLoading={createBotChat.isLoading}
-              type="submit"
-              className="w-full"
-            >
+            <Button isLoading={createBotChat.isLoading} type="submit" className="w-full">
               <Trans>Start the chat</Trans>
             </Button>
           </div>

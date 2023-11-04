@@ -8,7 +8,8 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noCommentText": "warn"
+        "noCommentText": "warn",
+        "noExplicitAny": "off"
       },
       "style": {
         "noUnusedTemplateLiteral": "off"

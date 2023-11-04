@@ -26,9 +26,9 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json}": [
-      "pnpm dlx @biomejs/biome check --apply ./src",
-      "lingui extract $(git diff --name-only --staged) --clean"
+    "src/**/*.{js,jsx,ts,tsx,json,po}": [
+      "pnpm dlx @biomejs/biome check --apply",
+      "lingui extract --clean"
     ]
   },
   "dependencies": {

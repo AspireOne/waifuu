@@ -317,7 +317,7 @@ msgstr "Language successfully changed"
 msgid "Let's explore some new characters."
 msgstr "Let's explore some new characters."
 
-#: src/pages/discover.tsx:229
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:134
 msgid "Load more"
 msgstr "Load more"
 
@@ -358,15 +358,19 @@ msgstr "No bio."
 msgid "No description."
 msgstr "No description."
 
-#: src/pages/discover.tsx:211
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:122
 msgid "No characters found. Try changing your search term."
 msgstr "No characters found. Try changing your search term."
+
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:194
+msgid "NSFW"
+msgstr "NSFW"
 
 #: src/pages/character/create.tsx:146
 msgid "NSFW content"
 msgstr "NSFW content"
 
-#: src/pages/discover.tsx:193
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:186
 msgid "Only display official characters"
 msgstr "Only display official characters"
 
@@ -386,7 +390,7 @@ msgstr "Pinned posts"
 msgid "Popular forum posts"
 msgstr "Popular forum posts"
 
-#: src/pages/discover.tsx:166
+#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:156
 msgid "Popular Characters"
 msgstr "Popular Characters"
 

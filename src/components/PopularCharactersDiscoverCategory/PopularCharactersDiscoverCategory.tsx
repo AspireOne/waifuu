@@ -1,18 +1,18 @@
-import Title from "@components/ui/Title";
-import { BiTrendingUp } from "react-icons/bi";
-import { Trans } from "@lingui/macro";
-import { Tooltip } from "@nextui-org/tooltip";
-import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
-import { useRouter } from "next/router";
-import { paths } from "@lib/paths";
-import { AiOutlinePlus } from "react-icons/ai";
-import { TagSelect } from "@components/ui/TagSelect";
-import { CharacterCard } from "@components/CharacterCard";
-import { BotSource } from "@prisma/client";
 import { discoveredBotStore } from "@/stores";
+import { CharacterCard } from "@components/CharacterCard";
+import { TagSelect } from "@components/ui/TagSelect";
+import Title from "@components/ui/Title";
 import { api } from "@lib/api";
+import { paths } from "@lib/paths";
+import { Trans } from "@lingui/macro";
+import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/tooltip";
+import { BotSource } from "@prisma/client";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BiTrendingUp } from "react-icons/bi";
 
 type SearchType = {
   textFilter?: string;
@@ -55,8 +55,7 @@ export const PopularCharactersDiscoverCategory = () => {
     discoveredBots.clearDiscoveredBots();
     setSearchData({
       ...searchData,
-      officialBots:
-        searchData.officialBots === null ? BotSource.OFFICIAL : null,
+      officialBots: searchData.officialBots === null ? BotSource.OFFICIAL : null,
       cursor: 0,
     });
   };
@@ -99,7 +98,7 @@ export const PopularCharactersDiscoverCategory = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [watch, discoveredBots]);
 
   return (
     <div>
@@ -126,16 +125,12 @@ export const PopularCharactersDiscoverCategory = () => {
 
           <div className="gap-4 flex flex-wrap w-full mx-auto">
             {discoveredBots.discovered.map((bot, index) => {
-              return <CharacterCard bottom key={index} bot={bot} />;
+              return <CharacterCard bottom key={bot.id} bot={bot} />;
             })}
           </div>
 
           {discoveredBots.hasNextDiscoveredPage && (
-            <Button
-              onClick={skipPage}
-              variant="faded"
-              className="w-full sm:w-[200px] mx-auto"
-            >
+            <Button onClick={skipPage} variant="faded" className="w-full sm:w-[200px] mx-auto">
               <Trans>Load more</Trans>
             </Button>
           )}
