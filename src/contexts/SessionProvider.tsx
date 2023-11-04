@@ -2,7 +2,7 @@ import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
 import { User } from "@prisma/client";
 import "firebase/compat/auth";
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type SessionUser = User;
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
