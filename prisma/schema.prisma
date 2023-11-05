@@ -65,36 +65,37 @@ enum Mood {
 }
 
 model Bot {
-  id                String       @id @default(cuid())
+  id                String           @id @default(cuid())
   name              String
   description       String
   categoryId        String?
-  category          Category?    @relation(fields: [categoryId], references: [name])
+  category          Category?        @relation(fields: [categoryId], references: [name])
   characterName     String
   characterPersona  String
   characterDialogue String?
-  characterNsfw     Boolean      @default(false)
-  avatar            String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  backgroundImage   String?      @default("https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png")
-  cover             String?      @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
+  characterNsfw     Boolean          @default(false)
+  avatar            String?          @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  backgroundImage   String?          @default("https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png")
+  cover             String?          @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
   creatorId         String?
   tags              Tag[]
   source            BotSource
   visibility        Visibility
-  creator           User?        @relation(fields: [creatorId], references: [id])
+  creator           User?            @relation(fields: [creatorId], references: [id])
   botLikes          BotLike[]
   botDislikes       BotDislike[]
   BotShares         BotShares[]
   MoodTable         MoodTable?
   BotChats          BotChat[]
   // Mood images
-  moodImagesEnabled Boolean      @default(false)
+  moodImagesEnabled Boolean          @default(false)
   sadImageId        String?
   blushedImageId    String?
   neutralImageId    String?
   happyImageId      String?
+  InitialMessage    InitialMessage[]
 }
 
 model Tag {
@@ -158,6 +159,17 @@ model Chat {
   id       String        @id @default(cuid())
   messages ChatMessage[]
   users    User[]        @relation("ChatToUser")
+}
+
+model InitialMessage {
+  botMode   BotMode
+  botId     String
+  bot       Bot      @relation(fields: [botId], references: [id])
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([botId, botMode])
 }
 
 model ChatMessage {

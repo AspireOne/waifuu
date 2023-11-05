@@ -1,4 +1,4 @@
-import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
+import { getCharacterSystemPrompt } from "@/server/ai/character-chat/characterSystemPrompt";
 import { llama13b } from "@/server/ai/models/llama13b";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { TRPCError } from "@trpc/server";
@@ -15,28 +15,20 @@ export default protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input }) => {
-    const [chat, messages] = await Promise.all([
-      // Find the chat that is user and bot currently in.
-      ctx.prisma.botChat.findUnique({
-        where: {
-          id: input.chatId,
+    const chat = await ctx.prisma.botChat.findUnique({
+      where: {
+        id: input.chatId,
+      },
+      include: {
+        bot: true,
+        user: true,
+        // TODO: Get amount of messages based on the model's context window length.
+        // For now we hardcode it.
+        messages: {
+          take: 20,
         },
-        include: {
-          bot: true,
-          user: true,
-        },
-      }),
-
-      // TODO: Get amount of messages based on the model's context window length.
-      // For now we hardcode it.
-      // Find the last x messages in the chat.
-      ctx.prisma.botChatMessage.findMany({
-        where: {
-          chatId: input.chatId,
-        },
-        take: 20,
-      }),
-    ]);
+      },
+    });
 
     if (!chat) {
       throw new TRPCError({
@@ -46,7 +38,7 @@ export default protectedProcedure
     }
 
     // Push the new message to the msg history.
-    messages.push({
+    chat.messages.push({
       content: input.message,
       chatId: input.chatId,
 
@@ -63,19 +55,19 @@ export default protectedProcedure
     // prettier-ignore
     console.log(
       "messages total text length: ",
-      messages.reduce((acc, msg) => acc + msg.content.length, 0),
+      chat.messages.reduce((acc, msg) => acc + msg.content.length, 0),
     );
     // prettier-ignore
     console.log(
       "messages total token count: ",
-      llamaTokenizer.encode(messages.map((msg) => msg.content)).length,
+      llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length,
     );
 
     let output;
     try {
       output = await llama13b.run({
         system_prompt: await getCharacterSystemPrompt(chat),
-        prompt: messages,
+        prompt: chat.messages,
       });
     } catch (e) {
       console.log(e);
@@ -87,26 +79,26 @@ export default protectedProcedure
       });
     }
 
-    const [userMsg, botMsg] = await Promise.all([
-      // Create user message.
-      ctx.prisma.botChatMessage.create({
-        data: {
-          chatId: input.chatId,
-          content: input.message,
-          role: "USER",
-        },
-      }),
+    // Note: They MUST NOT be CREATED IN PARALLEL (ASYNCHRONOUSLY), because
+    // otherwise the order of the messages will be messed up.
 
-      // Create bot message.
-      ctx.prisma.botChatMessage.create({
-        data: {
-          chatId: input.chatId,
-          content: output,
-          mood: "HAPPY",
-          role: "BOT",
-        },
-      }),
-    ]);
+    // Create user message.
+    const userMsg = await ctx.prisma.botChatMessage.create({
+      data: {
+        chatId: input.chatId,
+        content: input.message,
+        role: "USER",
+      },
+    });
+
+    const botMsg = await ctx.prisma.botChatMessage.create({
+      data: {
+        chatId: input.chatId,
+        content: output,
+        mood: "HAPPY",
+        role: "BOT",
+      },
+    });
 
     return {
       message: botMsg,

@@ -11,9 +11,8 @@ export type Message = {
   type?: MessageStatus;
   id: number;
 };
-// Create a map that will hold a cache of chat messages with cursor.
-const chatCache = new Map<string, Message[]>();
 
+// TODO: CACHING.
 /**
  * Allows interaction with a chatbot.
  *
@@ -30,7 +29,7 @@ export default function useBotChat(chatId: string, enabled = true) {
   const fetchMore = api.chat.messages.useMutation({
     onSuccess: async (data) => {
       setCursor(data.nextCursor);
-      addMessages(data.messages);
+      addMessages(data.messages.reverse());
     },
   });
 
@@ -42,7 +41,10 @@ export default function useBotChat(chatId: string, enabled = true) {
 
   useEffect(() => {
     if (shouldLoadMore && !fetchMore.isLoading && !!chatId && enabled) {
-      fetchMore.mutate({ chatId, cursor });
+      fetchMore.mutate({
+        chatId,
+        cursor,
+      });
       setShouldLoadMore(false);
     }
   }, [shouldLoadMore, fetchMore.isLoading, chatId, enabled]);
@@ -70,30 +72,39 @@ export default function useBotChat(chatId: string, enabled = true) {
     },
 
     onSuccess: (data) => {
-      const updatedMessages = messages
-        .filter((message) => message.id !== Number.MAX_SAFE_INTEGER)
-        .concat([data.userMessage, data.message])
-        .filter((value, index, self) => self.findIndex((m) => m.id === value.id) === index)
-        .sort((a, b) => a.id - b.id);
+      setMessages((prevState) => {
+        const messageMap: Map<number, Message> = new Map();
 
-      setMessages(updatedMessages);
+        const messageData = prevState
+          .filter((message) => message.id !== Number.MAX_SAFE_INTEGER)
+          .concat([data.userMessage, data.message]);
+
+        for (const message of messageData) {
+          messageMap.set(message.id, message);
+        }
+
+        return Array.from(messageMap.values());
+      });
     },
   });
 
-  function addMessages(newMessages: Message[]) {
-    // Concat, sort, and remove duplicates and keep the newer message data.
-    const combinedArr = messages
-      .concat(newMessages)
-      .sort((a, b) => a.id - b.id)
-      .reverse()
-      .filter((value, index, self) => self.findIndex((m) => m.id === value.id) === index)
-      .reverse();
+  function addMessages(newMessages: Message[]): void {
+    setMessages((prevState) => {
+      const messageMap: Map<number, Message> = new Map();
 
-    setMessages(() => combinedArr);
+      for (const message of [...prevState, ...newMessages]) {
+        messageMap.set(message.id, message);
+      }
+
+      return Array.from(messageMap.values());
+    });
   }
 
   return {
     messages,
+    loadingMore: fetchMore.isLoading,
+    hasMore: cursor !== undefined,
+    loadingReply: replyMutation.isLoading,
     postMessage: (message: string) => {
       if (!enabled || !chatId) return;
       replyMutation.mutate({
@@ -101,8 +112,6 @@ export default function useBotChat(chatId: string, enabled = true) {
         message,
       });
     },
-    loadingReply: replyMutation.isLoading,
     loadMore: () => setShouldLoadMore(true),
-    loadingMore: fetchMore.isLoading,
   };
 }

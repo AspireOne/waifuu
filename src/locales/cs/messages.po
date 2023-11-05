@@ -157,7 +157,7 @@ msgstr "Vytvořit nový příspěvek"
 msgid "Create New Character"
 msgstr "Vytvořit novou postavu"
 
-#: src/components/bot-chat/ChatMessage.tsx:78
+#: src/components/bot-chat/MessageDropdown.tsx:18
 msgid "Delete"
 msgstr "Smazat"
 
@@ -173,7 +173,7 @@ msgstr "Objevuj"
 msgid "Discover Characters"
 msgstr "Objevuj postavy"
 
-#: src/components/bot-chat/ChatMessage.tsx:75
+#: src/components/bot-chat/MessageDropdown.tsx:15
 msgid "Edit"
 msgstr "Upravit"
 
@@ -545,7 +545,7 @@ msgstr "Řekni nám něco o sobě"
 msgid "The companion that is always by your side."
 msgstr "Společnost, která je vždy po vašem boku."
 
-#: src/pages/character/[botId]/[mode].tsx:167
+#: src/components/BotChatContent/BotChatContent.tsx:69
 msgid "Them"
 msgstr "Oni"
 
@@ -598,7 +598,7 @@ msgstr "Co by o tobě měly tvé postavy určitě vědět?"
 msgid "Whether the character will produce content not suitable for minors."
 msgstr "Zda bude postava produkovat obsah, který nemusí být vhodný pro mládež."
 
-#: src/pages/character/[botId]/[mode].tsx:168
+#: src/components/BotChatContent/BotChatContent.tsx:70
 msgid "You"
 msgstr "Ty"
 

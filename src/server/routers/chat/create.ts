@@ -1,5 +1,5 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import { BotMode } from "@prisma/client";
+import { BotMode, PrismaClient } from "@prisma/client";
 import { z } from "zod";
 
 export default protectedProcedure
@@ -10,13 +10,37 @@ export default protectedProcedure
       userContext: z.string(),
     }),
   )
-  .mutation(async ({ input, ctx }) => {
-    return await ctx.prisma.botChat.create({
+  .mutation(async ({ input: { botId, botMode, userContext }, ctx: { prisma, user } }) => {
+    // Create a new chat.
+    const chat = await prisma.botChat.create({
       data: {
-        botId: input.botId,
-        botMode: input.botMode,
-        userId: ctx.user.id,
-        userContext: input.userContext,
+        botId: botId,
+        botMode: botMode,
+        userId: user.id,
+        userContext: userContext,
       },
     });
+
+    // Insert initial message.
+    const initialMessage = await retrieveInitialMessage(botId, botMode, prisma);
+    await prisma.botChatMessage.create({
+      data: {
+        chatId: chat.id,
+        content: initialMessage.message,
+        role: "BOT",
+      },
+    });
+
+    return chat;
   });
+
+async function retrieveInitialMessage(botId: string, botMode: BotMode, db: PrismaClient) {
+  return await db.initialMessage.findUniqueOrThrow({
+    where: {
+      botId_botMode: {
+        botId: botId,
+        botMode: botMode,
+      },
+    },
+  });
+}

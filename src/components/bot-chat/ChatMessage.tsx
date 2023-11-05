@@ -1,14 +1,13 @@
-import { Trans } from "@lingui/macro";
 import { Card, CardBody } from "@nextui-org/card";
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Image } from "@nextui-org/react";
+import { Avatar } from "@nextui-org/react";
 import { Mood } from "@prisma/client";
 import { useMemo } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
   message: string;
   className?: string;
+  id?: number;
   author: {
     bot: boolean;
     avatar?: string | null;
@@ -17,7 +16,7 @@ type Props = {
   mood?: Mood;
 };
 
-const ChatMessage = ({ author, message, className, mood }: Props) => {
+const ChatMessage = ({ author, message, className, mood, id }: Props) => {
   const formattedMessage = useMemo(() => {
     return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
@@ -42,10 +41,10 @@ const ChatMessage = ({ author, message, className, mood }: Props) => {
         {/*<MsgDropdown/>*/}
 
         <CardBody className={"p-1 flex flex-row gap-4"}>
-          <Image
-            referrerPolicy="no-referrer"
+          <p>{id}</p>
+          <Avatar
             src={author.avatar || "/assets/default_user.jpg"}
-            alt="profile-picture"
+            alt="avatar"
             className="w-[40px] h-[40px] min-w-[40px] rounded-full aspect-square"
           />
 
@@ -61,25 +60,5 @@ const ChatMessage = ({ author, message, className, mood }: Props) => {
     </div>
   );
 };
-
-function MsgDropdown() {
-  return (
-    <Dropdown className="flex-none">
-      <DropdownTrigger>
-        <button>
-          <BsThreeDotsVertical size={24} color="white" />
-        </button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Static Actions">
-        <DropdownItem className="text-white" key="edit">
-          <Trans>Edit</Trans>
-        </DropdownItem>
-        <DropdownItem key="delete" className="text-danger" color="danger">
-          <Trans>Delete</Trans>
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  );
-}
 
 export { ChatMessage };

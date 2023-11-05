@@ -4,7 +4,7 @@ import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { makeDownloadPath } from "@lib/utils";
-import { Trans, msg } from "@lingui/macro";
+import { msg, Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card } from "@nextui-org/card";
 import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
@@ -66,7 +66,9 @@ const ChatMainMenu = () => {
               <Spacer x={2} y={2} />
 
               <h1 className="title-2xl font-semibold">
-                <Trans>Starting chat with {bot.isLoading ? <Skeleton /> : bot.data?.name}</Trans>
+                <Trans>
+                  Starting chat with {bot.isLoading ? <Skeleton /> : bot.data?.name}
+                </Trans>
               </h1>
               <p className="text-gray-400">
                 <Trans>Select one of the available experiences</Trans>
@@ -110,7 +112,7 @@ const ChatMainMenu = () => {
             {...register("userContext")}
             label={_(msg`Your context`)}
             description={_(
-              `This is the default context for the character - they will remember everything you'll type here.`,
+              msg`This is the default context for the character - they will remember everything you'll type here.`,
             )}
             defaultValue={user?.about ?? ""}
           />

@@ -1,6 +1,11 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import { BotSource, Prisma, Visibility } from "@prisma/client";
+import { Bot, BotMode, BotSource, Prisma, PrismaClient, Visibility } from "@prisma/client";
 import { z } from "zod";
+import { llama13b } from "@/server/ai/models/llama13b";
+import {
+  getInitialMessageSystemPrompt,
+  initialMessagePrompt,
+} from "@/server/ai/character-chat/prompts";
 
 export default protectedProcedure
   .input(
@@ -47,7 +52,7 @@ export default protectedProcedure
       }
     }
 
-    return await ctx.prisma.bot.create({
+    const bot = await ctx.prisma.bot.create({
       data: {
         name: input.title,
         description: input.description,
@@ -81,4 +86,28 @@ export default protectedProcedure
         },
       },
     });
+
+    // Create initial messages.
+    await Promise.all([
+      createInitialMessage(BotMode.ROLEPLAY, bot, ctx.prisma),
+      createInitialMessage(BotMode.CHAT, bot, ctx.prisma),
+      createInitialMessage(BotMode.ADVENTURE, bot, ctx.prisma),
+    ]);
+
+    return bot;
   });
+
+async function createInitialMessage(mode: BotMode, bot: Bot, db: PrismaClient) {
+  const output = await llama13b.run({
+    system_prompt: await getInitialMessageSystemPrompt(mode, bot.characterPersona),
+    prompt: initialMessagePrompt,
+  });
+
+  return await db.initialMessage.create({
+    data: {
+      message: output,
+      botMode: mode,
+      botId: bot.id,
+    },
+  });
+}
