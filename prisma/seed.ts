@@ -93,8 +93,8 @@ async function main() {
       description:
         "Aqua is a very hot girl from anime. I hold her dear to my heart. Here you can chat with her. Say hi!",
       nsfw: false,
-      avatar: "https://placehold.co/600x400/blue/white",
-      characterImage: "https://placehold.co/600x400/blue/white",
+      avatar: "https://static.vecteezy.com/system/resources/previews/024/212/234/non_2x/ai-generated-sticker-anime-girl-with-pink-and-blue-hair-png.png",
+      characterImage: "https://static.vecteezy.com/system/resources/previews/024/212/234/non_2x/ai-generated-sticker-anime-girl-with-pink-and-blue-hair-png.png",
       initialMessage: "Hello there! I'm Aqua, let's have some fun and happy chats together!",
     },
     ["Hentai", "Fiction"],
@@ -112,8 +112,8 @@ async function main() {
       description:
         "Meet Megumin, the explosion loving mage! Say hi and see what antics she gets up to.",
       nsfw: false,
-      avatar: "https://placehold.co/600x400/orange/white",
-      characterImage: "https://placehold.co/600x400/orange/white",
+      avatar: "https://i.pinimg.com/originals/aa/f5/bb/aaf5bb1a61602f65a68d5e955f917cde.jpg",
+      characterImage: "https://static.wikia.nocookie.net/anime/images/2/20/Megumin.png/revision/latest?cb=20200915231146",
       initialMessage:
         "Greetings friend! I'm Megumin, ready to explode onto the scene with excitement!",
     },
@@ -132,8 +132,8 @@ async function main() {
       description:
         "Greetings, I am Darkness the knight! Let us chat about quests and adventures.",
       nsfw: false,
-      avatar: "https://placehold.co/600x400/green/white",
-      characterImage: "https://placehold.co/600x400/green/white",
+      avatar: "https://www.pngkey.com/png/detail/179-1798079_kirito-anime-character.png",
+      characterImage: "https://www.seekpng.com/png/full/386-3864827_vampire-girl-no-background-princess-of-darkness-anime.png",
       initialMessage:
         "Well met traveler. I am Darkness, always prepared for adventure and valorous deeds.",
     },
@@ -152,7 +152,7 @@ async function main() {
       description: "Hi I'm Yunyun! I'm so happy to meet you. Let's be friends!",
       nsfw: false,
       avatar: "https://placehold.co/600x400/red/white",
-      characterImage: "https://placehold.co/600x400/red/white",
+      characterImage: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/8b86721e-3c43-417d-946f-cf97b81490db/dg5pfug-67c7ad85-debb-49ed-aa22-97f44775778f.png/v1/fill/w_1280,h_2260,q_80,strp/hot_and_sexy_nude_anime_girl_by_mrgraphics90_dg5pfug-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MjI2MCIsInBhdGgiOiJcL2ZcLzhiODY3MjFlLTNjNDMtNDE3ZC05NDZmLWNmOTdiODE0OTBkYlwvZGc1cGZ1Zy02N2M3YWQ4NS1kZWJiLTQ5ZWQtYWEyMi05N2Y0NDc3NTc3OGYucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.CDJMRRZKN3tZT4L5MzN7LSwuBI_HqzKpIX3lYTapVO8",
       initialMessage: "Hiya! I'm Yunyun and I can't wait to make a new friend in you!",
     },
     ["Shounen", "Romance"],
@@ -169,8 +169,8 @@ async function main() {
       visibility: "PUBLIC",
       description: "Welcome traveler! I'm Wiz the shopkeeper. Come on in and let's chat.",
       nsfw: true,
-      avatar: "https://placehold.co/600x400/purple/white",
-      characterImage: "https://placehold.co/600x400/purple/white",
+      avatar: "https://static.wikia.nocookie.net/anime/images/2/20/Megumin.png/revision/latest?cb=20200915231146",
+      characterImage: "https://xxgasm.com/wp-content/upload/2019/06/cute_nude_-5960.jpg",
       initialMessage:
         "Welcome to my shop! I'm Wiz, make yourself at home and let's have a nice chat.",
     },
@@ -188,8 +188,8 @@ async function main() {
       visibility: "PRIVATE",
       description: "I am Chris the assassin. Do not cross me, but perhaps we could be allies.",
       nsfw: true,
-      avatar: "https://placehold.co/600x400/brown/white",
-      characterImage: "https://placehold.co/600x400/brown/white",
+      avatar: "https://xxgasm.com/wp-content/upload/2017/04/anime_girl_s-7334.jpg",
+      characterImage: "https://xxgasm.com/wp-content/upload/2017/04/anime_girl_s-7334.jpg",
       initialMessage: "I am Chris. Speak carefully, or feel my blade.",
     },
     ["Dark"],
@@ -208,7 +208,7 @@ async function main() {
         "Hello, I am Iris the goddess. Let us chat about the world and its wonders.",
       nsfw: true,
       avatar: "https://placehold.co/600x400/yellow/white",
-      characterImage: "https://placehold.co/600x400/yellow/white",
+      characterImage: "https://xxgasm.com/wp-content/upload/2017/04/anime_girl_s-7334.jpg",
       initialMessage:
         "Foolish mortal, bow before Iris! Just kidding, let's have some fun and laughs together.",
     },
