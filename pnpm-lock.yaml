@@ -113,6 +113,9 @@ dependencies:
   cors:
     specifier: ^2.8.5
     version: 2.8.5
+  country-flag-icons:
+    specifier: ^1.5.7
+    version: 1.5.7
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
@@ -5712,6 +5715,10 @@ packages:
       parse-json: 5.2.0
       path-type: 4.0.0
       typescript: 5.2.2
+
+  /country-flag-icons@1.5.7:
+    resolution: {integrity: sha512-AdvXhMcmSp7nBSkpGfW4qR/luAdRUutJqya9PuwRbsBzuoknThfultbv7Ib6fWsHXC43Es/4QJ8gzQQdBNm75A==}
+    dev: false
 
   /cross-env@7.0.3:
     resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}

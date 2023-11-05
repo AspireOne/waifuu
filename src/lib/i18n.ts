@@ -2,6 +2,7 @@ import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
 import { Preferences } from "@capacitor/preferences";
 import { i18n } from "@lingui/core";
+import { CZ, FlagComponent, US } from "country-flag-icons/react/3x2";
 
 /**
  * This file contains everything related to internationalization.
@@ -13,11 +14,12 @@ const defaultLoc: LocaleCode = "en";
 type Locales = {
   code: LocaleCode;
   label: string;
+  flag: FlagComponent;
 }[];
 
 export const locales: Locales = [
-  { code: "en", label: "English" },
-  { code: "cs", label: "Čeština" },
+  { code: "en", label: "English", flag: US },
+  { code: "cs", label: "Čeština", flag: CZ },
 ];
 
 export function getLocale() {

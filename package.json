@@ -68,6 +68,7 @@
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.0",
     "cors": "^2.8.5",
+    "country-flag-icons": "^1.5.7",
     "cross-env": "^7.0.3",
     "filepond-plugin-file-validate-size": "^2.2.8",
     "filepond-plugin-file-validate-type": "^1.2.8",
