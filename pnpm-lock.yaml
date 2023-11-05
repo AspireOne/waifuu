@@ -155,6 +155,9 @@ dependencies:
   immer:
     specifier: ^10.0.3
     version: 10.0.3
+  jotai:
+    specifier: ^2.5.1
+    version: 2.5.1(@types/react@18.2.34)(react@18.2.0)
   langchain:
     specifier: ^0.0.171
     version: 0.0.171(@huggingface/inference@2.6.4)(@pinecone-database/pinecone@1.1.2)(@zilliz/milvus2-sdk-node@2.3.3)(axios@1.6.0)(firebase-admin@11.11.0)(google-auth-library@9.2.0)(jsdom@22.1.0)(replicate@0.16.1)
@@ -256,6 +259,9 @@ devDependencies:
   '@lingui/swc-plugin':
     specifier: ^4.0.4
     version: 4.0.4(@lingui/macro@4.5.0)(next@14.0.1)
+  '@swc-jotai/react-refresh':
+    specifier: ^0.1.0
+    version: 0.1.0
   '@types/formidable':
     specifier: ^3.4.4
     version: 3.4.4
@@ -4672,6 +4678,10 @@ packages:
     resolution: {integrity: sha512-aX5IFYWlMa7tQ8xZr3b2gtVReCvg7f3LEhjir/JAjX2bJCMVJA5tIPv30wTD4KDfcwMd7DDYY3hFDeGmOgtrZQ==}
     dev: false
 
+  /@swc-jotai/react-refresh@0.1.0:
+    resolution: {integrity: sha512-CWV4W06GdfQo3cW3CoUM2fp7avH4Z/suR7SvECNJnQbr6Sa9U3p7o10nXjNv2zT6z09bbNUPM55HBw5Nwd24Iw==}
+    dev: true
+
   /@swc/helpers@0.4.14:
     resolution: {integrity: sha512-4C7nX/dvpzB7za4Ql9K81xK3HPxCpHMgwTZVyf+9JQ6VUbn9jjZVN7/Nkdz/Ugzs2CSjqnL/UPXroiVBVHUWUw==}
     dependencies:
@@ -7095,6 +7105,22 @@ packages:
 
   /jose@4.15.4:
     resolution: {integrity: sha512-W+oqK4H+r5sITxfxpSU+MMdr/YSWGvgZMQDIsNoBDGGy4i7GBPTtvFKibQzW06n3U3TqHjhvBJsirShsEJ6eeQ==}
+    dev: false
+
+  /jotai@2.5.1(@types/react@18.2.34)(react@18.2.0):
+    resolution: {integrity: sha512-vanPCCSuHczUXNbVh/iUunuMfrWRL4FdBtAbTRmrfqezJcKb8ybBTg8iivyYuUHapjcDETyJe1E4inlo26bVHA==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.34
+      react: 18.2.0
     dev: false
 
   /js-tiktoken@1.0.7:

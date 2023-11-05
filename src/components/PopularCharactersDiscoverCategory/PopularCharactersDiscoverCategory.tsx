@@ -15,39 +15,28 @@ import { UseFormRegisterReturn, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTrendingUp } from "react-icons/bi";
 
-type SearchType = {
+type Filters = {
   textFilter?: string;
-  nsfw: boolean;
-  officialBots?: BotSource | null;
-  cursor: number;
+  source?: BotSource | null;
   categories: string[];
+  cursor: number;
 };
 
 let textFilterTimer: NodeJS.Timeout | null = null;
 
 export const PopularCharactersDiscoverCategory = () => {
   const discoveredBots = discoveredBotStore.getState();
-  const [searchData, setSearchData] = useState<SearchType>({
+  const [filters, setFilters] = useState<Filters>({
     textFilter: undefined,
-    nsfw: true,
-    officialBots: "OFFICIAL",
+    source: "OFFICIAL",
     categories: [],
     cursor: 0,
   });
 
-  const toggleNsfw = () => {
-    discoveredBots.clearDiscoveredBots();
-    setSearchData({
-      ...searchData,
-      nsfw: !searchData.nsfw,
-      cursor: 0,
-    });
-  };
-
   const onCategoryChange = (value: string[]) => {
     discoveredBots.clearDiscoveredBots();
-    setSearchData({
-      ...searchData,
+    setFilters({
+      ...filters,
       categories: value,
       cursor: 0,
     });
@@ -55,9 +44,9 @@ export const PopularCharactersDiscoverCategory = () => {
 
   const toggleOfficialBots = () => {
     discoveredBots.clearDiscoveredBots();
-    setSearchData({
-      ...searchData,
-      officialBots: searchData.officialBots === null ? BotSource.OFFICIAL : null,
+    setFilters({
+      ...filters,
+      source: filters.source === null ? BotSource.OFFICIAL : null,
       cursor: 0,
     });
   };
@@ -65,16 +54,16 @@ export const PopularCharactersDiscoverCategory = () => {
   const CURSOR_LIMIT = 10;
 
   const skipPage = () => {
-    setSearchData({
-      ...searchData,
-      cursor: searchData.cursor + CURSOR_LIMIT,
+    setFilters({
+      ...filters,
+      cursor: filters.cursor + CURSOR_LIMIT,
     });
   };
 
   api.bots.getAllBots.useQuery(
     {
-      ...searchData,
-      sourceFilter: searchData.officialBots,
+      ...filters,
+      sourceFilter: filters.source,
       limit: CURSOR_LIMIT,
     },
     {
@@ -85,7 +74,7 @@ export const PopularCharactersDiscoverCategory = () => {
     },
   );
 
-  const { register, watch } = useForm<SearchType>();
+  const { register, watch } = useForm<Filters>();
 
   useEffect(() => {
     const subscription = watch((value, info) => {
@@ -99,11 +88,9 @@ export const PopularCharactersDiscoverCategory = () => {
       function reload() {
         discoveredBots.clearDiscoveredBots();
 
-        setSearchData({
+        setFilters({
           textFilter: value.textFilter,
-          // TODO: Nsfw is bugged out.
-          nsfw: value.nsfw as boolean,
-          officialBots: value.officialBots,
+          source: value.officialBots,
           cursor: 0,
           categories: [],
         });
@@ -117,10 +104,9 @@ export const PopularCharactersDiscoverCategory = () => {
     <div>
       <form>
         <ParametersHeader
-          onNsfwChange={toggleNsfw}
           onOnlyOfficialChange={toggleOfficialBots}
           register={register}
-          searchData={searchData}
+          searchData={filters}
           onTagsChange={onCategoryChange}
         />
 
@@ -157,10 +143,11 @@ const ParametersHeader = (props: {
   onTagsChange: (tags: string[]) => void;
   // biome-ignore lint/suspicious/noExplicitAny:
   register: (name: any) => UseFormRegisterReturn;
+
   onOnlyOfficialChange: (value: boolean) => void;
-  onNsfwChange: (value: boolean) => void;
-  /*onTextFilterChange: (value: string) => void;*/
-  searchData: SearchType;
+  onlyOfficial: boolean;
+
+  searchData: Filters;
 }) => {
   const router = useRouter();
   const { _ } = useLingui();
@@ -186,7 +173,6 @@ const ParametersHeader = (props: {
 
           <Input
             {...props.register("textFilter")}
-            /*onValueChange={props.onTextFilterChange}*/
             label={_(msg`Search by name`)}
             placeholder={_(msg`Enter your search term...`)}
             className={"flex-1 rounded-lg sm:w-96 text-white"}
@@ -196,19 +182,10 @@ const ParametersHeader = (props: {
           <div className={"flex flex-row gap-3"}>
             <Checkbox
               onValueChange={props.onOnlyOfficialChange}
-              checked={props.searchData.officialBots === BotSource.OFFICIAL}
+              checked={props.searchData.source === BotSource.OFFICIAL}
             >
               <Trans>Only display official characters</Trans>
             </Checkbox>
-
-            {/* Disable NSFW at least for now - why do we even need it? */}
-            {/*<Switch
-              isSelected={props.searchData.nsfw}
-              onValueChange={props.onNsfwChange}
-              className="ml-auto w-fit"
-            >
-              <Trans>NSFW</Trans>
-            </Switch>*/}
           </div>
         </div>
       </div>
