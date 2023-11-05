@@ -5,7 +5,7 @@ import { t } from "@lingui/macro";
 // TODO: Change this privacy policy with new data on release.
 export default () => {
   return (
-    <Page title={t`Privacy Policy`}>
+    <Page title={t`Privacy Policy`} unprotected>
       <Title className={"my-3"} size={"xl"}>
         {t`Privacy Policy`}
       </Title>
