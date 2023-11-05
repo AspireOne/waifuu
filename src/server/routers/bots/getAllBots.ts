@@ -12,7 +12,7 @@ export default publicProcedure
       .object({
         sourceFilter: z.nativeEnum(BotSource).nullish(),
         textFilter: z.string().nullish(),
-        nsfw: z.boolean().default(false),
+        /*nsfw: z.boolean().default(false),*/
         categories: z.array(z.string()).default([]),
         limit: z.number().min(1).nullish(),
         cursor: z.number().nullish(),
@@ -21,48 +21,38 @@ export default publicProcedure
   )
 
   .query(async ({ input, ctx }) => {
+    const textFilter = input?.textFilter;
+
     const queryWhere = {
       visibility: BotVisibility.PUBLIC,
       source: input?.sourceFilter ?? undefined,
-      nsfw: input?.nsfw ? undefined : false,
-      ...(input?.textFilter && {
-        OR: [
-          {
-            name: {
-              contains: input?.textFilter ?? undefined,
-              mode: QueryMode.insensitive,
-            },
-          },
-          {
-            title: {
-              contains: input?.textFilter ?? undefined,
-              mode: QueryMode.insensitive,
-            },
-          },
-          {
-            description: {
-              contains: input?.textFilter ?? undefined,
+      /*nsfw: input?.nsfw ? undefined : false,*/
 
-              mode: QueryMode.insensitive,
+      // Text search.
+      // biome-ignore format:
+      OR: !textFilter ? undefined : [
+        { title: { contains: textFilter, mode: QueryMode.insensitive } },
+        { description: { contains: textFilter, mode: QueryMode.insensitive } },
+        { name: { contains: textFilter, mode: QueryMode.insensitive } },
+      ],
+      /*title: { search: textFilter },
+      description: { search: textFilter },
+      name: { search: textFilter },*/
+
+      category:
+        !input?.categories || input?.categories?.length === 0
+          ? undefined
+          : {
+              name: {
+                in: input?.categories ?? undefined,
+              },
             },
-          },
-        ],
-      }),
     };
 
     const query = ctx.prisma.bot.findMany({
       take: input?.limit || undefined,
       skip: !input?.cursor ? 0 : input.cursor,
-      where: {
-        ...queryWhere,
-        ...(input?.categories.length !== 0 && {
-          category: {
-            name: {
-              in: input?.categories ?? undefined,
-            },
-          },
-        }),
-      },
+      where: queryWhere,
       orderBy: {
         createdAt: "desc",
       },

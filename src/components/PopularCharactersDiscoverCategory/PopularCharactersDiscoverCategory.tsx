@@ -4,8 +4,9 @@ import { TagSelect } from "@components/ui/TagSelect";
 import Title from "@components/ui/Title";
 import { api } from "@lib/api";
 import { paths } from "@lib/paths";
-import { Trans } from "@lingui/macro";
-import { Button, Checkbox, Input, Spacer, Switch } from "@nextui-org/react";
+import { Trans, msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { Button, Checkbox, Input, Spacer } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { BotSource } from "@prisma/client";
 import { useRouter } from "next/router";
@@ -90,6 +91,7 @@ export const PopularCharactersDiscoverCategory = () => {
       discoveredBots.clearDiscoveredBots();
       setSearchData({
         textFilter: value.textFilter,
+        // TODO: Nsfw is bugged out.
         nsfw: value.nsfw as boolean,
         officialBots: value.officialBots,
         cursor: 0,
@@ -150,6 +152,7 @@ const ParametersHeader = (props: {
   searchData: SearchType;
 }) => {
   const router = useRouter();
+  const { _ } = useLingui();
 
   return (
     <div>
@@ -173,9 +176,9 @@ const ParametersHeader = (props: {
           <Input
             {...props.register("textFilter")}
             /*onValueChange={props.onTextFilterChange}*/
-            label="Search by name"
-            placeholder="Enter your search term..."
-            className="flex-1 rounded-lg sm:w-96 text-white"
+            label={_(msg`Search by name`)}
+            placeholder={_(msg`Enter your search term...`)}
+            className={"flex-1 rounded-lg sm:w-96 text-white"}
             type="text"
           />
 
@@ -187,13 +190,14 @@ const ParametersHeader = (props: {
               <Trans>Only display official characters</Trans>
             </Checkbox>
 
-            <Switch
+            {/* Disable NSFW at least for now - why do we even need it? */}
+            {/*<Switch
               isSelected={props.searchData.nsfw}
               onValueChange={props.onNsfwChange}
               className="ml-auto w-fit"
             >
               <Trans>NSFW</Trans>
-            </Switch>
+            </Switch>*/}
           </div>
         </div>
       </div>
