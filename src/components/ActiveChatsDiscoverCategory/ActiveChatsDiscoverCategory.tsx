@@ -38,7 +38,12 @@ const CharacterList = () => {
     <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
       {bots?.map((bot) => {
         return (
-          <CharacterCard key={bot.id} chatType={bot.chatType} chatId={bot.chatId} bot={bot} />
+          <CharacterCard
+            key={bot.id + bot.chatType}
+            chatType={bot.chatType}
+            chatId={bot.chatId}
+            bot={bot}
+          />
         );
       })}
 
