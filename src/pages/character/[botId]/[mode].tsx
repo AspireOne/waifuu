@@ -10,7 +10,7 @@ import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
 import { Bot } from "@prisma/client";
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 /** This is the actual chat page (e.g. chat with Aqua on mode Roleplay). */
 const BotChat = () => {
@@ -26,9 +26,9 @@ const BotChat = () => {
     <Page className="p-0" title={bot?.name || _(msg`Loading...`)}>
       {/*TODO: Make character image only the png of the char.*/}
 
-      {bot && <CharacterImage bot={bot} messages={chat.messages} />}
+      {bot && <BgCharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
-      <BotChatContent chat={chat} bot={bot ?? undefined} />
+      <BotChatContent chat={chat} bot={bot} />
 
       <div className="fixed bottom-0 left-0 right-0 p-3 z-30 bg-gradient-to-t from-black via-black/95 to-black/10">
         <ChatInput disabled={chat.loadingReply} onSend={chat.postMessage} />
@@ -37,54 +37,26 @@ const BotChat = () => {
   );
 };
 
-const CharacterImage = ({
+const BgCharacterImage = ({
   bot,
   messages,
 }: {
   bot: Bot;
   messages: Message[];
 }) => {
-  const [moodState, setMoodState] = useState<string | null>();
+  const lastMsg = messages[messages.length - 1];
+  const image = getMoodImageId(bot, lastMsg) ?? bot.characterImage;
 
-  const enumMoodValue = () => {
-    if (!bot?.moodImagesEnabled) return null;
-
-    const lastMessage = messages[messages.length - 1];
-    if (!lastMessage) return null;
-
-    switch (lastMessage.mood) {
-      case "HAPPY":
-        return bot.happyImageId;
-      case "SAD":
-        return bot.sadImageId;
-      case "NEUTRAL":
-        return bot.neutralImageId;
-      case "BLUSHED":
-        return bot.blushedImageId;
-      default:
-        return null;
-    }
-  };
-
-  const getMoodId = () => {
-    const value = enumMoodValue();
-    if (!value && moodState) return moodState;
-
-    setMoodState(value);
-    if (!value) return bot.neutralImageId;
-    return value;
-  };
+  if (!image) {
+    return <></>;
+  }
 
   return useMemo(
     () => (
       <Image
-        alt="background"
+        alt="background character image"
         loading="eager"
-        src={
-          bot?.moodImagesEnabled
-            ? makeDownloadUrl(getMoodId() ?? "")
-            : makeDownloadUrl(bot.avatar)
-        }
+        src={makeDownloadUrl(image)}
         className="fixed bottom-0 left-[50%] h-[800px] w-full max-w-[500px] translate-x-[-50%] object-cover"
         width={1920}
         height={1080}
@@ -92,6 +64,23 @@ const CharacterImage = ({
     ),
     [bot, messages],
   );
+};
+
+const getMoodImageId = (bot: Bot, message?: Message): string | null => {
+  if (!message || !message.mood || !bot.moodImagesEnabled) return null;
+
+  switch (message.mood) {
+    case "HAPPY":
+      return bot.happyImageId;
+    case "SAD":
+      return bot.sadImageId;
+    case "NEUTRAL":
+      return bot.neutralImageId;
+    case "BLUSHED":
+      return bot.blushedImageId;
+    default:
+      return bot.neutralImageId;
+  }
 };
 
 export default BotChat;

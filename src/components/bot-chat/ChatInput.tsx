@@ -1,5 +1,6 @@
+import { Capacitor } from "@capacitor/core";
 import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { RiSendPlane2Fill } from "react-icons/ri";
 import TextareaAutosize from "react-textarea-autosize";
 import { twMerge } from "tailwind-merge";
@@ -13,11 +14,18 @@ const ChatInput = (props: {
 }) => {
   const [input, setInput] = useState<string>("");
 
-  function handleClick() {
+  function submit() {
     if (props.disabled) return;
     if (!input.trim()) return;
     props.onSend(input.trim());
     setInput("");
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === "Enter" && !e.shiftKey && Capacitor.getPlatform() === "web") {
+      e.preventDefault();
+      submit();
+    }
   }
 
   return (
@@ -33,6 +41,7 @@ const ChatInput = (props: {
         minRows={1}
         maxRows={4}
         value={input}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setInput(e.target.value)}
         placeholder={props.placeholder ?? "Your message..."}
         className={twMerge(
@@ -47,7 +56,7 @@ const ChatInput = (props: {
           "h-12 w-16",
           props.disabled ? "bg-zinc-800 dark:bg-zinc-500" : "bg-black dark:bg-white",
         )}
-        onClick={handleClick}
+        onClick={submit}
       >
         <RiSendPlane2Fill size={30} color="black" />
       </Button>

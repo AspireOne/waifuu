@@ -120,7 +120,9 @@ export function normalizePath(path: string, keepSlash = false): string {
  * @param {string | null} pathOrId - The url or ID of the image.
  */
 export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T): T {
-  if (!pathOrId) return null as T;
+  if (!pathOrId && pathOrId !== "") return null as T;
+
+  if (pathOrId === "") return "" as T;
 
   if (isUrl(pathOrId)) {
     return pathOrId;
