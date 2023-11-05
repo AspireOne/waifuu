@@ -61,7 +61,9 @@ function BotList(props: { bots: Bot[] }) {
     <Card className={""}>
       {props.bots?.map((bot) => (
         <Link href={paths.botChatMainMenu(bot.id)} key={bot.id}>
-          <Card className={"relative flex flex-col gap-4 border border-gray-700 bg-zinc-800 p-2"}>
+          <Card
+            className={"relative flex flex-col gap-4 border border-gray-700 bg-zinc-800 p-2"}
+          >
             <div className={"flex flex-row gap-3"}>
               <img
                 className={"aspect-square h-16 w-16 rounded-xl"}
@@ -76,10 +78,20 @@ function BotList(props: { bots: Bot[] }) {
               </div>
             </div>
             <div className={"inline-flex gap-2"}>
-              <Chip startContent={<FaHeart />} variant="faded" color="default" className={"px-3"}>
+              <Chip
+                startContent={<FaHeart />}
+                variant="faded"
+                color="default"
+                className={"px-3"}
+              >
                 {/*<Trans>Likes</Trans>*/}
               </Chip>
-              <Chip startContent={<FaEye />} variant="faded" color="default" className={"px-3"}>
+              <Chip
+                startContent={<FaEye />}
+                variant="faded"
+                color="default"
+                className={"px-3"}
+              >
                 {/*<Trans>Views</Trans>*/}
               </Chip>
             </div>

@@ -1,5 +1,5 @@
-import { MutableRefObject, useEffect, useState } from "react";
 import useBotChat from "@hooks/useBotChat";
+import { MutableRefObject, useEffect, useState } from "react";
 
 /**
  * This hook is used to load more messages when the user scrolls to the top of the chat.

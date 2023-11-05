@@ -21,7 +21,9 @@ export default function Test() {
       </p>
       <p>
         Session:{" "}
-        {session.status === "loading" ? "Loading..." : JSON.stringify(session.user) ?? "undefined"}
+        {session.status === "loading"
+          ? "Loading..."
+          : JSON.stringify(session.user) ?? "undefined"}
       </p>
       <Link href={paths.home}>Test link to go to homepage</Link>
       <Link href={paths.login()}>Test link to go to LOGIN</Link>

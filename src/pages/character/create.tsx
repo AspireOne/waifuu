@@ -136,7 +136,9 @@ const CreateChatPage = () => {
                   <Trans>NSFW content</Trans>
                 </Switch>
                 <p className="text-small text-default-500">
-                  <Trans>Whether the character will produce content not suitable for minors.</Trans>
+                  <Trans>
+                    Whether the character will produce content not suitable for minors.
+                  </Trans>
                 </p>
               </div>
             </div>
@@ -170,7 +172,10 @@ const CreateChatPage = () => {
                   label={_(msg`Image for mood 'neutral'`)}
                   onUpload={(id) => setNeutral(id)}
                 />
-                <FileUploadRaw label={_(msg`Image for mood 'sad'`)} onUpload={(id) => setSad(id)} />
+                <FileUploadRaw
+                  label={_(msg`Image for mood 'sad'`)}
+                  onUpload={(id) => setSad(id)}
+                />
                 <FileUploadRaw
                   label={_(msg`Image for mood 'blushed'`)}
                   onUpload={(id) => setBlushed(id)}

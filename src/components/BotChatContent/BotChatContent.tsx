@@ -1,16 +1,16 @@
-import useBotChat from "@hooks/useBotChat";
-import { Bot } from "@prisma/client";
-import { useSession } from "@contexts/SessionProvider";
-import { useRef } from "react";
-import { useLingui } from "@lingui/react";
-import { Image, ScrollShadow } from "@nextui-org/react";
-import { isUrl, makeDownloadPath } from "@lib/utils";
-import { msg } from "@lingui/macro";
-import { ChatMessage } from "@components/bot-chat/ChatMessage";
-import { ChatTypingIndicator } from "@components/bot-chat/ChatTypingIndicator";
+import { useFixLoadMoreScrollJitter } from "@components/BotChatContent/useFixLoadMoreScrollJitter";
 import { useLoadMore } from "@components/BotChatContent/useLoadMore";
 import { useScrollToLatest } from "@components/BotChatContent/useScrollToLatest";
-import { useFixLoadMoreScrollJitter } from "@components/BotChatContent/useFixLoadMoreScrollJitter";
+import { ChatMessage } from "@components/bot-chat/ChatMessage";
+import { ChatTypingIndicator } from "@components/bot-chat/ChatTypingIndicator";
+import { useSession } from "@contexts/SessionProvider";
+import useBotChat from "@hooks/useBotChat";
+import { isUrl, makeDownloadPath } from "@lib/utils";
+import { msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { Image, ScrollShadow } from "@nextui-org/react";
+import { Bot } from "@prisma/client";
+import { useRef } from "react";
 
 export const BotChatContent = (props: {
   chat: ReturnType<typeof useBotChat>;

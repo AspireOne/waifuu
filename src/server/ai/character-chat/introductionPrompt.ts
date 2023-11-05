@@ -1,5 +1,5 @@
-import { PromptTemplate } from "langchain/prompts";
 import { BotMode } from "@prisma/client";
+import { PromptTemplate } from "langchain/prompts";
 
 const roleplayIntroductionPrompt = PromptTemplate.fromTemplate(
   'Roleplay a character and casually talk with a user. This is your character: "{characterPersona}".',

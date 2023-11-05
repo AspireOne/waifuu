@@ -16,7 +16,9 @@ export default () => {
               <Trans>Contact us</Trans>
             </Title>
             <p className="text-xl mt-8">
-              <Trans>Got a problem? A question? Or just want to say hi? We are here for you.</Trans>
+              <Trans>
+                Got a problem? A question? Or just want to say hi? We are here for you.
+              </Trans>
             </p>
             <Socials className={"mt-8"} />
           </div>

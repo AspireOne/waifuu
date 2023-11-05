@@ -3,14 +3,14 @@ import ChatGradientOverlay from "@/components/bot-chat/ChatGradientOverlay";
 import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
 import useBotChat, { Message } from "@/hooks/useBotChat";
+import { BotChatContent } from "@components/BotChatContent";
 import { makeDownloadPath } from "@lib/utils";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
 import { Bot } from "@prisma/client";
-import { useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { BotChatContent } from "@components/BotChatContent";
+import { useMemo, useState } from "react";
 
 /** This is the actual chat page (e.g. chat with Aqua on mode Roleplay). */
 const BotChat = () => {

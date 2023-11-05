@@ -4,7 +4,7 @@ import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { makeDownloadPath } from "@lib/utils";
-import { msg, Trans } from "@lingui/macro";
+import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card } from "@nextui-org/card";
 import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";

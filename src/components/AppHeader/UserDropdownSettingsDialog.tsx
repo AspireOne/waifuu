@@ -24,7 +24,10 @@ type SubmitData = {
   about?: string;
 };
 
-export const UserDropdownSettingsDialog = ({ isOpen, onOpenChange }: UserSettingsDialogProps) => {
+export const UserDropdownSettingsDialog = ({
+  isOpen,
+  onOpenChange,
+}: UserSettingsDialogProps) => {
   const { user, refetch } = useSession();
 
   const selfUpdate = api.users.updateSelf.useMutation({

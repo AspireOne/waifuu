@@ -21,7 +21,11 @@ export default publicProcedure
     // Get the user data.
     const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
 
-    await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken!);
+    await verifyRequest(
+      decodedIdToken.auth_time,
+      input.csrfToken,
+      ctx.req?.cookies.csrfToken!,
+    );
 
     await upsertUser(ctx.prisma, decodedIdToken);
 

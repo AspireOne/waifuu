@@ -1,5 +1,5 @@
-import { MutableRefObject, useEffect, useState } from "react";
 import useBotChat from "@hooks/useBotChat";
+import { MutableRefObject, useEffect, useState } from "react";
 
 /**
  * Fix scroll position when loading more messages (so that it stays relatively on the same place, even

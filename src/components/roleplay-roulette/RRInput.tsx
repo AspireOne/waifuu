@@ -1,6 +1,13 @@
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Button, Modal, ModalContent, ModalFooter, ModalHeader, Textarea } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Textarea,
+} from "@nextui-org/react";
 import React, { useEffect } from "react";
 import { BsFillStopCircleFill } from "react-icons/bs";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";

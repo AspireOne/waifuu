@@ -71,7 +71,9 @@ export default function ForumPostPage() {
           alt="Card example background"
           className="z-0 w-screen h-36 object-cover"
           src={
-            post.data?.bannerImage ? makeDownloadPath(post.data.bannerImage) : "/default-banner.png"
+            post.data?.bannerImage
+              ? makeDownloadPath(post.data.bannerImage)
+              : "/default-banner.png"
           }
         />
 

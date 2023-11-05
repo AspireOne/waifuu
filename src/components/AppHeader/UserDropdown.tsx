@@ -52,7 +52,10 @@ export const UserDropdown = (props: { className?: string }) => {
             </p>
             <p className="font-semibold">{user?.email}</p>
           </DropdownItem>
-          <DropdownItem startContent={<AiOutlineUser />} onClick={() => router.push(paths.profile)}>
+          <DropdownItem
+            startContent={<AiOutlineUser />}
+            onClick={() => router.push(paths.profile)}
+          >
             <Trans>My profile</Trans>
           </DropdownItem>
           <DropdownItem

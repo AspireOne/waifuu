@@ -7,6 +7,12 @@ type Props = {
 
 export const Emoji = ({ name, className }: Props) => {
   return (
-    <Image src={`/emojis/${name}.png`} alt={name} width={32} height={32} className={className} />
+    <Image
+      src={`/emojis/${name}.png`}
+      alt={name}
+      width={32}
+      height={32}
+      className={className}
+    />
   );
 };

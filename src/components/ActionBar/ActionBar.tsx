@@ -72,7 +72,10 @@ export const ActionBar = () => {
         break;
       }
 
-      if (currPathname.startsWith(pathname) && (activeButton?.path?.length ?? 0) < pathname.length)
+      if (
+        currPathname.startsWith(pathname) &&
+        (activeButton?.path?.length ?? 0) < pathname.length
+      )
         activeButton = button;
     }
     setActiveButtId(activeButton?.title ?? null);
@@ -87,7 +90,11 @@ export const ActionBar = () => {
       <div className={"flex flex-row justify-between items-center"}>
         {getButtons().map((button) => {
           return (
-            <ActionButton key={button.title} {...button} isActive={button.title === activeButtId} />
+            <ActionButton
+              key={button.title}
+              {...button}
+              isActive={button.title === activeButtId}
+            />
           );
         })}
       </div>
@@ -123,7 +130,9 @@ function ActionButton(props: ButtonProp & { isActive: boolean }) {
         {props.isActive && (
           <props.iconFilled className={`flex-1 ${transitionDuration}`} size={26} />
         )}
-        {!props.isActive && <props.icon className={`flex-1 ${transitionDuration}`} size={26} />}
+        {!props.isActive && (
+          <props.icon className={`flex-1 ${transitionDuration}`} size={26} />
+        )}
         {<p className={`text-sm font-semibold ${transitionDuration}`}>{props.title}</p>}
       </Button>
     </div>

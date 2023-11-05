@@ -84,8 +84,8 @@ const Features = () => {
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by himself, it simply
-            feels real.
+            Companion is there 24/7 with you, he sometimes sends you message by himself, it
+            simply feels real.
           </p>
         </div>
       </div>
@@ -95,8 +95,8 @@ const Features = () => {
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by himself, it simply
-            feels real.
+            Companion is there 24/7 with you, he sometimes sends you message by himself, it
+            simply feels real.
           </p>
         </div>
       </div>
@@ -106,8 +106,8 @@ const Features = () => {
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by himself, it simply
-            feels real.
+            Companion is there 24/7 with you, he sometimes sends you message by himself, it
+            simply feels real.
           </p>
         </div>
       </div>
@@ -126,7 +126,8 @@ const PayPlans = () => {
           <Emoji className="h-10 w-10 mx-auto" name="money" />
           <h1 className="text-2xl text-center font-bold">Money</h1>
           <p className="text-center w-96">
-            Pro tier is for people that want to chat all-day long, maximal quota is almost infinite
+            Pro tier is for people that want to chat all-day long, maximal quota is almost
+            infinite
           </p>
           <Spacer y={2} />
           <div className="rounded-xl bg-[#292929] text-center p-3">
@@ -192,8 +193,18 @@ const Footer = () => {
       </div>
 
       <div className="flex flex-row gap-2 w-fit mx-auto mt-2">
-        <Image alt="Google play download" src="/assets/gpdownload.png" width={200} height={200} />
-        <Image alt="Apple store download" src="/assets/apdownload.svg" width={160} height={150} />
+        <Image
+          alt="Google play download"
+          src="/assets/gpdownload.png"
+          width={200}
+          height={200}
+        />
+        <Image
+          alt="Apple store download"
+          src="/assets/apdownload.svg"
+          width={160}
+          height={150}
+        />
       </div>
 
       <h3 className="font-bold">Or</h3>

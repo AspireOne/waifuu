@@ -26,12 +26,12 @@ export default function RRIndex() {
             <Title size={"md"} as={"h2"} className={"mb-2"}>
               What is Character Roulette?
             </Title>
-            Meet new people, roleplay fictional situations and spark fun conversations. Get matched
-            with a stranger for anonymous, entertaining chats!
+            Meet new people, roleplay fictional situations and spark fun conversations. Get
+            matched with a stranger for anonymous, entertaining chats!
             <br />
             <br />
-            Easily skip to new matches and scenarios anytime. Unmask profiles to follow each other
-            and turn chats into connections. Roleplay Roulette creates a space for shared
+            Easily skip to new matches and scenarios anytime. Unmask profiles to follow each
+            other and turn chats into connections. Roleplay Roulette creates a space for shared
             imagination with the tap of a button.
             <br />
             <br />
@@ -39,10 +39,10 @@ export default function RRIndex() {
               How does it work?
             </Title>
             When you enter a chat room, Character Roulette generates an interesting roleplay
-            scenario or a situation to kickstart the conversation. Let your imagination run wild as
-            you and your match improvise and build a fictional world together. From acting out funny
-            slices of life to pretending you're secret agents on a mission, the possibilities are
-            endless!
+            scenario or a situation to kickstart the conversation. Let your imagination run
+            wild as you and your match improvise and build a fictional world together. From
+            acting out funny slices of life to pretending you're secret agents on a mission,
+            the possibilities are endless!
           </Trans>
         </CardBody>
         {/*TODO: Implement anonymous mode.*/}

@@ -15,7 +15,13 @@ type CharacterCardProps = {
   bottom?: boolean;
 };
 
-export const CharacterCard = ({ bot, chatId, chatType, bottom, likes }: CharacterCardProps) => {
+export const CharacterCard = ({
+  bot,
+  chatId,
+  chatType,
+  bottom,
+  likes,
+}: CharacterCardProps) => {
   return (
     <Card className="p-3 w-full min-w-[220px] sm:max-w-[220px]">
       <Link href={normalizePath(paths.botChat(chatId ?? "", bot.id))}>
@@ -45,7 +51,9 @@ export const CharacterCard = ({ bot, chatId, chatType, bottom, likes }: Characte
             />
           )}
           <div className="flex flex-row gap-2">
-            {chatType ? <Chip className="bg-opacity-70 w-fit mt-2 mx-auto">{chatType}</Chip> : null}
+            {chatType ? (
+              <Chip className="bg-opacity-70 w-fit mt-2 mx-auto">{chatType}</Chip>
+            ) : null}
             {!bottom && (
               <Chip variant="flat" className="mx-auto mt-2 w-fit">
                 {bot.characterNsfw ? "NSFW" : "SFW"}

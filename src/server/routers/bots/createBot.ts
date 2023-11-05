@@ -1,11 +1,11 @@
-import { protectedProcedure } from "@/server/lib/trpc";
-import { Bot, BotMode, BotSource, Prisma, PrismaClient, Visibility } from "@prisma/client";
-import { z } from "zod";
-import { llama13b } from "@/server/ai/models/llama13b";
 import {
   getInitialMessageSystemPrompt,
   initialMessagePrompt,
 } from "@/server/ai/character-chat/prompts";
+import { llama13b } from "@/server/ai/models/llama13b";
+import { protectedProcedure } from "@/server/lib/trpc";
+import { Bot, BotMode, BotSource, Prisma, PrismaClient, Visibility } from "@prisma/client";
+import { z } from "zod";
 
 export default protectedProcedure
   .input(

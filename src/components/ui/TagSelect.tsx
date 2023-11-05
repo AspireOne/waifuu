@@ -11,7 +11,9 @@ export const TagSelect = ({ onChange }: TagSelectProps) => {
   const [tags, setTags] = useState<string[]>([]);
 
   const onTagToggle = (value: string): void => {
-    const newValue = tags.includes(value) ? tags.filter((tag) => tag !== value) : [...tags, value];
+    const newValue = tags.includes(value)
+      ? tags.filter((tag) => tag !== value)
+      : [...tags, value];
 
     setTags(newValue);
     onChange(newValue);

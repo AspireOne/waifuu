@@ -55,7 +55,9 @@ export default function RRUserHeader(props: {
         />
         <div className="flex flex-col flex-1">
           <h3 className="text-white">{props.user.info.username}</h3>
-          <h6 className="text-gray-400 line-clamp-1">{props.user.info.bio || _(msg`No bio.`)}</h6>
+          <h6 className="text-gray-400 line-clamp-1">
+            {props.user.info.bio || _(msg`No bio.`)}
+          </h6>
         </div>
 
         <HeaderUserDropdown handleShowProfile={showProfile} handleBlockUser={blockUser} />

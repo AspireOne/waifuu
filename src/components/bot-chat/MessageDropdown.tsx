@@ -1,6 +1,6 @@
+import { Trans } from "@lingui/macro";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { Trans } from "@lingui/macro";
 
 export function MessageDropdown() {
   return (

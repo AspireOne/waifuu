@@ -1,5 +1,5 @@
-import { RefObject, useEffect } from "react";
 import useBotChat from "@hooks/useBotChat";
+import { RefObject, useEffect } from "react";
 
 /**
  * Scrolls to the latest message in the chat when it is received and the use is not scrolling in history.

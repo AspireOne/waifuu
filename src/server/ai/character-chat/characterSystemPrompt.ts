@@ -1,7 +1,7 @@
 import { Bot, BotChat, User } from "@prisma/client";
 
-import { PipelinePromptTemplate, PromptTemplate } from "langchain/prompts";
 import { getIntroductionPrompt } from "@/server/ai/character-chat/introductionPrompt";
+import { PipelinePromptTemplate, PromptTemplate } from "langchain/prompts";
 
 const fullCharacterPrompt = PromptTemplate.fromTemplate(
   "{introduction}\n\n{userPronounsPrompt} {userContextPrompt}",
