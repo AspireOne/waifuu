@@ -52,7 +52,8 @@ const ChatMainMenu = () => {
   const router = useRouter();
   const { user } = useSession();
   const { _ } = useLingui();
-  const [usedModeSelected, setUsedModeSelected] = useState<boolean>(false);
+  const [selectedModeIsAlreadyActive, setSelectedModeIsAlreadyActive] =
+    useState<boolean>(false);
 
   const botId = window.location.pathname.split("/")[2] as string;
 
@@ -64,7 +65,7 @@ const ChatMainMenu = () => {
   const bot = api.bots.getBot.useQuery({ botId: botId });
   const { data: usedChatModes } = api.bots.getUsedChatModes.useQuery({ botId: botId });
 
-  const { register, setValue, handleSubmit } = useForm<FormProps>();
+  const { register, setValue, getValues, handleSubmit } = useForm<FormProps>();
 
   const onSubmit = (data: FormProps) => {
     if (!bot.data || !bot.data?.id) return;
@@ -77,7 +78,7 @@ const ChatMainMenu = () => {
 
   function handleRadioValueChange(value: string) {
     // biome-ignore lint: this will not be null here.
-    setUsedModeSelected(usedChatModes!.includes(value as ChatMode));
+    setSelectedModeIsAlreadyActive(usedChatModes!.includes(value as ChatMode));
     setValue("mode", value as ChatMode);
   }
 
@@ -149,11 +150,12 @@ const ChatMainMenu = () => {
           <div className="p-3 mt-4">
             <Button
               variant={"faded"}
+              isDisabled={!getValues("mode")}
               isLoading={getOrCreateBotChat.isLoading}
               type="submit"
               className="w-full"
             >
-              {usedModeSelected ? (
+              {selectedModeIsAlreadyActive ? (
                 <Trans>Continue your chat</Trans>
               ) : (
                 <Trans>Start the chat</Trans>
