@@ -92,7 +92,7 @@ const ChatMainMenu = () => {
 
           <Image
             radius={"lg"}
-            className={"z-0 h-[90px] w-[90px] mx-auto block scale-120 object-cover"}
+            className={"z-0 h-[90px] w-[90px] mx-auto block object-cover"}
             isLoading={bot.isLoading}
             isBlurred={true}
             src={makeDownloadUrl(bot.data?.avatar) ?? ""}
@@ -118,23 +118,21 @@ const ChatMainMenu = () => {
             {getModes().map((mode) => {
               const isActive = usedChatModes?.includes(mode.value);
               return (
-                <div className={"relative"}>
-                  <CustomRadio
-                    key={mode.value}
-                    className={isActive ? "border-foreground-400" : ""}
-                    description={_(mode.description)}
-                    value={mode.value}
-                  >
-                    <p>
-                      {mode.title}{" "}
-                      {isActive && (
-                        <span className={"text-sm ml-2 text-blue-300"}>
-                          <Trans>Active</Trans>
-                        </span>
-                      )}
-                    </p>
-                  </CustomRadio>
-                </div>
+                <CustomRadio
+                  key={mode.value}
+                  className={isActive ? "border-foreground-400" : ""}
+                  description={_(mode.description)}
+                  value={mode.value}
+                >
+                  <p>
+                    {mode.title}{" "}
+                    {isActive && (
+                      <span className={"text-sm ml-2 text-blue-300"}>
+                        <Trans>Active</Trans>
+                      </span>
+                    )}
+                  </p>
+                </CustomRadio>
               );
             })}
           </RadioGroup>
