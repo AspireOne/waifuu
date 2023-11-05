@@ -34,9 +34,10 @@ export const BotChatContent = (props: {
 
       <div className="fixed left-0 bottom-14 md:w-full z-30">
         <ScrollShadow
-          size={200}
+          size={90}
+          offset={-5} // fixes the shadow being cut off.
           ref={containerRef}
-          className="flex md:w-[500px] mx-auto flex-col p-5 gap-5 h-[400px] w-full z-[30] overflow-scroll overscroll-auto"
+          className="flex md:w-[500px] mx-auto flex-col p-5 gap-5 h-[430px] w-full z-[30] overflow-scroll overscroll-auto pt-10"
         >
           <Messages chat={chat} bot={props.bot} />
 

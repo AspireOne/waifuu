@@ -25,8 +25,7 @@ const run = async (input: {
     formattedPrompt = formatMessage(input.prompt);
   }
 
-  console.trace("Input prompt:", input.prompt);
-  console.trace("Formatted prompt:", formattedPrompt);
+  console.trace("LLM Prompt:", formattedPrompt);
 
   const output = (await replicate.run(
     "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
@@ -37,6 +36,8 @@ const run = async (input: {
       },
     },
   )) as string[];
+
+  console.log("LLM Output:", output.join(""));
 
   return output.join("");
 };

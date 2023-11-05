@@ -43,9 +43,9 @@ const ChatInput = (props: {
         value={input}
         onKeyDown={handleKeyDown}
         onChange={(e) => setInput(e.target.value)}
-        placeholder={props.placeholder ?? "Your message..."}
+        placeholder={props.placeholder ?? "Message..."}
         className={twMerge(
-          "flex-1 rounded-lg border-1 border-white bg-transparent p-3 text-white outline-none",
+          "flex-1 rounded-lg border-1 border-gray-400 bg-transparent p-3 text-white outline-none",
           props.inputClassname,
         )}
       />
@@ -54,7 +54,7 @@ const ChatInput = (props: {
         isIconOnly
         className={twMerge(
           "h-12 w-16",
-          props.disabled ? "bg-zinc-800 dark:bg-zinc-500" : "bg-black dark:bg-white",
+          props.disabled ? "bg-zinc-800 dark:bg-zinc-500" : "bg-black dark:bg-gray-200",
         )}
         onClick={submit}
       >

@@ -36,7 +36,7 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
         className,
       )}
     >
-      <Card className={twMerge("w-full rounded-lg p-3")}>
+      <Card className={twMerge("w-full rounded-lg p-3 bg-neutral-900/80 backdrop-blur-lg")}>
         {/*Comment this out for now, because it is not needed.*/}
         {/*<MsgDropdown/>*/}
 
