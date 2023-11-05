@@ -90,7 +90,7 @@ export const PopularCharactersDiscoverCategory = () => {
 
         setFilters({
           textFilter: value.textFilter,
-          source: value.officialBots,
+          source: value.source,
           cursor: 0,
           categories: [],
         });
@@ -143,10 +143,7 @@ const ParametersHeader = (props: {
   onTagsChange: (tags: string[]) => void;
   // biome-ignore lint/suspicious/noExplicitAny:
   register: (name: any) => UseFormRegisterReturn;
-
   onOnlyOfficialChange: (value: boolean) => void;
-  onlyOfficial: boolean;
-
   searchData: Filters;
 }) => {
   const router = useRouter();
