@@ -14,7 +14,7 @@ export default protectedProcedure.input(updateSelfSchema).mutation(async ({ inpu
       username: input.username,
       name: input.name,
       bio: input.bio,
-      about: input.about,
+      botContext: input.botContext,
       addressedAs: input.addressedAs,
     },
   });

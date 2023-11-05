@@ -12,30 +12,67 @@ model User {
   id       String  @id @unique
   // Basic user info - most also gotten from OAuth.
   name     String?
-  email    String? @unique
-  image    String?
+  email    String  @unique
+  image    String  @default("https://github-production-user-asset-6210df.s3.amazonaws.com/57546404/280538836-8c16b1b3-391f-4cdf-889c-e2e279f3167b.png")
   username String  @unique
 
   bio              String?
-  about            String?
+  botContext       String?
   addressedAs      String?         @default("Senpai")
   Bot              Bot[]
-  ChatMessage      ChatMessage[]
-  Chat             Chat[]          @relation("ChatToUser")
   BotLikes         BotLike[]
   BotDislikes      BotDislike[]
   BotShares        BotShares[]
   RRAvailableUsers RRChatQueue[]
   Assets           Asset[]
-  BotChats         BotChat[]
+  BotChats         Chat[]
   ForumPosts       ForumPost[]
   ForumPostLikes   ForumPostLike[]
 }
 
-model Asset {
-  id        String   @id @unique
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+model Bot {
+  // Public info.
+  id          String @id @default(cuid())
+  title       String
+  description String
+
+  // Character info.
+  name            String
+  persona         String
+  nsfw            Boolean       @default(false)
+  exampleDialogue String?
+  visibility      BotVisibility
+
+  // Character images.
+  avatar          String  @default("https://github-production-user-asset-6210df.s3.amazonaws.com/57546404/280540176-f3d0aacb-e4f7-472c-9bf5-b19a4058581d.jpg")
+  backgroundImage String  @default("https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png")
+  characterImage  String?
+
+  // Creator.
+  creatorId String?
+  creator   User?     @relation(fields: [creatorId], references: [id])
+  source    BotSource
+
+  // Likes | Dislikes | Shares.
+  botLikes    BotLike[]
+  botDislikes BotDislike[]
+  BotShares   BotShares[]
+
+  // Other relations.
+  tags           Tag[]
+  BotChats       Chat[]
+  categoryId     String?
+  category       Category?        @relation(fields: [categoryId], references: [name])
+  InitialMessage InitialMessage[]
+
+  // Mood.
+  MoodTable         MoodTable?
+  moodImagesEnabled Boolean    @default(false)
+  sadImageId        String?
+  blushedImageId    String?
+  neutralImageId    String?
+  happyImageId      String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -55,47 +92,6 @@ model MoodTable {
 
   botId String @unique
   bot   Bot    @relation(fields: [botId], references: [id])
-}
-
-enum Mood {
-  NEUTRAL
-  HAPPY
-  SAD
-  BLUSHED
-}
-
-model Bot {
-  id                String           @id @default(cuid())
-  name              String
-  description       String
-  categoryId        String?
-  category          Category?        @relation(fields: [categoryId], references: [name])
-  characterName     String
-  characterPersona  String
-  characterDialogue String?
-  characterNsfw     Boolean          @default(false)
-  avatar            String?          @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  backgroundImage   String?          @default("https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png")
-  cover             String?          @default("https://w0.peakpx.com/wallpaper/805/384/HD-wallpaper-anime-girl-babes-modeling-skirt-thicc-babe-hot-naked-cute.jpg")
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  creatorId         String?
-  tags              Tag[]
-  source            BotSource
-  visibility        Visibility
-  creator           User?            @relation(fields: [creatorId], references: [id])
-  botLikes          BotLike[]
-  botDislikes       BotDislike[]
-  BotShares         BotShares[]
-  MoodTable         MoodTable?
-  BotChats          BotChat[]
-  // Mood images
-  moodImagesEnabled Boolean          @default(false)
-  sadImageId        String?
-  blushedImageId    String?
-  neutralImageId    String?
-  happyImageId      String?
-  InitialMessage    InitialMessage[]
 }
 
 model Tag {
@@ -132,55 +128,38 @@ model BotShares {
   createdAt DateTime @default(now())
 }
 
-model BotChat {
-  id          String           @id @default(cuid())
-  botMode     BotMode
+model Chat {
+  id          String    @id @default(cuid())
+  mode        ChatMode
   userContext String?
   botId       String
   userId      String
-  bot         Bot              @relation(fields: [botId], references: [id])
-  user        User             @relation(fields: [userId], references: [id])
-  messages    BotChatMessage[]
+  bot         Bot       @relation(fields: [botId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+  messages    Message[]
 }
 
-model BotChatMessage {
-  id         Int         @id @default(autoincrement())
-  chat       BotChat     @relation(fields: [chatId], references: [id])
+model Message {
+  id         Int      @id @default(autoincrement())
   chatId     String
+  chat       Chat     @relation(fields: [chatId], references: [id])
   content    String
-  mood       Mood        @default(NEUTRAL)
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  role       BotChatRole
-  remembered Boolean     @default(false)
-}
-
-model Chat {
-  id       String        @id @default(cuid())
-  messages ChatMessage[]
-  users    User[]        @relation("ChatToUser")
+  mood       Mood     @default(NEUTRAL)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  role       ChatRole
+  remembered Boolean  @default(false)
 }
 
 model InitialMessage {
-  botMode   BotMode
+  chatMode  ChatMode
+  message   String
   botId     String
   bot       Bot      @relation(fields: [botId], references: [id])
-  message   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@id([botId, botMode])
-}
-
-model ChatMessage {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String
-  chatId    String
-  chat      Chat     @relation(fields: [chatId], references: [id])
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@id([botId, chatMode])
 }
 
 model Category {
@@ -191,6 +170,24 @@ model Category {
   Bots       Bot[]
 }
 
+model RRChatQueue {
+  userId    String   @id
+  channel   String?
+  topic     String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Asset {
+  id        String   @id @unique
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//<editor-fold desc="Forum">
 model ForumPost {
   id           String          @id @default(cuid())
   bannerImage  String?
@@ -219,22 +216,16 @@ model ForumPostLike {
   createdAt DateTime  @default(now())
 }
 
-// -> starts searching
-// -> if someone already exists, remove him and assign them to a chat. Return ChatId.
-// -> if no one exists, add to the db and start polling.
-// -> If assigned to a chat during search, it will be polled. Return chatID.
-// -> If not assigned to a chat, remove from the db and return null.
+//</editor-fold>
 
-model RRChatQueue {
-  userId    String   @id
-  channel   String?
-  topic     String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum Mood {
+  NEUTRAL
+  HAPPY
+  SAD
+  BLUSHED
 }
 
-enum Visibility {
+enum BotVisibility {
   PUBLIC
   LINK
   PRIVATE
@@ -245,12 +236,12 @@ enum BotSource {
   COMMUNITY
 }
 
-enum BotChatRole {
+enum ChatRole {
   USER
   BOT
 }
 
-enum BotMode {
+enum ChatMode {
   ROLEPLAY
   ADVENTURE
   CHAT

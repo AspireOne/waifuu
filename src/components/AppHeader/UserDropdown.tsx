@@ -42,7 +42,7 @@ export const UserDropdown = (props: { className?: string }) => {
             className={twMerge("transition-transform", props.className)}
             name={user?.name ?? " "}
             size={"sm"}
-            src={user?.image ?? undefined}
+            src={user?.image}
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">

@@ -50,7 +50,7 @@ export default function Profile() {
       email: user?.email || "",
       bio: user?.bio || "",
       addressedAs: user?.addressedAs || "",
-      about: user?.about || "",
+      botContext: user?.botContext || "",
       imageUrl: user?.image || "",
     };
   }
@@ -94,7 +94,7 @@ export default function Profile() {
           className={
             "mx-auto h-32 w-auto aspect-square hover:cursor-pointer hover:opacity-80 duration-150"
           }
-          src={imageUrl ?? "/assets/default_user.jpg"}
+          src={imageUrl ?? undefined}
         />
         {/*Comment it out for now.*/}
         {/*<input
@@ -151,10 +151,10 @@ export default function Profile() {
         <Textarea
           label={t`Tell us about yourself`}
           placeholder={t`What should your characters know about you?`}
-          {...register("about")}
-          isInvalid={!!errors.about}
+          {...register("botContext")}
+          isInvalid={!!errors.botContext}
           disabled={!user}
-          errorMessage={errors.about?.message as string}
+          errorMessage={errors.botContext?.message as string}
         />
 
         <Select

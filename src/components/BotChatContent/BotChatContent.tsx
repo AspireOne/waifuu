@@ -5,9 +5,7 @@ import { ChatMessage } from "@components/bot-chat/ChatMessage";
 import { ChatTypingIndicator } from "@components/bot-chat/ChatTypingIndicator";
 import { useSession } from "@contexts/SessionProvider";
 import useBotChat from "@hooks/useBotChat";
-import { isUrl, makeDownloadPath } from "@lib/utils";
-import { msg } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+import { makeDownloadUrl } from "@lib/utils";
 import { Image, ScrollShadow } from "@nextui-org/react";
 import { Bot } from "@prisma/client";
 import { useRef } from "react";
@@ -31,11 +29,7 @@ export const BotChatContent = (props: {
     <div>
       <Image
         className="z-0 w-full h-full object-cover fixed top-0"
-        src={
-          isUrl(props.bot.backgroundImage ?? "")
-            ? (props.bot.backgroundImage as string)
-            : makeDownloadPath(props.bot.backgroundImage as string)
-        }
+        src={makeDownloadUrl(props.bot.backgroundImage)}
       />
 
       <div className="fixed left-0 bottom-14 md:w-full z-30">
@@ -57,18 +51,16 @@ export const BotChatContent = (props: {
 
 const Messages = (props: {
   chat: ReturnType<typeof useBotChat>;
-  bot?: Bot;
+  bot: Bot;
 }) => {
   const { user } = useSession();
-  const { _ } = useLingui();
   const { chat } = props;
 
   return chat.messages
     .sort((a, b) => a.id - b.id)
     .map((message) => {
-      const botName = props.bot?.characterName || _(msg`Them`);
-      const userName = user?.name || _(msg`You`);
       const isBot = message.role === "BOT";
+      const username = user?.name ?? "";
 
       return (
         <ChatMessage
@@ -77,8 +69,8 @@ const Messages = (props: {
           className={"z-[10]"}
           author={{
             bot: isBot,
-            name: isBot ? botName : userName,
-            avatar: isBot ? makeDownloadPath(props.bot?.avatar!) : user?.image,
+            name: isBot ? props.bot.name : username,
+            avatar: isBot ? makeDownloadUrl(props.bot.avatar) : user?.image,
           }}
           message={message.content}
           mood={message.mood}

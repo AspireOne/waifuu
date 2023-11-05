@@ -21,11 +21,7 @@ export default publicProcedure
     // Get the user data.
     const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
 
-    await verifyRequest(
-      decodedIdToken.auth_time,
-      input.csrfToken,
-      ctx.req?.cookies.csrfToken!,
-    );
+    await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
 
     await upsertUser(ctx.prisma, decodedIdToken);
 
@@ -50,21 +46,21 @@ async function upsertUser(prisma: PrismaClient, decodedIdToken: DecodedIdToken) 
     },
   });
 
-  const username = exists
-    ? null
-    : await generateUniqueUsername(decodedIdToken.name, decodedIdToken.email!);
+  if (exists) return;
 
-  if (!exists) {
-    await prisma.user.create({
-      data: {
-        id: decodedIdToken.uid,
-        email: decodedIdToken.email,
-        name: decodedIdToken.name,
-        username: username!,
-        image: decodedIdToken.picture,
-      },
-    });
-  }
+  if (!decodedIdToken.email) throw new Error("No email found in decodedIdToken.");
+
+  const username = await generateUniqueUsername(decodedIdToken.name, decodedIdToken.email);
+
+  await prisma.user.create({
+    data: {
+      id: decodedIdToken.uid,
+      email: decodedIdToken.email,
+      name: decodedIdToken.name,
+      username: username,
+      image: decodedIdToken.picture,
+    },
+  });
 }
 
 /**
@@ -88,7 +84,7 @@ async function verifyRequest(
     });
   }
 
-  if (inputCsrf !== cookieCsrf) {
+  if (inputCsrf && cookieCsrf && inputCsrf !== cookieCsrf) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "CSRF token mismatch.",

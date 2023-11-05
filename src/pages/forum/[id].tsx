@@ -2,7 +2,7 @@ import Page from "@/components/Page";
 import { ForumPostComment } from "@/components/forum/ForumPostComment";
 import { Flex } from "@/components/ui/Flex";
 import { api } from "@/lib/api";
-import { makeDownloadPath } from "@lib/utils";
+import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Button, Chip, Image, Modal, ModalContent, Textarea } from "@nextui-org/react";
@@ -72,7 +72,7 @@ export default function ForumPostPage() {
           className="z-0 w-screen h-36 object-cover"
           src={
             post.data?.bannerImage
-              ? makeDownloadPath(post.data.bannerImage)
+              ? makeDownloadUrl(post.data.bannerImage)
               : "/default-banner.png"
           }
         />

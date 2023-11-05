@@ -42,7 +42,7 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
 
         <CardBody className={"p-1 flex flex-row gap-4"}>
           <Avatar
-            src={author.avatar || "/assets/default_user.jpg"}
+            src={author.avatar ?? undefined}
             alt="avatar"
             className="w-[40px] h-[40px] min-w-[40px] rounded-full aspect-square"
           />

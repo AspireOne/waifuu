@@ -17,7 +17,7 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { Visibility } from "@prisma/client";
+import { BotVisibility } from "@prisma/client";
 import Router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -25,7 +25,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 type CreateInput = {
   title: string;
   description: string;
-  visibility: Visibility;
+  visibility: BotVisibility;
   category: string;
 
   name: string;
@@ -73,7 +73,7 @@ const CreateChatPage = () => {
   };
 
   return (
-    <Page title={_(msg`Create New Character`)}>
+    <Page title={_(msg`Create New Character`)} backPath={paths.discover}>
       <form className="md:w-[600px] mx-auto" onSubmit={handleSubmit(submitHandler)}>
         <Card>
           <div className="p-4">
@@ -94,13 +94,13 @@ const CreateChatPage = () => {
               />
 
               <Select {...register("visibility")} label={_(msg`Select visibility`)} isRequired>
-                <SelectItem key={Visibility.PUBLIC} value={Visibility.PUBLIC}>
+                <SelectItem key={BotVisibility.PUBLIC} value={BotVisibility.PUBLIC}>
                   {t`Public`}
                 </SelectItem>
-                <SelectItem key={Visibility.PRIVATE} value={Visibility.PRIVATE}>
+                <SelectItem key={BotVisibility.PRIVATE} value={BotVisibility.PRIVATE}>
                   {t`Private`}
                 </SelectItem>
-                <SelectItem key={Visibility.LINK} value={Visibility.LINK}>
+                <SelectItem key={BotVisibility.LINK} value={BotVisibility.LINK}>
                   {t`Only for friends`}
                 </SelectItem>
               </Select>

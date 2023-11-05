@@ -69,10 +69,7 @@ export const SessionProvider = (props: PropsWithChildren) => {
     if (userQuery.data) {
       setUser({
         ...userQuery.data,
-        name: userQuery.data.name!,
-        email: userQuery.data.email!,
-        image: userQuery.data.image ?? "/assets/default_user.jpg",
-        username: userQuery.data.username!,
+        image: userQuery.data.image,
       });
     }
 

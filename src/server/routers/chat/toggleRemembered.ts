@@ -1,7 +1,7 @@
 import { preProcess } from "@/server/ai/vectordb/vectorDb";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { Pinecone } from "@pinecone-database/pinecone";
-import { BotChatMessage } from "@prisma/client";
+import { ChatMode, Message } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { PineconeStore } from "langchain/dist/vectorstores/pinecone";
 import { HuggingFaceInferenceEmbeddings } from "langchain/embeddings/hf";
@@ -15,7 +15,7 @@ export default protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input }) => {
-    let message = await ctx.prisma.botChatMessage.findUnique({
+    let message = await ctx.prisma.message.findUnique({
       where: {
         id: input.messageId,
       },
@@ -33,12 +33,12 @@ export default protectedProcedure
     message = message!;
 
     // Save to postgres.
-    await ctx.prisma.botChatMessage.update({
+    await ctx.prisma.message.update({
       where: {
         id: input.messageId,
       },
       data: {
-        remembered: !message?.remembered,
+        remembered: !message.remembered,
       },
     });
 
@@ -49,7 +49,7 @@ export default protectedProcedure
           message: message,
           userId: ctx.user.id,
           botId: message.chat.bot.id,
-          botMode: message.chat.botMode,
+          chatMode: message.chat.mode,
         });
 
     return {
@@ -57,17 +57,17 @@ export default protectedProcedure
     };
   });
 
-async function deleteFromVectorDb(message: BotChatMessage) {
+async function deleteFromVectorDb(message: Message) {
   // In pinecone, projects in gcp-starter do not support deletion by metadata.
   // https://docs.pinecone.io/docs/metadata-filtering
   // So we will implement this later TODO.
 }
 
 async function saveToVectorDb(props: {
-  message: BotChatMessage;
+  message: Message;
   userId: string;
   botId: string;
-  botMode: string;
+  chatMode: ChatMode;
 }) {
   const pinecone = new Pinecone({
     environment: "gcp-starter",
@@ -89,7 +89,7 @@ async function saveToVectorDb(props: {
         chatId: props.message.chatId,
         userId: props.userId,
         botId: props.botId,
-        botMode: props.botMode,
+        chatMode: props.chatMode,
         role: props.message.role,
         createdAt: props.message.createdAt,
         messageId: props.message.id,
@@ -98,7 +98,7 @@ async function saveToVectorDb(props: {
   ]);
 }
 
-function validate(message: BotChatMessage | null) {
+function validate(message: Message | null) {
   if (!message) {
     throw new TRPCError({
       code: "NOT_FOUND",

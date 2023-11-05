@@ -1,7 +1,7 @@
 import { paths } from "@/lib/paths";
-import { makeDownloadPath, normalizePath } from "@lib/utils";
+import { makeDownloadUrl, normalizePath } from "@lib/utils";
 import { Card, CardBody, Chip, Image, Spacer } from "@nextui-org/react";
-import { Bot, BotMode, BotSource } from "@prisma/client";
+import { Bot, BotSource, ChatMode } from "@prisma/client";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
@@ -11,7 +11,7 @@ type CharacterCardProps = {
   bot: Bot;
   likes?: number;
   chatId?: string;
-  chatType?: BotMode;
+  chatType?: ChatMode;
   bottom?: boolean;
 };
 
@@ -28,7 +28,7 @@ export const CharacterCard = ({
         <Spacer y={2} />
         <Image
           removeWrapper
-          src={makeDownloadPath(bot.avatar!)}
+          src={makeDownloadUrl(bot.avatar)}
           alt="character"
           className={"h-[100px] w-[100px] object-cover z-0 mx-auto rounded-lg bg-gray-100"}
           width={100}
@@ -56,7 +56,7 @@ export const CharacterCard = ({
             ) : null}
             {!bottom && (
               <Chip variant="flat" className="mx-auto mt-2 w-fit">
-                {bot.characterNsfw ? "NSFW" : "SFW"}
+                {bot.nsfw ? "NSFW" : "SFW"}
               </Chip>
             )}
           </div>
@@ -71,7 +71,7 @@ export const CharacterCard = ({
         {bottom && (
           <div className="flex flex-row px-4 items-end">
             <div className="mx-auto ml-0 w-fit">
-              <Chip variant="flat">{bot.characterNsfw ? "NSFW" : "SFW"}</Chip>
+              <Chip variant="flat">{bot.nsfw ? "NSFW" : "SFW"}</Chip>
             </div>
 
             {likes && (

@@ -1,10 +1,11 @@
+import { publicProcedure } from "@/server/lib/trpc";
+import { BotSource, BotVisibility, Prisma } from "@prisma/client";
+import { z } from "zod";
+import QueryMode = Prisma.QueryMode;
+
 /**
  * Returns all public bots.
  * */
-import { publicProcedure } from "@/server/lib/trpc";
-import { BotSource, Visibility } from "@prisma/client";
-import { z } from "zod";
-
 export default publicProcedure
   .input(
     z
@@ -18,24 +19,31 @@ export default publicProcedure
       })
       .optional(),
   )
+
   .query(async ({ input, ctx }) => {
-    // This should be remade better ig...
     const queryWhere = {
-      visibility: Visibility.PUBLIC,
+      visibility: BotVisibility.PUBLIC,
       source: input?.sourceFilter ?? undefined,
-      characterNsfw: input?.nsfw ? undefined : false,
+      nsfw: input?.nsfw ? undefined : false,
       ...(input?.textFilter && {
         OR: [
           {
             name: {
               contains: input?.textFilter ?? undefined,
-              mode: "insensitive",
+              mode: QueryMode.insensitive,
+            },
+          },
+          {
+            title: {
+              contains: input?.textFilter ?? undefined,
+              mode: QueryMode.insensitive,
             },
           },
           {
             description: {
               contains: input?.textFilter ?? undefined,
-              mode: "insensitive",
+
+              mode: QueryMode.insensitive,
             },
           },
         ],
@@ -46,7 +54,7 @@ export default publicProcedure
       take: input?.limit || undefined,
       skip: !input?.cursor ? 0 : input.cursor,
       where: {
-        ...(queryWhere as any),
+        ...queryWhere,
         ...(input?.categories.length !== 0 && {
           category: {
             name: {
@@ -63,7 +71,7 @@ export default publicProcedure
     const [bots, count] = await Promise.all([
       query,
       ctx.prisma.bot.count({
-        where: queryWhere as any,
+        where: queryWhere,
       }),
     ]);
 

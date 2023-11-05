@@ -7,6 +7,7 @@ import { semanticPaths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
 import { Button, Card, Image } from "@nextui-org/react";
 import { GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
@@ -41,11 +42,12 @@ async function signInUsingGoogleRaw() {
 }
 
 const Login = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const session = useSession();
-  const redirect = router.query.redirect as string;
+  const router = useRouter();
+  const redirect = searchParams.get("redirect");
 
-  // Check for session.user instead of session.status.
+  // !Check for session.user instead of session.status.
   useEffect(() => {
     if (session.user) {
       router.replace(redirect || semanticPaths.appIndex);
@@ -59,10 +61,11 @@ const Login = () => {
         JSON.stringify(data),
       );
 
-      //router.replace((redirect as string) || semanticPaths.appIndex);
-      // redirect to "redirect" using window.location.href while reloading the page.
-      window.location.href = redirect || semanticPaths.appIndex;
-      session.refetch();
+      // Remove this because this out because it creates a loop for some reason.
+      // router.replace((redirect as string) || semanticPaths.appIndex);
+      // session.refetch();
+
+      window.location.replace(redirect || semanticPaths.appIndex);
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);

@@ -4,7 +4,7 @@ import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
 import useBotChat, { Message } from "@/hooks/useBotChat";
 import { BotChatContent } from "@components/BotChatContent";
-import { makeDownloadPath } from "@lib/utils";
+import { makeDownloadUrl } from "@lib/utils";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
@@ -82,8 +82,8 @@ const CharacterImage = ({
         loading="eager"
         src={
           bot?.moodImagesEnabled
-            ? makeDownloadPath(getMoodId() ?? "")
-            : makeDownloadPath(bot?.avatar ?? "")
+            ? makeDownloadUrl(getMoodId() ?? "")
+            : makeDownloadUrl(bot.avatar)
         }
         className="fixed bottom-0 left-[50%] h-[800px] w-full max-w-[500px] translate-x-[-50%] object-cover"
         width={1920}

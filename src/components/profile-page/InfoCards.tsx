@@ -29,11 +29,10 @@ function InfoCard(
   );
 }
 
-export default function InfoCards(props: { username?: string }) {
-  const { isInitialLoading, data: user } = api.users.getPublic.useQuery(
-    { username: props.username! },
-    { enabled: !!props.username },
-  );
+export default function InfoCards(props: { username: string }) {
+  const { isInitialLoading, data: user } = api.users.getPublic.useQuery({
+    username: props.username,
+  });
 
   const hasBots = user?.bots && user.bots.length > 0;
 
@@ -67,7 +66,7 @@ function BotList(props: { bots: Bot[] }) {
             <div className={"flex flex-row gap-3"}>
               <img
                 className={"aspect-square h-16 w-16 rounded-xl"}
-                src={bot.avatar!}
+                src={bot.avatar}
                 alt={bot.name}
               />
               <div className={"flex max-w-xs flex-col"}>

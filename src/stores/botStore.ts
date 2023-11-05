@@ -1,8 +1,8 @@
-import { Bot, BotMode } from "@prisma/client";
+import { Bot, ChatMode } from "@prisma/client";
 import { createStore } from "zustand";
 
 export type ExtendedBot = Bot & {
-  chatType?: BotMode;
+  chatType?: ChatMode;
   chatId?: string;
 };
 

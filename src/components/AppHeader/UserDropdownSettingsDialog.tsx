@@ -21,7 +21,7 @@ type UserSettingsDialogProps = {
 
 type SubmitData = {
   addressedAs?: string;
-  about?: string;
+  botContext?: string;
 };
 
 export const UserDropdownSettingsDialog = ({
@@ -57,11 +57,11 @@ export const UserDropdownSettingsDialog = ({
                 />
 
                 <Textarea
-                  {...register("about")}
+                  {...register("botContext")}
                   className="w-full"
                   minRows={3}
-                  defaultValue={user?.about ?? ""}
-                  placeholder={t`Tell us about yourself`}
+                  defaultValue={user?.botContext ?? ""}
+                  placeholder={t`What should characters know about you?`}
                 />
               </ModalBody>
 

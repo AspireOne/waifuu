@@ -1,4 +1,4 @@
-import { BotMode } from "@prisma/client";
+import { ChatMode } from "@prisma/client";
 import { PromptTemplate } from "langchain/prompts";
 
 const roleplayIntroductionPrompt = PromptTemplate.fromTemplate(
@@ -13,11 +13,11 @@ const chatModeIntroductionPrompt = PromptTemplate.fromTemplate(
   'You are having a totally casual discord chat with a friend. Stay neutral, just slightly show the following persona: "{characterPersona}".',
 );
 
-const getIntroductionPrompt = (mode: BotMode) => {
+const getIntroductionPrompt = (mode: ChatMode) => {
   switch (mode) {
-    case BotMode.ADVENTURE:
+    case ChatMode.ADVENTURE:
       return adventureIntroductionPrompt;
-    case BotMode.CHAT:
+    case ChatMode.CHAT:
       return chatModeIntroductionPrompt;
     default:
       return roleplayIntroductionPrompt;

@@ -1,33 +1,33 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import { BotMode, PrismaClient, User } from "@prisma/client";
+import { ChatMode, PrismaClient, User } from "@prisma/client";
 import { z } from "zod";
 
 export default protectedProcedure
   .input(
     z.object({
       botId: z.string(),
-      botMode: z.nativeEnum(BotMode),
+      mode: z.nativeEnum(ChatMode),
       userContext: z.string(),
     }),
   )
-  .mutation(async ({ input: { botId, botMode, userContext }, ctx: { prisma, user } }) => {
+  .mutation(async ({ input: { botId, mode, userContext }, ctx: { prisma, user } }) => {
     // Check if there is already a chat.
-    const current = await retrieveCurrentChat(botId, botMode, user, prisma);
+    const current = await retrieveCurrentChat(botId, mode, user, prisma);
     if (current) return current;
 
     // Create a new chat.
-    const chat = await prisma.botChat.create({
+    const chat = await prisma.chat.create({
       data: {
         botId: botId,
-        botMode: botMode,
+        mode: mode,
         userId: user.id,
         userContext: userContext,
       },
     });
 
     // Insert initial message.
-    const initialMessage = await retrieveInitialMessage(botId, botMode, prisma);
-    await prisma.botChatMessage.create({
+    const initialMessage = await retrieveInitialMessage(botId, mode, prisma);
+    await prisma.message.create({
       data: {
         chatId: chat.id,
         content: initialMessage.message,
@@ -41,25 +41,25 @@ export default protectedProcedure
 
 async function retrieveCurrentChat(
   botId: string,
-  botMode: BotMode,
+  mode: ChatMode,
   user: User,
   db: PrismaClient,
 ) {
-  return await db.botChat.findFirst({
+  return await db.chat.findFirst({
     where: {
       userId: user.id,
-      botMode: botMode,
+      mode: mode,
       botId: botId,
     },
   });
 }
 
-async function retrieveInitialMessage(botId: string, botMode: BotMode, db: PrismaClient) {
+async function retrieveInitialMessage(botId: string, mode: ChatMode, db: PrismaClient) {
   return await db.initialMessage.findUniqueOrThrow({
     where: {
-      botId_botMode: {
+      botId_chatMode: {
         botId: botId,
-        botMode: botMode,
+        chatMode: mode,
       },
     },
   });

@@ -15,7 +15,7 @@ export default protectedProcedure
     }),
   )
   .mutation(async ({ ctx, input }) => {
-    const chat = await ctx.prisma.botChat.findUnique({
+    const chat = await ctx.prisma.chat.findUnique({
       where: {
         id: input.chatId,
       },
@@ -83,7 +83,7 @@ export default protectedProcedure
     // otherwise the order of the messages will be messed up.
 
     // Create user message.
-    const userMsg = await ctx.prisma.botChatMessage.create({
+    const userMsg = await ctx.prisma.message.create({
       data: {
         chatId: input.chatId,
         content: input.message,
@@ -91,7 +91,7 @@ export default protectedProcedure
       },
     });
 
-    const botMsg = await ctx.prisma.botChatMessage.create({
+    const botMsg = await ctx.prisma.message.create({
       data: {
         chatId: input.chatId,
         content: output,

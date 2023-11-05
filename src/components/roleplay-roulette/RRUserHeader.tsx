@@ -48,7 +48,7 @@ export default function RRUserHeader(props: {
           //isBlurred={true} // OMG TENHLE EFEKT MUSÍME NĚKDE POUŽÍT
           name={props.user.info.username}
           onClick={showProfile}
-          src={props.user.info.image!}
+          src={props.user.info.image ?? undefined}
           isBordered={true}
           className={"h-12 w-12 aspect-square rounded-full cursor-pointer"}
           alt="avatar"

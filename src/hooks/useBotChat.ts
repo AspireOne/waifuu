@@ -1,11 +1,11 @@
 import { api } from "@/lib/api";
-import { BotChatRole, Mood } from "@prisma/client";
+import { ChatRole, Mood } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 type MessageStatus = "error" | "temp";
 
 export type Message = {
-  role: BotChatRole;
+  role: ChatRole;
   content: string;
   mood?: Mood;
   type?: MessageStatus;
@@ -18,7 +18,7 @@ export type Message = {
  *
  * @param chatId
  * @param {boolean} [enabled=true] - Flag indicating whether this is at all active. Can be used to postpone
- * querying or loading before the botId or botMode is available.
+ * querying or loading before the botId or chatMode is available.
  * @returns An object containing chat messages and functions to interact with the chat.
  */
 export default function useBotChat(chatId: string, enabled = true) {

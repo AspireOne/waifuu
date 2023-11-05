@@ -39,7 +39,7 @@ export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
 
         <div className="flex mt-2 mb-2 flex-row gap-1 align-center">
           <Image
-            src={post.author.image ?? "/default-avatar.png"}
+            src={post.author.image}
             width={30}
             height={30}
             className="rounded-full h-[30px] w-[30px]"

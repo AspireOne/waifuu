@@ -1,5 +1,5 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import { Visibility } from "@prisma/client";
+import { BotVisibility } from "@prisma/client";
 import { z } from "zod";
 
 /**
@@ -17,7 +17,7 @@ export default protectedProcedure
   )
   .query(async ({ input, ctx }) => {
     const visibility =
-      !input?.userId || input.userId === ctx.user.id ? undefined : Visibility.PUBLIC;
+      !input?.userId || input.userId === ctx.user.id ? undefined : BotVisibility.PUBLIC;
 
     return await ctx.prisma.bot.findMany({
       take: input?.limit || undefined,

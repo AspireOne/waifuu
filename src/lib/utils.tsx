@@ -108,8 +108,25 @@ export function normalizePath(path: string, keepSlash = false): string {
   return norm;
 }
 
-export function makeDownloadPath(id: string): string {
-  return apiBase(`/api/images/download?id=${id}`);
+/**
+ * Takes in an url OR an id of image stored in our storage.
+ *
+ * If it's an URL, returns the url as is.
+ *
+ * If it's null, returns null.
+ *
+ * If it's an ID, returns the url to download the image from our storage.
+ *
+ * @param {string | null} pathOrId - The url or ID of the image.
+ */
+export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T): T {
+  if (!pathOrId) return null as T;
+
+  if (isUrl(pathOrId)) {
+    return pathOrId;
+  }
+
+  return apiBase(`/api/images/download?id=${pathOrId}`) as T;
 }
 
 export function isUrl(str: string): boolean {

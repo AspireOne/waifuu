@@ -23,7 +23,7 @@ export default protectedProcedure.input(Input).mutation(async ({ input, ctx: { p
 });
 
 async function retrieveMessages(input: z.infer<typeof Input>, db: PrismaClient) {
-  return await db.botChatMessage.findMany({
+  return await db.message.findMany({
     take: input.limit,
     where: {
       chatId: input.chatId,

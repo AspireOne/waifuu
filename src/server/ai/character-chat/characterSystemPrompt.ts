@@ -1,4 +1,4 @@
-import { Bot, BotChat, User } from "@prisma/client";
+import { Bot, Chat, User } from "@prisma/client";
 
 import { getIntroductionPrompt } from "@/server/ai/character-chat/introductionPrompt";
 import { PipelinePromptTemplate, PromptTemplate } from "langchain/prompts";
@@ -17,7 +17,7 @@ const userContextPrompt = PromptTemplate.fromTemplate(
 
 const emptyPrompt = PromptTemplate.fromTemplate("");
 
-export async function getCharacterSystemPrompt(chat: BotChat & { bot: Bot } & { user: User }) {
+export async function getCharacterSystemPrompt(chat: Chat & { bot: Bot } & { user: User }) {
   const bot = chat.bot;
   const user = chat.user;
 
@@ -25,7 +25,7 @@ export async function getCharacterSystemPrompt(chat: BotChat & { bot: Bot } & { 
     pipelinePrompts: [
       {
         name: "introduction",
-        prompt: getIntroductionPrompt(chat.botMode),
+        prompt: getIntroductionPrompt(chat.mode),
       },
       // TODO: Example.
       {
@@ -34,7 +34,7 @@ export async function getCharacterSystemPrompt(chat: BotChat & { bot: Bot } & { 
       },
       {
         name: "userContextPrompt",
-        prompt: user.about ? userContextPrompt : emptyPrompt,
+        prompt: user.botContext ? userContextPrompt : emptyPrompt,
       },
       // Here we intentionally omit NSFW prompt. The LLM will output NSFW only if the user explicitly prompts it to anyways.
     ],
@@ -42,8 +42,8 @@ export async function getCharacterSystemPrompt(chat: BotChat & { bot: Bot } & { 
   });
 
   return await prompt.format({
-    characterPersona: bot.characterPersona,
+    characterPersona: bot.persona,
     userPronouns: user.addressedAs,
-    userContext: user.about,
+    userContext: user.botContext,
   });
 }

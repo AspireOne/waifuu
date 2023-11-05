@@ -26,7 +26,7 @@ const useBot = (chatId?: string, enabled = true) => {
   //   }
 
   //   // If mode does not exist, redirect to the bot main menu.
-  //   if (!Object.values(BotMode).includes(mode as BotMode)) {
+  //   if (!Object.values(ChatMode).includes(mode as ChatMode)) {
   //     router.replace(paths.botChatMainMenu(botId!));
   //   }
   // }, [mode, bot.isLoading, bot.data, bot.data?.id, router]);

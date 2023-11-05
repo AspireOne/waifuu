@@ -1,8 +1,8 @@
 import { replicate } from "@/server/lib/replicate";
-import { BotChatRole } from "@prisma/client";
+import { ChatRole } from "@prisma/client";
 
 type Message = {
-  role: BotChatRole;
+  role: ChatRole;
   content: string;
 };
 
@@ -45,7 +45,7 @@ const run = async (input: {
  * Processes the messages before being put as a prompt for a bot. Messages MUST be processed.
  * */
 const formatMessage = (message: Message) => {
-  return message.role === BotChatRole.USER
+  return message.role === ChatRole.USER
     ? `[INST] ${message.content} [/INST]`
     : `${message.content}`;
 };
@@ -61,7 +61,7 @@ const formatMessages = (messages: Message[]) => {
   // 4. Account for images.
   return messages
     .map((message) =>
-      message.role === BotChatRole.USER
+      message.role === ChatRole.USER
         ? `[INST] ${message.content} [/INST]`
         : `${message.content}`,
     )

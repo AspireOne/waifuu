@@ -3,19 +3,19 @@ import { CustomRadio } from "@/components/ui/CustomRadio";
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
-import { makeDownloadPath } from "@lib/utils";
+import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card } from "@nextui-org/card";
 import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
-import { BotMode } from "@prisma/client";
+import { ChatMode } from "@prisma/client";
 import { useRouter } from "next/router";
 
 import { useForm } from "react-hook-form";
 import Skeleton from "react-loading-skeleton";
 
 type FormProps = {
-  botMode: BotMode;
+  mode: ChatMode;
   userContext: string;
 };
 
@@ -26,7 +26,7 @@ const ChatMainMenu = () => {
   const { user } = useSession();
   const { _ } = useLingui();
 
-  const getOrCreateBotchat = api.chat.getOrCreate.useMutation({
+  const getOrCreateBotChat = api.chat.getOrCreate.useMutation({
     onSuccess: (data) => {
       router.push(paths.botChat(data.id, bot.data?.id ?? ""));
     },
@@ -38,7 +38,7 @@ const ChatMainMenu = () => {
   const onSubmit = (data: FormProps) => {
     if (!bot.data || !bot.data?.id) return;
 
-    getOrCreateBotchat.mutate({
+    getOrCreateBotChat.mutate({
       botId: bot.data.id,
       ...data,
     });
@@ -50,16 +50,15 @@ const ChatMainMenu = () => {
       className={"space-y-12"}
     >
       <Card className="z-20 mx-auto md:w-[600px]">
-        <div className="flex flex-col text-center gap-2 p-3">
+        <div className="flex flex-col text-center gap-2 p-3 items-center">
           <Spacer y={2} />
+
           <Image
-            removeWrapper
+            radius={"lg"}
+            className={"z-0 h-[90px] w-[90px] mx-auto block scale-120 object-cover"}
             isLoading={bot.isLoading}
-            alt="Card example background"
-            className="z-0 h-[90px] w-[90px] mx-auto scale-120 object-cover"
-            height={90}
-            width={90}
-            src={makeDownloadPath(bot.data?.avatar ?? "/assets/background.png")}
+            isBlurred={true}
+            src={makeDownloadUrl(bot.data?.avatar) ?? ""}
           />
           <div>
             <div className="flex flex-col">
@@ -79,14 +78,14 @@ const ChatMainMenu = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-3">
           <RadioGroup
-            onValueChange={(value) => setValue("botMode", value as BotMode)}
+            onValueChange={(value) => setValue("mode", value as ChatMode)}
             className="w-full"
           >
             <CustomRadio
               description={_(
                 msg`Classic chat experience, talk about your day, interests, or try to make a romantic partner!`,
               )}
-              value={BotMode.CHAT}
+              value={ChatMode.CHAT}
             >
               <Trans>Chat</Trans>
             </CustomRadio>
@@ -94,13 +93,13 @@ const ChatMainMenu = () => {
               description={_(
                 msg`Adventure-style game. Let the character guide you through the story!`,
               )}
-              value={BotMode.ADVENTURE}
+              value={ChatMode.ADVENTURE}
             >
               <Trans>Adventure</Trans>
             </CustomRadio>
             <CustomRadio
               description={_(msg`Roleplay with the character, feels just real!`)}
-              value={BotMode.ROLEPLAY}
+              value={ChatMode.ROLEPLAY}
             >
               <Trans>Roleplay</Trans>
             </CustomRadio>
@@ -110,15 +109,18 @@ const ChatMainMenu = () => {
 
           <Textarea
             {...register("userContext")}
-            label={_(msg`Your context`)}
-            description={_(
-              msg`This is the default context for the character - they will remember everything you'll type here.`,
-            )}
-            defaultValue={user?.about ?? ""}
+            variant={"faded"}
+            label={_(msg`What should this character know about you?`)}
+            defaultValue={user?.botContext ?? ""}
           />
 
           <div className="p-3 mt-4">
-            <Button isLoading={getOrCreateBotchat.isLoading} type="submit" className="w-full">
+            <Button
+              variant={"faded"}
+              isLoading={getOrCreateBotChat.isLoading}
+              type="submit"
+              className="w-full"
+            >
               <Trans>Start the chat</Trans>
             </Button>
           </div>
