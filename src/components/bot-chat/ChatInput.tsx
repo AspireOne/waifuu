@@ -52,6 +52,7 @@ const ChatInput = (props: {
 
       <Button
         isIconOnly
+        disabled={props.disabled}
         className={twMerge(
           "h-12 w-16",
           props.disabled ? "bg-zinc-800 dark:bg-zinc-500" : "bg-black dark:bg-gray-200",

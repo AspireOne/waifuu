@@ -1,6 +1,7 @@
-import { RadioProps, VisuallyHidden, cn, useRadio } from "@nextui-org/react";
+import { RadioProps, VisuallyHidden, useRadio } from "@nextui-org/react";
+import { twMerge } from "tailwind-merge";
 
-export const CustomRadio = (props: RadioProps) => {
+export const CustomRadio = (props: RadioProps & { className?: string }) => {
   const {
     Component,
     children,
@@ -17,10 +18,11 @@ export const CustomRadio = (props: RadioProps) => {
   return (
     <Component
       {...getBaseProps()}
-      className={cn(
+      className={twMerge(
         "group inline-flex items-center hover:opacity-70 active:opacity-50 justify-between flex-row-reverse tap-highlight-transparent",
         "cursor-pointer border-2 border-default rounded-lg gap-4 p-4",
         "data-[selected=true]:border-primary",
+        props.className,
       )}
     >
       <VisuallyHidden>

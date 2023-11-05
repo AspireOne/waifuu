@@ -4,13 +4,15 @@ import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { makeDownloadUrl } from "@lib/utils";
-import { Trans, msg } from "@lingui/macro";
+import { Trans, msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card } from "@nextui-org/card";
 import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
 import { ChatMode } from "@prisma/client";
 import { useRouter } from "next/router";
 
+import Title from "@components/ui/Title";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Skeleton from "react-loading-skeleton";
 
@@ -19,19 +21,48 @@ type FormProps = {
   userContext: string;
 };
 
+type Mode = {
+  title: string;
+  description: string;
+  value: ChatMode;
+};
+
+const getModes = (): Mode[] => {
+  return [
+    {
+      title: t`Chat`,
+      description: t`Classic chat experience, talk about your day, interests, or try to make a romantic partner!`,
+      value: ChatMode.CHAT,
+    },
+    {
+      title: t`Adventure`,
+      description: t`Adventure-style game. Let the character guide you through the story!`,
+      value: ChatMode.ADVENTURE,
+    },
+    {
+      title: t`Roleplay`,
+      description: t`Roleplay with the character, feels just real!`,
+      value: ChatMode.ROLEPLAY,
+    },
+  ];
+};
+
 /** Main page of the bot for creating new chats. */
 const ChatMainMenu = () => {
   const router = useRouter();
-  const { botId } = router.query;
   const { user } = useSession();
   const { _ } = useLingui();
+  const [usedModeSelected, setUsedModeSelected] = useState<boolean>(false);
+
+  const botId = window.location.pathname.split("/")[2] as string;
 
   const getOrCreateBotChat = api.chat.getOrCreate.useMutation({
     onSuccess: (data) => {
       router.push(paths.botChat(data.id, bot.data?.id ?? ""));
     },
   });
-  const bot = api.bots.getBot.useQuery({ botId: botId as string });
+  const bot = api.bots.getBot.useQuery({ botId: botId });
+  const { data: usedChatModes } = api.bots.getUsedChatModes.useQuery({ botId: botId });
 
   const { register, setValue, handleSubmit } = useForm<FormProps>();
 
@@ -43,6 +74,12 @@ const ChatMainMenu = () => {
       ...data,
     });
   };
+
+  function handleRadioValueChange(value: string) {
+    // biome-ignore lint: this will not be null here.
+    setUsedModeSelected(usedChatModes!.includes(value as ChatMode));
+    setValue("mode", value as ChatMode);
+  }
 
   return (
     <Page
@@ -64,12 +101,12 @@ const ChatMainMenu = () => {
             <div className="flex flex-col">
               <Spacer x={2} y={2} />
 
-              <h1 className="title-2xl font-semibold">
-                <Trans>
-                  Starting chat with {bot.isLoading ? <Skeleton /> : bot.data?.name}
+              <Title as={"h1"} size={"sm"} bold={false} className={"text-center mx-auto mb-0"}>
+                <Trans context={"bot main menu title"}>
+                  Chat with {bot.isLoading ? <Skeleton /> : bot.data?.name}
                 </Trans>
-              </h1>
-              <p className="text-gray-400">
+              </Title>
+              <p className="text-foreground-500">
                 <Trans>Select one of the available experiences</Trans>
               </p>
             </div>
@@ -77,32 +114,29 @@ const ChatMainMenu = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-3">
-          <RadioGroup
-            onValueChange={(value) => setValue("mode", value as ChatMode)}
-            className="w-full"
-          >
-            <CustomRadio
-              description={_(
-                msg`Classic chat experience, talk about your day, interests, or try to make a romantic partner!`,
-              )}
-              value={ChatMode.CHAT}
-            >
-              <Trans>Chat</Trans>
-            </CustomRadio>
-            <CustomRadio
-              description={_(
-                msg`Adventure-style game. Let the character guide you through the story!`,
-              )}
-              value={ChatMode.ADVENTURE}
-            >
-              <Trans>Adventure</Trans>
-            </CustomRadio>
-            <CustomRadio
-              description={_(msg`Roleplay with the character, feels just real!`)}
-              value={ChatMode.ROLEPLAY}
-            >
-              <Trans>Roleplay</Trans>
-            </CustomRadio>
+          <RadioGroup onValueChange={handleRadioValueChange} className="w-full">
+            {getModes().map((mode) => {
+              const isActive = usedChatModes?.includes(mode.value);
+              return (
+                <div className={"relative"}>
+                  <CustomRadio
+                    key={mode.value}
+                    className={isActive ? "border-foreground-400" : ""}
+                    description={_(mode.description)}
+                    value={mode.value}
+                  >
+                    <p>
+                      {mode.title}{" "}
+                      {isActive && (
+                        <span className={"text-sm ml-2 text-blue-300"}>
+                          <Trans>Active</Trans>
+                        </span>
+                      )}
+                    </p>
+                  </CustomRadio>
+                </div>
+              );
+            })}
           </RadioGroup>
 
           <Spacer y={7} />
@@ -121,7 +155,11 @@ const ChatMainMenu = () => {
               type="submit"
               className="w-full"
             >
-              <Trans>Start the chat</Trans>
+              {usedModeSelected ? (
+                <Trans>Continue your chat</Trans>
+              ) : (
+                <Trans>Start the chat</Trans>
+              )}
             </Button>
           </div>
         </form>

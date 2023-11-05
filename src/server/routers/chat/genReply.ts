@@ -22,9 +22,9 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
   chat.messages.push(getMockMessage(input));
 
   // biome-ignore format:
-  console.trace("messages total text length: ", chat.messages.reduce((acc, msg) => acc + msg.content.length, 0));
+  console.log("messages total text length: ", chat.messages.reduce((acc, msg) => acc + msg.content.length, 0));
   // biome-ignore format:
-  console.trace("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
+  console.log("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
 
   const output = await genOutput(chat);
 
