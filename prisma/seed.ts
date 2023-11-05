@@ -15,8 +15,15 @@ type BotProps = {
 
   initialMessage: string;
 };
-async function upsertBot(props: BotProps) {
-  await prisma.bot.upsert({
+async function upsertBot(props: BotProps, tags?: string[]) {
+  const connectableTags = tags?.map((tag) => {
+    return {
+      where: { name: tag },
+      create: { name: tag },
+    };
+  });
+
+  const bot = await prisma.bot.upsert({
     where: { id: props.id },
     update: {},
     create: {
@@ -30,6 +37,9 @@ async function upsertBot(props: BotProps) {
       characterNsfw: props.characterNsfw,
       avatar: props.avatar,
       cover: props.cover,
+      tags: {
+        connectOrCreate: connectableTags
+      }
     },
   });
 
@@ -46,6 +56,8 @@ async function upsertBot(props: BotProps) {
       },
     });
   }
+
+  return bot;
 }
 
 async function main() {
@@ -63,7 +75,7 @@ async function main() {
     avatar: "https://placehold.co/600x400/blue/white",
     cover: "https://placehold.co/600x400/blue/white",
     initialMessage: "Hello there! I'm Aqua, let's have some fun and happy chats together!",
-  });
+  }, ["Hentai", "Fiction"]);
 
   await upsertBot({
     id: "megumin-id-102949",
@@ -79,7 +91,7 @@ async function main() {
     avatar: "https://placehold.co/600x400/orange/white",
     cover: "https://placehold.co/600x400/orange/white",
     initialMessage: "Greetings friend! I'm Megumin, ready to explode onto the scene with excitement!",
-  });
+  }, ["Fantasy", "Shoujo"]);
 
   await upsertBot({
     id: "darkness-id-102950",
@@ -94,7 +106,7 @@ async function main() {
     avatar: "https://placehold.co/600x400/green/white",
     cover: "https://placehold.co/600x400/green/white",
     initialMessage: "Well met traveler. I am Darkness, always prepared for adventure and valorous deeds.",
-  });
+  }, ["Fantasy", "Romance"]);
 
   await upsertBot({
     id: "yunyun-id-102951",
@@ -109,7 +121,7 @@ async function main() {
     avatar: "https://placehold.co/600x400/red/white",
     cover: "https://placehold.co/600x400/red/white",
     initialMessage: "Hiya! I'm Yunyun and I can't wait to make a new friend in you!",
-  });
+  }, ["Shounen", "Romance"]);
 
   await upsertBot({
     id: "wiz-id-102952",
@@ -124,7 +136,7 @@ async function main() {
     avatar: "https://placehold.co/600x400/purple/white",
     cover: "https://placehold.co/600x400/purple/white",
     initialMessage: "Welcome to my shop! I'm Wiz, make yourself at home and let's have a nice chat.",
-  });
+  }, ["Isekai", "Adventure", "Fantasy"]);
 
   await upsertBot({
     id: "chris-id-102953",
@@ -139,7 +151,7 @@ async function main() {
     avatar: "https://placehold.co/600x400/brown/white",
     cover: "https://placehold.co/600x400/brown/white",
     initialMessage: "I am Chris. Speak carefully, or feel my blade.",
-  });
+  }, ["Dark"]);
 
   await upsertBot({
     id: "iris-id-102954",
@@ -154,7 +166,7 @@ async function main() {
     avatar: "https://placehold.co/600x400/yellow/white",
     cover: "https://placehold.co/600x400/yellow/white",
     initialMessage: "Foolish mortal, bow before Iris! Just kidding, let's have some fun and laughs together.",
-  });
+  }, ["Fantasy", "Comedy", "Adventure", "Shounen", "Shoujo"]);
 }
 
 main()
