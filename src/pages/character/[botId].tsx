@@ -26,7 +26,7 @@ const ChatMainMenu = () => {
   const { user } = useSession();
   const { _ } = useLingui();
 
-  const createBotChat = api.chat.create.useMutation({
+  const getOrCreateBotchat = api.chat.getOrCreate.useMutation({
     onSuccess: (data) => {
       router.push(paths.botChat(data.id, bot.data?.id ?? ""));
     },
@@ -38,7 +38,7 @@ const ChatMainMenu = () => {
   const onSubmit = (data: FormProps) => {
     if (!bot.data || !bot.data?.id) return;
 
-    createBotChat.mutate({
+    getOrCreateBotchat.mutate({
       botId: bot.data.id,
       ...data,
     });
@@ -118,7 +118,7 @@ const ChatMainMenu = () => {
           />
 
           <div className="p-3 mt-4">
-            <Button isLoading={createBotChat.isLoading} type="submit" className="w-full">
+            <Button isLoading={getOrCreateBotchat.isLoading} type="submit" className="w-full">
               <Trans>Start the chat</Trans>
             </Button>
           </div>

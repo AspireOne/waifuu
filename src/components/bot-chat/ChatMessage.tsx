@@ -41,7 +41,6 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
         {/*<MsgDropdown/>*/}
 
         <CardBody className={"p-1 flex flex-row gap-4"}>
-          <p>{id}</p>
           <Avatar
             src={author.avatar || "/assets/default_user.jpg"}
             alt="avatar"
