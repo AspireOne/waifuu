@@ -65,7 +65,8 @@ const ChatMainMenu = () => {
   const bot = api.bots.getBot.useQuery({ botId: botId });
   const { data: usedChatModes } = api.bots.getUsedChatModes.useQuery({ botId: botId });
 
-  const { register, setValue, getValues, handleSubmit } = useForm<FormProps>();
+  const { register, setValue, watch, handleSubmit } = useForm<FormProps>();
+  const mode = watch("mode");
 
   const onSubmit = (data: FormProps) => {
     if (!bot.data || !bot.data?.id) return;
@@ -150,7 +151,7 @@ const ChatMainMenu = () => {
           <div className="p-3 mt-4">
             <Button
               variant={"faded"}
-              isDisabled={!getValues("mode")}
+              isDisabled={!mode}
               isLoading={getOrCreateBotChat.isLoading}
               type="submit"
               className="w-full"
