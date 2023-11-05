@@ -23,9 +23,10 @@ type SearchType = {
   categories: string[];
 };
 
+let textFilterTimer: NodeJS.Timeout | null = null;
+
 export const PopularCharactersDiscoverCategory = () => {
   const discoveredBots = discoveredBotStore.getState();
-
   const [searchData, setSearchData] = useState<SearchType>({
     textFilter: undefined,
     nsfw: true,
@@ -87,16 +88,26 @@ export const PopularCharactersDiscoverCategory = () => {
   const { register, watch } = useForm<SearchType>();
 
   useEffect(() => {
-    const subscription = watch((value) => {
-      discoveredBots.clearDiscoveredBots();
-      setSearchData({
-        textFilter: value.textFilter,
-        // TODO: Nsfw is bugged out.
-        nsfw: value.nsfw as boolean,
-        officialBots: value.officialBots,
-        cursor: 0,
-        categories: [],
-      });
+    const subscription = watch((value, info) => {
+      if (info.name === "textFilter") {
+        if (textFilterTimer) clearTimeout(textFilterTimer);
+        textFilterTimer = setTimeout(reload, 500);
+        return;
+      }
+
+      reload();
+      function reload() {
+        discoveredBots.clearDiscoveredBots();
+
+        setSearchData({
+          textFilter: value.textFilter,
+          // TODO: Nsfw is bugged out.
+          nsfw: value.nsfw as boolean,
+          officialBots: value.officialBots,
+          cursor: 0,
+          categories: [],
+        });
+      }
     });
 
     return () => subscription.unsubscribe();
