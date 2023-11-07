@@ -1,7 +1,7 @@
 ---
 name: Bug Report
 about: Report a bug encountered with Companion.
-title: '[BUG]'
+title: ''
 labels: bug
 assignees: ''
 ---

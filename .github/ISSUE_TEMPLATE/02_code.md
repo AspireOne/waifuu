@@ -1,7 +1,7 @@
 ---
 name: Code Improvement
 about: Issues related to refactoring, dependencies, code improvements, etc.
-title: '[CODE]'
+title: ''
 labels: code
 assignees: ''
 ---
