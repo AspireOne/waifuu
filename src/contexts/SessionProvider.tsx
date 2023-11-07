@@ -1,11 +1,13 @@
 import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
+import { Preferences } from "@capacitor/preferences";
 import { User } from "@prisma/client";
 import "firebase/compat/auth";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type SessionUser = User;
-type SessionStatus = "loading" | "authenticated" | "unauthenticated";
+export type SessionStatus = "loading" | "authenticated" | "unauthenticated";
+export type LastKnownStatus = "authenticated" | "unauthenticated";
 
 let authSubscribed = false;
 let fbTimeMeasured = false;
@@ -14,12 +16,25 @@ type SessionState = {
   user: SessionUser | null | undefined;
   status: SessionStatus;
   refetch: () => void;
+  getLastKnownStatus: () => Promise<LastKnownStatus>;
+};
+
+const getLastKnownStatus = async () => {
+  const result = await Preferences.get({ key: "lastKnownAuthStatus" });
+  const value = result.value as LastKnownStatus | undefined;
+
+  return value === "authenticated" ? "authenticated" : "unauthenticated";
+};
+
+const setLastKnownStatus = async (status: LastKnownStatus) => {
+  await Preferences.set({ key: "lastKnownAuthStatus", value: status as string });
 };
 
 const SessionContext = createContext<SessionState>({
   user: undefined,
   status: "loading",
   refetch: () => {},
+  getLastKnownStatus,
 });
 
 export const SessionProvider = (props: PropsWithChildren) => {
@@ -71,18 +86,25 @@ export const SessionProvider = (props: PropsWithChildren) => {
         ...userQuery.data,
         image: userQuery.data.image,
       });
+      setLastKnownStatus("authenticated");
     }
 
     if (!userQuery.data && !userQuery.isLoading) {
       setUser(null);
       setFbStatus("unauthenticated");
+      setLastKnownStatus("unauthenticated");
     }
   }, [userQuery.data]);
 
+  const contextValues = {
+    user,
+    status: fbStatus,
+    refetch: userQuery.refetch,
+    getLastKnownStatus,
+  };
+
   return (
-    <SessionContext.Provider value={{ user, status: fbStatus, refetch: userQuery.refetch }}>
-      {props.children}
-    </SessionContext.Provider>
+    <SessionContext.Provider value={contextValues}>{props.children}</SessionContext.Provider>
   );
 };
 

@@ -1,45 +1,50 @@
-import { ActionBar } from "@/components/ActionBar";
-import PageHead from "@/components/PageHead";
-import { useSession } from "@/hooks/useSession";
-import { paths } from "@/lib/paths";
+import { ActionBar } from "@components/ActionBar";
+import { AppHeader } from "@components/AppHeader";
+import PageHead from "@components/Page/PageHead";
+import { useSession } from "@hooks/useSession";
+import { paths } from "@lib/paths";
 import { normalizePath } from "@lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { PropsWithChildren, useEffect } from "react";
-import { AppHeader } from "src/components/AppHeader";
 import { twMerge } from "tailwind-merge";
 
-function Page(
-  props: PropsWithChildren<{
-    className?: string;
-    /** Will be shown in the browser title bar and in Header. */
-    title: string;
-    /** Meta description of the page. */
-    description?: string;
-    /** Default: false */
-    unprotected?: boolean;
-    /** Default: false */
-    showActionBar?: boolean;
-    /** Default enabled: true */
-    showHeader?: boolean;
+export type PageProps = {
+  className?: string;
+  /** Will be shown in the browser title bar and in Header. */
+  title: string;
+  /** Meta description of the page. */
+  description?: string;
+  /** Default: false */
+  unprotected?: boolean;
+  /** Default: false */
+  showActionBar?: boolean;
+  /** Default enabled: true */
+  showHeader?: boolean;
 
-    /** Explicit path to a page that will be loaded on back button click. */
-    backPath?: string;
-    /** If enabled, will go to previous page on back button click.
-     *
-     * If enabled and backPath is specified, will go to previous page if exists, and if it doesn't, will go to the specified page.
-     *
-     * If enabled and there is no previous path nor backPath specified, will do nothing and back button will not be shown.
-     * @default true
-     */
-    autoBack?: boolean;
-    /** Triggered when the back button is clicked. Can be used for cleanups. */
-    onBack?: () => void;
-  }>,
-) {
+  /** Explicit path to a page that will be loaded on back button click. */
+  backPath?: string;
+  /** If enabled, will go to previous page on back button click.
+   *
+   * If enabled and backPath is specified, will go to previous page if exists, and if it doesn't, will go to the specified page.
+   *
+   * If enabled and there is no previous path nor backPath specified, will do nothing and back button will not be shown.
+   * @default true
+   */
+  autoBack?: boolean;
+  /** Triggered when the back button is clicked. Can be used for cleanups. */
+  onBack?: () => void;
+};
+
+/**
+ * A base page that all specific pages derive from. Defines basic functionality.
+ * @param props
+ * @constructor
+ */
+export const BasePage = (props: PropsWithChildren<PageProps>) => {
   // Set default values for props.
   const unprotected = props.unprotected ?? false;
-  const showActionBar = false; // props.showActionBar ?? false; // TODO: Change it back.
+  const showActionBar = false; // TODO: THIS HARDCODES IT TO FALSE. Change it back when sites are ready.
   const showHeader = props.showHeader ?? true;
   const autoBack = props.autoBack ?? true;
   const backPath = props.backPath;
@@ -99,7 +104,7 @@ function Page(
       {showActionBar && <ActionBar />}
     </div>
   );
-}
+};
 
 function PageWrapper(
   props: PropsWithChildren<{
@@ -152,5 +157,3 @@ function PageWrapper(
     </AnimatePresence>
   );
 }
-
-export default Page;

@@ -1,11 +1,11 @@
-import Page from "@components/Page";
+import { PublicPage } from "@components/PublicPage";
 import Title from "@components/ui/Title";
 import { t } from "@lingui/macro";
 
 export default function DevBlog() {
   return (
-    <Page title={t`Blog`} showActionBar={true} showHeader={true} unprotected={true}>
+    <PublicPage title={t`Blog`} description={""}>
       <Title>Some title</Title>
-    </Page>
+    </PublicPage>
   );
 }

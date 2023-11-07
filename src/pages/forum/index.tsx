@@ -1,7 +1,7 @@
-import Page from "@/components/Page";
 import { CreateForumPostModal } from "@/components/forum/CreateForumPostModal";
 import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
 import { api } from "@/lib/api";
+import { AppPage } from "@components/AppPage";
 import Title from "@components/ui/Title";
 import { Trans, t } from "@lingui/macro";
 import { Button } from "@nextui-org/react";
@@ -15,7 +15,7 @@ export default function ForumPage() {
   const posts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
 
   return (
-    <Page title={t`Forum`} unprotected>
+    <AppPage title={t`Forum`}>
       {/*TODO: Implement pinned posts (server-side).*/}
       {/*<Title>
         <Trans>Pinned posts</Trans>
@@ -61,6 +61,6 @@ export default function ForumPage() {
       )}
 
       <CreateForumPostModal isOpen={isCreatePostOpen} onToggle={toggleCreatePostOpen} />
-    </Page>
+    </AppPage>
   );
 }

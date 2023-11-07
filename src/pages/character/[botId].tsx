@@ -1,8 +1,8 @@
-import Page from "@/components/Page";
 import { CustomRadio } from "@/components/ui/CustomRadio";
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
+import { AppPage } from "@components/AppPage";
 import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
@@ -84,7 +84,7 @@ const ChatMainMenu = () => {
   }
 
   return (
-    <Page
+    <AppPage
       title={bot.isLoading ? _(msg`Loading...`) : _(msg`Chat with ${bot.data?.name}`)}
       className={"space-y-12"}
     >
@@ -165,7 +165,7 @@ const ChatMainMenu = () => {
           </div>
         </form>
       </Card>
-    </Page>
+    </AppPage>
   );
 };
 

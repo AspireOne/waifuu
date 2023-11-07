@@ -1,10 +1,10 @@
-import Page from "@/components/Page";
+import { AppPage } from "@components/AppPage";
 import { t } from "@lingui/macro";
 
 export default function Home() {
   return (
-    <Page title={t`Home`} showActionBar autoBack={false}>
+    <AppPage title={t`Home`} topLevel>
       <div />
-    </Page>
+    </AppPage>
   );
 }

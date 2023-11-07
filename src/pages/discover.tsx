@@ -1,4 +1,4 @@
-import Page from "@/components/Page";
+import { AppPage } from "@components/AppPage";
 import { DiscoverHeader } from "@components/DiscoverHeader";
 import { t } from "@lingui/macro";
 import { Spacer } from "@nextui-org/react";
@@ -8,7 +8,7 @@ import { PopularCharactersDiscoverCategory } from "src/components/PopularCharact
 
 const Discover = () => {
   return (
-    <Page title={t`Discover Characters`} showActionBar autoBack={false}>
+    <AppPage title={t`Discover Characters`} topLevel>
       <DiscoverHeader />
       <Spacer y={14} />
 
@@ -18,7 +18,7 @@ const Discover = () => {
         {/*Comment it out for now - it is not done yet.*/}
         {/*<ForumPostsDiscoverCategory />*/}
       </div>
-    </Page>
+    </AppPage>
   );
 };
 

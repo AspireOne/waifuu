@@ -1,9 +1,9 @@
-import Page from "@/components/Page";
 import { Emoji } from "@/components/ui/Emoji";
 import Discover from "@/pages/discover";
 import { Spacer } from "@nextui-org/react";
 import Image from "next/image";
 
+import { PublicPage } from "@components/PublicPage";
 import { twMerge } from "tailwind-merge";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
@@ -237,12 +237,11 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
 
       // Todo: meta description.
       return (
-        <Page
+        <PublicPage
           className="bg-[#303030] text-white bg-contain bg-no-repeat bg-[url('/assets/indexbackground.png')]"
           title={"Meet Companion"}
-          unprotected
-          showHeader={false}
-          showActionBar={false}
+          /*TODO: DESCRIPTION*/
+          description={""}
         >
           <TopBar />
 
@@ -257,6 +256,6 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
           <Spacer y={40} />
           <Footer />
           <Spacer y={40} />
-        </Page>
+        </PublicPage>
       );
     };

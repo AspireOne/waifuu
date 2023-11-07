@@ -1,14 +1,16 @@
 import { ContactUsForm } from "@components/ContactUsForm";
-import Page from "@components/Page";
+
 import Title from "@components/ui/Title";
 import { Trans, t } from "@lingui/macro";
 import { Card, CardBody } from "@nextui-org/card";
 
+import { CombinedPage } from "@components/CombinedPage";
 import { FiMail } from "react-icons/fi";
 
 export default () => {
   return (
-    <Page title={t`Contact us`} unprotected={true}>
+    /*TODO: Description*/
+    <CombinedPage title={t`Contact us`} description={""}>
       <div className="container mx-auto max-w-5xl sm:px-10 lg:px-0 mt-24 lg:mt-20">
         <div className="flex flex-col items-center lg:items-start lg:flex-row gap-20 justify-between sm:px-4">
           <div className="">
@@ -31,7 +33,7 @@ export default () => {
           </Card>
         </div>
       </div>
-    </Page>
+    </CombinedPage>
   );
 };
 

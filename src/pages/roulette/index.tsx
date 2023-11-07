@@ -1,5 +1,5 @@
-import Page from "@/components/Page";
 import { paths } from "@/lib/paths";
+import { AppPage } from "@components/AppPage";
 import Title from "@components/ui/Title";
 import { addQueryParams } from "@lib/utils";
 import { Trans, msg } from "@lingui/macro";
@@ -19,7 +19,7 @@ export default function RRIndex() {
   }
 
   return (
-    <Page title={_(msg`Character Roulette`)} autoBack={false} showActionBar>
+    <AppPage title={_(msg`Character Roulette`)} topLevel>
       <Card>
         <CardBody>
           <Trans>
@@ -55,6 +55,6 @@ export default function RRIndex() {
           </Switch>*/}
         </CardFooter>
       </Card>
-    </Page>
+    </AppPage>
   );
 }

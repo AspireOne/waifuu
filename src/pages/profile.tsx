@@ -1,7 +1,7 @@
-import Page from "@/components/Page";
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import updateSelfSchema from "@/server/shared/updateSelfSchema";
+import { AppPage } from "@components/AppPage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LocaleCode, changeAndSaveGlobalLocale, getLocale, locales } from "@lib/i18n";
 import { Trans, t } from "@lingui/macro";
@@ -83,7 +83,7 @@ export default function Profile() {
 
   return (
     /*TODO: Change to false when action bar is again implemented.*/
-    <Page title={t`Profile`} showActionBar autoBack={true}>
+    <AppPage title={t`Profile`}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={"flex md:w-[600px] mx-auto flex-col gap-4"}
@@ -178,7 +178,7 @@ export default function Profile() {
           <Trans>Save Changes</Trans>
         </Button>
       </form>
-    </Page>
+    </AppPage>
   );
 }
 

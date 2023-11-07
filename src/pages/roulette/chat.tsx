@@ -1,4 +1,3 @@
-import Page from "@/components/Page";
 import { RRInput } from "@/components/roleplay-roulette/RRInput";
 import RRMessages from "@/components/roleplay-roulette/RRMessages";
 import RRUserHeader from "@/components/roleplay-roulette/RRUserHeader";
@@ -6,6 +5,7 @@ import useRRChannelConnector, { RRChannelSearchStatus } from "@/hooks/useRRChann
 import { ConnectionStatus, useRRConnection } from "@/hooks/useRRConnection";
 import useRRMessages from "@/hooks/useRRMessages";
 import { paths } from "@/lib/paths";
+import { AppPage } from "@components/AppPage";
 import { msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card, CardBody } from "@nextui-org/card";
@@ -17,9 +17,9 @@ import { twMerge } from "tailwind-merge";
 export default function RoleplayRoulette() {
   const { _ } = useLingui();
   return (
-    <Page title={_(msg`Character Roulette`)} backPath={paths.RR}>
+    <AppPage title={_(msg`Character Roulette`)} backPath={paths.RR}>
       <Chat />
-    </Page>
+    </AppPage>
   );
 }
 

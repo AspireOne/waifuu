@@ -1,8 +1,8 @@
-import Page from "@/components/Page";
 import ChatGradientOverlay from "@/components/bot-chat/ChatGradientOverlay";
 import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
 import useBotChat, { Message } from "@/hooks/useBotChat";
+import { AppPage } from "@components/AppPage";
 import { BotChatContent } from "@components/BotChatContent";
 import { makeDownloadUrl } from "@lib/utils";
 import { msg } from "@lingui/macro";
@@ -23,7 +23,7 @@ const BotChat = () => {
   const chat = useBotChat(chatId);
 
   return (
-    <Page className="p-0" title={bot?.name || _(msg`Loading...`)}>
+    <AppPage className="p-0" title={bot?.name || _(msg`Loading...`)}>
       {/*TODO: Make character image only the png of the char.*/}
 
       {bot && <BgCharacterImage bot={bot} messages={chat.messages} />}
@@ -33,7 +33,7 @@ const BotChat = () => {
       <div className="fixed bottom-0 left-0 right-0 p-3 z-30 bg-gradient-to-t from-black via-black/95 to-black/10">
         <ChatInput disabled={chat.loadingReply} onSend={chat.postMessage} />
       </div>
-    </Page>
+    </AppPage>
   );
 };
 

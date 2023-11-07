@@ -1,11 +1,12 @@
 // public user profile page containing centered image, name, bio, link, and public characters.
 
-import { ErrorPage } from "@/ErrorPage";
-import Page from "@/components/Page";
+import { ErrorPage } from "@components/ErrorPage";
+
 import Header from "@/components/profile-page/Header";
 import InfoCards from "@/components/profile-page/InfoCards";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
+import { CombinedPage } from "@components/CombinedPage";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { useSearchParams } from "next/navigation";
@@ -23,7 +24,8 @@ export default function UserProfile(props: { username?: string }) {
 
   // Needed to make the gradient stay below other elements.
   return (
-    <Page title={username} unprotected>
+    /*TODO: Description*/
+    <CombinedPage title={username} description={""}>
       <div
         className={
           "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-secondary-400/30 via-secondary-400/5"
@@ -32,7 +34,7 @@ export default function UserProfile(props: { username?: string }) {
       <div className={"relative z-[1]"}>
         <Content username={username} />
       </div>
-    </Page>
+    </CombinedPage>
   );
 }
 

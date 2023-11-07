@@ -1,7 +1,7 @@
-import Page from "@/components/Page";
 import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
+import { AppPage } from "@components/AppPage";
 import { Trans, msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
@@ -73,7 +73,7 @@ const CreateChatPage = () => {
   };
 
   return (
-    <Page title={_(msg`Create New Character`)} backPath={paths.discover}>
+    <AppPage title={_(msg`Create New Character`)} backPath={paths.discover}>
       <form className="md:w-[600px] mx-auto" onSubmit={handleSubmit(submitHandler)}>
         <Card>
           <div className="p-4">
@@ -198,7 +198,7 @@ const CreateChatPage = () => {
           </div>
         </Card>
       </form>
-    </Page>
+    </AppPage>
   );
 };
 

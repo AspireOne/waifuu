@@ -1,8 +1,8 @@
-import Page from "@/components/Page";
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { CombinedPage } from "@components/CombinedPage";
 import { semanticPaths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
 import { Button, Card, Image } from "@nextui-org/react";
@@ -103,7 +103,7 @@ const Login = () => {
   }
 
   return (
-    <Page title={"Log in"} unprotected autoBack={false}>
+    <CombinedPage title={t`Sign in`} autoBack={false}>
       <Image
         alt="background"
         loading="eager"
@@ -140,7 +140,7 @@ const Login = () => {
           </Button>*/}
         </Card>
       </div>
-    </Page>
+    </CombinedPage>
   );
 };
 

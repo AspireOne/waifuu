@@ -1,7 +1,7 @@
-import Page from "@/components/Page";
 import { ForumPostComment } from "@/components/forum/ForumPostComment";
 import { Flex } from "@/components/ui/Flex";
 import { api } from "@/lib/api";
+import { AppPage } from "@components/AppPage";
 import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
@@ -64,7 +64,7 @@ export default function ForumPostPage() {
   };
 
   return (
-    <Page title={_(msg`Forum Post`)} className="space-y-4">
+    <AppPage title={_(msg`Forum Post`)} className="space-y-4">
       <header className="w-full">
         <Image
           isLoading={post.isLoading}
@@ -144,6 +144,6 @@ export default function ForumPostPage() {
           ))}
         </div>
       </section>
-    </Page>
+    </AppPage>
   );
 }

@@ -1,11 +1,11 @@
-import Page from "@components/Page";
+import { PublicPage } from "@components/PublicPage";
 import Title from "@components/ui/Title";
 import { t } from "@lingui/macro";
 
 // TODO: Change this privacy policy with new data on release.
 export default () => {
   return (
-    <Page title={t`Privacy Policy`} unprotected>
+    <PublicPage title={t`Privacy Policy`} description={"TODO desc"}>
       <Title className={"my-3"} size={"xl"}>
         {t`Privacy Policy`}
       </Title>
@@ -574,6 +574,6 @@ export default () => {
       <ul>
         <li>By email: matejpesl1@gmail.com</li>
       </ul>
-    </Page>
+    </PublicPage>
   );
 };
