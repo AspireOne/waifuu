@@ -28,11 +28,11 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
 
   const output = await genOutput(chat);
 
-  const [userMsg, botMsg] = await saveMessages(input, output, ctx.prisma);
+  const msgs = await saveMessages(input, output, ctx.prisma);
 
   return {
-    message: botMsg,
-    userMessage: userMsg,
+    message: msgs.botMsg,
+    userMessage: msgs.userMsg,
   };
 });
 
@@ -91,7 +91,10 @@ async function saveMessages(input: z.infer<typeof Input>, output: string, db: Pr
     },
   });
 
-  return [userMsg, botMsg];
+  return {
+    userMsg,
+    botMsg,
+  };
 }
 
 async function retrieveChat(chatId: string, db: PrismaClient, numOfMessages: number) {
