@@ -2,18 +2,18 @@
 name: Feature Request
 about: Suggest a new feature or enhancement for Companion.
 title: '[FEATURE]'
-labels: feature
+labels: enhancement
 assignees: ''
 ---
 
-**Describe the Feature**
+**Description**
 A clear and concise description of what the feature is.
 
-**Benefits**
-Explain the benefits of this feature, e.g., increased efficiency, user experience, etc.
+**Requirements**
+Explain the specific requirements this feature must have in order to be considered finished.
 
 **Suggested Implementation**
-If you have an idea on how to implement this feature, please share it here.
+If you have a rough idea on how to implement this feature, share it here.
 
 **Additional Context**
-Add any other context or screenshots about the feature request here.
+Add any other context or screenshots about the feature request here, if any.
