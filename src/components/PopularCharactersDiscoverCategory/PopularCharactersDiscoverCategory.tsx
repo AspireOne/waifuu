@@ -1,12 +1,11 @@
 import { discoveredBotStore } from "@/stores";
 import { CharacterCard } from "@components/CharacterCard";
-import { TagSelect } from "@components/ui/TagSelect";
 import Title from "@components/ui/Title";
 import { api } from "@lib/api";
 import { paths } from "@lib/paths";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Button, Checkbox, Input, Spacer } from "@nextui-org/react";
+import { Button, Divider, Input, Spacer, Switch, useDisclosure } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { BotSource } from "@prisma/client";
 import { useRouter } from "next/router";
@@ -14,18 +13,22 @@ import { useEffect, useState } from "react";
 import { UseFormRegisterReturn, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTrendingUp } from "react-icons/bi";
+import { NsfwConfirmDialog } from "../NsfwConfirmDialog/NsfwConfirmDialog";
+import { TagMultiSelect } from "../ui/TagMultiSelect";
 
 type Filters = {
   textFilter?: string;
   source?: BotSource | null;
   categories: string[];
   cursor: number;
+  nsfw?: boolean;
 };
 
 let textFilterTimer: NodeJS.Timeout | null = null;
 
 export const PopularCharactersDiscoverCategory = () => {
   const discoveredBots = discoveredBotStore.getState();
+
   const [filters, setFilters] = useState<Filters>({
     textFilter: undefined,
     source: "OFFICIAL",
@@ -33,30 +36,20 @@ export const PopularCharactersDiscoverCategory = () => {
     cursor: 0,
   });
 
-  const onCategoryChange = (value: string[]) => {
+  const onFilterChange = <T,>(key: keyof Filters, value: T) => {
     discoveredBots.clearDiscoveredBots();
-    setFilters({
+
+    return setFilters({
       ...filters,
-      categories: value,
+      [key]: value,
       cursor: 0,
     });
   };
-
-  const toggleOfficialBots = () => {
-    discoveredBots.clearDiscoveredBots();
-    setFilters({
-      ...filters,
-      source: filters.source === null ? BotSource.OFFICIAL : null,
-      cursor: 0,
-    });
-  };
-
-  const CURSOR_LIMIT = 10;
 
   const skipPage = () => {
     setFilters({
       ...filters,
-      cursor: filters.cursor + CURSOR_LIMIT,
+      cursor: filters.cursor + 10,
     });
   };
 
@@ -64,7 +57,8 @@ export const PopularCharactersDiscoverCategory = () => {
     {
       ...filters,
       sourceFilter: filters.source,
-      limit: CURSOR_LIMIT,
+      nsfw: filters.nsfw,
+      limit: 10,
     },
     {
       onSuccess: (data) => {
@@ -101,41 +95,40 @@ export const PopularCharactersDiscoverCategory = () => {
   }, [watch, discoveredBots]);
 
   return (
-    <div>
-      <form>
-        <ParametersHeader
-          onOnlyOfficialChange={toggleOfficialBots}
-          register={register}
-          searchData={filters}
-          onTagsChange={onCategoryChange}
-        />
+    <form>
+      <ParametersHeader
+        onOnlyOfficialChange={(value) => onFilterChange("source", value ? "OFFICIAL" : null)}
+        onTagsChange={(value) => onFilterChange("categories", value)}
+        onNsfwChange={(value) => onFilterChange("nsfw", value)}
+        register={register}
+        searchData={filters}
+      />
 
-        <Spacer y={6} />
+      <Spacer y={6} />
 
-        <div className="flex w-full flex-wrap gap-5">
-          {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
+      <div className="flex w-full flex-wrap gap-5">
+        {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
 
-          {/*&& !isRefetching*/}
-          {discoveredBots.discovered.length === 0 && (
-            <p className="">
-              <Trans>No characters found. Try changing your search term.</Trans>
-            </p>
-          )}
+        {/*&& !isRefetching*/}
+        {discoveredBots.discovered.length === 0 && (
+          <p className="">
+            <Trans>No characters found. Try changing your search term.</Trans>
+          </p>
+        )}
 
-          <div className="gap-4 flex flex-wrap w-full mx-auto">
-            {discoveredBots.discovered.map((bot) => {
-              return <CharacterCard bottom key={bot.id} bot={bot} />;
-            })}
-          </div>
-
-          {discoveredBots.hasNextDiscoveredPage && (
-            <Button onClick={skipPage} variant="faded" className="w-full sm:w-[200px] mx-auto">
-              <Trans>Load more</Trans>
-            </Button>
-          )}
+        <div className="gap-4 flex flex-wrap w-full mx-auto">
+          {discoveredBots.discovered.map((bot) => {
+            return <CharacterCard bottom key={bot.id} bot={bot} />;
+          })}
         </div>
-      </form>
-    </div>
+
+        {discoveredBots.hasNextDiscoveredPage && (
+          <Button onClick={skipPage} variant="faded" className="w-full sm:w-[200px] mx-auto">
+            <Trans>Load more</Trans>
+          </Button>
+        )}
+      </div>
+    </form>
   );
 };
 
@@ -144,29 +137,36 @@ const ParametersHeader = (props: {
   // biome-ignore lint/suspicious/noExplicitAny:
   register: (name: any) => UseFormRegisterReturn;
   onOnlyOfficialChange: (value: boolean) => void;
+  onNsfwChange: (value: boolean) => void;
   searchData: Filters;
 }) => {
   const router = useRouter();
   const { _ } = useLingui();
 
+  const { isOpen: isNsfwOpen, onOpenChange: onNsfwOpenChange } = useDisclosure();
+
   return (
     <div>
-      <Title icon={BiTrendingUp} bold>
-        <Trans>Popular Characters</Trans>
-        <Tooltip content={"Create a character"}>
-          <Button
-            className={"ml-auto md:ml-0"}
-            onClick={() => router.push(paths.createBot)}
-            isIconOnly={true}
+      <div className="xl:flex flex-col xl:flex-row gap-3">
+        <div className="mb-4">
+          <Title
+            description="Browse recently popular characters"
+            className="mb-3"
+            icon={BiTrendingUp}
+            bold
           >
-            <AiOutlinePlus fontSize={25} />
-          </Button>
-        </Tooltip>
-      </Title>
-
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex flex-col w-full gap-3">
-          <TagSelect onChange={props.onTagsChange} />
+            <Trans>Popular Characters</Trans>
+            <Tooltip>
+              <Button
+                className={"ml-auto md:ml-0"}
+                size="sm"
+                onClick={() => router.push(paths.createBot)}
+                isIconOnly
+              >
+                <AiOutlinePlus fontSize={25} />
+              </Button>
+            </Tooltip>
+          </Title>
 
           <Input
             {...props.register("textFilter")}
@@ -175,17 +175,38 @@ const ParametersHeader = (props: {
             className={"flex-1 rounded-lg sm:w-96 text-white"}
             type="text"
           />
+        </div>
 
-          <div className={"flex flex-row gap-3"}>
-            <Checkbox
-              onValueChange={props.onOnlyOfficialChange}
-              checked={props.searchData.source === BotSource.OFFICIAL}
+        <div className="mx-auto mr-0 flex flex-col gap-3">
+          <div className="flex flex-row gap-6">
+            <Switch onValueChange={(value) => props.onOnlyOfficialChange(value)}>
+              Official
+            </Switch>
+
+            <Switch
+              isSelected={props.searchData.nsfw}
+              onValueChange={(value) => {
+                if (!value) return props.onNsfwChange(false);
+                onNsfwOpenChange();
+              }}
             >
-              <Trans>Only display official characters</Trans>
-            </Checkbox>
+              NSFW
+            </Switch>
+            <TagMultiSelect onSelectTagIds={props.onTagsChange} />
           </div>
         </div>
       </div>
+
+      <Divider className="my-4" />
+
+      <NsfwConfirmDialog
+        onConfirm={() => {
+          props.onNsfwChange(true);
+          onNsfwOpenChange();
+        }}
+        isOpen={isNsfwOpen}
+        onOpenChange={onNsfwOpenChange}
+      />
     </div>
   );
 };

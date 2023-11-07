@@ -12,7 +12,7 @@ export default publicProcedure
       .object({
         sourceFilter: z.nativeEnum(BotSource).nullish(),
         textFilter: z.string().nullish(),
-        /*nsfw: z.boolean().default(false),*/
+        nsfw: z.boolean().default(false),
         categories: z.array(z.string()).default([]),
         limit: z.number().min(1).nullish(),
         cursor: z.number().nullish(),
@@ -26,7 +26,7 @@ export default publicProcedure
     const queryWhere = {
       visibility: BotVisibility.PUBLIC,
       source: input?.sourceFilter ?? undefined,
-      /*nsfw: input?.nsfw ? undefined : false,*/
+      nsfw: input?.nsfw ? undefined : false,
 
       // Text search.
       // biome-ignore format:
