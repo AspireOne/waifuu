@@ -14,7 +14,7 @@ export const ActiveChatsDiscoverCategory = () => {
 
   return (
     <div className="">
-      <Title bold icon={FaCompass}>
+      <Title description="Your active chats with characters" bold icon={FaCompass}>
         <Trans>Active chats</Trans>
       </Title>
 

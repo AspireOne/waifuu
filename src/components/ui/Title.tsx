@@ -13,6 +13,7 @@ export default function Title(props: {
   bold?: boolean;
   icon?: IconType;
   sideElements?: React.ReactNode;
+  description?: React.ReactNode;
 }) {
   const size = props.size ?? "lg";
   const bold = props.bold ?? true;
@@ -34,13 +35,18 @@ export default function Title(props: {
         size === "md" && "text-xl",
         size === "lg" && "text-2xl",
         size === "xl" && "text-3xl",
-        "flex flex-row items-center gap-2", // icon
         "mb-4",
         props.className,
       )}
     >
-      {props.icon && <props.icon size={iconSize} />}
-      {props.children}
+      <div className="flex flex-row items-center gap-2">
+        {props.icon && <props.icon size={iconSize} />}
+        {props.children}
+      </div>
+
+      {props.description && (
+        <p className="text-gray-400 text-[17px] font-normal">{props.description}</p>
+      )}
     </As>
   );
 }
