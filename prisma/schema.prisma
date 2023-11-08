@@ -40,6 +40,29 @@ model UserQuota {
   messages  Int      @default(0)
 }
 
+enum CharacterTag {
+  GIRLFRIEND
+  BOYFRIEND
+  ROMANCE
+  FANTASY
+  SUPERNATURAL
+  FEMALE
+  MALE
+  HORROR
+  HERO
+  COMEDY
+  NERD
+  SHY
+  BAD
+  ANIME
+  GAME_CHARACTER
+  HISTORY
+  MOVIE
+  MONSTER
+  BOOKS
+  OC
+}
+
 model Bot {
   // Public info.
   id          String @id @default(cuid())
@@ -69,7 +92,7 @@ model Bot {
   BotShares   BotShares[]
 
   // Other relations.
-  tags           Tag[]
+  tags           CharacterTag[]
   BotChats       Chat[]
   categoryId     String?
   category       Category?        @relation(fields: [categoryId], references: [name])
@@ -102,13 +125,6 @@ model MoodTable {
 
   botId String @unique
   bot   Bot    @relation(fields: [botId], references: [id])
-}
-
-model Tag {
-  name      String   @id
-  bots      Bot[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model BotLike {

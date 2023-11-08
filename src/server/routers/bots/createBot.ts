@@ -4,7 +4,7 @@ import {
 } from "@/server/ai/character-chat/prompts";
 import { llama13b } from "@/server/ai/models/llama13b";
 import { protectedProcedure } from "@/server/lib/trpc";
-import { Bot, BotSource, BotVisibility, ChatMode, Prisma, PrismaClient } from "@prisma/client";
+import { Bot, BotSource, BotVisibility, CharacterTag, ChatMode, Prisma, PrismaClient } from "@prisma/client";
 import { z } from "zod";
 
 export default protectedProcedure
@@ -15,8 +15,7 @@ export default protectedProcedure
       title: z.string(),
       description: z.string(),
       visibility: z.nativeEnum(BotVisibility),
-      tags: z.array(z.string()).default([]),
-      category: z.string().optional(),
+      tags: z.array(z.nativeEnum(CharacterTag)).default([]),
 
       // in Chat data
       avatar: z.string().optional(),
@@ -35,23 +34,6 @@ export default protectedProcedure
     }),
   )
   .mutation(async ({ input, ctx }) => {
-    if (input.category) {
-      try {
-        await ctx.prisma.category.create({
-          data: {
-            name: input.category,
-          },
-        });
-      } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-          // Throw all errors except for duplicate category name.
-          if (e.code !== "P2002") {
-            throw e;
-          }
-        }
-      }
-    }
-
     const bot = await ctx.prisma.bot.create({
       data: {
         // Public info.
@@ -82,19 +64,7 @@ export default protectedProcedure
         happyImageId: input.happyImageId,
 
         // Other.
-        categoryId: input.category,
-        tags: {
-          connectOrCreate: input.tags.map((tag) => {
-            return {
-              where: {
-                name: tag,
-              },
-              create: {
-                name: tag,
-              },
-            };
-          }),
-        },
+        tags: input.tags,
       },
     });
 

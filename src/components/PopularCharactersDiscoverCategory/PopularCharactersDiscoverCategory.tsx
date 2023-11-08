@@ -7,7 +7,7 @@ import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Button, Divider, Input, Spacer, Switch, useDisclosure } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/tooltip";
-import { BotSource } from "@prisma/client";
+import { BotSource, CharacterTag } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { UseFormRegisterReturn, useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ import { TagMultiSelect } from "../ui/TagMultiSelect";
 type Filters = {
   textFilter?: string;
   source?: BotSource | null;
-  categories: string[];
+  tags: CharacterTag[];
   cursor: number;
   nsfw?: boolean;
 };
@@ -32,7 +32,7 @@ export const PopularCharactersDiscoverCategory = () => {
   const [filters, setFilters] = useState<Filters>({
     textFilter: undefined,
     source: "OFFICIAL",
-    categories: [],
+    tags: [],
     cursor: 0,
   });
 
@@ -56,6 +56,7 @@ export const PopularCharactersDiscoverCategory = () => {
   api.bots.getAllBots.useQuery(
     {
       ...filters,
+      tags: filters.tags,
       sourceFilter: filters.source,
       nsfw: filters.nsfw,
       limit: 10,
@@ -86,7 +87,7 @@ export const PopularCharactersDiscoverCategory = () => {
           textFilter: value.textFilter,
           source: value.source,
           cursor: 0,
-          categories: [],
+          tags: [],
         });
       }
     });
@@ -98,7 +99,7 @@ export const PopularCharactersDiscoverCategory = () => {
     <form>
       <ParametersHeader
         onOnlyOfficialChange={(value) => onFilterChange("source", value ? "OFFICIAL" : null)}
-        onTagsChange={(value) => onFilterChange("categories", value)}
+        onTagsChange={(value) => onFilterChange("tags", value)}
         onNsfwChange={(value) => onFilterChange("nsfw", value)}
         register={register}
         searchData={filters}
@@ -192,7 +193,7 @@ const ParametersHeader = (props: {
             >
               NSFW
             </Switch>
-            <TagMultiSelect onSelectTagIds={props.onTagsChange} />
+            <TagMultiSelect className="w-48" onSelectTagIds={props.onTagsChange} />
           </div>
         </div>
       </div>

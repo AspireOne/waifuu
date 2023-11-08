@@ -1,4 +1,5 @@
 import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
+import { TagMultiSelect } from "@/components/ui/TagMultiSelect";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { AppPage } from "@components/AppPage";
@@ -17,7 +18,7 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { BotVisibility } from "@prisma/client";
+import { BotVisibility, CharacterTag } from "@prisma/client";
 import Router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -26,7 +27,7 @@ type CreateInput = {
   title: string;
   description: string;
   visibility: BotVisibility;
-  category: string;
+  tags: CharacterTag[];
 
   name: string;
   persona: string;
@@ -55,14 +56,14 @@ const CreateChatPage = () => {
     },
   });
 
-  const { register, handleSubmit } = useForm<CreateInput>();
+  const { register, handleSubmit, setValue } = useForm<CreateInput>();
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
     createBot.mutate({
       ...data,
       nsfw: isSelected,
       backgroundImage: background,
       avatar,
-      category: data.category,
+      tags: data.tags,
       cover,
       moodImagesEnabled,
       sadImageId: sad,
@@ -105,7 +106,7 @@ const CreateChatPage = () => {
                 </SelectItem>
               </Select>
 
-              <Input {...register("category")} label={_(msg`Category`)} />
+              <TagMultiSelect onSelectTagIds={ids => setValue('tags', ids)} />
             </div>
 
             <Divider className="mt-4 mb-4" />
