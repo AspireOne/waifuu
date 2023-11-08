@@ -16,7 +16,7 @@ import { BiTrendingUp } from "react-icons/bi";
 import { NsfwConfirmDialog } from "../NsfwConfirmDialog/NsfwConfirmDialog";
 import { TagMultiSelect } from "../ui/TagMultiSelect";
 
-type Filters = {
+type SearchBotsFilters = {
   textFilter?: string;
   source?: BotSource | null;
   tags: CharacterTag[];
@@ -24,19 +24,44 @@ type Filters = {
   nsfw?: boolean;
 };
 
+// const useFilteredData = (filters: Omit<SearchBotsFilters, 'cursor'>) => {
+//   api.bots.getAllBots.useQuery(
+//     {
+//       ...filters,
+//       limit: 10,
+//     },
+//     {
+//       onSuccess: (data) => {
+
+//       },
+//     },
+//   );
+
+//   const queryCacheKey: string = Object.keys(filters)
+//     .map((el) => {
+//       if (el === 'nsfw') return JSON.stringify(filters[el]);
+//       return filters[el as keyof typeof filters];
+//     })
+//     .join("-");
+
+//   return useQuery([queryCacheKey], () => fetchFilteredData(filters, cursor), {
+//     // Configure caching and revalidation options here
+//   });
+// };
+
 let textFilterTimer: NodeJS.Timeout | null = null;
 
 export const PopularCharactersDiscoverCategory = () => {
   const discoveredBots = discoveredBotStore.getState();
 
-  const [filters, setFilters] = useState<Filters>({
+  const [filters, setFilters] = useState<SearchBotsFilters>({
     textFilter: undefined,
     source: "OFFICIAL",
     tags: [],
     cursor: 0,
   });
 
-  const onFilterChange = <T,>(key: keyof Filters, value: T) => {
+  const onFilterChange = <T,>(key: keyof SearchBotsFilters, value: T) => {
     discoveredBots.clearDiscoveredBots();
 
     return setFilters({
@@ -69,7 +94,7 @@ export const PopularCharactersDiscoverCategory = () => {
     },
   );
 
-  const { register, watch } = useForm<Filters>();
+  const { register, watch } = useForm<SearchBotsFilters>();
 
   useEffect(() => {
     const subscription = watch((value, info) => {
@@ -98,7 +123,9 @@ export const PopularCharactersDiscoverCategory = () => {
   return (
     <form>
       <ParametersHeader
-        onOnlyOfficialChange={(value) => onFilterChange("source", value ? "OFFICIAL" : null)}
+        onOnlyOfficialChange={(value) =>
+          onFilterChange("source", value ? "OFFICIAL" : "COMMUNITY")
+        }
         onTagsChange={(value) => onFilterChange("tags", value)}
         onNsfwChange={(value) => onFilterChange("nsfw", value)}
         register={register}
@@ -139,7 +166,7 @@ const ParametersHeader = (props: {
   register: (name: any) => UseFormRegisterReturn;
   onOnlyOfficialChange: (value: boolean) => void;
   onNsfwChange: (value: boolean) => void;
-  searchData: Filters;
+  searchData: SearchBotsFilters;
 }) => {
   const router = useRouter();
   const { _ } = useLingui();
@@ -180,7 +207,10 @@ const ParametersHeader = (props: {
 
         <div className="mx-auto mr-0 flex flex-col gap-3">
           <div className="flex flex-row gap-6">
-            <Switch onValueChange={(value) => props.onOnlyOfficialChange(value)}>
+            <Switch
+              onValueChange={(value) => props.onOnlyOfficialChange(value)}
+              isSelected={props.searchData.source === "OFFICIAL"}
+            >
               Official
             </Switch>
 

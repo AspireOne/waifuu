@@ -14,18 +14,29 @@ export type DiscoveredBotStore = {
   setHasNextDiscoveredPage: (hasNext: boolean) => void;
 };
 
+const addDiscoveredBots = (bots: ExtendedBot[]) => {
+  discoveredBotStore.setState((state) => {
+    const final = [
+      ...state.discovered,
+      ...bots.filter((bot) => !state.discovered.find((b) => b.id === bot.id)),
+    ];
+
+    return { discovered: final };
+  });
+};
+
+const clearDiscoveredBots = () => {
+  discoveredBotStore.setState({ discovered: [] });
+};
+
+const setHasNextDiscoveredPage = (hasNext: boolean) => {
+  discoveredBotStore.setState({ hasNextDiscoveredPage: hasNext });
+};
+
 export const discoveredBotStore = createStore<DiscoveredBotStore>((set) => ({
   discovered: [],
-  addDiscoveredBots: (bots: ExtendedBot[]) =>
-    set((state) => {
-      const final = [
-        ...state.discovered,
-        ...bots.filter((bot) => !state.discovered.find((b) => b.id === bot.id)),
-      ];
-
-      return { discovered: final };
-    }),
-  clearDiscoveredBots: () => set({ discovered: [] }),
   hasNextDiscoveredPage: false,
-  setHasNextDiscoveredPage: (hasNext: boolean) => set({ hasNextDiscoveredPage: hasNext }),
+  addDiscoveredBots,
+  clearDiscoveredBots,
+  setHasNextDiscoveredPage,
 }));

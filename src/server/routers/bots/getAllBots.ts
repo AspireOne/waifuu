@@ -19,12 +19,8 @@ export default publicProcedure
       })
       .optional(),
   )
-
   .query(async ({ input, ctx }) => {
     const textFilter = input?.textFilter;
-
-
-    console.log(input);
 
     const queryWhere = {
       visibility: BotVisibility.PUBLIC,
@@ -42,9 +38,12 @@ export default publicProcedure
       description: { search: textFilter },
       name: { search: textFilter },*/
 
-      tags: {
-        hasSome: input?.tags ?? undefined,
-      }
+      ...(input?.tags &&
+        input.tags.length > 0 && {
+          tags: {
+            hasEvery: input?.tags ?? undefined,
+          },
+        }),
     };
 
     const query = ctx.prisma.bot.findMany({

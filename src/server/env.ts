@@ -21,6 +21,8 @@ export const envSchema = z.object({
 
   // The Firebase Admin SDK credentials. This should be an one-line JSON string.
   SERVICE_ACCOUNT_JSON: z.string().min(10),
+
+  REDIS_PASSWORD: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
