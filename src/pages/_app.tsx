@@ -1,24 +1,24 @@
-import { type AppType } from "next/app";
-import { NextUIProvider } from "@nextui-org/react";
 import { api } from "@/lib/api";
-import React, { useEffect } from "react";
-import { ToastContainer } from "react-toastify";
+import { NextUIProvider } from "@nextui-org/react";
+import { type AppType } from "next/app";
+import { useEffect } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
-import NextJSFontLoader from '@next/font/local';
+import { ToastContainer } from "react-toastify";
 
-import "react-loading-skeleton/dist/skeleton.css";
-import "react-toastify/dist/ReactToastify.css";
-import "filepond/dist/filepond.min.css";
 import "@/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import "filepond/dist/filepond.min.css";
+import "react-loading-skeleton/dist/skeleton.css";
+import "react-toastify/dist/ReactToastify.css";
 
-import { getAnalytics } from "firebase/analytics";
 import { SessionProvider } from "@/contexts/SessionProvider";
+import { getOrInitFirebaseApp, getOrInitFirebaseAuth } from "@lib/firebase";
+import { initGlobalLocale } from "@lib/i18n";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { initGlobalLocale } from "@lib/i18n";
-import { getOrInitFirebaseApp, getOrInitFirebaseAuth } from "@lib/firebase";
+import { getAnalytics } from "firebase/analytics";
 
+// biome-ignore lint: I keep it here so that I do not forget it exists.
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize app.
   useEffect(() => {

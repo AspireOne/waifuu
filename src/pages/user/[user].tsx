@@ -1,45 +1,49 @@
 // public user profile page containing centered image, name, bio, link, and public characters.
 
-import Page from "@/components/Page";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
+import { ErrorPage } from "@components/ErrorPage";
+
 import Header from "@/components/profile-page/Header";
 import InfoCards from "@/components/profile-page/InfoCards";
-import { useLingui } from "@lingui/react";
+import { api } from "@/lib/api";
+import { paths } from "@/lib/paths";
+import { CombinedPage } from "@components/CombinedPage";
 import { msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function UserProfile(props: { username?: string }) {
-  const router = useRouter();
-  const username = props.username || (router.query.user as string | undefined);
   const { _ } = useLingui();
+  const searchParams = useSearchParams();
+  const username = props.username || searchParams.get("user");
+
+  if (!username) {
+    return <ErrorPage message={_(msg`User not specified`)} />;
+  }
 
   // Needed to make the gradient stay below other elements.
   return (
-    <Page title={username || _(msg`Loading...`)} unprotected>
+    /*TODO: Description*/
+    <CombinedPage title={username} description={""}>
       <div
         className={
           "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-secondary-400/30 via-secondary-400/5"
         }
-      ></div>
+      />
       <div className={"relative z-[1]"}>
         <Content username={username} />
       </div>
-    </Page>
+    </CombinedPage>
   );
 }
 
-function Content(props: { username?: string }) {
+function Content(props: { username: string }) {
   const router = useRouter();
   const username = props.username;
 
-  const {
-    data: user,
-    isLoading,
-    isInitialLoading,
-  } = api.users.getPublic.useQuery(
-    { username: username! },
+  const { data: user, isLoading } = api.users.getPublic.useQuery(
+    { username: username },
     { enabled: !!username },
   );
 
@@ -49,7 +53,7 @@ function Content(props: { username?: string }) {
       router.replace(paths.discover);
       return;
     }
-  }, [username, user, router.isReady]);
+  }, [user, isLoading, router]);
 
   return (
     <>

@@ -2,16 +2,18 @@ import { api } from "@/lib/api";
 
 /**
  * Custom hook that fetches the specified bot and redirects if the bot or mode is invalid.
+ * @param chatId The chatId of the chat.
  * @param enabled Whether the query should be enabled. Can be used to postpone the query until botId or mode is ready.
  */
-const useBot = (
-  chatId: string | undefined,
-  mode: string | undefined,
-  enabled: boolean = true,
-) => {
-  const bot = api.bots.getBotByChatId.useQuery(
+const useBot = (chatId?: string, enabled = true) => {
+  const { data: bot } = api.bots.getBotByChatId.useQuery(
+    // biome-ignore lint/style/noNonNullAssertion: Will not be null due to the enabled condition.
     { chatId: chatId! },
-    { enabled: enabled },
+    {
+      enabled: enabled && !!chatId,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+    },
   );
 
   // useEffect(() => {
@@ -24,7 +26,7 @@ const useBot = (
   //   }
 
   //   // If mode does not exist, redirect to the bot main menu.
-  //   if (!Object.values(BotMode).includes(mode as BotMode)) {
+  //   if (!Object.values(ChatMode).includes(mode as ChatMode)) {
   //     router.replace(paths.botChatMainMenu(botId!));
   //   }
   // }, [mode, bot.isLoading, bot.data, bot.data?.id, router]);

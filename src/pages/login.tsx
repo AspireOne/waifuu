@@ -1,23 +1,17 @@
-import { Button, Card, Image } from "@nextui-org/react";
-import { FcGoogle } from "react-icons/fc";
-import { AiFillFacebook } from "react-icons/ai";
-import { BsTwitter } from "react-icons/bs";
-import Page from "@/components/Page";
-import { api } from "@/lib/api";
-import { useRouter } from "next/router";
-import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
-import { toast } from "react-toastify";
 import { useSession } from "@/hooks/useSession";
-import React, { useEffect } from "react";
-import {
-  GoogleAuthProvider,
-  signInWithCredential,
-  signOut,
-} from "firebase/auth";
+import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
-import { Constants } from "@/lib/constants";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { CombinedPage } from "@components/CombinedPage";
 import { semanticPaths } from "@lib/paths";
-import { t, Trans } from "@lingui/macro";
+import { Trans, t } from "@lingui/macro";
+import { Button, Card, Image } from "@nextui-org/react";
+import { GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 function getCsrfToken() {
   return document.cookie
@@ -36,9 +30,7 @@ async function signInUsingGoogleRaw() {
     });
 
     // Sign in on the web layer using the id token.
-    const credential = GoogleAuthProvider.credential(
-      result.credential?.idToken,
-    );
+    const credential = GoogleAuthProvider.credential(result.credential?.idToken);
     const auth = getOrInitFirebaseAuth();
     await signInWithCredential(auth, credential);
     return true;
@@ -50,16 +42,17 @@ async function signInUsingGoogleRaw() {
 }
 
 const Login = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const session = useSession();
-  const redirect = router.query.redirect as string;
+  const router = useRouter();
+  const redirect = searchParams.get("redirect");
 
-  // Check for session.user instead of session.status.
+  // !Check for session.user instead of session.status.
   useEffect(() => {
     if (session.user) {
       router.replace(redirect || semanticPaths.appIndex);
     }
-  }, [session.user, session.user?.id]);
+  }, [session.user, session.user?.id, redirect, router]);
 
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: async (data, variables, context) => {
@@ -68,10 +61,11 @@ const Login = () => {
         JSON.stringify(data),
       );
 
-      //router.replace((redirect as string) || semanticPaths.appIndex);
-      // redirect to "redirect" using window.location.href while reloading the page.
-      window.location.href = redirect || semanticPaths.appIndex;
-      session.refetch();
+      // Remove this because this out because it creates a loop for some reason.
+      // router.replace((redirect as string) || semanticPaths.appIndex);
+      // session.refetch();
+
+      window.location.replace(redirect || semanticPaths.appIndex);
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);
@@ -89,19 +83,14 @@ const Login = () => {
 
     if (!(await signInUsingGoogleRaw())) return;
 
-    console.log(
-      "Signed in using google, getting id token and contacting backend...",
-    );
+    console.log("Signed in using google, getting id token and contacting backend...");
 
     const { token: idToken } = await FirebaseAuthentication.getIdToken({
       forceRefresh: true,
     });
 
     if (!idToken) {
-      console.error(
-        "Error getting ID token from Google! This should not happen!",
-        idToken,
-      );
+      console.error("Error getting ID token from Google! This should not happen!", idToken);
       return;
     }
 
@@ -114,7 +103,7 @@ const Login = () => {
   }
 
   return (
-    <Page title={"Log in"} unprotected autoBack={false}>
+    <CombinedPage title={t`Sign in`} autoBack={false}>
       <Image
         alt="background"
         loading="eager"
@@ -140,11 +129,7 @@ const Login = () => {
         />
 
         <Card className="flex-column flex gap-3 p-2">
-          <Button
-            size="lg"
-            startContent={<FcGoogle />}
-            onClick={handleGoogleSignIn}
-          >
+          <Button size="lg" startContent={<FcGoogle />} onClick={handleGoogleSignIn}>
             <Trans>Sign in with google</Trans>
           </Button>
           {/*<Button size="lg" startContent={<AiFillFacebook />}>
@@ -155,7 +140,7 @@ const Login = () => {
           </Button>*/}
         </Card>
       </div>
-    </Page>
+    </CombinedPage>
   );
 };
 

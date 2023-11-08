@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { paths } from "@/lib/paths";
-import { twMerge } from "tailwind-merge";
-import { Button, Skeleton as UiSkeleton } from "@nextui-org/react";
-import Skeleton from "react-loading-skeleton";
-import { msg, Trans } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+
 import { Share } from "@capacitor/share";
-import { Capacitor } from "@capacitor/core";
+import { Trans, msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import { Button, Skeleton as UiSkeleton } from "@nextui-org/react";
+
+import Skeleton from "react-loading-skeleton";
+
+import { twMerge } from "tailwind-merge";
 
 function Avatar(props: { image: string | null | undefined }) {
   return (
@@ -15,11 +15,7 @@ function Avatar(props: { image: string | null | undefined }) {
       className={"mx-auto mb-6 h-40 w-40 rounded-full border-3 border-gray-100"}
       isLoaded={props.image !== undefined}
     >
-      <img
-        className={twMerge("h-full w-full")}
-        src={props.image || undefined}
-        alt="avatar"
-      />
+      <img className={twMerge("h-full w-full")} src={props.image || undefined} alt="avatar" />
     </UiSkeleton>
   );
 }
@@ -41,13 +37,13 @@ export default function Header(props: {
   username?: string | null;
   className?: string;
 }) {
-  const [link, setLink] = useState<string | undefined>();
   const { _ } = useLingui();
 
   async function handleShare() {
     await Share.share({
       title: _(msg`Check out ${props.username} on Companion.`),
       text: _(msg`${props.username} is active on companion.`),
+      // biome-ignore lint/style/noNonNullAssertion: At the time the user is clicking the button, the username is guaranteed to be defined.
       url: paths.userProfile(props.username!),
       dialogTitle: _(msg`'Share ${props.username}'s profile with buddies`),
     });
@@ -59,23 +55,15 @@ export default function Header(props: {
     });*/
   }
 
-  useEffect(() => {
-    const link = window.location.origin + paths.userProfile(props.username!);
-    setLink(link);
-  }, [props.username]);
-
   return (
-    <>
-      <div className={twMerge("", props.className)}>
-        <Avatar image={props.image} />
+    <div className={twMerge("", props.className)}>
+      <Avatar image={props.image} />
 
-        <h3 className={twMerge("mx-4 mb-12 rounded-xl text-center text-3xl")}>
-          {props.username && `@${props.username}`}
-          {!props.username && <Skeleton inline width={"70%"} />}
-        </h3>
+      <h3 className={twMerge("mx-4 mb-12 rounded-xl text-center text-3xl")}>
+        {props.username ? `@${props.username}` : <Skeleton inline width={"70%"} />}
+      </h3>
 
-        <Buttons onShare={handleShare} />
-      </div>
-    </>
+      <Buttons onShare={handleShare} />
+    </div>
   );
 }

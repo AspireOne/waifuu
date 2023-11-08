@@ -1,9 +1,9 @@
-import Page from "@/components/Page";
-import { api } from "@/lib/api";
 import { useSession } from "@/hooks/useSession";
-import Link from "next/link";
+import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
+import { CombinedPage } from "@components/CombinedPage";
 import * as Sentry from "@sentry/nextjs";
+import Link from "next/link";
 
 export default function Test() {
   const health = api.general.health.useQuery();
@@ -12,7 +12,7 @@ export default function Test() {
   const session = useSession();
 
   return (
-    <Page title={"Test Page"} unprotected backPath={"/"}>
+    <CombinedPage title={"Test Page"}>
       <p>Backend API Health: {health.isLoading ? "Loading..." : health.data}</p>
       <p>DB Health: {dbHealth.isLoading ? "Loading..." : dbHealth.data}</p>
       <p>
@@ -61,6 +61,6 @@ export default function Test() {
       >
         Test sentry.
       </button>
-    </Page>
+    </CombinedPage>
   );
 }

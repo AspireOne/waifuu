@@ -8,7 +8,7 @@ export default protectedProcedure
     }),
   )
   .query(async ({ input, ctx }) => {
-    const chat = await ctx.prisma.botChat.findUnique({
+    const chat = await ctx.prisma.chat.findUnique({
       where: {
         id: input.chatId,
       },

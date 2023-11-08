@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { pusherClient } from "@/lib/pusherClient";
-import { PresenceChannel } from "pusher-js";
 import PresenceChannelMember from "@/server/shared/presenceChannelMember";
+import { PresenceChannel } from "pusher-js";
+import React, { useEffect, useState } from "react";
 
 export type ConnectionStatus =
   | "no-channel"
@@ -21,7 +21,7 @@ const useRRConnection = (channelName?: string | null) => {
   const [lastUser, setLastUser] = useState<PresenceChannelMember | null>(null);
   const [channel, setChannel] = useState<PresenceChannel | null>(null);
 
-  let statusRef = React.useRef(status);
+  const statusRef = React.useRef(status);
   React.useEffect(() => {
     statusRef.current = status;
   }, [status]);
@@ -41,19 +41,17 @@ const useRRConnection = (channelName?: string | null) => {
       const newChannel = pusherClient.subscribe(channelName) as PresenceChannel;
       setChannel(newChannel);
 
-      newChannel.bind("pusher:error", (data: any) => {
+      newChannel.bind("pusher:error", (data: unknown) => {
         console.log("pusher:error", data);
       });
       newChannel.bind("pusher:subscription_succeeded", () => {
-        if (newChannel!.members.count > 1) {
+        if (newChannel?.members.count > 1) {
           setStatus("subscribed-w-user");
           setLastUser(getOtherMember(newChannel));
         } else {
           setStatus("subscribed-no-user");
         }
-        console.log(
-          "subscription_succeeded. Members: " + newChannel!.members.count,
-        );
+        console.log(`subscription_succeeded. Members: ${newChannel?.members.count}`);
       });
 
       newChannel.bind("pusher:subscription_error", () => {
@@ -66,25 +64,20 @@ const useRRConnection = (channelName?: string | null) => {
         console.log("member_removed");
       });
 
-      newChannel.bind(
-        "pusher:member_added",
-        (member: PresenceChannelMember) => {
-          if (newChannel!.members.count > 1) {
-            setStatus("subscribed-w-user");
-            setLastUser(getOtherMember(newChannel));
-          }
-          console.log("member_added");
-        },
-      );
+      newChannel.bind("pusher:member_added", (member: PresenceChannelMember) => {
+        if (newChannel?.members.count > 1) {
+          setStatus("subscribed-w-user");
+          setLastUser(getOtherMember(newChannel));
+        }
+        console.log("member_added");
+      });
     }
   }, [channelName]);
 
   return { status, statusRef, channel, lastUser };
 };
 
-function getOtherMember(
-  channel: PresenceChannel | null,
-): PresenceChannelMember | null {
+function getOtherMember(channel: PresenceChannel | null): PresenceChannelMember | null {
   if (!channel) return null;
 
   let newMember: PresenceChannelMember | null = null;

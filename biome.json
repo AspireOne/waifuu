@@ -1,0 +1,64 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.3.3/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "ignore": [
+      "./public/**/*",
+      "./dist/**/*",
+      "./node_modules/**/*",
+      "./.git/**/*",
+      "./.next/**/*",
+      "./android/**/*",
+      "./ios/**/*",
+      "./out/**/*",
+      "./prisma/migrations/**/*",
+      "./prisma/schema.prisma",
+      "./prisma/db.sqlite",
+      "package.json"
+    ],
+    "include": ["./src/**/*", "./prisma/seed.ts"]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noCommentText": "warn",
+        "noExplicitAny": "warn"
+      },
+      "style": {
+        "noUnusedTemplateLiteral": "warn",
+        "noNonNullAssertion": "warn",
+        "noParameterAssign": "off"
+      },
+      "complexity": {
+        "useSimplifiedLogicExpression": "off"
+      },
+      "a11y": {
+        "useButtonType": "off"
+      },
+      "nursery": {
+        "noUnusedImports": "warn"
+      },
+      "correctness": {
+        "noUnreachable": "off",
+        "useExhaustiveDependencies": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 95
+  }
+}

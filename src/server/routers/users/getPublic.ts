@@ -27,9 +27,7 @@ export default publicProcedure
     return {
       id: user.id,
       name: user.name,
-      image:
-        user.image ??
-        "https://user-images.githubusercontent.com/57546404/275817598-fd2c2c4b-108a-4ea3-a451-614d79afd405.jpg",
+      image: user.image,
       bots: user.Bot,
       username: user.username,
       bio: user.bio,

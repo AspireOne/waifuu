@@ -1,10 +1,11 @@
+import { publicProcedure } from "@/server/lib/trpc";
+import { BotSource, BotVisibility, Prisma } from "@prisma/client";
+import { z } from "zod";
+import QueryMode = Prisma.QueryMode;
+
 /**
  * Returns all public bots.
  * */
-import { publicProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
-import { BotSource, Visibility } from "@prisma/client";
-
 export default publicProcedure
   .input(
     z
@@ -18,51 +19,51 @@ export default publicProcedure
       })
       .optional(),
   )
+
   .query(async ({ input, ctx }) => {
-    // TODO: Remake this better
-    const query = {
-      visibility: Visibility.PUBLIC,
+    const textFilter = input?.textFilter;
+
+    const queryWhere = {
+      visibility: BotVisibility.PUBLIC,
       source: input?.sourceFilter ?? undefined,
-      characterNsfw: input?.nsfw ? undefined : false,
-      ...(input?.textFilter && {
-        OR: [
-          {
-            name: {
-              contains: input?.textFilter ?? undefined,
-              mode: "insensitive",
+      nsfw: input?.nsfw ? undefined : false,
+
+      // Text search.
+      // biome-ignore format:
+      OR: !textFilter ? undefined : [
+        { title: { contains: textFilter, mode: QueryMode.insensitive } },
+        { description: { contains: textFilter, mode: QueryMode.insensitive } },
+        { name: { contains: textFilter, mode: QueryMode.insensitive } },
+      ],
+      /*title: { search: textFilter },
+      description: { search: textFilter },
+      name: { search: textFilter },*/
+
+      category:
+        !input?.categories || input?.categories?.length === 0
+          ? undefined
+          : {
+              name: {
+                in: input?.categories ?? undefined,
+              },
             },
-          },
-          {
-            description: {
-              contains: input?.textFilter ?? undefined,
-              mode: "insensitive",
-            },
-          },
-        ],
-      }),
     };
 
-    const bots = await ctx.prisma.bot.findMany({
+    const query = ctx.prisma.bot.findMany({
       take: input?.limit || undefined,
       skip: !input?.cursor ? 0 : input.cursor,
-      where: {
-        ...(query as any),
-        ...(input?.categories.length !== 0 && {
-          category: {
-            name: {
-              in: input?.categories ?? undefined,
-            },
-          },
-        }),
-      },
+      where: queryWhere,
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    const count = await ctx.prisma.bot.count({
-      where: query as any,
-    });
+    const [bots, count] = await Promise.all([
+      query,
+      ctx.prisma.bot.count({
+        where: queryWhere,
+      }),
+    ]);
 
     const nextCursor = count > (input?.limit || 0) + (input?.cursor || 0);
 

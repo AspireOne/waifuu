@@ -1,20 +1,20 @@
-import Title from "@components/ui/Title";
-import { FaCompass } from "react-icons/fa";
-import { Trans } from "@lingui/macro";
 import { CharacterCard } from "@components/CharacterCard";
-import { Skeleton } from "@components/Skeleton";
-import { api } from "@lib/api";
-import { Bot } from "@prisma/client";
 import { CharacterCardSkeleton } from "@components/CharacterCard/CharacterCardSkeleton";
 
-export const ActiveChatsDiscoverCategory = (props: {}) => {
+import Title from "@components/ui/Title";
+import { api } from "@lib/api";
+import { Trans } from "@lingui/macro";
+
+import { FaCompass } from "react-icons/fa";
+
+export const ActiveChatsDiscoverCategory = () => {
   const { data: bots } = api.bots.getAllUsedBots.useQuery({
     limit: 5,
   });
 
   return (
     <div className="">
-      <Title bold icon={FaCompass}>
+      <Title description="Your active chats with characters" bold icon={FaCompass}>
         <Trans>Active chats</Trans>
       </Title>
 
@@ -36,17 +36,16 @@ const CharacterList = () => {
 
   return (
     <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
-      {bots &&
-        bots.map((bot, index) => {
-          return (
-            <CharacterCard
-              key={index}
-              chatType={bot.chatType}
-              chatId={bot.chatId}
-              bot={bot}
-            />
-          );
-        })}
+      {bots?.map((bot) => {
+        return (
+          <CharacterCard
+            key={bot.id + bot.chatType}
+            chatType={bot.chatType}
+            chatId={bot.chatId}
+            bot={bot}
+          />
+        );
+      })}
 
       {!bots && <CharacterCardSkeleton inline count={2} />}
     </div>

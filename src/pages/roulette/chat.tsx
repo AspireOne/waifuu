@@ -1,31 +1,29 @@
-import React, { useEffect } from "react";
-import { Card, CardBody } from "@nextui-org/card";
-import Page from "@/components/Page";
-import { ConnectionStatus, useRRConnection } from "@/hooks/useRRConnection";
-import useRRChannelConnector, {
-  RRChannelSearchStatus,
-} from "@/hooks/useRRChannelConnector";
-import { Spinner } from "@nextui-org/spinner";
-import useRRMessages from "@/hooks/useRRMessages";
 import { RRInput } from "@/components/roleplay-roulette/RRInput";
 import RRMessages from "@/components/roleplay-roulette/RRMessages";
 import RRUserHeader from "@/components/roleplay-roulette/RRUserHeader";
+import useRRChannelConnector, { RRChannelSearchStatus } from "@/hooks/useRRChannelConnector";
+import { ConnectionStatus, useRRConnection } from "@/hooks/useRRConnection";
+import useRRMessages from "@/hooks/useRRMessages";
 import { paths } from "@/lib/paths";
-import { twMerge } from "tailwind-merge";
+import { AppPage } from "@components/AppPage";
 import { msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
+import { Card, CardBody } from "@nextui-org/card";
+import { Spinner } from "@nextui-org/spinner";
+import { useEffect } from "react";
+import { twMerge } from "tailwind-merge";
 
 // "RR". Stands for Roleplay Roulette.
 export default function RoleplayRoulette() {
   const { _ } = useLingui();
   return (
-    <Page title={_(msg`Character Roulette`)} backPath={paths.RR}>
+    <AppPage title={_(msg`Character Roulette`)} backPath={paths.RR}>
       <Chat />
-    </Page>
+    </AppPage>
   );
 }
 
-function Chat(props: {}) {
+function Chat() {
   const channel = useRRChannelConnector();
   const conn = useRRConnection(channel.data?.name);
   const chat = useRRMessages(conn.channel);
@@ -69,8 +67,7 @@ function Chat(props: {}) {
     }
   }, [channel.status]);
 
-  const showLoading =
-    channel.status === "searching" || conn.status === "subscribing";
+  const showLoading = channel.status === "searching" || conn.status === "subscribing";
 
   // Show header when user is successfully connected.
   const showUserHeader =
@@ -83,10 +80,7 @@ function Chat(props: {}) {
     <div className="z-30 flex flex-col gap-8">
       <div className={"fixed left-2 right-2 z-30"}>
         {showUserHeader ? (
-          <RRUserHeader
-            className={"border border-default-200 shadow"}
-            user={conn.lastUser!}
-          />
+          <RRUserHeader className={"border border-default-200 shadow"} user={conn.lastUser!} />
         ) : (
           <StatusHeader
             className={"border border-default-200 shadow"}
@@ -133,10 +127,7 @@ function StatusHeader(props: { status: string; className?: string }) {
   );
 }
 
-function getStatusStr(
-  connStatus: ConnectionStatus,
-  searchStatus: RRChannelSearchStatus,
-) {
+function getStatusStr(connStatus: ConnectionStatus, searchStatus: RRChannelSearchStatus) {
   if (searchStatus === "searching") return t`Searching...`;
   if (searchStatus === "not-found") return t`No available room found!`;
   if (connStatus === "subscribing") return t`Connecting...`;

@@ -1,3 +1,9 @@
+import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
+import { api } from "@/lib/api";
+import { paths } from "@/lib/paths";
+import { AppPage } from "@components/AppPage";
+import { Trans, msg, t } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 import {
   Accordion,
   AccordionItem,
@@ -11,21 +17,15 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { useState } from "react";
-import Page from "@/components/Page";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Visibility } from "@prisma/client";
+import { BotVisibility } from "@prisma/client";
 import Router from "next/router";
-import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
-import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
-import { msg, t, Trans } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type CreateInput = {
   title: string;
   description: string;
-  visibility: Visibility;
+  visibility: BotVisibility;
   category: string;
 
   name: string;
@@ -57,7 +57,7 @@ const CreateChatPage = () => {
 
   const { register, handleSubmit } = useForm<CreateInput>();
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
-    createBot.mutateAsync({
+    createBot.mutate({
       ...data,
       nsfw: isSelected,
       backgroundImage: background,
@@ -73,11 +73,8 @@ const CreateChatPage = () => {
   };
 
   return (
-    <Page title={_(msg`Create New Character`)}>
-      <form
-        className="md:w-[600px] mx-auto"
-        onSubmit={handleSubmit(submitHandler)}
-      >
+    <AppPage title={_(msg`Create New Character`)} backPath={paths.discover}>
+      <form className="md:w-[600px] mx-auto" onSubmit={handleSubmit(submitHandler)}>
         <Card>
           <div className="p-4">
             <h2 className="text-xl mb-4">
@@ -87,12 +84,7 @@ const CreateChatPage = () => {
             <div className="flex flex-col gap-4">
               <FileUploadRaw onUpload={(id) => setAvatar(id)} label="Avatar" />
 
-              <Input
-                {...register("title")}
-                isRequired
-                type="text"
-                label={_(msg`Title`)}
-              />
+              <Input {...register("title")} isRequired type="text" label={_(msg`Title`)} />
 
               <Textarea
                 {...register("description")}
@@ -101,18 +93,14 @@ const CreateChatPage = () => {
                 label={_(msg`Description`)}
               />
 
-              <Select
-                {...register("visibility")}
-                label={_(msg`Select visibility`)}
-                isRequired
-              >
-                <SelectItem key={Visibility.PUBLIC} value={Visibility.PUBLIC}>
+              <Select {...register("visibility")} label={_(msg`Select visibility`)} isRequired>
+                <SelectItem key={BotVisibility.PUBLIC} value={BotVisibility.PUBLIC}>
                   {t`Public`}
                 </SelectItem>
-                <SelectItem key={Visibility.PRIVATE} value={Visibility.PRIVATE}>
+                <SelectItem key={BotVisibility.PRIVATE} value={BotVisibility.PRIVATE}>
                   {t`Private`}
                 </SelectItem>
-                <SelectItem key={Visibility.LINK} value={Visibility.LINK}>
+                <SelectItem key={BotVisibility.LINK} value={BotVisibility.LINK}>
                   {t`Only for friends`}
                 </SelectItem>
               </Select>
@@ -127,12 +115,7 @@ const CreateChatPage = () => {
             </h2>
 
             <div className="flex flex-col gap-4">
-              <Input
-                {...register("name")}
-                isRequired
-                type="text"
-                label={_(msg`Name`)}
-              />
+              <Input {...register("name")} isRequired type="text" label={_(msg`Name`)} />
 
               <Textarea
                 {...register("persona")}
@@ -154,8 +137,7 @@ const CreateChatPage = () => {
                 </Switch>
                 <p className="text-small text-default-500">
                   <Trans>
-                    Whether the character will produce content not suitable for
-                    minors.
+                    Whether the character will produce content not suitable for minors.
                   </Trans>
                 </p>
               </div>
@@ -166,14 +148,8 @@ const CreateChatPage = () => {
             <h2 className="text-xl mb-3">
               <Trans context={"New Character page category name"}>Images</Trans>
             </h2>
-            <FileUploadRaw
-              onUpload={(id) => setCover(id)}
-              label={_(msg`Cover`)}
-            />
-            <FileUploadRaw
-              onUpload={(id) => setBackground(id)}
-              label="Background image"
-            />
+            <FileUploadRaw onUpload={(id) => setCover(id)} label={_(msg`Cover`)} />
+            <FileUploadRaw onUpload={(id) => setBackground(id)} label="Background image" />
 
             <Divider className="mt-4 mb-4" />
 
@@ -222,7 +198,7 @@ const CreateChatPage = () => {
           </div>
         </Card>
       </form>
-    </Page>
+    </AppPage>
   );
 };
 

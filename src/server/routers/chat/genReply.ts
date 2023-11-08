@@ -1,114 +1,122 @@
+import { getCharacterSystemPrompt } from "@/server/ai/character-chat/characterSystemPrompt";
+import { llama13b } from "@/server/ai/models/llama13b";
 import { protectedProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
+import { Bot, Chat, Message, PrismaClient, User } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { getCharacterSystemPrompt } from "@/server/ai/character-chat/getCharacterSystemPrompt";
-import { llama13b } from "@/server/ai/shared/models/llama13b";
-import { handleQuota } from "@/server/utils/quota";
+// Yes, this does show error. There is no typescript version.
+// @ts-ignore
+import llamaTokenizer from "llama-tokenizer-js";
+import { z } from "zod";
 
-export default protectedProcedure
-  .input(
-    z.object({
-      chatId: z.string(),
-      message: z.string(),
-    }),
-  )
-  .mutation(async ({ ctx, input }) => {
-    if(!await handleQuota(ctx.user)) {
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: "You have exceeded your daily quota.",
-      });
-    };
+const Input = z.object({
+  chatId: z.string(),
+  message: z.string(),
+});
 
-    // Create a new message from the input user provided
-    const userMsg = await ctx.prisma.botChatMessage.create({
-      data: {
-        chatId: input.chatId,
-        content: input.message,
-        role: "USER",
-        // Status: pending?
-      },
+export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) => {
+  // TODO: Get amount of messages based on the model's context window length.
+  // For now we hardcode it.
+  const chat = await retrieveChat(input.chatId, ctx.prisma, 20);
+
+  // Push the new message to the msg history so that it is included in the prompt without saving them just yet.
+  chat.messages.push(getMockMessage(input));
+
+  // biome-ignore format:
+  console.log("messages total text length: ", chat.messages.reduce((acc, msg) => acc + msg.content.length, 0));
+  // biome-ignore format:
+  console.log("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
+
+  const output = await genOutput(chat);
+
+  const msgs = await saveMessages(input, output, ctx.prisma);
+
+  return {
+    message: msgs.botMsg,
+    userMessage: msgs.userMsg,
+  };
+});
+
+function getMockMessage(input: z.infer<typeof Input>): Message {
+  return {
+    content: input.message,
+    chatId: input.chatId,
+
+    // Bogus data (not important):
+    role: "USER",
+    id: 1,
+    remembered: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    mood: "HAPPY",
+  };
+}
+
+async function genOutput(
+  chat: Chat & { bot: Bot } & { user: User } & { messages: Message[] },
+) {
+  try {
+    return await llama13b.run({
+      system_prompt: await getCharacterSystemPrompt(chat),
+      prompt: chat.messages,
     });
-
-    const [chat, messages] = await Promise.all([
-      // Find the chat that is user and bot currently in.
-      ctx.prisma.botChat.findUnique({
-        where: {
-          id: input.chatId,
-        },
-        include: {
-          bot: true,
-          user: true,
-        },
-      }),
-      // And lastly, find the last 20 messages in the chat.
-      ctx.prisma.botChatMessage.findMany({
-        where: {
-          chatId: input.chatId,
-        },
-        take: 20,
-      }),
-    ]);
-
-    if (!chat) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Chat not found.",
-      });
-    }
-
-    /*const outputParser = StructuredOutputParser.fromZodSchema(
-      z.object({
-        reply: z.string().min(1).describe("The reply to the user."),
-        mood: z.nativeEnum(Mood).describe("The sentiment of the reply."),
-      }),
-    );*/
-    /*const outputFixingParser = OutputFixingParser.fromLLM(
-      fixingLlm,
-      outputParser,
-    );*/
-
-    console.log(
-      "CREATED SYSTEM PROMPT: ",
-      await getCharacterSystemPrompt(chat),
-    );
-
-    let output;
-    try {
-      output = await llama13b.run({
-        system_prompt: await getCharacterSystemPrompt(
-          chat,
-          /*outputParser,*/
-        ),
-        prompt: messages,
-      });
-    } catch (e) {
-      console.log(e);
-      // remove the user message from db.
-      await ctx.prisma.botChatMessage.delete({
-        where: {
-          id: userMsg.id,
-        },
-      });
-
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to generate a reply.",
-        cause: e,
-      });
-    }
-
-    const botMsg = await ctx.prisma.botChatMessage.create({
-      data: {
-        chatId: input.chatId,
-        content: output,
-        mood: "HAPPY",
-        role: "BOT",
-      },
+  } catch (e) {
+    console.error(e);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to generate a reply.",
+      cause: e,
     });
+  }
+}
 
-    return {
-      botChatMessage: botMsg,
-      userMessage: userMsg,
-    };
+async function saveMessages(input: z.infer<typeof Input>, output: string, db: PrismaClient) {
+  // Note: They MUST NOT be CREATED IN PARALLEL (ASYNCHRONOUSLY), because
+  // otherwise the order of the messages will be messed up.
+
+  // Create user message.
+  const userMsg = await db.message.create({
+    data: {
+      chatId: input.chatId,
+      content: input.message,
+      role: "USER",
+    },
   });
+
+  const botMsg = await db.message.create({
+    data: {
+      chatId: input.chatId,
+      content: output,
+      mood: "HAPPY",
+      role: "BOT",
+    },
+  });
+
+  return {
+    userMsg,
+    botMsg,
+  };
+}
+
+async function retrieveChat(chatId: string, db: PrismaClient, numOfMessages: number) {
+  const chat = await db.chat.findUnique({
+    where: {
+      id: chatId,
+    },
+    include: {
+      bot: true,
+      user: true,
+      messages: {
+        take: numOfMessages,
+      },
+    },
+  });
+
+  if (!chat) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Chat not found.",
+    });
+  }
+
+  return chat;
+}

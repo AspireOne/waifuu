@@ -1,14 +1,16 @@
-import React from "react";
-import Page from "@components/Page";
-import { FiMail } from "react-icons/fi";
 import { ContactUsForm } from "@components/ContactUsForm";
-import Title from "@components/ui/Title";
-import { Card, CardBody } from "@nextui-org/card";
-import { t, Trans } from "@lingui/macro";
 
-export default (props: {}) => {
+import Title from "@components/ui/Title";
+import { Trans, t } from "@lingui/macro";
+import { Card, CardBody } from "@nextui-org/card";
+
+import { CombinedPage } from "@components/CombinedPage";
+import { FiMail } from "react-icons/fi";
+
+export default () => {
   return (
-    <Page title={t`Contact us`} unprotected={true}>
+    /*TODO: Description*/
+    <CombinedPage title={t`Contact us`} description={""}>
       <div className="container mx-auto max-w-5xl sm:px-10 lg:px-0 mt-24 lg:mt-20">
         <div className="flex flex-col items-center lg:items-start lg:flex-row gap-20 justify-between sm:px-4">
           <div className="">
@@ -17,8 +19,7 @@ export default (props: {}) => {
             </Title>
             <p className="text-xl mt-8">
               <Trans>
-                Got a problem? A question? Or just want to say hi? We are here
-                for you.
+                Got a problem? A question? Or just want to say hi? We are here for you.
               </Trans>
             </p>
             <Socials className={"mt-8"} />
@@ -32,13 +33,13 @@ export default (props: {}) => {
           </Card>
         </div>
       </div>
-    </Page>
+    </CombinedPage>
   );
 };
 
 function Socials(props: { className?: string }) {
   return (
-    <div className={props.className + " text-lg"}>
+    <div className={`${props.className} text-lg`}>
       <ContactInfoItem icon={<FiMail />} href="mailto:matejpesl1@gmail.com">
         matejpesl1@gmail.com
       </ContactInfoItem>

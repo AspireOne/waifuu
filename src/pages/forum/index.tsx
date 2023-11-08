@@ -1,12 +1,12 @@
-import { Trans, t } from "@lingui/macro";
-import { Button, Spacer } from "@nextui-org/react";
-import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
 import { CreateForumPostModal } from "@/components/forum/CreateForumPostModal";
 import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
-import Page from "@/components/Page";
 import { api } from "@/lib/api";
+import { AppPage } from "@components/AppPage";
 import Title from "@components/ui/Title";
+import { Trans, t } from "@lingui/macro";
+import { Button } from "@nextui-org/react";
+import { useState } from "react";
+import { FaPlus } from "react-icons/fa";
 
 export default function ForumPage() {
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
@@ -15,7 +15,7 @@ export default function ForumPage() {
   const posts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
 
   return (
-    <Page title={t`Forum`} unprotected>
+    <AppPage title={t`Forum`}>
       {/*TODO: Implement pinned posts (server-side).*/}
       {/*<Title>
         <Trans>Pinned posts</Trans>
@@ -60,10 +60,7 @@ export default function ForumPage() {
         </div>
       )}
 
-      <CreateForumPostModal
-        isOpen={isCreatePostOpen}
-        onToggle={toggleCreatePostOpen}
-      />
-    </Page>
+      <CreateForumPostModal isOpen={isCreatePostOpen} onToggle={toggleCreatePostOpen} />
+    </AppPage>
   );
 }

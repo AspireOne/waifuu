@@ -1,6 +1,11 @@
+import {
+  getInitialMessageSystemPrompt,
+  initialMessagePrompt,
+} from "@/server/ai/character-chat/prompts";
+import { llama13b } from "@/server/ai/models/llama13b";
 import { protectedProcedure } from "@/server/lib/trpc";
+import { Bot, BotSource, BotVisibility, ChatMode, Prisma, PrismaClient } from "@prisma/client";
 import { z } from "zod";
-import { BotSource, Prisma, Visibility } from "@prisma/client";
 
 export default protectedProcedure
   .input(
@@ -9,7 +14,7 @@ export default protectedProcedure
       cover: z.string().optional(),
       title: z.string(),
       description: z.string(),
-      visibility: z.nativeEnum(Visibility),
+      visibility: z.nativeEnum(BotVisibility),
       tags: z.array(z.string()).default([]),
       category: z.string().optional(),
 
@@ -47,26 +52,37 @@ export default protectedProcedure
       }
     }
 
-    return await ctx.prisma.bot.create({
+    const bot = await ctx.prisma.bot.create({
       data: {
-        name: input.title,
+        // Public info.
+        title: input.title,
         description: input.description,
+
+        // Character info.
+        name: input.name,
+        persona: input.persona,
+        nsfw: input.nsfw,
         visibility: input.visibility,
+        exampleDialogue: input.dialogue,
+
+        // Creator.
         creatorId: ctx.user.id,
         source: BotSource.COMMUNITY,
+
+        // Character images.
         avatar: input.avatar,
-        cover: input.cover,
-        characterPersona: input.persona,
+        characterImage: input.cover,
         backgroundImage: input.backgroundImage,
-        categoryId: input.category,
-        characterDialogue: input.dialogue,
-        characterNsfw: input.nsfw,
-        characterName: input.name,
+
+        // Mood.
         moodImagesEnabled: input.moodImagesEnabled,
         sadImageId: input.sadImageId,
         neutralImageId: input.neutralImageId,
         blushedImageId: input.blushedImageId,
         happyImageId: input.happyImageId,
+
+        // Other.
+        categoryId: input.category,
         tags: {
           connectOrCreate: input.tags.map((tag) => {
             return {
@@ -81,4 +97,28 @@ export default protectedProcedure
         },
       },
     });
+
+    // Create initial messages.
+    await Promise.all([
+      createInitialMessage(ChatMode.ROLEPLAY, bot, ctx.prisma),
+      createInitialMessage(ChatMode.CHAT, bot, ctx.prisma),
+      createInitialMessage(ChatMode.ADVENTURE, bot, ctx.prisma),
+    ]);
+
+    return bot;
   });
+
+async function createInitialMessage(mode: ChatMode, bot: Bot, db: PrismaClient) {
+  const output = await llama13b.run({
+    system_prompt: await getInitialMessageSystemPrompt(mode, bot.persona),
+    prompt: initialMessagePrompt,
+  });
+
+  return await db.initialMessage.create({
+    data: {
+      message: output,
+      chatMode: mode,
+      botId: bot.id,
+    },
+  });
+}

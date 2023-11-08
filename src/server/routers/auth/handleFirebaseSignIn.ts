@@ -1,11 +1,11 @@
+import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
-import getServerFirebaseAuth from "@/server/lib/getServerFirebaseAuth";
-import { PrismaClient } from "@prisma/client";
-import { DecodedIdToken } from "firebase-admin/auth";
 import { generateUniqueUsername } from "@/server/lib/usernameUtils";
+import { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
+import { DecodedIdToken } from "firebase-admin/auth";
 import { NextApiResponse } from "next";
+import { z } from "zod";
 
 // Handles signIn from frontend's CapacitorGoogleAuth plugin in accordance with NextAuth.
 // Creates an user or updates their data.
@@ -19,15 +19,9 @@ export default publicProcedure
   )
   .mutation(async ({ input, ctx }) => {
     // Get the user data.
-    const decodedIdToken = await getServerFirebaseAuth().verifyIdToken(
-      input.idToken,
-    );
+    const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
 
-    await verifyRequest(
-      decodedIdToken.auth_time,
-      input.csrfToken,
-      ctx.req?.cookies["csrfToken"]!,
-    );
+    await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
 
     await upsertUser(ctx.prisma, decodedIdToken);
 
@@ -44,10 +38,7 @@ export default publicProcedure
  * @param prisma
  * @param decodedIdToken
  */
-async function upsertUser(
-  prisma: PrismaClient,
-  decodedIdToken: DecodedIdToken,
-) {
+async function upsertUser(prisma: PrismaClient, decodedIdToken: DecodedIdToken) {
   // Check if user already exists.
   const exists = await prisma.user.findUnique({
     where: {
@@ -55,21 +46,21 @@ async function upsertUser(
     },
   });
 
-  const username = exists
-    ? null
-    : await generateUniqueUsername(decodedIdToken.name, decodedIdToken.email!);
+  if (exists) return;
 
-  if (!exists) {
-    await prisma.user.create({
-      data: {
-        id: decodedIdToken.uid,
-        email: decodedIdToken.email,
-        name: decodedIdToken.name,
-        username: username!,
-        image: decodedIdToken.picture,
-      },
-    });
-  }
+  if (!decodedIdToken.email) throw new Error("No email found in decodedIdToken.");
+
+  const username = await generateUniqueUsername(decodedIdToken.name, decodedIdToken.email);
+
+  await prisma.user.create({
+    data: {
+      id: decodedIdToken.uid,
+      email: decodedIdToken.email,
+      name: decodedIdToken.name,
+      username: username,
+      image: decodedIdToken.picture,
+    },
+  });
 }
 
 /**
@@ -93,7 +84,7 @@ async function verifyRequest(
     });
   }
 
-  if (inputCsrf !== cookieCsrf) {
+  if (inputCsrf && cookieCsrf && inputCsrf !== cookieCsrf) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "CSRF token mismatch.",
@@ -106,19 +97,13 @@ async function verifyRequest(
  * @param idToken
  * @param res
  */
-async function createSessionCookie(
-  idToken: string,
-  res: NextApiResponse,
-): Promise<string> {
-  const cookie = await getServerFirebaseAuth().createSessionCookie(idToken, {
+async function createSessionCookie(idToken: string, res: NextApiResponse): Promise<string> {
+  const cookie = await serverFirebaseAuth().createSessionCookie(idToken, {
     // 2 weeks.
     expiresIn: 60 * 60 * 24 * 14 * 1000,
   });
 
-  res.setHeader(
-    "Set-Cookie",
-    `session=${cookie}; Path=/; HttpOnly; Secure; SameSite=Strict`,
-  );
+  res.setHeader("Set-Cookie", `session=${cookie}; Path=/; HttpOnly; Secure; SameSite=Strict`);
 
   return cookie;
 }

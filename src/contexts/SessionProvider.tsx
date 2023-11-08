@@ -1,35 +1,43 @@
-import {
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  PropsWithChildren,
-} from "react";
-import "firebase/compat/auth";
 import { api } from "@/lib/api";
-import { User } from "@prisma/client";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
+import { Preferences } from "@capacitor/preferences";
+import { User } from "@prisma/client";
+import "firebase/compat/auth";
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
 type SessionUser = User;
-type SessionStatus = "loading" | "authenticated" | "unauthenticated";
+export type SessionStatus = "loading" | "authenticated" | "unauthenticated";
+export type LastKnownStatus = "authenticated" | "unauthenticated";
 
-let authSubscribed: boolean = false;
-let fbTimeMeasured: boolean = false;
-let queryTimeMeasured: boolean = false;
+let authSubscribed = false;
+let fbTimeMeasured = false;
 
 type SessionState = {
   user: SessionUser | null | undefined;
   status: SessionStatus;
   refetch: () => void;
+  getLastKnownStatus: () => Promise<LastKnownStatus>;
+};
+
+const getLastKnownStatus = async () => {
+  const result = await Preferences.get({ key: "lastKnownAuthStatus" });
+  const value = result.value as LastKnownStatus | undefined;
+
+  return value === "authenticated" ? "authenticated" : "unauthenticated";
+};
+
+const setLastKnownStatus = async (status: LastKnownStatus) => {
+  await Preferences.set({ key: "lastKnownAuthStatus", value: status as string });
 };
 
 const SessionContext = createContext<SessionState>({
   user: undefined,
   status: "loading",
   refetch: () => {},
+  getLastKnownStatus,
 });
 
-export const SessionProvider = (props: PropsWithChildren<{}>) => {
+export const SessionProvider = (props: PropsWithChildren) => {
   const [user, setUser] = useState<SessionUser | null | undefined>(undefined);
   // Firebase status. This is separate from our backend user status.
   const [fbStatus, setFbStatus] = useState<SessionStatus>("loading");
@@ -51,8 +59,8 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
     authSubscribed = true;
 
     const auth = getOrInitFirebaseAuth();
-    const fbStart = performance.now();
 
+    console.time("firebase auth");
     auth.onAuthStateChanged((fbUser) => {
       const status = fbUser ? "authenticated" : "unauthenticated";
       if (!fbUser) setUser(null);
@@ -60,22 +68,14 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
 
       console.log(`Auth state changed: ${status}`);
 
-      const fbEnd = performance.now();
       if (!fbTimeMeasured) {
-        console.log(
-          `Firebase initial Auth state change took: ${fbEnd - fbStart}ms`,
-        );
+        console.timeEnd("firebase auth");
         fbTimeMeasured = true;
       }
 
+      console.time("user fetch");
       userQuery.refetch().then(() => {
-        const queryEnd = performance.now();
-        if (!queryTimeMeasured) {
-          console.log(
-            `User fetch from our backend took: ${queryEnd - fbEnd}ms`,
-          );
-          queryTimeMeasured = true;
-        }
+        console.timeEnd("user fetch");
       });
     });
   }, []);
@@ -84,25 +84,27 @@ export const SessionProvider = (props: PropsWithChildren<{}>) => {
     if (userQuery.data) {
       setUser({
         ...userQuery.data,
-        name: userQuery.data.name!,
-        email: userQuery.data.email!,
-        image: userQuery.data.image ?? "/assets/default_user.jpg",
-        username: userQuery.data.username!,
+        image: userQuery.data.image,
       });
+      setLastKnownStatus("authenticated");
     }
 
     if (!userQuery.data && !userQuery.isLoading) {
       setUser(null);
       setFbStatus("unauthenticated");
+      setLastKnownStatus("unauthenticated");
     }
   }, [userQuery.data]);
 
+  const contextValues = {
+    user,
+    status: fbStatus,
+    refetch: userQuery.refetch,
+    getLastKnownStatus,
+  };
+
   return (
-    <SessionContext.Provider
-      value={{ user, status: fbStatus, refetch: userQuery.refetch }}
-    >
-      {props.children}
-    </SessionContext.Provider>
+    <SessionContext.Provider value={contextValues}>{props.children}</SessionContext.Provider>
   );
 };
 

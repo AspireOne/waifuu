@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
-import React, { useState } from "react";
 import { ChannelData } from "@/server/shared/channelData";
+import React, { useState } from "react";
 
 export type RRChannelSearchStatus = "searching" | "found" | "not-found" | null;
 /**
@@ -18,7 +18,7 @@ export default function useRRChannelConnector() {
   const [status, setStatus] = useState<RRChannelSearchStatus>(null);
 
   // This is here so that I can setTimeout (to check member connection) and use fresh data.
-  let channelDataRef = React.useRef(channelData);
+  const channelDataRef = React.useRef(channelData);
   React.useEffect(() => {
     channelDataRef.current = channelData;
   }, [channelData]);

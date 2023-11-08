@@ -1,20 +1,13 @@
-import { useMemo } from "react";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Image,
-} from "@nextui-org/react";
-import { twMerge } from "tailwind-merge";
 import { Card, CardBody } from "@nextui-org/card";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { Avatar } from "@nextui-org/react";
 import { Mood } from "@prisma/client";
-import { Trans } from "@lingui/macro";
+import { useMemo } from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   message: string;
   className?: string;
+  id?: number;
   author: {
     bot: boolean;
     avatar?: string | null;
@@ -23,7 +16,7 @@ type Props = {
   mood?: Mood;
 };
 
-const ChatMessage = ({ author, message, className, mood }: Props) => {
+const ChatMessage = ({ author, message, className, mood, id }: Props) => {
   const formattedMessage = useMemo(() => {
     return message
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
@@ -38,20 +31,19 @@ const ChatMessage = ({ author, message, className, mood }: Props) => {
   return (
     <div
       className={twMerge(
-        `flex mx-auto w-full gap-2`,
+        "flex mx-auto w-full gap-2",
         author.bot ? "ml-0" : "mr-0 flex-row",
         className,
       )}
     >
-      <Card className={twMerge("w-full rounded-lg p-3")}>
+      <Card className={twMerge("w-full rounded-lg p-3 bg-neutral-900/80 backdrop-blur-lg")}>
         {/*Comment this out for now, because it is not needed.*/}
         {/*<MsgDropdown/>*/}
 
         <CardBody className={"p-1 flex flex-row gap-4"}>
-          <Image
-            referrerPolicy="no-referrer"
-            src={author.avatar || "/assets/default_user.jpg"}
-            alt="profile-picture"
+          <Avatar
+            src={author.avatar ?? undefined}
+            alt="avatar"
             className="w-[40px] h-[40px] min-w-[40px] rounded-full aspect-square"
           />
 
@@ -59,6 +51,7 @@ const ChatMessage = ({ author, message, className, mood }: Props) => {
             <p className={"font-bold"}>{author.name}</p>
             <p
               className="max-w-xs overflow-ellipsis overflow-hidden"
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: Fix this later!
               dangerouslySetInnerHTML={{ __html: formattedMessage }}
             />
           </div>
@@ -67,25 +60,5 @@ const ChatMessage = ({ author, message, className, mood }: Props) => {
     </div>
   );
 };
-
-function MsgDropdown() {
-  return (
-    <Dropdown className="flex-none">
-      <DropdownTrigger>
-        <button>
-          <BsThreeDotsVertical size={24} color="white" />
-        </button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Static Actions">
-        <DropdownItem className="text-white" key="edit">
-          <Trans>Edit</Trans>
-        </DropdownItem>
-        <DropdownItem key="delete" className="text-danger" color="danger">
-          <Trans>Delete</Trans>
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-  );
-}
 
 export { ChatMessage };

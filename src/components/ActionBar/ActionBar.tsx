@@ -1,15 +1,15 @@
-import { useRouter } from "next/router";
-import { IconType } from "react-icons";
-import { AiOutlineUser } from "react-icons/ai";
-import { useEffect, useState } from "react";
 import { paths } from "@/lib/paths";
-import { twMerge } from "tailwind-merge";
-import { Button } from "@nextui-org/react";
-import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
-import { IoChatbubbles, IoChatbubblesOutline } from "react-icons/io5";
+import { Capacitor } from "@capacitor/core";
 import { normalizePath } from "@lib/utils";
 import { t } from "@lingui/macro";
-import { Capacitor } from "@capacitor/core";
+import { Button } from "@nextui-org/react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { IconType } from "react-icons";
+import { AiOutlineUser } from "react-icons/ai";
+
+import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
+import { twMerge } from "tailwind-merge";
 // import svg assets/icons/history.svg
 
 // Mapping of paths and their icons.
@@ -50,7 +50,7 @@ function getButtons() {
  * @param props
  * @constructor
  */
-export const ActionBar = (props: {}) => {
+export const ActionBar = () => {
   const [activeButtId, setActiveButtId] = useState<string | null>(null);
   const router = useRouter();
 
@@ -63,6 +63,7 @@ export const ActionBar = (props: {}) => {
 
     // Check which button is active.
     for (let i = 0; i < getButtons().length; i++) {
+      // biome-ignore lint/style/noNonNullAssertion: Will not be null.
       const button = getButtons()[i]!;
       const pathname = normalizePath(button.path);
 
@@ -127,19 +128,12 @@ function ActionButton(props: ButtonProp & { isActive: boolean }) {
         )}
       >
         {props.isActive && (
-          <props.iconFilled
-            className={`flex-1 ${transitionDuration}`}
-            size={26}
-          />
+          <props.iconFilled className={`flex-1 ${transitionDuration}`} size={26} />
         )}
         {!props.isActive && (
           <props.icon className={`flex-1 ${transitionDuration}`} size={26} />
         )}
-        {
-          <p className={`text-sm font-semibold ${transitionDuration}`}>
-            {props.title}
-          </p>
-        }
+        {<p className={`text-sm font-semibold ${transitionDuration}`}>{props.title}</p>}
       </Button>
     </div>
   );

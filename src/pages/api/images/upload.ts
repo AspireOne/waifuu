@@ -1,11 +1,11 @@
 import { promises as fs } from "fs";
 import path from "path";
-import * as formidable from "formidable";
-import * as minio from "minio";
 import { env } from "@/server/env";
-import generateUUID from "@lib/utils";
 import { prisma } from "@/server/lib/db";
 import metaHandler from "@/server/lib/metaHandler";
+import generateUUID from "@lib/utils";
+import * as formidable from "formidable";
+import * as minio from "minio";
 
 type ProcessedFiles = Array<[string, formidable.File]>;
 type ResultData = {
@@ -47,28 +47,26 @@ export default metaHandler.protected(async (req, res, ctx) => {
   let status = 200;
   let resultBody: Response = { status: ResponseCode.OK, message: null };
 
-  const files = await new Promise<ProcessedFiles | undefined>(
-    (resolve, reject) => {
-      const form = new formidable.IncomingForm();
-      const files: ProcessedFiles = [];
+  const files = await new Promise<ProcessedFiles | undefined>((resolve, reject) => {
+    const form = new formidable.IncomingForm();
+    const files: ProcessedFiles = [];
 
-      form.on("file", function (field, file) {
-        files.push([field, file]);
-      });
-      form.on("end", () => resolve(files));
-      form.on("error", (err) => reject(err));
-      form.parse(req, () => {
-        if (!files.length) {
-          status = 400;
-          resultBody = {
-            status: ResponseCode.BAD_REQUEST,
-            message: "No files were uploaded",
-          };
-          reject();
-        }
-      });
-    },
-  ).catch(() => {
+    form.on("file", function (field, file) {
+      files.push([field, file]);
+    });
+    form.on("end", () => resolve(files));
+    form.on("error", (err) => reject(err));
+    form.parse(req, () => {
+      if (!files.length) {
+        status = 400;
+        resultBody = {
+          status: ResponseCode.BAD_REQUEST,
+          message: "No files were uploaded",
+        };
+        reject();
+      }
+    });
+  }).catch(() => {
     status = 500;
     resultBody = {
       status: ResponseCode.SERVER_ERROR,
@@ -77,7 +75,7 @@ export default metaHandler.protected(async (req, res, ctx) => {
   });
 
   if (files?.length) {
-    const targetPath = path.join(process.cwd(), `/uploads/`);
+    const targetPath = path.join(process.cwd(), "/uploads/");
     try {
       await fs.access(targetPath);
     } catch (e) {

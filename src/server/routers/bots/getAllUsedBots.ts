@@ -11,7 +11,7 @@ export default protectedProcedure
     }),
   )
   .query(async ({ input, ctx }) => {
-    const chats = await ctx.prisma.botChat.findMany({
+    const chats = await ctx.prisma.chat.findMany({
       take: input?.limit || undefined,
       where: {
         userId: ctx.user.id,
@@ -24,7 +24,7 @@ export default protectedProcedure
     return chats.map((chat) => {
       return {
         chatId: chat.id,
-        chatType: chat.botMode,
+        chatType: chat.mode,
         ...chat.bot,
       };
     });

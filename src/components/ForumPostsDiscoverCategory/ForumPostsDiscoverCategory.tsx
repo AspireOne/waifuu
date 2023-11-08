@@ -1,12 +1,12 @@
-import * as React from "react";
-import Title from "@components/ui/Title";
-import { MdForum } from "react-icons/md";
-import { Trans } from "@lingui/macro";
 import { ForumPostHighlight } from "@components/forum/ForumPostHighlight";
+import Title from "@components/ui/Title";
 import { api } from "@lib/api";
+import { paths } from "@lib/paths";
+import { Trans } from "@lingui/macro";
 import { Button, Spacer } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import { paths } from "@lib/paths";
+
+import { MdForum } from "react-icons/md";
 
 export const ForumPostsDiscoverCategory = () => {
   const forumPosts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
@@ -30,7 +30,7 @@ export const ForumPostsDiscoverCategory = () => {
 
       <div className="flex flex-wrap gap-4 ">
         {forumPosts.data?.map((post) => {
-          return <ForumPostHighlight {...post} />;
+          return <ForumPostHighlight key={post.id} {...post} />;
         })}
       </div>
     </div>

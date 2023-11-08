@@ -1,7 +1,7 @@
-import { prisma } from "@/server/lib/db";
-import minio from "minio";
 import { env } from "@/server/env";
+import { prisma } from "@/server/lib/db";
 import metaHandler from "@/server/lib/metaHandler";
+import minio from "minio";
 
 const MinioClient = new minio.Client({
   endPoint: "127.0.0.1",
@@ -12,8 +12,7 @@ const MinioClient = new minio.Client({
 });
 
 export default metaHandler.protected(async (req, res, ctx) => {
-  if (req.method !== "DELETE")
-    return res.status(405).send("Method not allowed");
+  if (req.method !== "DELETE") return res.status(405).send("Method not allowed");
 
   const params: Partial<{ id: string }> = req.query;
 
@@ -22,9 +21,7 @@ export default metaHandler.protected(async (req, res, ctx) => {
   }
 
   if (ctx.user?.id !== params.id)
-    return res
-      .status(401)
-      .send("Unauthorized: You can only delete your own images");
+    return res.status(401).send("Unauthorized: You can only delete your own images");
 
   const item = await prisma.asset.delete({
     where: {

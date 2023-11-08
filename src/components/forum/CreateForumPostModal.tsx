@@ -1,3 +1,4 @@
+import { api } from "@/lib/api";
 import {
   Button,
   Input,
@@ -8,9 +9,8 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
-import { api } from "@/lib/api";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { FileUploadRaw } from "../ui/FileUploadRaw";
 
 type CreateForumPostModalProps = {
@@ -24,10 +24,7 @@ type FormContentType = {
   category: string;
 };
 
-export const CreateForumPostModal = ({
-  isOpen,
-  onToggle,
-}: CreateForumPostModalProps) => {
+export const CreateForumPostModal = ({ isOpen, onToggle }: CreateForumPostModalProps) => {
   const { register, handleSubmit } = useForm<FormContentType>();
   const createPostMutation = api.forum.create.useMutation();
 
@@ -52,10 +49,7 @@ export const CreateForumPostModal = ({
           </ModalHeader>
 
           <ModalBody>
-            <FileUploadRaw
-              label="Post banner image"
-              onUpload={(id) => setBannerId(id)}
-            />
+            <FileUploadRaw label="Post banner image" onUpload={(id) => setBannerId(id)} />
             <Input {...register("title")} autoFocus placeholder="Title" />
             <Textarea {...register("content")} placeholder="Content" />
             <Input label="Post category" {...register("category")} />

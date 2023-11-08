@@ -1,22 +1,22 @@
+import { Trans, t } from "@lingui/macro";
 import { Button, Card, CardBody, Tab, Tabs } from "@nextui-org/react";
-import { BotMode } from "@prisma/client";
-import { t, Trans } from "@lingui/macro";
+import { ChatMode } from "@prisma/client";
 
 function getTabs() {
   return [
     {
       title: t`Adventure`,
-      key: BotMode.ADVENTURE,
+      key: ChatMode.ADVENTURE,
       description: t`Your world, your story. You control the character, and you decide how the story will unfold.`,
     },
     {
       title: t`Chat`,
-      key: BotMode.CHAT,
+      key: ChatMode.CHAT,
       description: t`Casually chat with the character. Hey, how r u?`,
     },
     {
       title: t`Roleplay`,
-      key: BotMode.ROLEPLAY,
+      key: ChatMode.ROLEPLAY,
       description: t`Talk with the character as if you were there with them.`,
     },
   ];
@@ -26,7 +26,7 @@ const ChatSelectTabs = ({
   onSelect,
   isLoading,
 }: {
-  onSelect: (data: BotMode) => void;
+  onSelect: (data: ChatMode) => void;
   isLoading: boolean;
 }) => {
   // TODO: FIX - Not working on firefox devtools,

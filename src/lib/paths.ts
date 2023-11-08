@@ -9,8 +9,7 @@ export const paths = {
   discover: "/discover",
   profile: "/profile",
   contact: "/contact",
-  login: (redirect?: string) =>
-    "/login" + (redirect ? `?redirect=${redirect}` : ""),
+  login: (redirect?: string) => `/login${redirect ? `?redirect=${redirect}` : ""}`,
   userProfile: (username: string) => `/user/${username}`,
   createBot: "/character/create",
   botChatMainMenu: (botId: string) => `/character/${botId}`,

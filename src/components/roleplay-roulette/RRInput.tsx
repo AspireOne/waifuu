@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { Trans, msg } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
 import {
   Button,
   Modal,
@@ -7,13 +8,12 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
-import { RiSendPlane2Fill } from "react-icons/ri";
+import React, { useEffect } from "react";
 import { BsFillStopCircleFill } from "react-icons/bs";
-import { LuRefreshCcw } from "react-icons/lu";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import { LuRefreshCcw } from "react-icons/lu";
+import { RiSendPlane2Fill } from "react-icons/ri";
 import { twMerge } from "tailwind-merge";
-import { useLingui } from "@lingui/react";
-import { msg, Trans } from "@lingui/macro";
 
 export const RRInput = (props: {
   isFirstChat: boolean;
@@ -77,10 +77,7 @@ export const RRInput = (props: {
 
       <div className={"absolute right-4"}>
         {showSendButton && (
-          <SendButton
-            inChat={props.inChat}
-            handleSendClicked={handleSendClicked}
-          />
+          <SendButton inChat={props.inChat} handleSendClicked={handleSendClicked} />
         )}
 
         {!showSendButton && (
@@ -145,9 +142,7 @@ function ActionButton(props: {
       className={"p-1 bg-transparent"}
       onClick={props.handleButtonClicked}
     >
-      {props.inChat && (
-        <BsFillStopCircleFill size={30} className={"text-danger"} />
-      )}
+      {props.inChat && <BsFillStopCircleFill size={30} className={"text-danger"} />}
       {!props.inChat && (!props.firstChat || props.isSearching) && (
         <LuRefreshCcw
           size={30}

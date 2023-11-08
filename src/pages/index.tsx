@@ -1,10 +1,10 @@
-import Image from "next/image";
-import React from "react";
-import Page from "@/components/Page";
-import Discover from "@/pages/discover";
 import { Emoji } from "@/components/ui/Emoji";
-import { twMerge } from "tailwind-merge";
+import Discover from "@/pages/discover";
 import { Spacer } from "@nextui-org/react";
+import Image from "next/image";
+
+import { PublicPage } from "@components/PublicPage";
+import { twMerge } from "tailwind-merge";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
 // So if we are building for a native app, we export Homepage instead.
@@ -80,49 +80,34 @@ const Features = () => {
   return (
     <div className="w-fit mx-auto">
       <div className="flex flex-row gap-3">
-        <Image
-          width={300}
-          height={200}
-          alt="Feature 1"
-          src="/assets/feature1.png"
-        />
+        <Image width={300} height={200} alt="Feature 1" src="/assets/feature1.png" />
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by
-            himself, it simply feels real.
+            Companion is there 24/7 with you, he sometimes sends you message by himself, it
+            simply feels real.
           </p>
         </div>
       </div>
 
       <div className="flex flex-row gap-3">
-        <Image
-          width={300}
-          height={200}
-          alt="Feature 2"
-          src="/assets/feature2.png"
-        />
+        <Image width={300} height={200} alt="Feature 2" src="/assets/feature2.png" />
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by
-            himself, it simply feels real.
+            Companion is there 24/7 with you, he sometimes sends you message by himself, it
+            simply feels real.
           </p>
         </div>
       </div>
 
       <div className="flex flex-row gap-3">
-        <Image
-          width={300}
-          height={200}
-          alt="Feature 3"
-          src="/assets/feature3.png"
-        />
+        <Image width={300} height={200} alt="Feature 3" src="/assets/feature3.png" />
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by
-            himself, it simply feels real.
+            Companion is there 24/7 with you, he sometimes sends you message by himself, it
+            simply feels real.
           </p>
         </div>
       </div>
@@ -133,9 +118,7 @@ const Features = () => {
 const PayPlans = () => {
   return (
     <div>
-      <h1 className="text-4xl font-bold text-center">
-        🛒 Pay only for what you need
-      </h1>
+      <h1 className="text-4xl font-bold text-center">🛒 Pay only for what you need</h1>
 
       <Spacer y={10} />
       <div className="flex flex-row gap-6 w-fit mx-auto">
@@ -143,8 +126,8 @@ const PayPlans = () => {
           <Emoji className="h-10 w-10 mx-auto" name="money" />
           <h1 className="text-2xl text-center font-bold">Money</h1>
           <p className="text-center w-96">
-            Pro tier is for people that want to chat all-day long, maximal quota
-            is almost infinite
+            Pro tier is for people that want to chat all-day long, maximal quota is almost
+            infinite
           </p>
           <Spacer y={2} />
           <div className="rounded-xl bg-[#292929] text-center p-3">
@@ -153,9 +136,7 @@ const PayPlans = () => {
               <p className="text-white">13$</p>
             </div>
             <Spacer y={2} />
-            <button className="bg-[#1A1A1A] p-2 rounded-full px-5">
-              Choose tier
-            </button>
+            <button className="bg-[#1A1A1A] p-2 rounded-full px-5">Choose tier</button>
             <Spacer y={2} />
             <p>*You will be billed 13$ per month</p>
           </div>
@@ -174,9 +155,7 @@ const PayPlans = () => {
               <p className="text-white">13$</p>
             </div>
             <Spacer y={2} />
-            <button className="bg-[#7C7C7C] p-2 rounded-full px-5">
-              Choose tier
-            </button>
+            <button className="bg-[#7C7C7C] p-2 rounded-full px-5">Choose tier</button>
             <Spacer y={2} />
             <p>*You will be billed 13$ per month</p>
           </div>
@@ -272,39 +251,43 @@ const Footer = () => {
 };
 
 // prettier-ignore
-export default process.env.NEXT_PUBLIC_BUILDING_NATIVE ? Discover : function LandingPage() {
-  // const { status } = useSession();
-  // const router = useRouter();
+export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
+  ? Discover
+  : function LandingPage() {
+      // const { status } = useSession();
+      // const router = useRouter();
 
-  // React.useEffect(() => {
-  //   if (Capacitor.isNativePlatform()) {
-  //     router.replace(semanticPaths.appIndex);
-  //   }
-  // }, []);
+      // React.useEffect(() => {
+      //   if (Capacitor.isNativePlatform()) {
+      //     router.replace(semanticPaths.appIndex);
+      //   }
+      // }, []);
 
-  // React.useEffect(() => {
-  //   if (status === "authenticated") router.push(semanticPaths.appIndex);
-  // }, [status]);
+      // React.useEffect(() => {
+      //   if (status === "authenticated") router.push(semanticPaths.appIndex);
+      // }, [status]);
 
-  // Todo: meta description.
+      // Todo: meta description.
+      return (
+        <PublicPage
+          className="bg-[#303030] text-white bg-contain bg-no-repeat bg-[url('/assets/indexbackground.png')]"
+          title={"Meet Companion"}
+          /*TODO: DESCRIPTION*/
+          description={""}
+        >
+          <TopBar />
 
-  return (
-    <Page
-      className="bg-[#303030] text-white bg-contain bg-no-repeat bg-[url('/assets/indexbackground.png')]"
-      title={"Meet Companion"}
-      unprotected
-      showHeader={false}
-      showActionBar={false}
-    >
-      <TopBar />
-
-      {[Header, Features, PayPlans, CompanionUsage, Footer].map((item, i) => (
-        <React.Fragment key={i}>
-          {i === 0 && <Spacer y={40} />}
-          {item()}
-          {i !== 0 && <Spacer y={40} />}
-        </React.Fragment>
-      ))}
-    </Page>
-  );
-}
+          <Spacer y={40} />
+          <Header />
+          <Spacer y={40} />
+          <Features />
+          <Spacer y={40} />
+          <PayPlans />
+          <Spacer y={40} />
+          <CompanionUsage />
+          <Spacer y={40} />
+          <Footer />
+          <Spacer y={40} />
+        </PublicPage>
+      );
+    };

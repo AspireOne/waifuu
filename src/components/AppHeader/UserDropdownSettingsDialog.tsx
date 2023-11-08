@@ -1,3 +1,6 @@
+import { useSession } from "@/hooks/useSession";
+import { api } from "@/lib/api";
+import { Trans, t } from "@lingui/macro";
 import {
   Button,
   Input,
@@ -8,11 +11,8 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react";
+
 import { useForm } from "react-hook-form";
-import { api } from "@/lib/api";
-import { useSession } from "@/hooks/useSession";
-import React from "react";
-import { t, Trans } from "@lingui/macro";
 
 type UserSettingsDialogProps = {
   isOpen: boolean;
@@ -21,7 +21,7 @@ type UserSettingsDialogProps = {
 
 type SubmitData = {
   addressedAs?: string;
-  about?: string;
+  botContext?: string;
 };
 
 export const UserDropdownSettingsDialog = ({
@@ -57,11 +57,11 @@ export const UserDropdownSettingsDialog = ({
                 />
 
                 <Textarea
-                  {...register("about")}
+                  {...register("botContext")}
                   className="w-full"
                   minRows={3}
-                  defaultValue={user?.about ?? ""}
-                  placeholder={t`Tell us about yourself`}
+                  defaultValue={user?.botContext ?? ""}
+                  placeholder={t`What should characters know about you?`}
                 />
               </ModalBody>
 
@@ -70,11 +70,7 @@ export const UserDropdownSettingsDialog = ({
                   `<Trans>Close</Trans>
                 </Button>
 
-                <Button
-                  isLoading={selfUpdate.isLoading}
-                  type="submit"
-                  color="primary"
-                >
+                <Button isLoading={selfUpdate.isLoading} type="submit" color="primary">
                   <Trans>Save Changes</Trans>
                 </Button>
               </ModalFooter>

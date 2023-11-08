@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
-import { PresenceChannel } from "pusher-js";
 import PresenceChannelMember from "@/server/shared/presenceChannelMember";
+import { PresenceChannel } from "pusher-js";
+import { useEffect, useState } from "react";
 
 export type RRMessage = {
   content: string;
   id: number;
   user: PresenceChannelMember;
   type: "message";
+};
+
+type PusherMessage = {
+  from?: string;
+  message?: string;
 };
 
 export type RRSystemMessageType = "error" | "success" | "info" | "";
@@ -32,14 +37,14 @@ export default function useRRMessages(channel: PresenceChannel | null) {
   const sendMsgMutation = api.RRChat.sendMessage.useMutation({
     onMutate: () => {
       // Check the ID of the last message, and add this message with an id one number higher.
-      console.log("Sending Message - Channel: " + channel?.name);
+      console.log(`Sending Message - Channel: ${channel?.name}`);
     },
     onSuccess: (data) => {
       console.log("Message sent.");
     },
     onError: (error) => {
       console.log(error.data);
-      console.log("Error sending message: " + error.message);
+      console.log(`Error sending message: ${error.message}`);
     },
   });
 
@@ -55,11 +60,7 @@ export default function useRRMessages(channel: PresenceChannel | null) {
     ]);
   }
 
-  function addSystemMessage(
-    content: string,
-    title?: string,
-    type?: RRSystemMessageType,
-  ) {
+  function addSystemMessage(content: string, title?: string, type?: RRSystemMessageType) {
     setMessages((prev) => [
       ...prev,
       {
@@ -98,7 +99,11 @@ export default function useRRMessages(channel: PresenceChannel | null) {
     setPrevChannelName(channel.name);
     clearMessages();
 
-    channel.bind("message", (data: any) => {
+    channel.bind("message", (data: PusherMessage) => {
+      if (!data.from || !data.message) {
+        throw new Error("Received malformed message.");
+      }
+
       const user: PresenceChannelMember = channel.members.get(data.from);
       const me: PresenceChannelMember = channel.members.me;
 

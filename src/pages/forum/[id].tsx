@@ -1,23 +1,16 @@
-import { Trans, t, msg } from "@lingui/macro";
+import { ForumPostComment } from "@/components/forum/ForumPostComment";
+import { Flex } from "@/components/ui/Flex";
+import { api } from "@/lib/api";
+import { AppPage } from "@components/AppPage";
+import { makeDownloadUrl } from "@lib/utils";
+import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import {
-  Button,
-  Chip,
-  Image,
-  Modal,
-  ModalContent,
-  Textarea,
-} from "@nextui-org/react";
-import { FaHeart, FaReply } from "react-icons/fa";
+import { Button, Chip, Image, Modal, ModalContent, Textarea } from "@nextui-org/react";
+import moment from "moment";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ForumPostComment } from "@/components/forum/ForumPostComment";
-import { Flex } from "@/components/ui/Flex";
-import Page from "@/components/Page";
-import { api } from "@/lib/api";
-import moment from "moment";
-import { makeDownloadPath } from "@lib/utils";
+import { FaHeart, FaReply } from "react-icons/fa";
 
 type CreateFormPostForm = {
   content: string;
@@ -71,7 +64,7 @@ export default function ForumPostPage() {
   };
 
   return (
-    <Page title={_(msg`Forum Post`)} className="space-y-4">
+    <AppPage title={_(msg`Forum Post`)} className="space-y-4">
       <header className="w-full">
         <Image
           isLoading={post.isLoading}
@@ -79,7 +72,7 @@ export default function ForumPostPage() {
           className="z-0 w-screen h-36 object-cover"
           src={
             post.data?.bannerImage
-              ? makeDownloadPath(post.data.bannerImage)
+              ? makeDownloadUrl(post.data.bannerImage)
               : "/default-banner.png"
           }
         />
@@ -87,16 +80,10 @@ export default function ForumPostPage() {
         <div className="mt-2">
           <Flex orientation="col" className="align-center">
             <h1 className="text-2xl font-bold">{post.data?.title}</h1>
-            <p className="text-gray-500">
-              {moment(post.data?.createdAt).fromNow()}
-            </p>
+            <p className="text-gray-500">{moment(post.data?.createdAt).fromNow()}</p>
           </Flex>
 
-          <Chip
-            key={post.data?.category?.name}
-            className="mt-2 mb-2"
-            color="default"
-          >
+          <Chip key={post.data?.category?.name} className="mt-2 mb-2" color="default">
             {post.data?.category?.name}
           </Chip>
 
@@ -130,22 +117,13 @@ export default function ForumPostPage() {
           </label>
         </div>
 
-        <Modal
-          isOpen={commentInputOpen}
-          onClose={() => setCommentInputOpen(false)}
-        >
+        <Modal isOpen={commentInputOpen} onClose={() => setCommentInputOpen(false)}>
           <ModalContent className="p-3">
             <h1 className="text-lg font-bold">
               <Trans>Create a new comment</Trans>
             </h1>
-            <form
-              className="flex flex-col gap-2"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <Textarea
-                {...register("content")}
-                placeholder={_(msg`Comment`)}
-              />
+            <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
+              <Textarea {...register("content")} placeholder={_(msg`Comment`)} />
               <Button isLoading={createCommentMutation.isLoading} type="submit">
                 <Trans>Submit</Trans>
               </Button>
@@ -166,6 +144,6 @@ export default function ForumPostPage() {
           ))}
         </div>
       </section>
-    </Page>
+    </AppPage>
   );
 }

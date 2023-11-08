@@ -1,6 +1,6 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import { z } from "zod";
 import { ForumPost } from "@prisma/client";
+import { z } from "zod";
 
 export default protectedProcedure
   .input(
@@ -27,7 +27,7 @@ export default protectedProcedure
       },
     });
 
-    let ids: string[] = [];
+    const ids: string[] = [];
     const recursivePostIds = (posts: ForumPost[]) => {
       posts.map((post) => {
         ids.push(post.id);
