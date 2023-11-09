@@ -120,7 +120,7 @@ export default () => {
 
         <div className={"absolute top-2 right-2 flex flex-row gap-2 items-center"}>
           {tabsVisible && <ActionTabs />}
-          <Tooltip title={"Open/Close tools"}>
+          <Tooltip content={"Open/Close tools"} delay={1000}>
             <Button
               size={"sm"}
               className={"shadow"}
