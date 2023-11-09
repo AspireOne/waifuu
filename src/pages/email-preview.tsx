@@ -3,7 +3,9 @@ import { Kbd } from "@nextui-org/kbd";
 import { Button, Divider, Spacer, Tab, Tabs } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { useEffect, useState } from "react";
+import { AiOutlineMenu } from "react-icons/ai";
 import { toast } from "react-toastify";
+import { twMerge } from "tailwind-merge";
 
 type Template = {
   name: string;
@@ -12,7 +14,13 @@ type Template = {
 export default () => {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [selected, setSelected] = useState<Template | undefined>();
+
   const [selectedTab, setSelectedTab] = useState<"rendered" | "html">("rendered");
+  const [selectedTheme, setSelectedTheme] = useState<"dark" | "light">("light");
+  const [previewMode, setPreviewMode] = useState<"mobile" | "desktop">("desktop");
+
+  const [tabsVisible, setTabsVisible] = useState<boolean>(true);
+
   const { data, refetch, isLoading, isRefetching } = api.general.getEmailTemplates.useQuery(
     undefined,
     {
@@ -46,7 +54,7 @@ export default () => {
 
   const Sidebar = () => {
     return (
-      <div className={"w-[230px] min-h-[200px] border-r-1 border-gray-500 p-4"}>
+      <div className={"w-[230px] min-h-[200px] border-r-1 border-gray-500 p-4 shadow"}>
         <div>
           <p className={"text-md font-bold text-center"}>❤ Preview by @Aspire</p>
           <Spacer y={6} />
@@ -92,9 +100,12 @@ export default () => {
   const Body = (props: { mode: "rendered" | "html" }) => {
     return (
       <div
-        className={
-          "relative flex-1 w-full h-full flex flex-col justify-center items-center min-h-[95vh] m-4 rounded-xl shadow border border-gray-500"
-        }
+        className={twMerge(
+          "relative flex-1 w-full h-full min-h-[95vh] m-4 rounded-lg shadow border border-gray-500 mx-auto",
+          /*"flex flex-col justify-center items-center",*/
+          selectedTheme === "dark" ? "" : "bg-white text-gray-900",
+          previewMode === "mobile" ? "max-w-[379px]" : "max-w-[1000px]",
+        )}
       >
         {!selected && <p>No mail selected</p>}
 
@@ -107,15 +118,51 @@ export default () => {
           <p className={"whitespace-break-spaces"}>{selected?.html}</p>
         )}
 
-        <div className={"whitespace-break-spaces absolute top-3 left-3"}>
-          <Tabs
-            selectedKey={selectedTab}
-            onSelectionChange={(key) => setSelectedTab(key as "rendered" | "html")}
-          >
-            <Tab key={"rendered"} title={"Mail"} />
-            <Tab key={"html"} title={"HTML"} />
-          </Tabs>
+        <div className={"absolute top-2 right-2 flex flex-row gap-2 items-center"}>
+          {tabsVisible && <ActionTabs />}
+          <Tooltip title={"Open/Close tools"}>
+            <Button
+              size={"sm"}
+              className={"shadow"}
+              isIconOnly={true}
+              onClick={() => setTabsVisible(!tabsVisible)}
+            >
+              <AiOutlineMenu />
+            </Button>
+          </Tooltip>
         </div>
+      </div>
+    );
+  };
+
+  const ActionTabs = () => {
+    return (
+      <div className={"flex flex-row gap-4 justify-content-end"}>
+        <Tabs
+          size={"sm"}
+          selectedKey={selectedTab}
+          onSelectionChange={(key) => setSelectedTab(key as "rendered" | "html")}
+        >
+          <Tab key={"rendered"} title={"Mail"} />
+          <Tab key={"html"} title={"HTML"} />
+        </Tabs>
+
+        <Tabs
+          size={"sm"}
+          selectedKey={previewMode}
+          onSelectionChange={(key) => setPreviewMode(key as "mobile" | "desktop")}
+        >
+          <Tab key={"mobile"} title={"Mobile"} />
+          <Tab key={"desktop"} title={"Desktop"} />
+        </Tabs>
+
+        {/*<Tabs
+              selectedKey={selectedTheme}
+              onSelectionChange={(key) => setSelectedTheme(key as "dark" | "light")}
+            >
+              <Tab key={"dark"} title={"Dark"} />
+              <Tab key={"light"} title={"Light"} />
+            </Tabs>*/}
       </div>
     );
   };
