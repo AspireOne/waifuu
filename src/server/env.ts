@@ -1,5 +1,6 @@
 import z from "zod";
 
+/** Must not be imported from the client! */
 export const envSchema = z.object({
   NODE_ENV: z.string().default("development"),
 
@@ -21,6 +22,8 @@ export const envSchema = z.object({
 
   // The Firebase Admin SDK credentials. This should be an one-line JSON string.
   SERVICE_ACCOUNT_JSON: z.string().min(10),
+
+  MAILGUN_API_KEY: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);
