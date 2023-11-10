@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 export default function Title(props: {
   children: React.ReactNode;
   /** @default "h2" */
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | string;
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | string;
   /** @default "lg" */
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;

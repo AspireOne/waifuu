@@ -22,10 +22,10 @@ export const DiscoverHeader = () => {
         <p className="text-2xl md:text-4xl">👋</p>
 
         <div>
-          <Title className={"my-1 text-2xl md:text-4xl"} as={"p"} bold>
+          <Title className={"my-1 text-2xl md:text-4xl"} as={"h4"} bold>
             <Trans>Hi, {user?.name}</Trans>
           </Title>
-          <p className="text-foreground-700 text-lg md:text-xl ">
+          <p className="text-foreground-700 text-lg md:text-xl">
             <Trans>Let's explore some new characters.</Trans>
           </p>
         </div>

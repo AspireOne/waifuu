@@ -29,6 +29,7 @@ export const TagMultiSelect = ({ onSelectTagIds }: Props) => {
       onSelectionChange={setSelected}
       selectedKeys={selected}
       placeholder={t`Select tags`}
+      aria-label={t`Select tags`}
       className="w-48"
     >
       {data.map(({ name }) => {
