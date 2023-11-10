@@ -1,10 +1,10 @@
 import RegisterEmailTemplate, {
   getRegisterEmailSubject,
 } from "@/emails/templates/RegisterEmailTemplate";
+import { generateUniqueUsername } from "@/server/helpers/username";
 import { email } from "@/server/lib/email";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
-import { generateUniqueUsername } from "@/server/lib/usernameUtils";
 import { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { DecodedIdToken } from "firebase-admin/auth";

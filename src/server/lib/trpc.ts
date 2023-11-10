@@ -12,8 +12,8 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { retrieveUser } from "@/server/helpers/retrieveUser";
 import { prisma } from "@/server/lib/db";
-import { retrieveUser } from "@/server/lib/retrieveUser";
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { OpenApiMeta } from "trpc-openapi";

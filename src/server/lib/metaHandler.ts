@@ -1,4 +1,4 @@
-import { retrieveUser } from "@/server/lib/retrieveUser";
+import { retrieveUser } from "@/server/helpers/retrieveUser";
 import { User } from "@prisma/client";
 import { wrapApiHandlerWithSentry } from "@sentry/nextjs";
 import { NextApiRequest, NextApiResponse } from "next";
