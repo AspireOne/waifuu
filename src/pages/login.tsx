@@ -47,7 +47,7 @@ const Login = () => {
   const router = useRouter();
   const redirect = searchParams.get("redirect");
 
-  // !Check for session.user instead of session.status.
+  //! IMPORTANT Check for session.user instead of session.status.
   useEffect(() => {
     if (session.user) {
       router.replace(redirect || semanticPaths.appIndex);
@@ -65,7 +65,7 @@ const Login = () => {
       // router.replace((redirect as string) || semanticPaths.appIndex);
       // session.refetch();
 
-      window.location.replace(redirect || semanticPaths.appIndex);
+      //window.location.replace(redirect || semanticPaths.appIndex);
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);

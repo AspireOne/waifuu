@@ -2,7 +2,7 @@
 import { Body, Head, Heading, Hr, Html, Preview, Section, Tailwind } from "@jsx-email/all";
 
 import { PropsWithChildren } from "react";
-import { i18n } from "@lingui/core";
+
 import { EmailFooter } from "@/emails/components/EmailFooter";
 
 type EmailProps = PropsWithChildren<{
@@ -12,11 +12,8 @@ type EmailProps = PropsWithChildren<{
 
 /** Base email container. */
 export const Email = ({ preview, title, children }: EmailProps) => {
-  const lang = i18n.locale;
-  console.log("=>(Email.tsx:13) lang", lang);
-
   return (
-    <Html lang={lang}>
+    <Html lang={""}>
       <Head>{/*Some content here...*/}</Head>
       <Body>
         <Tailwind

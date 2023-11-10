@@ -32,20 +32,14 @@ export const generalRouter = createTRPCRouter({
       throw new Error("This endpoint is only available in development mode.");
     }
 
-    await email.messages.create(env.MAILGUN_DOMAIN, {
-      from: `mailgun <mailgun@${env.MAILGUN_DOMAIN}>`,
+    await email.send({
+      from: email.from.test,
       to: [env.TESTING_EMAIL],
       subject: getTestEmailSubject(),
-      text: await render(
-        TestEmailTemplate({
-          content:
-            "Batman is dead. I am writing this in the hope of\nO-\n\nNewline. In the hope of-\n\nGotta go, bye!\n\n yor companion",
-        }),
-        {
-          plainText: true,
-        },
-      ),
-      html: await render(TestEmailTemplate({ content: "Batman is dead." })),
+      template: TestEmailTemplate({
+        content:
+          "Batman is dead. I am writing this in the hope of\nO-\n\nNewline. In the hope of-\n\nGotta go, bye!\n\n yor companion",
+      }),
     });
   }),
 
