@@ -78,6 +78,7 @@
     "filepond-plugin-image-preview": "^4.6.11",
     "firebase": "^10.5.2",
     "firebase-admin": "^11.11.0",
+    "form-data": "^4.0.0",
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",
     "franc-min": "^6.1.0",

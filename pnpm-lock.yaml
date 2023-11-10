@@ -68,7 +68,7 @@ dependencies:
   '@pinecone-database/pinecone':
     specifier: ^1.1.2
     version: 1.1.2
-  '@prisma/client':
+  '@prisma/email':
     specifier: ^5.5.2
     version: 5.5.2
   '@sentry/capacitor':
@@ -86,15 +86,15 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^4.36.1
     version: 4.36.1(react-dom@18.2.0)(react@18.2.0)
-  '@trpc/client':
+  '@trpc/email':
     specifier: ^10.43.1
     version: 10.43.1(@trpc/server@10.43.1)
   '@trpc/next':
     specifier: ^10.43.1
-    version: 10.43.1(@tanstack/react-query@4.36.1)(@trpc/client@10.43.1)(@trpc/react-query@10.43.1)(@trpc/server@10.43.1)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0)
+    version: 10.43.1(@tanstack/react-query@4.36.1)(@trpc/email@10.43.1)(@trpc/react-query@10.43.1)(@trpc/server@10.43.1)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0)
   '@trpc/react-query':
     specifier: ^10.43.1
-    version: 10.43.1(@tanstack/react-query@4.36.1)(@trpc/client@10.43.1)(@trpc/server@10.43.1)(react-dom@18.2.0)(react@18.2.0)
+    version: 10.43.1(@tanstack/react-query@4.36.1)(@trpc/email@10.43.1)(@trpc/server@10.43.1)(react-dom@18.2.0)(react@18.2.0)
   '@trpc/server':
     specifier: ^10.43.1
     version: 10.43.1
@@ -143,6 +143,9 @@ dependencies:
   firebase-admin:
     specifier: ^11.11.0
     version: 11.11.0
+  form-data:
+    specifier: ^4.0.0
+    version: 4.0.0
   formidable:
     specifier: ^3.5.1
     version: 3.5.1
@@ -3627,7 +3630,7 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@prisma/client@5.5.2:
+  /@prisma/email@5.5.2:
     resolution: {integrity: sha512-54XkqR8M+fxbzYqe+bIXimYnkkcGqgOh0dn0yWtIk6CQT4IUCAvNFNcQZwk2KqaLU+/1PHTSWrcHtx4XjluR5w==}
     engines: {node: '>=16.13'}
     requiresBuild: true
@@ -4971,7 +4974,7 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  /@trpc/client@10.43.1(@trpc/server@10.43.1):
+  /@trpc/email@10.43.1(@trpc/server@10.43.1):
     resolution: {integrity: sha512-pkPtbDS0ck/2WZo2cWaPV11NFMII2I/nzse1Ggs5Cr0YczsZk3Z0DM77Sfb9FTSjmccYfkEtumHqxfTj6fRbbg==}
     peerDependencies:
       '@trpc/server': 10.43.1
@@ -4979,11 +4982,11 @@ packages:
       '@trpc/server': 10.43.1
     dev: false
 
-  /@trpc/next@10.43.1(@tanstack/react-query@4.36.1)(@trpc/client@10.43.1)(@trpc/react-query@10.43.1)(@trpc/server@10.43.1)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0):
+  /@trpc/next@10.43.1(@tanstack/react-query@4.36.1)(@trpc/email@10.43.1)(@trpc/react-query@10.43.1)(@trpc/server@10.43.1)(next@14.0.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-8Gmt5FaYR6Cb2KLPBUC3sc9xm2YOjJwJG+qUGZsmqnD0AstKr4D3K8dcrP+b7zjiyTIha2Lb3hGaXqyl1Z9X6g==}
     peerDependencies:
       '@tanstack/react-query': ^4.18.0
-      '@trpc/client': 10.43.1
+      '@trpc/email': 10.43.1
       '@trpc/react-query': 10.43.1
       '@trpc/server': 10.43.1
       next: '*'
@@ -4991,8 +4994,8 @@ packages:
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/client': 10.43.1(@trpc/server@10.43.1)
-      '@trpc/react-query': 10.43.1(@tanstack/react-query@4.36.1)(@trpc/client@10.43.1)(@trpc/server@10.43.1)(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/email': 10.43.1(@trpc/server@10.43.1)
+      '@trpc/react-query': 10.43.1(@tanstack/react-query@4.36.1)(@trpc/email@10.43.1)(@trpc/server@10.43.1)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server': 10.43.1
       next: 14.0.1(@babel/core@7.23.2)(babel-plugin-macros@3.1.0)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -5000,17 +5003,17 @@ packages:
       react-ssr-prepass: 1.5.0(react@18.2.0)
     dev: false
 
-  /@trpc/react-query@10.43.1(@tanstack/react-query@4.36.1)(@trpc/client@10.43.1)(@trpc/server@10.43.1)(react-dom@18.2.0)(react@18.2.0):
+  /@trpc/react-query@10.43.1(@tanstack/react-query@4.36.1)(@trpc/email@10.43.1)(@trpc/server@10.43.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-H7icpfXRYdD8K7EFDozKxtTEkMyQNu4+KLHNiCHq5yan4le3dyhtDYJa+1ZR/0sZWV95siVa+CqcUQHs1Nwu+g==}
     peerDependencies:
       '@tanstack/react-query': ^4.18.0
-      '@trpc/client': 10.43.1
+      '@trpc/email': 10.43.1
       '@trpc/server': 10.43.1
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/client': 10.43.1(@trpc/server@10.43.1)
+      '@trpc/email': 10.43.1(@trpc/server@10.43.1)
       '@trpc/server': 10.43.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -5773,7 +5776,7 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /client-only@0.0.1:
+  /email-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
 
   /cliui@8.0.1:
@@ -7744,16 +7747,16 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       '@aws-crypto/sha256-js': ^5.0.0
-      '@aws-sdk/client-bedrock-runtime': ^3.422.0
-      '@aws-sdk/client-dynamodb': ^3.310.0
-      '@aws-sdk/client-kendra': ^3.352.0
-      '@aws-sdk/client-lambda': ^3.310.0
-      '@aws-sdk/client-s3': ^3.310.0
-      '@aws-sdk/client-sagemaker-runtime': ^3.310.0
-      '@aws-sdk/client-sfn': ^3.310.0
+      '@aws-sdk/email-bedrock-runtime': ^3.422.0
+      '@aws-sdk/email-dynamodb': ^3.310.0
+      '@aws-sdk/email-kendra': ^3.352.0
+      '@aws-sdk/email-lambda': ^3.310.0
+      '@aws-sdk/email-s3': ^3.310.0
+      '@aws-sdk/email-sagemaker-runtime': ^3.310.0
+      '@aws-sdk/email-sfn': ^3.310.0
       '@aws-sdk/credential-provider-node': ^3.388.0
       '@azure/storage-blob': ^12.15.0
-      '@clickhouse/client': ^0.0.14
+      '@clickhouse/email': ^0.0.14
       '@cloudflare/ai': ^1.0.12
       '@elastic/elasticsearch': ^8.4.0
       '@getmetal/metal-sdk': '*'
@@ -7765,11 +7768,11 @@ packages:
       '@google-cloud/storage': ^6.10.1
       '@huggingface/inference': ^1.5.1
       '@mozilla/readability': '*'
-      '@notionhq/client': ^2.2.10
+      '@notionhq/email': ^2.2.10
       '@opensearch-project/opensearch': '*'
       '@pinecone-database/pinecone': ^1.1.0
       '@planetscale/database': ^1.8.0
-      '@qdrant/js-client-rest': ^1.2.0
+      '@qdrant/js-email-rest': ^1.2.0
       '@raycast/api': ^1.55.2
       '@smithy/eventstream-codec': ^2.0.5
       '@smithy/protocol-http': ^3.0.6
@@ -7784,10 +7787,10 @@ packages:
       '@vercel/kv': ^0.2.3
       '@vercel/postgres': ^0.5.0
       '@writerai/writer-sdk': ^0.40.2
-      '@xata.io/client': ^0.25.1
+      '@xata.io/email': ^0.25.1
       '@xenova/transformers': ^2.5.4
       '@zilliz/milvus2-sdk-node': '>=2.2.7'
-      apify-client: ^2.7.1
+      apify-email: ^2.7.1
       assemblyai: ^2.0.2
       axios: '*'
       cassandra-driver: ^4.6.4
@@ -7834,32 +7837,32 @@ packages:
       usearch: ^1.1.1
       vectordb: ^0.1.4
       voy-search: 0.6.2
-      weaviate-ts-client: ^1.4.0
+      weaviate-ts-email: ^1.4.0
       web-auth-library: ^1.0.3
       youtube-transcript: ^1.0.6
       youtubei.js: ^5.8.0
     peerDependenciesMeta:
       '@aws-crypto/sha256-js':
         optional: true
-      '@aws-sdk/client-bedrock-runtime':
+      '@aws-sdk/email-bedrock-runtime':
         optional: true
-      '@aws-sdk/client-dynamodb':
+      '@aws-sdk/email-dynamodb':
         optional: true
-      '@aws-sdk/client-kendra':
+      '@aws-sdk/email-kendra':
         optional: true
-      '@aws-sdk/client-lambda':
+      '@aws-sdk/email-lambda':
         optional: true
-      '@aws-sdk/client-s3':
+      '@aws-sdk/email-s3':
         optional: true
-      '@aws-sdk/client-sagemaker-runtime':
+      '@aws-sdk/email-sagemaker-runtime':
         optional: true
-      '@aws-sdk/client-sfn':
+      '@aws-sdk/email-sfn':
         optional: true
       '@aws-sdk/credential-provider-node':
         optional: true
       '@azure/storage-blob':
         optional: true
-      '@clickhouse/client':
+      '@clickhouse/email':
         optional: true
       '@cloudflare/ai':
         optional: true
@@ -7883,7 +7886,7 @@ packages:
         optional: true
       '@mozilla/readability':
         optional: true
-      '@notionhq/client':
+      '@notionhq/email':
         optional: true
       '@opensearch-project/opensearch':
         optional: true
@@ -7891,7 +7894,7 @@ packages:
         optional: true
       '@planetscale/database':
         optional: true
-      '@qdrant/js-client-rest':
+      '@qdrant/js-email-rest':
         optional: true
       '@raycast/api':
         optional: true
@@ -7921,13 +7924,13 @@ packages:
         optional: true
       '@writerai/writer-sdk':
         optional: true
-      '@xata.io/client':
+      '@xata.io/email':
         optional: true
       '@xenova/transformers':
         optional: true
       '@zilliz/milvus2-sdk-node':
         optional: true
-      apify-client:
+      apify-email:
         optional: true
       assemblyai:
         optional: true
@@ -8021,7 +8024,7 @@ packages:
         optional: true
       voy-search:
         optional: true
-      weaviate-ts-client:
+      weaviate-ts-email:
         optional: true
       web-auth-library:
         optional: true
@@ -9973,7 +9976,7 @@ packages:
     dependencies:
       '@babel/core': 7.23.2
       babel-plugin-macros: 3.1.0
-      client-only: 0.0.1
+      email-only: 0.0.1
       react: 18.2.0
 
   /stylis@4.2.0:

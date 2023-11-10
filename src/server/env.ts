@@ -24,6 +24,9 @@ export const envSchema = z.object({
   SERVICE_ACCOUNT_JSON: z.string().min(10),
 
   MAILGUN_API_KEY: z.string().min(1),
+  MAILGUN_DOMAIN: z.string().min(1),
+  NEXT_PUBLIC_MAILGUN_API_KEY: z.string().min(1),
+  TESTING_EMAIL: z.string().min(1).email(),
 });
 
 export const env = envSchema.parse(process.env);

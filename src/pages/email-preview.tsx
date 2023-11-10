@@ -101,10 +101,10 @@ export default () => {
     return (
       <div
         className={twMerge(
-          "relative flex-1 w-full h-full min-h-[95vh] m-4 rounded-lg shadow border border-gray-500 mx-auto",
+          "relative flex-1 w-full h-full min-h-[95vh] m-4 rounded-lg shadow border border-gray-500 mx-auto p-4",
           /*"flex flex-col justify-center items-center",*/
           selectedTheme === "dark" ? "" : "bg-white text-gray-900",
-          previewMode === "mobile" ? "max-w-[379px]" : "max-w-[1000px]",
+          previewMode === "mobile" ? "max-w-[373px]" : "max-w-[1000px]",
         )}
       >
         {!selected && <p>No mail selected</p>}
@@ -120,16 +120,14 @@ export default () => {
 
         <div className={"absolute top-2 right-2 flex flex-row gap-2 items-center"}>
           {tabsVisible && <ActionTabs />}
-          <Tooltip content={"Open/Close tools"} delay={1000}>
-            <Button
-              size={"sm"}
-              className={"shadow"}
-              isIconOnly={true}
-              onClick={() => setTabsVisible(!tabsVisible)}
-            >
-              <AiOutlineMenu />
-            </Button>
-          </Tooltip>
+          <Button
+            size={"sm"}
+            className={"shadow"}
+            isIconOnly={true}
+            onClick={() => setTabsVisible(!tabsVisible)}
+          >
+            <AiOutlineMenu />
+          </Button>
         </div>
       </div>
     );

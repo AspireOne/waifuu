@@ -1,5 +1,8 @@
 import * as fs from "fs";
 import path from "path";
+import TestEmailTemplate, { getTestEmailSubject } from "@/emails/templates/TestEmailTemplate";
+import { env } from "@/server/env";
+import { email } from "@/server/lib/email";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/lib/trpc";
 import { render } from "@jsx-email/render";
 
@@ -23,6 +26,22 @@ export const generalRouter = createTRPCRouter({
     .query(() => {
       return "ok";
     }),
+
+  sendTestEmail: publicProcedure.mutation(async ({ input, ctx }) => {
+    if (process.env.NODE_ENV !== "development") {
+      throw new Error("This endpoint is only available in development mode.");
+    }
+
+    await email.messages.create(env.MAILGUN_DOMAIN, {
+      from: `mailgun <mailgun@${env.MAILGUN_DOMAIN}>`,
+      to: [env.TESTING_EMAIL],
+      subject: getTestEmailSubject(),
+      text: await render(TestEmailTemplate({ content: "Batman is dead." }), {
+        plainText: true,
+      }),
+      html: await render(TestEmailTemplate({ content: "Batman is dead." })),
+    });
+  }),
 
   getEmailTemplates: publicProcedure.query(async () => {
     if (process.env.NODE_ENV !== "development") {
