@@ -1,19 +1,38 @@
 import { env } from "@/server/env";
-import FormData from "form-data";
-import Mailgun, { Interfaces } from "mailgun.js";
+import { emailClient } from "@/server/lib/emailClient";
+import { render } from "@jsx-email/render";
 
-const createClient = () => {
-  const mailgun = new Mailgun(FormData);
-  return mailgun.client({
-    username: "api",
-    key: env.MAILGUN_API_KEY,
-    timeout: 30_000,
+const client = emailClient;
+const from = {
+  test: `Companion Test <mailgun@${env.MAILGUN_DOMAIN}>`,
+  // TODO: Change this when we have a domain (Companion info@companion.com)
+  info: `Companion <mailgun@${env.MAILGUN_DOMAIN}>`,
+};
+
+type SendProps = {
+  template: JSX.Element;
+  to: string[];
+  subject: string;
+  from: string;
+};
+
+const send = async (props: SendProps) => {
+  await client.messages.create(env.MAILGUN_DOMAIN, {
+    from: props.from,
+    to: props.to,
+    subject: props.subject,
+    text: await render(props.template, {
+      plainText: true,
+      minify: true,
+    }),
+    html: await render(props.template, {
+      minify: true,
+    }),
   });
 };
 
-const globalForMailgun = globalThis as unknown as {
-  client: Interfaces.IMailgunClient | undefined;
+export const email = {
+  client,
+  from,
+  send,
 };
-
-export const email = globalForMailgun.client ?? createClient();
-if (process.env.NODE_ENV !== "production") globalForMailgun.client = email;

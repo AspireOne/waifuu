@@ -32,6 +32,7 @@ export default () => {
           else setSelected(undefined);
         }
       },
+      refetchOnWindowFocus: false,
       refetchInterval: 10_000,
     },
   );
