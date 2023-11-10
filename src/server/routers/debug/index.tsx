@@ -36,9 +36,15 @@ export const generalRouter = createTRPCRouter({
       from: `mailgun <mailgun@${env.MAILGUN_DOMAIN}>`,
       to: [env.TESTING_EMAIL],
       subject: getTestEmailSubject(),
-      text: await render(TestEmailTemplate({ content: "Batman is dead." }), {
-        plainText: true,
-      }),
+      text: await render(
+        TestEmailTemplate({
+          content:
+            "Batman is dead. I am writing this in the hope of\nO-\n\nNewline. In the hope of-\n\nGotta go, bye!\n\n yor companion",
+        }),
+        {
+          plainText: true,
+        },
+      ),
       html: await render(TestEmailTemplate({ content: "Batman is dead." })),
     });
   }),

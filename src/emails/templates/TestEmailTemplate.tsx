@@ -1,5 +1,5 @@
 import { Email } from "@/emails/components/Email";
-import { Heading, Section, Text } from "@jsx-email/all";
+import { Text } from "@jsx-email/all";
 import { t } from "@lingui/macro";
 
 // Notes:
@@ -27,35 +27,34 @@ type TestEmailProps = {
 };
 
 export const getTestEmailSubject = () => {
-  return t({ message: `Hot tiddy girls test`, context: "Internal test email" });
+  return t({ message: `Some superman batman test`, context: "Internal test email" });
 };
 
 // Must be exported as defalt.
 export default ({
-  content = t({ message: "Fuck mee", context: "Internal test message" }),
+  content = t({
+    message: "Message message you lorem ipsum dolor sit amet",
+    context: "Internal test message",
+  }),
 }: TestEmailProps) => {
   return (
     <Email
       preview={t({
-        message: `Do you love hot tiddy girls? Check this out!`,
+        message: `If you love dolor ipsum lorem sit amut, click this`,
+        context: "Internal test email",
+      })}
+      title={t({
+        message: `This is a very important message from companion!`,
         context: "Internal test email",
       })}
     >
-      <Section className={"p-4"}>
-        <Heading as="h1" className="text-2xl font-bold text-center text-blue-600">
-          {t({
-            message: `I love hot tiddy girls!`,
-            context: "Internal test email",
-          })}
-        </Heading>
-        <Text className="text-gray-700 text-center">
-          {t({
-            message: `Do you love hot tiddy girls? Check this out!`,
-            context: "Internal test email",
-          })}
-        </Text>
-        <Text>{content}</Text>
-      </Section>
+      <Text>
+        {t({
+          message: `This is a test email, check out the content below!`,
+          context: "Internal test email",
+        })}
+      </Text>
+      <Text>{content}</Text>
     </Email>
   );
 };
