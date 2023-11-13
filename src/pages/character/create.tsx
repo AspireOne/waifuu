@@ -188,10 +188,8 @@ const CreateChatPage = () => {
             </Accordion>
 
             <div className="flex flex-row w-fit mx-auto mr-0 gap-2 mt-5">
-              <Button color="primary" variant="bordered">
-                <Trans>Close</Trans>
-              </Button>
-              <Button type="submit" color="primary">
+              {/* TODO: Add some fun texts or submit it and show some loading toast, because this might take long time. */}
+              <Button type="submit" color="primary" isLoading={createBot.isLoading}>
                 <Trans>Create</Trans>
               </Button>
             </div>
