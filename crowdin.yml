@@ -2,4 +2,4 @@ files:
   - source: /src/locales/en/messages.po
     translation: /src/locales/%two_letters_code%/messages.po
 api_token_env: CROWDIN_API_TOKEN
-project_id_env: CROWDING_PROJECT_ID
+project_id_env: CROWDIN_PROJECT_ID

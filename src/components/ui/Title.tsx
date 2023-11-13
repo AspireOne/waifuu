@@ -7,7 +7,7 @@ export default function Title(props: {
   /** @default "h2" */
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | string;
   /** @default "lg" */
-  size?: "sm" | "md" | "lg" | "xl" | "2xl";
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   /** @default true */
   bold?: boolean;
@@ -24,7 +24,7 @@ export default function Title(props: {
   else if (size === "md") iconSize = 25;
   else if (size === "lg") iconSize = 29;
   else if (size === "xl") iconSize = 34;
-  else if (size === "2xl") iconSize = 38;
+  //else if (size === "2xl") iconSize = 38;
 
   return (
     // @ts-ignore

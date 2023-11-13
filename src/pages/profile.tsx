@@ -1,12 +1,15 @@
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
+import { subscriptionPlans } from "@/server/shared/plans";
 import updateSelfSchema from "@/server/shared/updateSelfSchema";
 import { AppPage } from "@components/AppPage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LocaleCode, changeAndSaveGlobalLocale, getLocale, locales } from "@lib/i18n";
+import { paths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
-import { Avatar, Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Avatar, Button, Input, Link, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { User } from "@prisma/client";
+import NextLink from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { SubmitHandler, UseFormRegisterReturn, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -15,6 +18,8 @@ import { z } from "zod";
 
 export default function Profile() {
   const { user, refetch } = useSession();
+
+  const { data: plan, isLoading: planLoading } = api.plans.getCurrentPlan.useQuery();
 
   const updateUserMutation = api.users.updateSelf.useMutation({
     onSuccess: (data) => {
@@ -88,14 +93,29 @@ export default function Profile() {
         onSubmit={handleSubmit(onSubmit)}
         className={"flex md:w-[600px] mx-auto flex-col gap-4"}
       >
-        <Avatar
-          onClick={() => fileInputRef.current?.click()}
-          isBordered
-          className={
-            "mx-auto h-32 w-auto aspect-square hover:cursor-pointer hover:opacity-80 duration-150"
-          }
-          src={imageUrl ?? undefined}
-        />
+        <div className={"flex flex-col gap-3 items-center justify-center"}>
+          <Avatar
+            onClick={() => fileInputRef.current?.click()}
+            isBordered
+            className={
+              "mx-auto h-32 w-auto aspect-square hover:cursor-pointer hover:opacity-80 duration-150"
+            }
+            src={imageUrl ?? undefined}
+          />
+          {!planLoading && (
+            <Link
+              as={NextLink}
+              isBlock
+              showAnchorIcon
+              href={paths.pricing}
+              className={"text-xl whitespace-pre"}
+            >
+              <Trans>
+                Plan: <b>{plan?.name ?? subscriptionPlans().free.name}</b>
+              </Trans>
+            </Link>
+          )}
+        </div>
         {/*Comment it out for now.*/}
         {/*<input
           type="file"

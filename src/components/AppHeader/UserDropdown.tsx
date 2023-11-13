@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineStar, AiOutlineUser } from "react-icons/ai";
 import { LiaFantasyFlightGames } from "react-icons/lia";
 import { twMerge } from "tailwind-merge";
 import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
@@ -46,24 +46,40 @@ export const UserDropdown = (props: { className?: string }) => {
           />
         </DropdownTrigger>
         <DropdownMenu aria-label="Profile Actions" variant="flat">
-          <DropdownItem isDisabled={true} key="profile" className="h-14 gap-2">
+          <DropdownItem
+            // textvalue is so that accesibility does not complain.
+            textValue={"Signed in as"}
+            isDisabled={true}
+            key="profile"
+            className="h-14 gap-2"
+          >
             <p className="font-semibold">
               <Trans>Signed in as</Trans>
             </p>
             <p className="font-semibold">{user?.email}</p>
           </DropdownItem>
           <DropdownItem
+            textValue={"My profile"}
             startContent={<AiOutlineUser />}
             onClick={() => router.push(paths.profile)}
           >
             <Trans>My profile</Trans>
           </DropdownItem>
           <DropdownItem
+            textValue={"Character settings"}
             startContent={<LiaFantasyFlightGames />}
             onClick={toggleSettingsOpen}
             key="settings"
           >
             <Trans>General character settings</Trans>
+          </DropdownItem>
+          <DropdownItem
+            textValue={"Subscription plan"}
+            startContent={<AiOutlineStar />}
+            onClick={() => router.push(paths.pricing)}
+            key="subscription-plan"
+          >
+            <Trans>Subscription plan</Trans>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

@@ -1,5 +1,5 @@
-import { apiBase } from "@/lib/api";
 import { getIdToken } from "@/lib/firebase";
+import { baseApiUrl } from "@/lib/paths";
 import Pusher from "pusher-js";
 
 const pusherClient =
@@ -13,17 +13,17 @@ const pusherClient =
         disableStats: true,
         enabledTransports: ["ws", "wss"],
         cluster: "EU",
-        authEndpoint: apiBase("/api/pusher/authenticate"),
+        authEndpoint: baseApiUrl("/pusher/authenticate"),
         // @ts-ignore
         userAuthentication: {
-          endpoint: apiBase("/api/pusher/authenticate"),
+          endpoint: baseApiUrl("/pusher/authenticate"),
           headersProvider: async () => ({
             Authorization: `Bearer ${await getIdToken()}`,
           }),
         },
         // @ts-ignore
         channelAuthorization: {
-          endpoint: apiBase("/api/pusher/authorize"),
+          endpoint: baseApiUrl("/pusher/authorize"),
           headersProvider: async () => ({
             Authorization: `Bearer ${await getIdToken()}`,
           }),

@@ -37,7 +37,8 @@
       "style": {
         "noUnusedTemplateLiteral": "warn",
         "noNonNullAssertion": "warn",
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "useTemplate": "warn"
       },
       "complexity": {
         "useSimplifiedLogicExpression": "off"

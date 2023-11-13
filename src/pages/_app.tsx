@@ -47,8 +47,13 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
               {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
               <main className={`bg-background text-foreground dark`}>
                 <div className="font-inter">
-                <ToastContainer theme={"dark"} />
-                <Component  {...pageProps} />
+                  <ToastContainer
+                    autoClose={4000}
+                    limit={4}
+                    newestOnTop={true}
+                    theme={"dark"}
+                  />
+                  <Component {...pageProps} />
                 </div>
               </main>
             </SessionProvider>
