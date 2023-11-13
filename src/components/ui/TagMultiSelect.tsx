@@ -1,9 +1,8 @@
 import { api } from "@/lib/api";
 import { t } from "@lingui/macro";
-import { Select, SelectItem } from "@nextui-org/react";
-import { HTMLAttributes, useEffect, useState } from "react";
-import { Skeleton } from "../Skeleton";
+import { Select, SelectItem, Skeleton } from "@nextui-org/react";
 import { CharacterTag } from "@prisma/client";
+import { HTMLAttributes, useEffect, useState } from "react";
 
 type Props = {
   onSelectTagIds: (tagIds: CharacterTag[]) => void;
@@ -18,27 +17,29 @@ export const TagMultiSelect = ({ onSelectTagIds, ...props }: Props) => {
     limit: 10,
   });
 
-  if (!data || isLoading) {
-    return <Skeleton width={200} height={50} />;
-  }
+  const items =
+    data &&
+    Object.keys(data).map((el) => {
+      return (
+        <SelectItem key={el} value={el}>
+          {data[el as keyof typeof data]}
+        </SelectItem>
+      );
+    });
 
   return (
-    <Select
-      selectionMode="multiple"
-      defaultSelectedKeys="all"
-      // @ts-ignore --- Library type bug
-      onSelectionChange={setSelected}
-      selectedKeys={selected}
-      label={t`Select tags`}
-      {...props}
-    >
-      {Object.keys(data).map(el => {
-        return (
-          <SelectItem key={el} value={el}>
-            {data[el as keyof typeof data]}
-          </SelectItem>
-        );
-      })}
-    </Select>
+    <Skeleton isLoaded={!!data} className={"rounded-xl"}>
+      <Select
+        selectionMode="multiple"
+        defaultSelectedKeys="all"
+        // @ts-ignore --- Library type bug
+        onSelectionChange={setSelected}
+        selectedKeys={selected}
+        label={t`Select tags`}
+        {...props}
+      >
+        {items ?? []}
+      </Select>
+    </Skeleton>
   );
 };
