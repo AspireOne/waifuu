@@ -17,7 +17,7 @@ type Props = {
 // TODO: Server must remember this value to not show this dialog over and over again
 export const NsfwConfirmDialog = ({ isOpen, onOpenChange, onConfirm }: Props) => {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="bottom-center">
       <ModalContent>
         {(onClose) => (
           <>
