@@ -52,7 +52,7 @@ dependencies:
     version: 2.6.4
   '@jsx-email/all':
     specifier: ^2.2.3
-    version: 2.2.3(@types/react@18.2.36)(react@18.2.0)
+    version: 2.2.3(@types/react@18.2.34)(react@18.2.0)
   '@lingui/conf':
     specifier: ^4.5.0
     version: 4.5.0(typescript@5.2.2)
@@ -305,7 +305,7 @@ devDependencies:
     specifier: ^4.0.5
     version: 4.0.5
   husky:
-    specifier: ^8.0.3
+    specifier: ^8.0.0
     version: 8.0.3
   jsdom:
     specifier: ^22.1.0
@@ -319,9 +319,6 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.5
     version: 3.3.5
-  tsc-files:
-    specifier: ^1.1.4
-    version: 1.1.4(typescript@5.2.2)
   typescript:
     specifier: ^5.2.2
     version: 5.2.2
@@ -1825,6 +1822,10 @@ packages:
       - supports-color
     dev: true
 
+  /@ioredis/commands@1.2.0:
+    resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
+    dev: false
+
   /@isaacs/cliui@8.0.2:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -1894,7 +1895,7 @@ packages:
     dev: false
     optional: true
 
-  /@jsx-email/all@2.2.3(@types/react@18.2.36)(react@18.2.0):
+  /@jsx-email/all@2.2.3(@types/react@18.2.34)(react@18.2.0):
     resolution: {integrity: sha512-OBvLe/hVSQc0LlMSTJnkjFoqs3bmxcC4zpy/5pT5agPCSKMvAKQjzmsc2xJ2wO73jSpRV1K/g38GmvdCfrhSoQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -1906,7 +1907,7 @@ packages:
       '@jsx-email/container': 1.0.2(react@18.2.0)
       '@jsx-email/font': 1.0.3(react@18.2.0)
       '@jsx-email/head': 1.0.2(react@18.2.0)
-      '@jsx-email/heading': 1.0.2(@types/react@18.2.36)(react@18.2.0)
+      '@jsx-email/heading': 1.0.2(@types/react@18.2.34)(react@18.2.0)
       '@jsx-email/hr': 1.0.2(react@18.2.0)
       '@jsx-email/html': 1.0.2(react@18.2.0)
       '@jsx-email/img': 1.0.2(react@18.2.0)
@@ -1978,13 +1979,13 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@jsx-email/heading@1.0.2(@types/react@18.2.36)(react@18.2.0):
+  /@jsx-email/heading@1.0.2(@types/react@18.2.34)(react@18.2.0):
     resolution: {integrity: sha512-yumw176gsAJQnwSx0HCamCj2DozQireayax7s+jvr+TvEvFxNLD4PQvK45c6JdYYD9OPGnjDApks102FJQ7xDQ==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.2.0
     dependencies:
-      '@radix-ui/react-slot': 1.0.2(@types/react@18.2.36)(react@18.2.0)
+      '@radix-ui/react-slot': 1.0.2(@types/react@18.2.34)(react@18.2.0)
       react: 18.2.0
     transitivePeerDependencies:
       - '@types/react'
@@ -3702,7 +3703,7 @@ packages:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     dev: false
 
-  /@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.36)(react@18.2.0):
+  /@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.34)(react@18.2.0):
     resolution: {integrity: sha512-fDSBgd44FKHa1FRMU59qBMPFcl2PZE+2nmqunj+BWFyYYjnhIDWL2ItDs3rrbJDQOtzt5nIebLCQc4QRfz6LJw==}
     peerDependencies:
       '@types/react': '*'
@@ -3712,11 +3713,11 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@types/react': 18.2.36
+      '@types/react': 18.2.34
       react: 18.2.0
     dev: false
 
-  /@radix-ui/react-slot@1.0.2(@types/react@18.2.36)(react@18.2.0):
+  /@radix-ui/react-slot@1.0.2(@types/react@18.2.34)(react@18.2.0):
     resolution: {integrity: sha512-YeTpuq4deV+6DusvVUW4ivBgnkHwECUu0BiN43L5UCDFgdhsRUWAghhTF5MbvNTPzmiFOx90asDSUjWuCNapwg==}
     peerDependencies:
       '@types/react': '*'
@@ -3726,8 +3727,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.23.2
-      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.36)(react@18.2.0)
-      '@types/react': 18.2.36
+      '@radix-ui/react-compose-refs': 1.0.1(@types/react@18.2.34)(react@18.2.0)
+      '@types/react': 18.2.34
       react: 18.2.0
     dev: false
 
@@ -5584,7 +5585,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001561
-      electron-to-chromium: 1.4.578
+      electron-to-chromium: 1.4.577
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
 
@@ -9987,6 +9988,8 @@ packages:
 
   /standard-as-callback@2.1.0:
     resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
+    dev: false
+
   /statuses@1.5.0:
     resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
     engines: {node: '>= 0.6'}
@@ -10398,15 +10401,6 @@ packages:
 
   /ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
-
-  /tsc-files@1.1.4(typescript@5.2.2):
-    resolution: {integrity: sha512-RePsRsOLru3BPpnf237y1Xe1oCGta8rmSYzM76kYo5tLGsv5R2r3s64yapYorGTPuuLyfS9NVbh9ydzmvNie2w==}
-    hasBin: true
-    peerDependencies:
-      typescript: '>=3'
-    dependencies:
-      typescript: 5.2.2
-    dev: true
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}

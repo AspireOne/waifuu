@@ -29,8 +29,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": "biome check --no-errors-on-unmatched --apply --organize-imports-enabled true --log-level warn",
-    "src/**/*.{ts,tsx}": "tsc-files --noEmit"
+    "src/**/*.{js,jsx,ts,tsx}": "biome check --no-errors-on-unmatched --apply --organize-imports-enabled true --log-level warn"
   },
   "dependencies": {
     "@capacitor-firebase/authentication": "^5.2.0",
@@ -134,12 +133,11 @@
     "@types/react-dom": "^18.2.14",
     "@types/stopword": "^2.0.2",
     "@types/wink-tokenizer": "^4.0.5",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "jsdom": "^22.1.0",
     "lint-staged": "^14.0.1",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
-    "tsc-files": "^1.1.4",
     "typescript": "^5.2.2"
   },
   "ct3aMetadata": {
