@@ -53,14 +53,14 @@ const CreateChatPage = () => {
 
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
-      Router.push(paths.botChatMainMenu(data.id));
+      Router.replace(paths.botChatMainMenu(data.id));
     },
   });
 
   const { register, handleSubmit, setValue } = useForm<CreateInput>();
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
     if (!avatar) {
-      toast(_(msg`Avatar is required`));
+      toast(_(msg`Avatar is required`), { type: "warning" });
       return;
     }
 
