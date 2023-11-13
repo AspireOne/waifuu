@@ -106,7 +106,7 @@ const CreateChatPage = () => {
                 </SelectItem>
               </Select>
 
-              <TagMultiSelect onSelectTagIds={ids => setValue('tags', ids)} />
+              <TagMultiSelect onSelectTagIds={(ids) => setValue("tags", ids)} />
             </div>
 
             <Divider className="mt-4 mb-4" />
@@ -127,7 +127,6 @@ const CreateChatPage = () => {
 
               <Textarea
                 {...register("dialogue")}
-                isRequired
                 label={_(msg`Example dialogue`)}
                 labelPlacement="outside"
               />

@@ -4,7 +4,14 @@ import {
 } from "@/server/ai/character-chat/prompts";
 import { llama13b } from "@/server/ai/models/llama13b";
 import { protectedProcedure } from "@/server/lib/trpc";
-import { Bot, BotSource, BotVisibility, CharacterTag, ChatMode, Prisma, PrismaClient } from "@prisma/client";
+import {
+  Bot,
+  BotSource,
+  BotVisibility,
+  CharacterTag,
+  ChatMode,
+  PrismaClient,
+} from "@prisma/client";
 import { z } from "zod";
 
 export default protectedProcedure
@@ -22,7 +29,7 @@ export default protectedProcedure
       backgroundImage: z.string().optional(),
       name: z.string(),
       persona: z.string(),
-      dialogue: z.string(),
+      dialogue: z.string().nullish(),
       nsfw: z.boolean(),
 
       // Mood images
