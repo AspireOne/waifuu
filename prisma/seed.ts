@@ -56,7 +56,6 @@ async function upsertBot(props: BotProps, tags?: string[]) {
 
       // Other.
       /*categoryId: props.category,*/
-
       tags: {
         connectOrCreate: connectableTags,
       },
