@@ -4,6 +4,7 @@ import {
 } from "@/server/ai/character-chat/prompts";
 import { llama13b } from "@/server/ai/models/llama13b";
 import { protectedProcedure } from "@/server/lib/trpc";
+import { t } from "@lingui/macro";
 import {
   Bot,
   BotSource,
@@ -24,7 +25,7 @@ const botCreationInput = z.object({
   tags: z.array(z.nativeEnum(CharacterTag)).default([]),
 
   // in Chat data
-  avatar: z.string().optional(),
+  avatar: z.string().min(1, t`Avatar is required`),
   backgroundImage: z.string().optional(),
   name: z.string(),
   persona: z.string(),

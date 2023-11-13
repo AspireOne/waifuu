@@ -22,6 +22,7 @@ import { BotVisibility, CharacterTag } from "@prisma/client";
 import Router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type CreateInput = {
   title: string;
@@ -58,14 +59,19 @@ const CreateChatPage = () => {
 
   const { register, handleSubmit, setValue } = useForm<CreateInput>();
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
+    if (!avatar) {
+      toast(_(msg`Avatar is required`));
+      return;
+    }
+
     createBot.mutate({
       ...data,
       nsfw: isSelected,
       backgroundImage: background,
-      avatar,
+      avatar: avatar,
       tags: data.tags,
-      cover,
-      moodImagesEnabled,
+      cover: cover,
+      moodImagesEnabled: moodImagesEnabled,
       sadImageId: sad,
       happyImageId: happy,
       neutralImageId: neutral,
@@ -83,7 +89,7 @@ const CreateChatPage = () => {
             </h2>
 
             <div className="flex flex-col gap-4">
-              <FileUploadRaw onUpload={(id) => setAvatar(id)} label="Avatar" />
+              <FileUploadRaw required onUpload={(id) => setAvatar(id)} label="Avatar" />
 
               <Input {...register("title")} isRequired type="text" label={_(msg`Title`)} />
 
