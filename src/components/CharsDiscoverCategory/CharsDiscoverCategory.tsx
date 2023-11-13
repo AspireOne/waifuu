@@ -1,5 +1,6 @@
 import { discoveredBotStore } from "@/stores";
 import { CharacterCard } from "@components/CharacterCard";
+import { NsfwConfirmDialog } from "@components/NsfwConfirmDialog";
 import Title from "@components/ui/Title";
 import { api } from "@lib/api";
 import { paths } from "@lib/paths";
@@ -13,7 +14,6 @@ import { useEffect, useState } from "react";
 import { UseFormRegisterReturn, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiTrendingUp } from "react-icons/bi";
-import { NsfwConfirmDialog } from "../NsfwConfirmDialog/NsfwConfirmDialog";
 import { TagMultiSelect } from "../ui/TagMultiSelect";
 
 type SearchBotsFilters = {
@@ -35,7 +35,7 @@ const stringifyFilters = (filters: SearchBotsFilters) => {
   });
 };
 
-export const PopularCharactersDiscoverCategory = () => {
+export const CharsDiscoverCategory = () => {
   const discoveredBots = discoveredBotStore.getState();
 
   const [filters, setFilters] = useState<SearchBotsFilters>({

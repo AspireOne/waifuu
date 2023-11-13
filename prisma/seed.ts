@@ -57,9 +57,13 @@ async function upsertBot(props: BotProps, tags?: string[]) {
       // Other.
       /*categoryId: props.category,*/
 
-      tags: {
+      // TODO: Add tags to seed script až se ten zkurvený vypíčený kuba posraný uráči kurva odpovědět typíčo
+      // aeFJK FDFADKS DJKASL DKLAWDM ASKLD WKLD wklwsmkqos n kqsn JKS NakosnqKOSNqkaosn
+       /*sAS AKSD KADKS DKLa k  q keo qe  qEOKQeěkšěkšěkeqklamsMALSamlsaam K kA Sa skA SAsklASLAks aSK Alks aLSs KURVA AS a sj aA a A a A ALS aklsAKS a?Ad */
+      /*MRDKA ZKURVENÁ KUEWNDAD AAAAA!!!!!!!!! DOPÍČI ZASRANÉ */
+      /*tags: {
         connectOrCreate: connectableTags,
-      },
+      },*/
     },
   });
 
