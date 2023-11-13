@@ -16,6 +16,8 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BiTrendingUp } from "react-icons/bi";
 import { TagMultiSelect } from "../ui/TagMultiSelect";
 
+import { Preferences } from "@capacitor/preferences";
+
 type SearchBotsFilters = {
   textFilter?: string;
   source?: BotSource | null;
@@ -202,9 +204,10 @@ const ParametersHeader = (props: {
 
             <Switch
               isSelected={props.searchData.nsfw}
-              onValueChange={(value) => {
+              onValueChange={async (value) => {
                 if (!value) return props.onNsfwChange(false);
-                onNsfwOpenChange();
+                const { value: nsfwAllowed } = await Preferences.get({ key: "allow-nsfw" });
+                nsfwAllowed === "true" ? props.onNsfwChange(true) : onNsfwOpenChange();
               }}
             >
               NSFW
@@ -217,9 +220,10 @@ const ParametersHeader = (props: {
       <Divider className="my-4" />
 
       <NsfwConfirmDialog
-        onConfirm={() => {
+        onConfirm={async () => {
           props.onNsfwChange(true);
           onNsfwOpenChange();
+          await Preferences.set({ key: "allow-nsfw", value: "true" });
         }}
         isOpen={isNsfwOpen}
         onOpenChange={onNsfwOpenChange}
