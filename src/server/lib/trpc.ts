@@ -12,8 +12,9 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { retrieveUser } from "@/server/helpers/retrieveUser";
 import { prisma } from "@/server/lib/db";
-import { retrieveUser } from "@/server/lib/retrieveUser";
+import { LocaleCode, locales } from "@lib/i18n";
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { OpenApiMeta } from "trpc-openapi";
@@ -30,7 +31,7 @@ interface CreateContextOptions {
   user: User | null;
   req?: NextApiRequest | null;
   res?: NextApiResponse | null;
-  locale?: string;
+  locale: LocaleCode;
 }
 
 /**
@@ -62,8 +63,14 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
   const user = await retrieveUser(req);
-  /*const locale = req.headers["locale"] as string || "en";
+  const locale: LocaleCode = (req.headers.locale as LocaleCode) || "en";
 
+  // check that locale is really of type LocaleCode dynamically.
+  if (!locales.find((l) => l.code === locale)) {
+    throw new Error(`Locale ${locale} is not supported.`);
+  }
+
+  /*
   const { messages } = await import(`../../locales/${locale}/messages`);
   i18n.load(locale, messages);
   i18n.activate(locale);*/
@@ -71,7 +78,8 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   return createInnerTRPCContext({
     user,
     req,
-    res /*, locale: locale as LocaleCode*/,
+    res,
+    locale,
   });
 };
 

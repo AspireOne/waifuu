@@ -3,9 +3,10 @@ import { authRouter } from "@/server/routers/auth";
 import { botsRouter } from "@/server/routers/bots";
 import { chatRouter } from "@/server/routers/chat";
 import { contactRouter } from "@/server/routers/contact";
-import { generalRouter } from "@/server/routers/general";
+import { plansRouter } from "@/server/routers/plans";
 import { RRChatRouter } from "@/server/routers/rr-chat";
 import { usersRouter } from "@/server/routers/users";
+import { generalRouter } from "src/server/routers/debug";
 import { forumRouter } from "./forum";
 
 /**
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   forum: forumRouter,
   contact: contactRouter,
   chat: chatRouter,
+  plans: plansRouter,
 });
 
 // export type definition of API

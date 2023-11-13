@@ -1,6 +1,10 @@
+import RegisterEmailTemplate, {
+  getRegisterEmailSubject,
+} from "@/emails/templates/RegisterEmailTemplate";
+import { generateUniqueUsername } from "@/server/helpers/username";
+import { email } from "@/server/lib/email";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
-import { generateUniqueUsername } from "@/server/lib/usernameUtils";
 import { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { DecodedIdToken } from "firebase-admin/auth";
@@ -23,11 +27,26 @@ export default publicProcedure
 
     await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
 
-    await upsertUser(ctx.prisma, decodedIdToken);
+    const { alreadyExisted } = await upsertUser(ctx.prisma, decodedIdToken);
 
     //const cookie = await createSessionCookie(input.idToken, ctx.res!);
 
-    console.log("Successfully signed in with Firebase.");
+    console.log("Successfully signed in with Firebase.", { alreadyExisted });
+    if (!alreadyExisted && decodedIdToken.email) {
+      // Do not await it.
+      email
+        .send({
+          from: email.from.info,
+          to: [decodedIdToken.email!],
+          template: RegisterEmailTemplate({ username: decodedIdToken.name }),
+          subject: getRegisterEmailSubject(),
+        })
+        .catch((err) => {
+          console.error("Error sending registration email.", err);
+          // TODO: Report to sentry.
+        });
+    }
+
     return {
       //session: cookie,
     };
@@ -37,8 +56,12 @@ export default publicProcedure
  * Creates a user if they don't exist.
  * @param prisma
  * @param decodedIdToken
+ * @returns True if the user was created. False if the user already existed.
  */
-async function upsertUser(prisma: PrismaClient, decodedIdToken: DecodedIdToken) {
+async function upsertUser(
+  prisma: PrismaClient,
+  decodedIdToken: DecodedIdToken,
+): Promise<{ alreadyExisted: boolean }> {
   // Check if user already exists.
   const exists = await prisma.user.findUnique({
     where: {
@@ -46,7 +69,7 @@ async function upsertUser(prisma: PrismaClient, decodedIdToken: DecodedIdToken) 
     },
   });
 
-  if (exists) return;
+  if (exists) return { alreadyExisted: true };
 
   if (!decodedIdToken.email) throw new Error("No email found in decodedIdToken.");
 
@@ -61,6 +84,8 @@ async function upsertUser(prisma: PrismaClient, decodedIdToken: DecodedIdToken) 
       image: decodedIdToken.picture,
     },
   });
+
+  return { alreadyExisted: false };
 }
 
 /**

@@ -1,4 +1,4 @@
-import { apiBase } from "@lib/api";
+import { baseApiUrl } from "@lib/paths";
 import React from "react";
 import { toast } from "react-toastify";
 
@@ -128,7 +128,7 @@ export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T
     return pathOrId;
   }
 
-  return apiBase(`/api/images/download?id=${pathOrId}`) as T;
+  return baseApiUrl(`/api/images/download?id=${pathOrId}`) as T;
 }
 
 export function isUrl(str: string): boolean {

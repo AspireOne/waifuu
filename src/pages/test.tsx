@@ -2,6 +2,7 @@ import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { CombinedPage } from "@components/CombinedPage";
+import { Button } from "@nextui-org/react";
 import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
 
@@ -10,6 +11,8 @@ export default function Test() {
   const protectedHealth = api.general.protectedHealth.useQuery();
   const dbHealth = api.general.dbHealth.useQuery();
   const session = useSession();
+
+  const sendTestEmailMut = api.general.sendTestEmail.useMutation();
 
   return (
     <CombinedPage title={"Test Page"}>
@@ -27,6 +30,13 @@ export default function Test() {
       </p>
       <Link href={paths.home}>Test link to go to homepage</Link>
       <Link href={paths.login()}>Test link to go to LOGIN</Link>
+      <Button
+        onClick={async () => {
+          await sendTestEmailMut.mutateAsync();
+        }}
+      >
+        Send test email
+      </Button>
 
       <button
         type="button"

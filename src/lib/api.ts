@@ -3,21 +3,21 @@ import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
-import { CONSTANTS } from "@/lib/constants";
 import { getIdToken } from "@/lib/firebase";
 import { type AppRouter } from "@/server/routers/root";
 import { Capacitor } from "@capacitor/core";
 
 import { getLocale } from "@lib/i18n";
-import { showErrorToast } from "@lib/utils";
+import { baseApiUrl } from "@lib/paths";
+import { t } from "@lingui/macro";
 import { observable } from "@trpc/server/observable";
+import { toast } from "react-toastify";
 
 export const customErrorLink: TRPCLink<AppRouter> = () => {
   return ({ next, op }) => {
     return observable((observer) => {
       return next(op).subscribe({
         next(value) {
-          //console.log("we received value", value);
           observer.next(value);
         },
         error(err) {
@@ -27,13 +27,19 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
           // Don't show error to user if they are not logged in.
           if (
             err?.data?.code === "UNAUTHORIZED" ||
-            // Firebase error thrown from backend. Kind of the same as unauthorized, but with a different message.
+            // Can be thrown from Firebase.
             err?.message === "No user is signed in."
           ) {
             return;
           }
 
-          showErrorToast(err);
+          // Show error message to user only if it's a zod error.
+          // Otherwise show just "Something went wrong".
+
+          const errorMsg =
+            err?.data?.code === "PARSE_ERROR" ? err.message : t`Something went wrong`;
+
+          toast(errorMsg, { type: "error" });
         },
         complete() {
           observer.complete();
@@ -79,7 +85,7 @@ export const api = createTRPCNext<AppRouter>({
           },
         }),
         httpLink({
-          url: apiBase("/api/trpc"),
+          url: baseApiUrl("/trpc"),
           async fetch(url, options) {
             const idToken = await getIdToken();
             const locale = getLocale();
@@ -105,43 +111,6 @@ export const api = createTRPCNext<AppRouter>({
    */
   ssr: false,
 });
-
-/**
- * Adds base API path in front of the given path.
- * @param path Path to append to base URL, e.g. "/api/bots"
- * @returns {string} The full API URL
- *
- * @example apiBase("/api/bots") // "https://companion-red.vercel.app/api/bots"
- * @example apiBase() // "https://companion-red.vercel.app/api"
- **/
-export const apiBase = (path?: string): string => {
-  const base = `${getBaseServerUrl()}/api`;
-  if (!path) return base;
-
-  if (path.startsWith("/api")) path = path.slice(4);
-  if (path.startsWith("api")) path = path.slice(3);
-  if (!path.startsWith("/")) path = `/${path}`;
-
-  return base + path;
-};
-
-const getBaseServerUrl = () => {
-  // Mobile = use the hosted prod server instead of localhost.
-  if (Capacitor.isNativePlatform()) {
-    return CONSTANTS.SERVER_URL;
-  }
-
-  // Browser = relative URL.
-  if (typeof window !== "undefined") return "";
-
-  // Web Server - Production. (Can oly be web server - android/ios don't have backend and browser always has window).
-  if (process.env.NODE_ENV === "production") {
-    if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-    return CONSTANTS.SERVER_URL;
-  }
-  // Web Server - Development.
-  return `http://localhost:${process.env.PORT ?? 3000}`; // Dev SSR should use localhost.
-};
 
 /**
  * Inference helper for inputs.

@@ -47,7 +47,7 @@ const Login = () => {
   const router = useRouter();
   const redirect = searchParams.get("redirect");
 
-  // !Check for session.user instead of session.status.
+  //! IMPORTANT Check for session.user instead of session.status.
   useEffect(() => {
     if (session.user) {
       router.replace(redirect || semanticPaths.appIndex);

@@ -46,8 +46,7 @@ export async function initGlobalLocale() {
 
 async function setI18nLocale(locale: LocaleCode) {
   const { messages } = await import(`../locales/${locale}/messages`);
-  i18n.load(locale, messages);
-  i18n.activate(locale);
+  i18n.loadAndActivate({ locale, messages });
   // Set html lang attribute.
   document.documentElement.lang = locale;
 }
