@@ -24,32 +24,16 @@ type SearchBotsFilters = {
   nsfw?: boolean;
 };
 
-// const useFilteredData = (filters: Omit<SearchBotsFilters, 'cursor'>) => {
-//   api.bots.getAllBots.useQuery(
-//     {
-//       ...filters,
-//       limit: 10,
-//     },
-//     {
-//       onSuccess: (data) => {
-
-//       },
-//     },
-//   );
-
-//   const queryCacheKey: string = Object.keys(filters)
-//     .map((el) => {
-//       if (el === 'nsfw') return JSON.stringify(filters[el]);
-//       return filters[el as keyof typeof filters];
-//     })
-//     .join("-");
-
-//   return useQuery([queryCacheKey], () => fetchFilteredData(filters, cursor), {
-//     // Configure caching and revalidation options here
-//   });
-// };
-
 let textFilterTimer: NodeJS.Timeout | null = null;
+
+const stringifyFilters = (filters: SearchBotsFilters) => {
+  return JSON.stringify({
+    textFilter: filters.textFilter,
+    source: filters.source,
+    tags: filters.tags,
+    nsfw: filters.nsfw,
+  });
+};
 
 export const PopularCharactersDiscoverCategory = () => {
   const discoveredBots = discoveredBotStore.getState();
@@ -62,8 +46,6 @@ export const PopularCharactersDiscoverCategory = () => {
   });
 
   const onFilterChange = <T,>(key: keyof SearchBotsFilters, value: T) => {
-    discoveredBots.clearDiscoveredBots();
-
     return setFilters({
       ...filters,
       [key]: value,
@@ -88,8 +70,14 @@ export const PopularCharactersDiscoverCategory = () => {
     },
     {
       onSuccess: (data) => {
-        discoveredBots.addDiscoveredBots(data.bots);
-        discoveredBots.setHasNextDiscoveredPage(data.hasNextPage);
+        const existingCache = discoveredBots.cache[stringifyFilters(filters)];
+        if (existingCache?.page === filters.cursor + 1) return;
+
+        discoveredBots.setCacheData(stringifyFilters(filters), {
+          page: filters.cursor + 1,
+          characters: existingCache ? [...existingCache.characters, ...data.bots] : data.bots,
+          hasNextPage: data.hasNextPage,
+        });
       },
     },
   );
@@ -106,8 +94,6 @@ export const PopularCharactersDiscoverCategory = () => {
 
       reload();
       function reload() {
-        discoveredBots.clearDiscoveredBots();
-
         setFilters({
           textFilter: value.textFilter,
           source: value.source,
@@ -138,19 +124,19 @@ export const PopularCharactersDiscoverCategory = () => {
         {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
 
         {/*&& !isRefetching*/}
-        {discoveredBots.discovered.length === 0 && (
+        {discoveredBots.cache[stringifyFilters(filters)]?.characters.length === 0 && (
           <p className="">
             <Trans>No characters found. Try changing your search term.</Trans>
           </p>
         )}
 
         <div className="gap-4 flex flex-wrap w-full mx-auto">
-          {discoveredBots.discovered.map((bot) => {
+          {discoveredBots.cache[stringifyFilters(filters)]?.characters.map((bot) => {
             return <CharacterCard bottom key={bot.id} bot={bot} />;
           })}
         </div>
 
-        {discoveredBots.hasNextDiscoveredPage && (
+        {discoveredBots.cache[stringifyFilters(filters)]?.hasNextPage && (
           <Button onClick={skipPage} variant="faded" className="w-full sm:w-[200px] mx-auto">
             <Trans>Load more</Trans>
           </Button>

@@ -6,37 +6,27 @@ export type ExtendedBot = Bot & {
   chatId?: string;
 };
 
-export type DiscoveredBotStore = {
-  discovered: ExtendedBot[];
-  addDiscoveredBots: (bots: ExtendedBot[]) => void;
-  clearDiscoveredBots: VoidFunction;
-  hasNextDiscoveredPage: boolean;
-  setHasNextDiscoveredPage: (hasNext: boolean) => void;
+export type CharacterCache = {
+  page: number;
+  hasNextPage: boolean;
+  characters: ExtendedBot[];
 };
 
-const addDiscoveredBots = (bots: ExtendedBot[]) => {
-  discoveredBotStore.setState((state) => {
-    const final = [
-      ...state.discovered,
-      ...bots.filter((bot) => !state.discovered.find((b) => b.id === bot.id)),
-    ];
+export type DiscoveredBotStore = {
+  // string is indentifying chosen categories
+  cache: Record<string, CharacterCache>;
+  setCacheData: (key: string, data: CharacterCache) => void;
+};
 
-    return { discovered: final };
+const setCacheData = (key: string, data: CharacterCache) => {
+  discoveredBotStore.setState((state) => {
+    const cache = { ...state.cache };
+    cache[key] = data;
+    return { cache };
   });
 };
 
-const clearDiscoveredBots = () => {
-  discoveredBotStore.setState({ discovered: [] });
-};
-
-const setHasNextDiscoveredPage = (hasNext: boolean) => {
-  discoveredBotStore.setState({ hasNextDiscoveredPage: hasNext });
-};
-
 export const discoveredBotStore = createStore<DiscoveredBotStore>((set) => ({
-  discovered: [],
-  hasNextDiscoveredPage: false,
-  addDiscoveredBots,
-  clearDiscoveredBots,
-  setHasNextDiscoveredPage,
+  cache: {},
+  setCacheData,
 }));
