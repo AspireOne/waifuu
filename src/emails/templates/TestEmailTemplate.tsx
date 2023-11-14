@@ -27,7 +27,7 @@ type TestEmailProps = {
 };
 
 export const getTestEmailSubject = () => {
-  return t({ message: `Some superman batman test`, context: "Internal test email" });
+  return t({ message: "Some superman batman test", context: "Internal test email" });
 };
 
 // Must be exported as defalt.
@@ -40,17 +40,17 @@ export default ({
   return (
     <Email
       preview={t({
-        message: `If you love dolor ipsum lorem sit amut, click this`,
+        message: "If you love dolor ipsum lorem sit amut, click this",
         context: "Internal test email",
       })}
       title={t({
-        message: `This is a very important message from companion!`,
+        message: "This is a very important message from companion!",
         context: "Internal test email",
       })}
     >
       <Text>
         {t({
-          message: `This is a test email, check out the content below!`,
+          message: "This is a test email, check out the content below!",
           context: "Internal test email",
         })}
       </Text>

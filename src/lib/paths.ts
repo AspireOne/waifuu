@@ -33,7 +33,7 @@ export const semanticPaths = {
 
 export const fullUrl = (path: string) => {
   // ensure path contains a / at the end.
-  if (!path.startsWith("/")) path = "/" + path;
+  if (!path.startsWith("/")) path = `/${path}`;
   return `${baseUrl()}${path}`;
 };
 
