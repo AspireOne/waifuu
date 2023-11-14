@@ -62,7 +62,10 @@ export const PricingPage = () => {
 
   return (
     /*TODO: Desc...*/
-    <CombinedPage title={_(msg`Subscriptions`)}>
+    <CombinedPage
+      title={_(msg`Subscriptions`)}
+      backPath={auth.status === "authenticated" ? paths.discover : paths.index}
+    >
       <div className="mx-auto">
         <PricingPageHeader />
         <Spacer y={8} />

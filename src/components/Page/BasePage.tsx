@@ -51,7 +51,7 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
 
   const [prevPathExists, setPrevPathExists] = React.useState(false);
   useEffect(() => {
-    setPrevPathExists(window.history.length > 1);
+    setPrevPathExists(document.referrer.indexOf(window.location.host) >= 0);
   }, []);
 
   const router = useRouter();
