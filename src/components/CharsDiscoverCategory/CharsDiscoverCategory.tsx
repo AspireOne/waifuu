@@ -194,6 +194,7 @@ const ParametersHeader = (props: {
         </div>
 
         <div className="mx-auto mr-0 flex flex-col gap-3">
+          <TagMultiSelect className="w-full sm:hidden" onSelectTagIds={props.onTagsChange} />
           <div className="flex flex-row gap-6">
             <Switch
               onValueChange={(value) => props.onOnlyOfficialChange(value)}
@@ -212,7 +213,11 @@ const ParametersHeader = (props: {
             >
               NSFW
             </Switch>
-            <TagMultiSelect className="w-48" onSelectTagIds={props.onTagsChange} />
+
+            <TagMultiSelect
+              className="w-48 hidden sm:block"
+              onSelectTagIds={props.onTagsChange}
+            />
           </div>
         </div>
       </div>
