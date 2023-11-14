@@ -6,19 +6,25 @@ import { ActiveChatsDiscoverCategory } from "src/components/ActiveChatsDiscoverC
 
 import { CharsDiscoverCategory } from "src/components/CharsDiscoverCategory";
 
-const Discover = () => {
-  return (
-    <AppPage title={t`Discover Characters`} topLevel>
-      <DiscoverHeader />
-      <Spacer y={14} />
+import { Persisted } from "@components/Persisted/Persisted";
+import { usePersistentScrollPositionHandler } from "@hooks/usePersistentScrollPositionHandler";
 
-      <div className="w-full mx-auto flex flex-col gap-16">
-        <ActiveChatsDiscoverCategory />
-        <CharsDiscoverCategory />
-        {/*Comment it out for now - it is not done yet.*/}
-        {/*<ForumPostsDiscoverCategory />*/}
-      </div>
-    </AppPage>
+const Discover = () => {
+  usePersistentScrollPositionHandler();
+  return (
+    <Persisted id={"discover-page"}>
+      <AppPage title={t`Discover Characters`} topLevel>
+        <DiscoverHeader />
+        <Spacer y={14} />
+
+        <div className="w-full mx-auto flex flex-col gap-16">
+          <ActiveChatsDiscoverCategory />
+          <CharsDiscoverCategory />
+          {/*Comment it out for now - it is not done yet.*/}
+          {/*<ForumPostsDiscoverCategory />*/}
+        </div>
+      </AppPage>
+    </Persisted>
   );
 };
 

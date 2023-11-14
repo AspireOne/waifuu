@@ -11,11 +11,13 @@ import "filepond/dist/filepond.min.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import { SessionProvider } from "@/contexts/SessionProvider";
+import { SessionProvider } from "@/providers/SessionProvider";
 import { getOrInitFirebaseApp, getOrInitFirebaseAuth } from "@lib/firebase";
 import { initGlobalLocale } from "@lib/i18n";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
+import { MountPersistenceProvider } from "@providers/MountPersistenceProvider";
+import { PersistedScrollPositionProvider } from "@providers/PersistedScrollPositionProvider";
 import { getAnalytics } from "firebase/analytics";
 
 // biome-ignore lint: I keep it here so that I do not forget it exists.
@@ -44,18 +46,21 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
         <NextUIProvider>
           <I18nProvider i18n={i18n}>
             <SessionProvider>
-              {/*TODO: 'Dark' is currently hardcoded. Make the user be able to change the theme (just get user session and also save it to local storage for faster loading?)*/}
-              <main className={`bg-background text-foreground dark`}>
-                <div className="font-inter">
-                  <ToastContainer
-                    autoClose={4000}
-                    limit={4}
-                    newestOnTop={true}
-                    theme={"dark"}
-                  />
-                  <Component {...pageProps} />
-                </div>
-              </main>
+              <PersistedScrollPositionProvider>
+                <MountPersistenceProvider>
+                  <main className={"bg-background text-foreground dark"}>
+                    <div className="font-inter">
+                      <ToastContainer
+                        autoClose={4000}
+                        limit={4}
+                        newestOnTop={true}
+                        theme={"dark"}
+                      />
+                      <Component {...pageProps} />
+                    </div>
+                  </main>
+                </MountPersistenceProvider>
+              </PersistedScrollPositionProvider>
             </SessionProvider>
           </I18nProvider>
         </NextUIProvider>

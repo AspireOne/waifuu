@@ -1,5 +1,5 @@
+import { useSession } from "@/providers/SessionProvider";
 import Title from "@components/ui/Title";
-import { useSession } from "@contexts/SessionProvider";
 import { Trans } from "@lingui/macro";
 import Image from "next/image";
 

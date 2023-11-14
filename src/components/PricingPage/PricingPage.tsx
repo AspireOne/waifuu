@@ -1,10 +1,10 @@
+import { useSession } from "@/providers/SessionProvider";
 import { Plan, subscriptionPlans } from "@/server/shared/plans";
 import { CombinedPage } from "@components/CombinedPage";
 import { PricingPageHeader } from "@components/PricingPage/PricingPageHeader";
 import { useCreateSessionMutation } from "@components/PricingPage/useCreateSessionMutation";
 import { useUnsubscribeMutation } from "@components/PricingPage/useUnsubscribeMutation";
 import { PricingPlanCard } from "@components/PricingPlanCard";
-import { useSession } from "@contexts/SessionProvider";
 import { api } from "@lib/api";
 import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";

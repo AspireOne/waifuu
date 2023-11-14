@@ -1,6 +1,6 @@
 import { ActionBar } from "@components/ActionBar";
 import { AppHeader } from "@components/AppHeader";
-import PageHead from "@components/Page/PageHead";
+import PageHead from "@components/BasePage/PageHead";
 import { useSession } from "@hooks/useSession";
 import { paths } from "@lib/paths";
 import { normalizePath } from "@lib/utils";
@@ -51,7 +51,8 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
 
   const [prevPathExists, setPrevPathExists] = React.useState(false);
   useEffect(() => {
-    setPrevPathExists(document.referrer.indexOf(window.location.host) >= 0);
+    // TODO: Make this take into account only our domain.
+    setPrevPathExists(window.history.length > 1);
   }, []);
 
   const router = useRouter();
