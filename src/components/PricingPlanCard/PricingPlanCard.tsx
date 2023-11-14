@@ -40,7 +40,7 @@ export const PricingPlanCard = (
   return (
     <div
       className={twMerge(
-        "rounded-lg p-[2px] bg-gradient-to-r sm:min-w-[300px] max-w-[520px]",
+        "rounded-lg p-[2px] bg-gradient-to-r w-full sm:w-[370px]",
         props.gradient,
       )}
     >
