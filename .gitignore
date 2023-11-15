@@ -51,3 +51,7 @@ uploads
 volumes
 # Sentry Config File
 .sentryclirc
+
+.flaskenv*
+!.env.project
+!.env.vault
