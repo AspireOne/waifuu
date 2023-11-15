@@ -28,10 +28,11 @@ export const ButtonSection = (props: {
     <div className={"flex flex-row gap-2 justify-center items-center mt-auto"}>
       {!isSubscribed && (
         <Button
+          color={"primary"}
           isDisabled={isDisabled}
           isLoading={isLoading}
           className={"mt-auto"}
-          variant={"bordered"}
+          variant={"ghost"}
           onClick={handleClick}
         >
           <Trans>{buttonText}</Trans>

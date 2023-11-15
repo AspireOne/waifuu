@@ -172,7 +172,7 @@ const ParametersHeader = (props: {
             bold
           >
             <Trans>Popular Characters</Trans>
-            <Tooltip>
+            <Tooltip content={_(msg`Create a new character`)}>
               <Button
                 className={"ml-auto md:ml-0"}
                 size="sm"
