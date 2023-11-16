@@ -23,8 +23,8 @@ export const CharacterCard = ({
   likes,
 }: CharacterCardProps) => {
   return (
-    <Link href={normalizePath(paths.botChat(chatId ?? "", bot.id))}>
-      <Card className={"p-3 w-full min-w-[220px] sm:max-w-[220px] hover:bg-zinc-800"}>
+    <Card className={"w-full min-w-[220px] sm:max-w-[220px] hover:bg-zinc-800"}>
+      <Link className={"p-3"} href={normalizePath(paths.botChat(chatId ?? "", bot.id))}>
         <Spacer y={2} />
         <Image
           removeWrapper
@@ -85,7 +85,7 @@ export const CharacterCard = ({
             )}
           </div>
         )}
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   );
 };
