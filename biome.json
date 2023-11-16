@@ -22,7 +22,10 @@
       "./prisma/migrations/**/*",
       "./prisma/schema.prisma",
       "./prisma/db.sqlite",
-      "package.json"
+      "package-lock.json",
+      "package.json",
+      "./package.json",
+      "/package.json"
     ],
     "include": ["./src/**/*", "./prisma/seed.ts"]
   },
