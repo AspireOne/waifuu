@@ -39,6 +39,18 @@ export const fullUrl = (path: string) => {
 
 /** Returns the base path of the website/server (same thing) with NO trailing "/". e.g. "https://www.example.com" */
 export const baseUrl = () => {
+  // This must be BEFORE window/browser check below!
+  if (Capacitor.isNativePlatform()) {
+    if (!process.env.NEXT_PUBLIC_CAPACITOR_BASE_URL) {
+      toast("NEXT_PUBLIC_CAPACITOR_BASE_URL is not set!", { type: "error" });
+      throw new Error("NEXT_PUBLIC_CAPACITOR_BASE_URL is not set!");
+    }
+
+    return process.env.NEXT_PUBLIC_CAPACITOR_BASE_URL.endsWith("/")
+      ? process.env.NEXT_PUBLIC_CAPACITOR_BASE_URL.slice(0, -1)
+      : process.env.NEXT_PUBLIC_CAPACITOR_BASE_URL;
+  }
+
   // Browser = relative URL.
   if (typeof window !== "undefined") return "";
 
@@ -48,18 +60,7 @@ export const baseUrl = () => {
       : process.env.NEXT_PUBLIC_BASE_URL;
   }
 
-  if (Capacitor.isNativePlatform()) {
-    // TODO: Check if the env variables are saved in a capacitor build.
-    if (!process.env.NEXT_PUBLIC_CAPACITOR_SERVER_URL) {
-      console.error("NEXT_PUBLIC_CAPACITOR_SERVER_URL is not set!");
-      toast("NEXT_PUBLIC_CAPACITOR_SERVER_URL is not set!", { type: "error" });
-      return null;
-    }
-
-    return process.env.NEXT_PUBLIC_CAPACITOR_SERVER_URL.endsWith("/")
-      ? process.env.NEXT_PUBLIC_CAPACITOR_SERVER_URL.slice(0, -1)
-      : process.env.NEXT_PUBLIC_CAPACITOR_SERVER_URL;
-  }
+  throw new Error("NEXT_PUBLIC_BASE_URL is not set!");
 };
 
 /**

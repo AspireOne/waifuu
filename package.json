@@ -17,7 +17,6 @@
     "stripe:listen": "stripe listen --forward-to=localhost:3000/api/stripe_webhooks --project-name=companion",
     "env:pull": "dotenv-vault pull -y",
     "env:push": "dotenv-vault push -y",
-    "env:sync": "dotenv-vault pull -y && dotenv-vault push -y",
     "env:open": "dotenv-vault open -y",
     "t:extract": "lingui extract",
     "t:compile": "lingui compile",
