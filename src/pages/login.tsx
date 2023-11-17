@@ -49,10 +49,10 @@ const Login = () => {
 
   //! IMPORTANT Check for session.user instead of session.status.
   useEffect(() => {
-    if (session.user) {
+    if (session.user?.id) {
       router.replace(redirect || semanticPaths.appIndex);
     }
-  }, [session.user, session.user?.id, redirect, router]);
+  }, [session.user, session.user?.id]);
 
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: async (data, variables, context) => {
@@ -65,7 +65,10 @@ const Login = () => {
       // router.replace((redirect as string) || semanticPaths.appIndex);
       // session.refetch();
 
-      window.location.replace(redirect || semanticPaths.appIndex);
+      //window.location.replace(redirect || semanticPaths.appIndex);
+
+      await router.replace((redirect as string) || semanticPaths.appIndex);
+      await session.refetch();
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);

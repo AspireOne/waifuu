@@ -7,17 +7,35 @@
  * need to use are documented accordingly near the end.
  */
 
-import { TRPCError, initTRPC } from "@trpc/server";
+import { TRPCError } from "@/server/lib/TRPCError";
+import { initTRPC } from "@trpc/server";
+
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { TRPC_ERROR_CODE_KEY, TRPC_ERROR_CODE_NUMBER } from "@trpc/server/src/rpc/codes";
 import superjson from "superjson";
-import { ZodError } from "zod";
+import { ZodError, typeToFlattenedError } from "zod";
 
 import { retrieveUser } from "@/server/helpers/retrieveUser";
 import { prisma } from "@/server/lib/db";
 import { LocaleCode, locales } from "@lib/i18n";
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
+import { TypeOptions } from "react-toastify";
 import { OpenApiMeta } from "trpc-openapi";
+
+export type ClientTRPCError = {
+  code: TRPC_ERROR_CODE_NUMBER;
+  message: string;
+  toast?: string | null;
+  toastType?: TypeOptions | null;
+  data: {
+    code: TRPC_ERROR_CODE_KEY;
+    httpStatus: number;
+    path?: string;
+    stack?: string;
+    zodError: typeToFlattenedError<any, string> | null;
+  };
+};
 
 /**
  * 1. CONTEXT
@@ -96,11 +114,21 @@ const t = initTRPC
   .context<typeof createTRPCContext>()
   .create({
     transformer: superjson,
-    errorFormatter({ shape, error }) {
+    errorFormatter: ({ shape, error }): ClientTRPCError => {
+      // error = code: str, name, toast
+      // shape = code: number, data, message
+      // shape.data = code: str, path, stack, httpStatus
+
       return {
-        ...shape,
+        code: shape.code,
+        message: shape.message,
+        toast: (error as TRPCError)?.toast,
+        toastType: (error as TRPCError)?.toastType,
         data: {
-          ...shape.data,
+          code: shape.data.code,
+          httpStatus: shape.data.httpStatus,
+          path: shape.data.path,
+          stack: shape.data.stack,
           zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
         },
       };

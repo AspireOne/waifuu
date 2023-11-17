@@ -8,10 +8,10 @@ export const useUnsubscribeMutation = () => {
   const { _ } = useLingui();
 
   return api.plans.unsubscribe.useMutation({
-    onSuccess() {
-      apiUtils.plans.getCurrentPlan.invalidate();
+    onSuccess: async () => {
       // TODO: Redirect to unsubscribe success page.
       toast(_(msg`Successfully unsubscribed.`), { type: "success" });
+      await apiUtils.users.getSelf.refetch();
     },
     onError() {
       // TOOO: Show a modal with instructions to contact support.

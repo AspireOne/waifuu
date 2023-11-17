@@ -3,6 +3,8 @@ import {
   initialMessagePrompt,
 } from "@/server/ai/character-chat/prompts";
 import { llama13b } from "@/server/ai/models/llama13b";
+import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
+import { TRPCError } from "@/server/lib/TRPCError";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { t } from "@lingui/macro";
 import {
@@ -13,7 +15,6 @@ import {
   ChatMode,
   PrismaClient,
 } from "@prisma/client";
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 const botCreationInput = z.object({
@@ -41,7 +42,8 @@ const botCreationInput = z.object({
 });
 
 export default protectedProcedure.input(botCreationInput).mutation(async ({ input, ctx }) => {
-  await validateDuplicate(input, ctx.prisma);
+  await ensureNotDuplicateOrThrow(input, ctx.prisma);
+  await ensureWithinQuotaOrThrow("botsCreated", ctx.prisma, ctx.user.id, ctx.user.planId);
 
   const bot = await ctx.prisma.bot.create({
     data: {
@@ -84,10 +86,13 @@ export default protectedProcedure.input(botCreationInput).mutation(async ({ inpu
     createInitialMessage(ChatMode.ADVENTURE, bot, ctx.prisma),
   ]);
 
+  // TODO(1): Do it async after request.
+  await incrementQuotaUsage("botsCreated", ctx.user.id, ctx.prisma);
+
   return bot;
 });
 
-async function validateDuplicate(
+async function ensureNotDuplicateOrThrow(
   input: z.infer<typeof botCreationInput>,
   prisma: PrismaClient,
 ) {

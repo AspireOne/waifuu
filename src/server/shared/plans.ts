@@ -12,6 +12,11 @@ type Plan = {
   name: string;
   description: string;
   features: string[];
+  limits: {
+    messagesPerDay: number;
+    charactersAccessedPerDay: number;
+    customCharactersPerMonth: number;
+  };
   price: PlanPrice;
 };
 
@@ -39,6 +44,11 @@ export const subscriptionPlans = (): Plans => {
         t`Free access to all new features`,
         t`Free access to all future community-related features`,
       ],
+      limits: {
+        messagesPerDay: 50,
+        charactersAccessedPerDay: 50,
+        customCharactersPerMonth: 10,
+      },
       price: {
         USD: 0,
         CZK: 0,
@@ -56,6 +66,11 @@ export const subscriptionPlans = (): Plans => {
         t`100 custom characters per month`,
         t`Priority access to all new early features`,
       ],
+      limits: {
+        messagesPerDay: 300,
+        charactersAccessedPerDay: 1000,
+        customCharactersPerMonth: 100,
+      },
       price: {
         USD: 6.59,
         CZK: 149,
@@ -72,6 +87,11 @@ export function getPlan(planId: PlanId): Plan {
   throw new Error(
     `Plan with id ${planId} was not found. This should not be possible to happen.`,
   );
+}
+
+export function getPlanOrFree(planId?: PlanId | null) {
+  if (!planId) return subscriptionPlans().free;
+  return getPlan(planId);
 }
 
 export type { Plans, Plan, PlanPrice };

@@ -66,7 +66,7 @@ export const PricingPlanCard = (
         <Divider className={"my-4"} />
 
         <ul>
-          {props.features.map((feature, i) => (
+          {props.features.map((feature) => (
             <li key={feature} className={"flex flex-row gap-2 items-center"}>
               <IoIosCheckmarkCircle className={"text-green-500"} /> {feature}
             </li>
