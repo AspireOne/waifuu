@@ -25,40 +25,32 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
           // This already logs the error to the console.
           observer.error(err);
 
-          // Convert the received bag of shit to the a actual error object crafted at the backend.
+          // Get the custom data we sent from the server.
+          const trpcErrData = (err.meta?.responseJSON as any)?.error?.json as
+            | ClientTRPCError
+            | undefined;
+
           // biome-ignore format:
-          const error = (err.meta?.responseJSON as any)?.error?.json as ClientTRPCError | undefined;
+          const isUnsignedError = err.data?.code === "UNAUTHORIZED" || err.message === "No user is signed in.";
+          const isZodError = err.data?.code === "PARSE_ERROR";
+          const isTRPCError = !!trpcErrData && !!trpcErrData.data;
 
-          if (!error) {
-            // TODO: Sentry.
-            console.warn("Received error, but error object is undefined.");
-            return;
-          }
+          //console.log({ isUnsignedError, isZodError, isTRPCError });
 
-          if (!error.data) {
-            // TODO: Sentry.
-            console.error("Received error, but error.data is undefined.");
-            return;
-          }
+          let toastMsg = t`Something went wrong`;
+          // Don't show unsigned error.
+          if (isUnsignedError) return;
+          if (isZodError) return toast(err.message, { type: "error" });
+          if (!isTRPCError) return toast(toastMsg, { type: "error" });
 
-          // Don't show error to user if they are not logged in.
-          if (
-            error.data.code === "UNAUTHORIZED" ||
-            // Can be thrown from Firebase.
-            error.message === "No user is signed in."
-          ) {
-            return;
-          }
-
-          let msg: string;
-
-          if (error.toast) msg = error.toast;
-          else if (error.data.code === "PARSE_ERROR") msg = error.message;
-          else msg = t`Something went wrong`;
+          if (trpcErrData.toast) toastMsg = trpcErrData.toast;
+          else if (trpcErrData.data.code === "PARSE_ERROR") toastMsg = trpcErrData.message; // This zod err could be improved.
 
           // Make the first letter uppercase and remove period from the end, if any.
-          const formattedMsg = msg.charAt(0).toUpperCase() + msg.slice(1).replace(/\.$/, "");
-          toast(formattedMsg, { type: error.toastType ?? "error" });
+          const formattedMsg =
+            toastMsg.charAt(0).toUpperCase() + toastMsg.slice(1).replace(/\.$/, "");
+          toast(formattedMsg, { type: trpcErrData.toastType ?? "error" });
+          console.log("Server response error toast: ", formattedMsg);
         },
         complete() {
           observer.complete();

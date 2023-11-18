@@ -65,10 +65,7 @@ const Login = () => {
       // router.replace((redirect as string) || semanticPaths.appIndex);
       // session.refetch();
 
-      //window.location.replace(redirect || semanticPaths.appIndex);
-
-      await router.replace((redirect as string) || semanticPaths.appIndex);
-      await session.refetch();
+      window.location.replace(redirect || semanticPaths.appIndex);
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);

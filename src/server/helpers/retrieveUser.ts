@@ -16,11 +16,12 @@ export async function retrieveUser(req: NextApiRequest): Promise<User | null> {
 
     if (!decodedToken.uid) return null;
 
-    return await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: decodedToken.uid,
       },
     });
+    return user;
   } catch (e) {
     console.error("Error getting user:", e);
     return null;

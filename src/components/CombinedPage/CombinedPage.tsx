@@ -25,7 +25,6 @@ export const CombinedPage = (props: PropsWithChildren<Props>) => {
     };
     update();
   }, [session.status]);
-  console.log(status);
 
   return (
     <BasePage
