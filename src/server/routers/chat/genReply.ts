@@ -9,6 +9,7 @@ import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
+import { t } from "@lingui/macro";
 
 const Input = z.object({
   chatId: z.string(),
@@ -70,6 +71,7 @@ async function genOutput(
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to generate a reply.",
+      toast: t`Error replying, please try again later`,
       cause: e,
     });
   }
