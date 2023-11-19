@@ -10,10 +10,9 @@
     "build:native:development": "cross-env NODE_ENV=development NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
     "dev": "cross-env NODE_ENV=development NEXT_PUBLIC_DEVELOPMENT=1 next dev",
     "dev:external": "cross-env HOST=0.0.0.0 && pnpm dev",
-    "lint": "biome lint --apply ./src",
-    "lint:unsafe": "biome lint --apply-unsafe ./src",
-    "fix": "biome check --apply-unsafe ./src",
+    "lint": "biome lint --apply-unsafe ./src",
     "format": "biome format --write ./src",
+    "fix": "biome check --apply-unsafe ./src",
     "env:pull": "dotenv-vault pull -y",
     "env:push": "dotenv-vault push -y",
     "env:open": "dotenv-vault open -y",
@@ -36,7 +35,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": "biome check --no-errors-on-unmatched --apply --organize-imports-enabled true --log-level warn"
+    "src/**/*.{js,jsx,ts,tsx}": "biome check --no-errors-on-unmatched --apply-unsafe --organize-imports-enabled true"
   },
   "dependencies": {
     "@capacitor-firebase/authentication": "^5.2.0",
