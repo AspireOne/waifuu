@@ -30,7 +30,7 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
             | ClientTRPCError
             | undefined;
 
-          // biome-ignore format:
+          // biome-ignore format: more readable.
           const isUnsignedError = err.data?.code === "UNAUTHORIZED" || err.message === "No user is signed in.";
           const isZodError = err.data?.code === "PARSE_ERROR";
           const isTRPCError = !!trpcErrData && !!trpcErrData.data;

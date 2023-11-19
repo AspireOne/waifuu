@@ -25,7 +25,7 @@ export const PricingPlanCard = (
   const price = props.price[code];
   const priceStr = _(msg`${price + symbol} / month`);
   const subscribed = props.currentPlan?.id === props.id;
-  // biome-ignore format:
+  // biome-ignore format: off.
   const isDisabled = subscribed || !!props.submittingPlan || props.tier < (props.currentPlan?.tier ?? 0);
   const isLoading = props.submittingPlan?.id === props.id;
 

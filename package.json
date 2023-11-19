@@ -11,6 +11,7 @@
     "dev": "cross-env NODE_ENV=development NEXT_PUBLIC_DEVELOPMENT=1 next dev",
     "dev:external": "cross-env HOST=0.0.0.0 && pnpm dev",
     "lint": "biome lint --apply-unsafe ./src",
+    "lint:check": "biome lint ./src",
     "format": "biome format --write ./src",
     "fix": "biome check --apply-unsafe ./src",
     "env:pull": "dotenv-vault pull -y",

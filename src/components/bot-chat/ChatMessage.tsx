@@ -51,7 +51,7 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
             <p className={"font-bold"}>{author.name}</p>
             <p
               className="max-w-xs overflow-ellipsis overflow-hidden"
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: Fix this later!
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: // TODO: Fix this later!
               dangerouslySetInnerHTML={{ __html: formattedMessage }}
             />
           </div>

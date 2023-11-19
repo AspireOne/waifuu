@@ -150,7 +150,6 @@ export const CharsDiscoverCategory = () => {
 
 const ParametersHeader = (props: {
   onTagsChange: (tags: string[]) => void;
-  // biome-ignore lint/suspicious/noExplicitAny:
   register: (name: any) => UseFormRegisterReturn;
   onOnlyOfficialChange: (value: boolean) => void;
   onNsfwChange: (value: boolean) => void;

@@ -1,4 +1,4 @@
-// biome-ignore lint:
+// biome-ignore lint: We do not want it to span the whole vertical space.
 import { Body, Head, Heading, Hr, Html, Preview, Section, Tailwind } from "@jsx-email/all";
 
 import { PropsWithChildren } from "react";

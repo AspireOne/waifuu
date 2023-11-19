@@ -80,6 +80,7 @@ function Chat() {
     <div className="z-30 flex flex-col gap-8">
       <div className={"fixed left-2 right-2 z-30"}>
         {showUserHeader ? (
+          // biome-ignore lint/style/noNonNullAssertion: It is checked in showUserHeader.
           <RRUserHeader className={"border border-default-200 shadow"} user={conn.lastUser!} />
         ) : (
           <StatusHeader

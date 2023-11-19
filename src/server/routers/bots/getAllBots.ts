@@ -28,7 +28,7 @@ export default publicProcedure
       nsfw: input?.nsfw ? undefined : false,
 
       // Text search.
-      // biome-ignore format:
+      // biome-ignore format: off
       OR: !textFilter ? undefined : [
         { title: { contains: textFilter, mode: QueryMode.insensitive } },
         { description: { contains: textFilter, mode: QueryMode.insensitive } },

@@ -7,7 +7,7 @@ import metaHandler from "@/server/lib/metaHandler";
 import * as formidable from "formidable";
 import * as minio from "minio";
 
-type ProcessedFiles = Array<[string, formidable.File]>;
+type ProcessedFiles = [string, formidable.File][];
 type ResultData = {
   fileName: string;
   id: string;
@@ -51,7 +51,7 @@ export default metaHandler.protected(async (req, res, ctx) => {
     const form = new formidable.IncomingForm();
     const files: ProcessedFiles = [];
 
-    form.on("file", function (field, file) {
+    form.on("file", (field, file) => {
       files.push([field, file]);
     });
     form.on("end", () => resolve(files));
