@@ -1,3 +1,4 @@
+import { Trans } from "@lingui/macro";
 import {
   Button,
   Modal,
@@ -16,22 +17,24 @@ type Props = {
 // TODO: Server must remember this value to not show this dialog over and over again
 export const NsfwConfirmDialog = ({ isOpen, onOpenChange, onConfirm }: Props) => {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="bottom-center">
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Are you sure you want to view NSFW content?
+              <Trans>Are you sure you want to view NSFW content?</Trans>
             </ModalHeader>
             <ModalBody>
-              You must be 18 years or older to view content only meant for adults.
+              <Trans>
+                You must be 18 years or older to view content only meant for adults.
+              </Trans>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="flat" onPress={onClose}>
-                I am not
+                <Trans>Cancel</Trans>
               </Button>
               <Button color="primary" onPress={onConfirm}>
-                I am 18 or older
+                <Trans>I am 18 or older</Trans>
               </Button>
             </ModalFooter>
           </>

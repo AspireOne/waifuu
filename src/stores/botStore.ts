@@ -6,26 +6,27 @@ export type ExtendedBot = Bot & {
   chatId?: string;
 };
 
+export type CharacterCache = {
+  page: number;
+  hasNextPage: boolean;
+  characters: ExtendedBot[];
+};
+
 export type DiscoveredBotStore = {
-  discovered: ExtendedBot[];
-  addDiscoveredBots: (bots: ExtendedBot[]) => void;
-  clearDiscoveredBots: VoidFunction;
-  hasNextDiscoveredPage: boolean;
-  setHasNextDiscoveredPage: (hasNext: boolean) => void;
+  // string is indentifying chosen categories
+  cache: Record<string, CharacterCache>;
+  setCacheData: (key: string, data: CharacterCache) => void;
+};
+
+const setCacheData = (key: string, data: CharacterCache) => {
+  discoveredBotStore.setState((state) => {
+    const cache = { ...state.cache };
+    cache[key] = data;
+    return { cache };
+  });
 };
 
 export const discoveredBotStore = createStore<DiscoveredBotStore>((set) => ({
-  discovered: [],
-  addDiscoveredBots: (bots: ExtendedBot[]) =>
-    set((state) => {
-      const final = [
-        ...state.discovered,
-        ...bots.filter((bot) => !state.discovered.find((b) => b.id === bot.id)),
-      ];
-
-      return { discovered: final };
-    }),
-  clearDiscoveredBots: () => set({ discovered: [] }),
-  hasNextDiscoveredPage: false,
-  setHasNextDiscoveredPage: (hasNext: boolean) => set({ hasNextDiscoveredPage: hasNext }),
+  cache: {},
+  setCacheData,
 }));

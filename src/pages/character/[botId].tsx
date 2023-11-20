@@ -150,7 +150,8 @@ const ChatMainMenu = () => {
 
           <div className="p-3 mt-4">
             <Button
-              variant={"faded"}
+              variant={"solid"}
+              color={"primary"}
               isDisabled={!mode}
               isLoading={getOrCreateBotChat.isLoading}
               type="submit"

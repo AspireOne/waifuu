@@ -9,12 +9,10 @@ export type MetaHandlerContext = {
 
 export default {
   public: <T extends MetaHandlerContext>(
-    // biome-ignore lint/suspicious/noExplicitAny:
     handler: (req: NextApiRequest, res: NextApiResponse, ctx: T) => any,
   ) => metaHandler(handler),
 
   protected: <T extends MetaHandlerContext & { user: User }>(
-    // biome-ignore lint/suspicious/noExplicitAny:
     handler: (req: NextApiRequest, res: NextApiResponse, ctx: T) => any,
   ) => metaHandler(handler, { protected: true }),
 };
@@ -25,7 +23,6 @@ export default {
  * @param options
  */
 function metaHandler<T extends MetaHandlerContext>(
-  // biome-ignore lint/suspicious/noExplicitAny:
   handler: (req: NextApiRequest, res: NextApiResponse, ctx: T) => any,
   options?: {
     /** If true, the handler will require a user to be logged in and user field will not be null. */

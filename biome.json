@@ -22,7 +22,10 @@
       "./prisma/migrations/**/*",
       "./prisma/schema.prisma",
       "./prisma/db.sqlite",
-      "package.json"
+      "package-lock.json",
+      "package.json",
+      "./package.json",
+      "/package.json"
     ],
     "include": ["./src/**/*", "./prisma/seed.ts"]
   },
@@ -32,13 +35,14 @@
       "recommended": true,
       "suspicious": {
         "noCommentText": "warn",
-        "noExplicitAny": "warn"
+        "noExplicitAny": "off"
       },
       "style": {
         "noUnusedTemplateLiteral": "warn",
         "noNonNullAssertion": "warn",
         "noParameterAssign": "off",
-        "useTemplate": "warn"
+        "useTemplate": "warn",
+        "useShorthandArrayType": "warn"
       },
       "complexity": {
         "useSimplifiedLogicExpression": "off"
@@ -47,7 +51,9 @@
         "useButtonType": "off"
       },
       "nursery": {
-        "noUnusedImports": "warn"
+        "noUnusedImports": "warn",
+        "useArrowFunction": "warn",
+        "noMisrefactoredShorthandAssign": "error"
       },
       "correctness": {
         "noUnreachable": "off",
@@ -57,7 +63,7 @@
   },
   "formatter": {
     "enabled": true,
-    "formatWithErrors": false,
+    "formatWithErrors": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 95

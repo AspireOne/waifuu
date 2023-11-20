@@ -1,11 +1,12 @@
 import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
+import { Plan, getPlan, subscriptionPlans } from "@/server/shared/plans";
 import { Preferences } from "@capacitor/preferences";
 import { User } from "@prisma/client";
 import "firebase/compat/auth";
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 
-type SessionUser = User;
+type SessionUser = User & { plan: Plan };
 export type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 export type LastKnownStatus = "authenticated" | "unauthenticated";
 
@@ -85,6 +86,9 @@ export const SessionProvider = (props: PropsWithChildren) => {
       setUser({
         ...userQuery.data,
         image: userQuery.data.image,
+        plan: userQuery.data.planId
+          ? getPlan(userQuery.data.planId)
+          : subscriptionPlans().free,
       });
       setLastKnownStatus("authenticated");
     }

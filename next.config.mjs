@@ -16,7 +16,7 @@ const config = {
   reactStrictMode: true,
   experimental: {
     swcPlugins: [
-      // biome-ignore format:
+      // biome-ignore format: keep it on one line to make it more readable.
       ["@lingui/swc-plugin", {/*the same options as in .swcrc (in the root)*/}],
       ["@swc-jotai/react-refresh", {}],
     ],

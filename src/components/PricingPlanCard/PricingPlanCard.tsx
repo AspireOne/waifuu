@@ -25,7 +25,7 @@ export const PricingPlanCard = (
   const price = props.price[code];
   const priceStr = _(msg`${price + symbol} / month`);
   const subscribed = props.currentPlan?.id === props.id;
-  // biome-ignore format:
+  // biome-ignore format: off.
   const isDisabled = subscribed || !!props.submittingPlan || props.tier < (props.currentPlan?.tier ?? 0);
   const isLoading = props.submittingPlan?.id === props.id;
 
@@ -40,7 +40,7 @@ export const PricingPlanCard = (
   return (
     <div
       className={twMerge(
-        "rounded-lg p-[2px] bg-gradient-to-r sm:min-w-[300px] max-w-[520px]",
+        "rounded-lg p-[2px] bg-gradient-to-r w-full sm:w-[370px]",
         props.gradient,
       )}
     >
@@ -66,7 +66,7 @@ export const PricingPlanCard = (
         <Divider className={"my-4"} />
 
         <ul>
-          {props.features.map((feature, i) => (
+          {props.features.map((feature) => (
             <li key={feature} className={"flex flex-row gap-2 items-center"}>
               <IoIosCheckmarkCircle className={"text-green-500"} /> {feature}
             </li>

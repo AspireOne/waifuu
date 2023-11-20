@@ -1,5 +1,5 @@
-import { BasePage, PageProps } from "@components/Page";
 import { PropsWithChildren } from "react";
+import { BasePage, PageProps } from "src/components/BasePage";
 
 export type AppPageProps = Omit<PageProps, "showHeader" | "unprotected" | "showActionBar"> & {
   /**

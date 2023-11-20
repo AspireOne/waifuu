@@ -2,11 +2,14 @@ import { getCharacterSystemPrompt } from "@/server/ai/character-chat/characterSy
 import { llama13b } from "@/server/ai/models/llama13b";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { Bot, Chat, Message, PrismaClient, User } from "@prisma/client";
-import { TRPCError } from "@trpc/server";
 // Yes, this does show error. There is no typescript version.
 // @ts-ignore
-import llamaTokenizer from "llama-tokenizer-js";
+
+import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
+
+import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
+import { t } from "@lingui/macro";
 
 const Input = z.object({
   chatId: z.string(),
@@ -14,21 +17,25 @@ const Input = z.object({
 });
 
 export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) => {
+  await ensureWithinQuotaOrThrow("messagesSent", ctx.prisma, ctx.user.id, ctx.user.planId);
+
   // TODO: Get amount of messages based on the model's context window length.
   // For now we hardcode it.
-  const chat = await retrieveChat(input.chatId, ctx.prisma, 20);
+  const chat = await retrieveChatOrThrow(input.chatId, ctx.prisma, 20);
 
   // Push the new message to the msg history so that it is included in the prompt without saving them just yet.
-  chat.messages.push(getMockMessage(input));
+  chat.messages.push(createPlaceholderMessage(input));
 
-  // biome-ignore format:
-  console.log("messages total text length: ", chat.messages.reduce((acc, msg) => acc + msg.content.length, 0));
-  // biome-ignore format:
-  console.log("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
+  console.log(
+    "messages total text length: ",
+    chat.messages.reduce((acc, msg) => acc + msg.content.length, 0),
+  );
+  //console.log("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
 
   const output = await genOutput(chat);
-
   const msgs = await saveMessages(input, output, ctx.prisma);
+  // TODO(1): Do it async after request.
+  await incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma);
 
   return {
     message: msgs.botMsg,
@@ -36,7 +43,7 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
   };
 });
 
-function getMockMessage(input: z.infer<typeof Input>): Message {
+function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
   return {
     content: input.message,
     chatId: input.chatId,
@@ -64,6 +71,7 @@ async function genOutput(
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to generate a reply.",
+      toast: t`Error replying, please try again later`,
       cause: e,
     });
   }
@@ -97,7 +105,7 @@ async function saveMessages(input: z.infer<typeof Input>, output: string, db: Pr
   };
 }
 
-async function retrieveChat(chatId: string, db: PrismaClient, numOfMessages: number) {
+async function retrieveChatOrThrow(chatId: string, db: PrismaClient, numOfMessages: number) {
   const chat = await db.chat.findUnique({
     where: {
       id: chatId,

@@ -3,39 +3,44 @@ import { Capacitor } from "@capacitor/core";
 import { FirebaseApp, FirebaseOptions, getApp, initializeApp } from "firebase/app";
 import { Auth, getAuth, indexedDBLocalPersistence, initializeAuth } from "firebase/auth";
 
-let app: FirebaseApp | undefined;
-let auth: Auth | undefined;
+const globalForApp = globalThis as unknown as {
+  app: FirebaseApp | undefined;
+};
+
+const globalForAuth = globalThis as unknown as {
+  auth: Auth | undefined;
+};
 
 const options: FirebaseOptions = {
-  apiKey: "AIzaSyDSu6zz8K4iopKgrCaN22DKC2WUUjcq7Xw",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_API_KEY as string,
   authDomain: "companion-400217.firebaseapp.com",
   projectId: "companion-400217",
   storageBucket: "companion-400217.appspot.com",
   messagingSenderId: "24288336305",
-  appId: "1:24288336305:web:da711ae4d0bd1966d80590",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_APP_ID as string,
   measurementId: "G-N3WCYQ93GT",
 };
 
 const getOrInitFirebaseApp = () => {
-  if (!app) app = initializeApp(options);
-  return app;
+  // biome-ignore lint: Shut up this is beatiful.
+  return (globalForApp.app ??= initializeApp(options));
 };
 
 const getOrInitFirebaseAuth = () => {
-  if (auth) return auth;
+  if (globalForAuth.auth) return globalForAuth.auth;
 
   getOrInitFirebaseApp();
 
   if (Capacitor.isNativePlatform()) {
-    auth = initializeAuth(getApp(), {
+    globalForAuth.auth = initializeAuth(getApp(), {
       persistence: indexedDBLocalPersistence,
     });
   } else {
-    auth = getAuth();
-    auth.setPersistence(indexedDBLocalPersistence);
+    globalForAuth.auth = getAuth();
+    globalForAuth.auth.setPersistence(indexedDBLocalPersistence);
   }
 
-  return auth;
+  return globalForAuth.auth;
 };
 
 const getIdToken = async (): Promise<string | undefined> => {

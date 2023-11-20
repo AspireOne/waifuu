@@ -84,7 +84,7 @@ const handleCheckoutSessionCompleted = async (event: Stripe.Event) => {
 
   const stripeSub = await stripe.subscriptions.retrieve(subId);
   if (!stripeSub) {
-    throw new Error("Subscription doesn't exist.");
+    throw new Error("Stripe subscription doesn't exist.");
   }
 
   // Create a new subscription record
@@ -100,6 +100,11 @@ const handleCheckoutSessionCompleted = async (event: Stripe.Event) => {
     },
   });
 
+  await prisma.user.update({
+    where: { id: userId },
+    data: { planId: planId },
+  });
+
   // TODO: Add internal sub id.
   await prisma.stripeSession.update({
     where: { id: session.id },
@@ -112,9 +117,17 @@ const handleCustomerSubscriptionDeleted = async (event: Stripe.Event) => {
   const stripeSub = event.data.object as Stripe.Subscription;
 
   // Update subscription status to 'canceled'
-  await prisma.subscription.update({
+  const sub = await prisma.subscription.update({
     where: { stripeSubscriptionId: stripeSub.id },
     data: { status: "canceled" },
+    select: {
+      userId: true,
+    },
+  });
+
+  await prisma.user.update({
+    where: { id: sub.userId },
+    data: { planId: null },
   });
 };
 
@@ -143,6 +156,11 @@ const handleInvoicePaymentSucceeded = async (event: Stripe.Event) => {
   prisma.subscription.update({
     where: { id: sub.id },
     data: { status: "active" },
+  });
+
+  prisma.user.update({
+    where: { id: sub.userId },
+    data: { planId: sub.planId },
   });
 };
 
@@ -179,6 +197,19 @@ const handleCustomerSubscriptionUpdated = async (event: Stripe.Event) => {
       currentPeriodEnd: new Date(stripeSub.current_period_end * 1000),
     },
   });
+
+  if (stripeSub.status === "active" || stripeSub.status === "canceled") {
+    const active = stripeSub.status === "active";
+
+    prisma.user.update({
+      where: {
+        id: sub.userId,
+      },
+      data: {
+        planId: active ? sub.planId : null,
+      },
+    });
+  }
 };
 
 async function getStripeSubscriptionFromInvoice(invoice: Stripe.Invoice) {

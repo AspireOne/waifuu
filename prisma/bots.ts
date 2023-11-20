@@ -1,19 +1,4 @@
-const CharacterTag = {
-  ANIME: "Anime",
-  GIRLFRIEND: "Girlfriend",
-  FANTASY: "Fantasy",
-  SHY: "Shy",
-  ROMANCE: "Romance",
-  FEMALE: "Female",
-  MALE: "Male",
-  MONSTER: "Monster",
-  COMEDY: "Comedy",
-  HERO: "Hero",
-  MOVIE: "Movie",
-  GAME_CHARACTER: "Game Character",
-  SUPERNATURAL: "Supernatural",
-  NERD: "Nerd"
-};
+import { CharacterTag } from "@prisma/client";
 
 export default [
   {

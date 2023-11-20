@@ -7,6 +7,7 @@ import { getIdToken } from "@/lib/firebase";
 import { type AppRouter } from "@/server/routers/root";
 import { Capacitor } from "@capacitor/core";
 
+import { ClientTRPCError } from "@/server/lib/trpc";
 import { getLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
 import { t } from "@lingui/macro";
@@ -24,22 +25,32 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
           // This already logs the error to the console.
           observer.error(err);
 
-          // Don't show error to user if they are not logged in.
-          if (
-            err?.data?.code === "UNAUTHORIZED" ||
-            // Can be thrown from Firebase.
-            err?.message === "No user is signed in."
-          ) {
-            return;
-          }
+          // Get the custom data we sent from the server.
+          const trpcErrData = (err.meta?.responseJSON as any)?.error?.json as
+            | ClientTRPCError
+            | undefined;
 
-          // Show error message to user only if it's a zod error.
-          // Otherwise show just "Something went wrong".
+          // biome-ignore format: more readable.
+          const isUnsignedError = err.data?.code === "UNAUTHORIZED" || err.message === "No user is signed in.";
+          const isZodError = err.data?.code === "PARSE_ERROR";
+          const isTRPCError = !!trpcErrData && !!trpcErrData.data;
 
-          const errorMsg =
-            err?.data?.code === "PARSE_ERROR" ? err.message : t`Something went wrong`;
+          //console.log({ isUnsignedError, isZodError, isTRPCError });
 
-          toast(errorMsg, { type: "error" });
+          let toastMsg = t`Something went wrong`;
+          // Don't show unsigned error.
+          if (isUnsignedError) return;
+          if (isZodError) return toast(err.message, { type: "error" });
+          if (!isTRPCError) return toast(toastMsg, { type: "error" });
+
+          if (trpcErrData.toast) toastMsg = trpcErrData.toast;
+          else if (trpcErrData.data.code === "PARSE_ERROR") toastMsg = trpcErrData.message; // This zod err could be improved.
+
+          // Make the first letter uppercase and remove period from the end, if any.
+          const formattedMsg =
+            toastMsg.charAt(0).toUpperCase() + toastMsg.slice(1).replace(/\.$/, "");
+          toast(formattedMsg, { type: trpcErrData.toastType ?? "error" });
+          console.log("Server response error toast: ", formattedMsg);
         },
         complete() {
           observer.complete();

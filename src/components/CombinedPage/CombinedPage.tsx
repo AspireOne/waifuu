@@ -1,7 +1,7 @@
-import { BasePage, PageProps } from "@components/Page";
-import { SessionStatus, useSession } from "@contexts/SessionProvider";
+import { SessionStatus, useSession } from "@/providers/SessionProvider";
 import * as React from "react";
 import { PropsWithChildren, useEffect } from "react";
+import { BasePage, PageProps } from "src/components/BasePage";
 
 type Props = Pick<PageProps, "title" | "description" | "className" | "backPath" | "autoBack">;
 /**
@@ -25,7 +25,6 @@ export const CombinedPage = (props: PropsWithChildren<Props>) => {
     };
     update();
   }, [session.status]);
-  console.log(status);
 
   return (
     <BasePage

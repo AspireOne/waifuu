@@ -1,11 +1,10 @@
+import { useSession } from "@/providers/SessionProvider";
 import { Plan, subscriptionPlans } from "@/server/shared/plans";
 import { CombinedPage } from "@components/CombinedPage";
 import { PricingPageHeader } from "@components/PricingPage/PricingPageHeader";
 import { useCreateSessionMutation } from "@components/PricingPage/useCreateSessionMutation";
 import { useUnsubscribeMutation } from "@components/PricingPage/useUnsubscribeMutation";
 import { PricingPlanCard } from "@components/PricingPlanCard";
-import { useSession } from "@contexts/SessionProvider";
-import { api } from "@lib/api";
 import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
@@ -18,14 +17,9 @@ export const PricingPage = () => {
   const router = useRouter();
   const auth = useSession();
   const { _ } = useLingui();
+
   const [submittingPlan, setSubmittingPlan] = useState<Plan | null>(null);
 
-  const { data: currPlan, isLoading: planLoading } = api.plans.getCurrentPlan.useQuery(
-    undefined,
-    {
-      enabled: auth.status === "authenticated",
-    },
-  );
   const createSessionMut = useCreateSessionMutation(setSubmittingPlan);
   const unsubscribeMut = useUnsubscribeMutation();
 
@@ -37,7 +31,7 @@ export const PricingPage = () => {
     }
 
     // Check if we CAN upgrade/downgrade.
-    if (planLoading || currPlan?.id === plan.id || submittingPlan) return;
+    if (auth.user?.plan.id === plan.id || submittingPlan) return;
 
     // const downgrading = plan && plan.tier > getPlan(id).tier;
 
@@ -48,7 +42,7 @@ export const PricingPage = () => {
 
   function onUnsubscribeClick() {
     if (
-      !currPlan ||
+      !auth.user?.planId ||
       auth.status !== "authenticated" ||
       submittingPlan ||
       unsubscribeMut.isLoading
@@ -56,13 +50,15 @@ export const PricingPage = () => {
       return;
     }
 
-    // TODO: Show modal.
-    unsubscribeMut.mutate({ planId: currPlan.id });
+    unsubscribeMut.mutate();
   }
 
   return (
     /*TODO: Desc...*/
-    <CombinedPage title={_(msg`Subscriptions`)}>
+    <CombinedPage
+      title={_(msg`Subscriptions`)}
+      backPath={auth.status === "authenticated" ? paths.discover : paths.index}
+    >
       <div className="mx-auto">
         <PricingPageHeader />
         <Spacer y={8} />
@@ -70,7 +66,7 @@ export const PricingPage = () => {
           <PricingPlanCard
             onClick={onChoosePlanClick}
             onUnsubscribeClick={onUnsubscribeClick}
-            currentPlan={currPlan}
+            currentPlan={auth.user?.plan}
             submittingPlan={submittingPlan}
             {...subscriptionPlans().free}
             gradient={"from-purple-500 via-purple-500 to-pink-500"}
@@ -78,7 +74,7 @@ export const PricingPage = () => {
           <PricingPlanCard
             onClick={onChoosePlanClick}
             onUnsubscribeClick={onUnsubscribeClick}
-            currentPlan={currPlan}
+            currentPlan={auth.user?.plan}
             submittingPlan={submittingPlan}
             {...subscriptionPlans().plus}
             gradient={"from-yellow-400 to-red-500"}

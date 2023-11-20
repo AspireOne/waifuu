@@ -167,26 +167,19 @@ const PayPlans = () => {
 
 const CompanionUsageCard = ({ specialClass }: { specialClass?: string }) => {
   return (
-    <div 
-      className={
-        twMerge([
-          "w-[230px] bg-gray-600 h-[150px] rounded-lg",
-          specialClass
-        ])
-      } 
-    >
-      <div 
+    <div className={twMerge(["w-[230px] bg-gray-600 h-[150px] rounded-lg", specialClass])}>
+      <div
         className={twMerge([
           "relative -bottom-28 -right-32 bg-red-500 rounded-lg w-fit",
-          "flex flex-row gap-2 text-lg font-bold p-2"
+          "flex flex-row gap-2 text-lg font-bold p-2",
         ])}
       >
         <Emoji className="h-7 w-7" name="blossom" />
         Roleplay
       </div>
     </div>
-  )
-}
+  );
+};
 
 const CompanionUsage = () => {
   return (
@@ -198,12 +191,12 @@ const CompanionUsage = () => {
       </div>
 
       <div className="w-fit text-5xl text-center mx-auto">
-          <h1 className="flex flex-row gap-2">
-            <Emoji name="blossom" className="w-[50px] h-[50px]" />
-            <p>Companion</p>
-          </h1>
-          <p className="font-bold">can do</p>
-        </div>
+        <h1 className="flex flex-row gap-2">
+          <Emoji name="blossom" className="w-[50px] h-[50px]" />
+          <p>Companion</p>
+        </h1>
+        <p className="font-bold">can do</p>
+      </div>
 
       <div className="flex w-fit mx-auto flex-row gap-60 mt-9">
         <CompanionUsageCard />

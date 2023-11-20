@@ -1,6 +1,6 @@
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
-import { subscriptionPlans } from "@/server/shared/plans";
+
 import updateSelfSchema from "@/server/shared/updateSelfSchema";
 import { AppPage } from "@components/AppPage";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,8 +18,6 @@ import { z } from "zod";
 
 export default function Profile() {
   const { user, refetch } = useSession();
-
-  const { data: plan, isLoading: planLoading } = api.plans.getCurrentPlan.useQuery();
 
   const updateUserMutation = api.users.updateSelf.useMutation({
     onSuccess: (data) => {
@@ -102,7 +100,7 @@ export default function Profile() {
             }
             src={imageUrl ?? undefined}
           />
-          {!planLoading && (
+          {user?.plan && (
             <Link
               as={NextLink}
               isBlock
@@ -111,7 +109,7 @@ export default function Profile() {
               className={"text-xl whitespace-pre"}
             >
               <Trans>
-                Plan: <b>{plan?.name ?? subscriptionPlans().free.name}</b>
+                Plan: <b>{user.plan.name}</b>
               </Trans>
             </Link>
           )}

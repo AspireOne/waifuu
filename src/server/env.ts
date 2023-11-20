@@ -34,6 +34,7 @@ export const envSchema = z.object({
   MINIO_ACCESS_KEY: z.string(),
   MINIO_SECRET_KEY: z.string(),
 
+  REDIS_PASSWORD: z.string(),
   // EMAIL
   MAILGUN_API_KEY: z.string().min(1),
   MAILGUN_DOMAIN: z.string().min(1),

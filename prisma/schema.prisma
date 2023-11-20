@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -96,8 +95,9 @@ model User {
 
   bio         String?
   botContext  String?
-  addressedAs String?    @default("Senpai")
-  Quota       UserQuota?
+  addressedAs String?         @default("Senpai")
+  Quota       PlanQuotaUsage?
+  planId      PlanId?
 
   Bot              Bot[]
   BotLikes         BotLike[]
@@ -155,12 +155,42 @@ model StripeSession {
   user                 User                 @relation(fields: [userId], references: [id])
 }
 
-model UserQuota {
-  id         String   @id @default(cuid())
-  userId     String   @unique
-  user       User     @relation(fields: [userId], references: [id])
-  quotaToDay DateTime @default(now())
-  messages   Int      @default(0)
+model PlanQuotaUsage {
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  messagesSent    Int      @default(0) // Count of sent messages since reset.
+  botsCreated     Int      @default(0) // Count of created characters since reset.
+  botsAccessedIds String[] @default([]) // Accessed bots since reset (ids). // TODO: Change this to a relation?
+
+  resetDay   DateTime @default(now()) // The day the quota was reset.
+  resetMonth DateTime @default(now()) // The month the quota was reset.
+
+  @@id([userId])
+  @@index([userId, resetDay, resetMonth])
+}
+
+enum CharacterTag {
+  GIRLFRIEND
+  BOYFRIEND
+  ROMANCE
+  FANTASY
+  SUPERNATURAL
+  FEMALE
+  MALE
+  HORROR
+  HERO
+  COMEDY
+  NERD
+  SHY
+  BAD
+  ANIME
+  GAME_CHARACTER
+  HISTORY
+  MOVIE
+  MONSTER
+  BOOKS
+  OC
 }
 
 model Bot {
@@ -192,10 +222,8 @@ model Bot {
   BotShares   BotShares[]
 
   // Other relations.
-  tags           Tag[]
+  tags           CharacterTag[]
   BotChats       Chat[]
-  categoryId     String?
-  category       Category?        @relation(fields: [categoryId], references: [name])
   InitialMessage InitialMessage[]
 
   // Mood.
@@ -225,13 +253,6 @@ model MoodTable {
 
   botId String @unique
   bot   Bot    @relation(fields: [botId], references: [id])
-}
-
-model Tag {
-  name      String   @id
-  bots      Bot[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model BotLike {
@@ -313,7 +334,6 @@ model Category {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   ForumPosts ForumPost[]
-  Bots       Bot[]
 
   @@index([name])
 }

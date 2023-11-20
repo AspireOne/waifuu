@@ -5,8 +5,8 @@ import { useLingui } from "@lingui/react";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-toastify";
 
-// biome-ignore lint/style/noNonNullAssertion:
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK!);
+if (!process.env.NEXT_PUBLIC_STRIPE_PK) throw new Error("Missing stripe public key.");
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK);
 
 export const useCreateSessionMutation = (setSubmittingPlan: (plan: Plan | null) => void) => {
   const { _ } = useLingui();

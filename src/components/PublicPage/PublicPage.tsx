@@ -1,5 +1,5 @@
-import { BasePage } from "@components/Page";
 import { PropsWithChildren } from "react";
+import { BasePage } from "src/components/BasePage";
 
 /**
  * Public page that is NOT part of the app itself.

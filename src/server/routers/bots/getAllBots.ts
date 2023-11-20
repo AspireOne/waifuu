@@ -1,5 +1,5 @@
 import { publicProcedure } from "@/server/lib/trpc";
-import { BotSource, BotVisibility, Prisma } from "@prisma/client";
+import { BotSource, BotVisibility, CharacterTag, Prisma } from "@prisma/client";
 import { z } from "zod";
 import QueryMode = Prisma.QueryMode;
 
@@ -13,13 +13,12 @@ export default publicProcedure
         sourceFilter: z.nativeEnum(BotSource).nullish(),
         textFilter: z.string().nullish(),
         nsfw: z.boolean().default(false),
-        categories: z.array(z.string()).default([]),
+        tags: z.array(z.nativeEnum(CharacterTag)).default([]),
         limit: z.number().min(1).nullish(),
         cursor: z.number().nullish(),
       })
       .optional(),
   )
-
   .query(async ({ input, ctx }) => {
     const textFilter = input?.textFilter;
 
@@ -29,7 +28,7 @@ export default publicProcedure
       nsfw: input?.nsfw ? undefined : false,
 
       // Text search.
-      // biome-ignore format:
+      // biome-ignore format: off
       OR: !textFilter ? undefined : [
         { title: { contains: textFilter, mode: QueryMode.insensitive } },
         { description: { contains: textFilter, mode: QueryMode.insensitive } },
@@ -39,14 +38,12 @@ export default publicProcedure
       description: { search: textFilter },
       name: { search: textFilter },*/
 
-      category:
-        !input?.categories || input?.categories?.length === 0
-          ? undefined
-          : {
-              name: {
-                in: input?.categories ?? undefined,
-              },
-            },
+      ...(input?.tags &&
+        input.tags.length > 0 && {
+          tags: {
+            hasEvery: input?.tags ?? undefined,
+          },
+        }),
     };
 
     const query = ctx.prisma.bot.findMany({

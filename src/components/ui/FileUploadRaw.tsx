@@ -5,9 +5,10 @@ import { ChangeEvent, useState } from "react";
 type FileUploadRawProps = {
   onUpload: (id: string) => void;
   label: string;
+  required?: boolean;
 };
 
-export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
+export const FileUploadRaw = ({ onUpload, label, required }: FileUploadRawProps) => {
   const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
   const [uploading, setUploading] = useState(false);
   const [responseSuccessful, setResponseSuccessful] = useState<boolean | undefined>(undefined);
@@ -38,7 +39,10 @@ export const FileUploadRaw = ({ onUpload, label }: FileUploadRawProps) => {
 
   return (
     <div>
-      <label className="block text-white text-sm font-bold mb-2">{label}</label>
+      <label className="block text-white text-sm font-bold mb-2">
+        {label}
+        {required ? <span className={"text-red-600 ml-[2px]"}>*</span> : ""}
+      </label>
 
       <div
         className={`mb-10 relative rounded-md border-dashed border-2 ${

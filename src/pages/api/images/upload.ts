@@ -3,11 +3,11 @@ import path from "path";
 import { env } from "@/server/env";
 import { prisma } from "@/server/lib/db";
 import metaHandler from "@/server/lib/metaHandler";
-import generateUUID from "@lib/utils";
+
 import * as formidable from "formidable";
 import * as minio from "minio";
 
-type ProcessedFiles = Array<[string, formidable.File]>;
+type ProcessedFiles = [string, formidable.File][];
 type ResultData = {
   fileName: string;
   id: string;
@@ -34,13 +34,13 @@ const MinioClient = new minio.Client({
 });
 
 function convertToMinioName(inputString: string): string {
-  const sanitizedString = inputString.replace(/[^a-zA-Z0-9\-_.~]/g, '');
+  const sanitizedString = inputString.replace(/[^a-zA-Z0-9\-_.~]/g, "");
 
   if (Buffer.from(sanitizedString).length > 1024) {
     throw new Error("Object name exceeds the maximum length of 1024 bytes.");
   }
 
-  return sanitizedString.replace(/(^[-_~.]+|[-_~.]+$)/g, '');
+  return sanitizedString.replace(/(^[-_~.]+|[-_~.]+$)/g, "");
 }
 
 export default metaHandler.protected(async (req, res, ctx) => {
@@ -51,7 +51,7 @@ export default metaHandler.protected(async (req, res, ctx) => {
     const form = new formidable.IncomingForm();
     const files: ProcessedFiles = [];
 
-    form.on("file", function (field, file) {
+    form.on("file", (field, file) => {
       files.push([field, file]);
     });
     form.on("end", () => resolve(files));

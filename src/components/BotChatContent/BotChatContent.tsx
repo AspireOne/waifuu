@@ -1,9 +1,9 @@
+import { useSession } from "@/providers/SessionProvider";
 import { useFixLoadMoreScrollJitter } from "@components/BotChatContent/useFixLoadMoreScrollJitter";
 import { useLoadMore } from "@components/BotChatContent/useLoadMore";
 import { useScrollToLatest } from "@components/BotChatContent/useScrollToLatest";
 import { ChatMessage } from "@components/bot-chat/ChatMessage";
 import { ChatTypingIndicator } from "@components/bot-chat/ChatTypingIndicator";
-import { useSession } from "@contexts/SessionProvider";
 import useBotChat from "@hooks/useBotChat";
 import { makeDownloadUrl } from "@lib/utils";
 import { Image, ScrollShadow } from "@nextui-org/react";

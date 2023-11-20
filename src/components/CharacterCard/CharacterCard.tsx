@@ -23,8 +23,8 @@ export const CharacterCard = ({
   likes,
 }: CharacterCardProps) => {
   return (
-    <Card className="p-3 w-full min-w-[220px] sm:max-w-[220px]">
-      <Link href={normalizePath(paths.botChat(chatId ?? "", bot.id))}>
+    <Card className={"w-full min-w-[220px] sm:max-w-[220px] hover:bg-zinc-800"}>
+      <Link className={"p-3"} href={normalizePath(paths.botChat(chatId ?? "", bot.id))}>
         <Spacer y={2} />
         <Image
           removeWrapper

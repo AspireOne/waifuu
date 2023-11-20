@@ -1,14 +1,14 @@
 import { api } from "@/lib/api";
 import { t } from "@lingui/macro";
 import { Select, SelectItem } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { Skeleton } from "../Skeleton";
+import { CharacterTag } from "@prisma/client";
+import { HTMLAttributes, useEffect, useState } from "react";
 
 type Props = {
-  onSelectTagIds: (tagIds: string[]) => void;
-};
+  onSelectTagIds: (tagIds: CharacterTag[]) => void;
+} & HTMLAttributes<HTMLSelectElement>;
 
-export const TagMultiSelect = ({ onSelectTagIds }: Props) => {
+export const TagMultiSelect = ({ onSelectTagIds, ...props }: Props) => {
   const [selected, setSelected] = useState(new Set([]));
 
   useEffect(() => onSelectTagIds(Array.from(selected)), [selected]);
@@ -17,9 +17,15 @@ export const TagMultiSelect = ({ onSelectTagIds }: Props) => {
     limit: 10,
   });
 
-  if (!data || isLoading) {
-    return <Skeleton width={200} height={50} />;
-  }
+  const items =
+    data &&
+    Object.keys(data).map((el) => {
+      return (
+        <SelectItem key={el} value={el}>
+          {data[el as keyof typeof data]}
+        </SelectItem>
+      );
+    });
 
   return (
     <Select
@@ -28,13 +34,10 @@ export const TagMultiSelect = ({ onSelectTagIds }: Props) => {
       // @ts-ignore --- Library type bug
       onSelectionChange={setSelected}
       selectedKeys={selected}
-      placeholder={t`Select tags`}
-      aria-label={t`Select tags`}
-      className="w-48"
+      label={t`Select tags`}
+      {...props}
     >
-      {data.map(({ name }) => {
-        return <SelectItem key={name}>{name}</SelectItem>;
-      })}
+      {items ?? []}
     </Select>
   );
 };

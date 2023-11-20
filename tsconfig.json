@@ -31,7 +31,7 @@
       "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"],
       "@services/*": ["./src/services/*"],
-      "@contexts/*": ["./src/contexts/*"],
+      "@providers/*": ["./src/providers/*"],
       "@server/*": ["./server/*"],
     }
   },

@@ -1,6 +1,6 @@
+import { useSession } from "@/providers/SessionProvider";
 import { CombinedPage } from "@components/CombinedPage";
 import Title from "@components/ui/Title";
-import { useSession } from "@contexts/SessionProvider";
 import { paths } from "@lib/paths";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";

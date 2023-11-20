@@ -12,6 +12,11 @@ type Plan = {
   name: string;
   description: string;
   features: string[];
+  limits: {
+    messagesPerDay: number;
+    charactersAccessedPerDay: number;
+    customCharactersPerMonth: number;
+  };
   price: PlanPrice;
 };
 
@@ -30,7 +35,20 @@ export const subscriptionPlans = (): Plans => {
       name: t({ message: "Free", context: "Subscription plan name" }),
       // TODO: Change the descriptions :d
       description: t`All the essentials for a sporadic chatter.`,
-      features: ["~50 messages per day", "10 custom characters a month", ""],
+      features: [
+        t`~50 messages per day`,
+        t`10 custom characters a month`,
+        t`Access to all official characters`,
+        t`Access to all community characters`,
+        t`Our best A.I. engine`,
+        t`Free access to all new features`,
+        t`Free access to all future community-related features`,
+      ],
+      limits: {
+        messagesPerDay: 50,
+        charactersAccessedPerDay: 50,
+        customCharactersPerMonth: 10,
+      },
       price: {
         USD: 0,
         CZK: 0,
@@ -43,13 +61,16 @@ export const subscriptionPlans = (): Plans => {
       name: t({ message: "Plus", context: "Subscription plan name" }),
       description: t`Immerse yourself in a whole new world of imagination.`,
       features: [
-        "Everything from the Free Plan, plus...",
-        "Unlimited custom characters",
-        "Unlimited reactions",
-        "Unlimited attachments",
-        "Unlimited voice calls",
-        "Unlimited video calls",
+        t`Everything from the Free Plan, plus...`,
+        t`~300 messages a day`,
+        t`100 custom characters per month`,
+        t`Priority access to all new early features`,
       ],
+      limits: {
+        messagesPerDay: 300,
+        charactersAccessedPerDay: 1000,
+        customCharactersPerMonth: 100,
+      },
       price: {
         USD: 6.59,
         CZK: 149,
@@ -66,6 +87,11 @@ export function getPlan(planId: PlanId): Plan {
   throw new Error(
     `Plan with id ${planId} was not found. This should not be possible to happen.`,
   );
+}
+
+export function getPlanOrFree(planId?: PlanId | null) {
+  if (!planId) return subscriptionPlans().free;
+  return getPlan(planId);
 }
 
 export type { Plans, Plan, PlanPrice };

@@ -1,4 +1,4 @@
-import { ChatMode, BotSource, PrismaClient, BotVisibility, Tag } from "@prisma/client";
+import { ChatMode, BotSource, PrismaClient, BotVisibility, CharacterTag } from "@prisma/client";
 import Bots from './bots';
 
 const prisma = new PrismaClient();
@@ -12,7 +12,7 @@ type BotProps = {
   avatar: string;
   characterImage: string;
   initialMessage: string;
-  tags: string[];
+  tags: CharacterTag[];
 };
 
 async function upsertBot(props: BotProps) {
@@ -30,12 +30,7 @@ async function upsertBot(props: BotProps) {
       source: BotSource.OFFICIAL,
       avatar: props.avatar,
       characterImage: props.characterImage,
-      tags: {
-        connectOrCreate: props.tags.map(tag => ({
-          where: { name: tag },
-          create: { name: tag },
-        })),
-      }
+      tags: props.tags
     },
   });
 

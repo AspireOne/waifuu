@@ -1,4 +1,5 @@
 import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
+import { TagMultiSelect } from "@/components/ui/TagMultiSelect";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { AppPage } from "@components/AppPage";
@@ -17,16 +18,17 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { BotVisibility } from "@prisma/client";
+import { BotVisibility, CharacterTag } from "@prisma/client";
 import Router from "next/router";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 type CreateInput = {
   title: string;
   description: string;
   visibility: BotVisibility;
-  category: string;
+  tags: CharacterTag[];
 
   name: string;
   persona: string;
@@ -51,20 +53,25 @@ const CreateChatPage = () => {
 
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
-      Router.push(paths.botChatMainMenu(data.id));
+      Router.replace(paths.botChatMainMenu(data.id));
     },
   });
 
-  const { register, handleSubmit } = useForm<CreateInput>();
+  const { register, handleSubmit, setValue } = useForm<CreateInput>();
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
+    if (!avatar) {
+      toast(_(msg`Avatar is required`), { type: "warning" });
+      return;
+    }
+
     createBot.mutate({
       ...data,
       nsfw: isSelected,
       backgroundImage: background,
-      avatar,
-      category: data.category,
-      cover,
-      moodImagesEnabled,
+      avatar: avatar,
+      tags: data.tags,
+      cover: cover,
+      moodImagesEnabled: moodImagesEnabled,
       sadImageId: sad,
       happyImageId: happy,
       neutralImageId: neutral,
@@ -82,7 +89,7 @@ const CreateChatPage = () => {
             </h2>
 
             <div className="flex flex-col gap-4">
-              <FileUploadRaw onUpload={(id) => setAvatar(id)} label="Avatar" />
+              <FileUploadRaw required onUpload={(id) => setAvatar(id)} label="Avatar" />
 
               <Input {...register("title")} isRequired type="text" label={_(msg`Title`)} />
 
@@ -105,7 +112,7 @@ const CreateChatPage = () => {
                 </SelectItem>
               </Select>
 
-              <Input {...register("category")} label={_(msg`Category`)} />
+              <TagMultiSelect onSelectTagIds={(ids) => setValue("tags", ids)} />
             </div>
 
             <Divider className="mt-4 mb-4" />
@@ -126,7 +133,6 @@ const CreateChatPage = () => {
 
               <Textarea
                 {...register("dialogue")}
-                isRequired
                 label={_(msg`Example dialogue`)}
                 labelPlacement="outside"
               />
@@ -188,10 +194,8 @@ const CreateChatPage = () => {
             </Accordion>
 
             <div className="flex flex-row w-fit mx-auto mr-0 gap-2 mt-5">
-              <Button color="primary" variant="bordered">
-                <Trans>Close</Trans>
-              </Button>
-              <Button type="submit" color="primary">
+              {/* TODO: Add some fun texts or submit it and show some loading toast, because this might take long time. */}
+              <Button type="submit" color="primary" isLoading={createBot.isLoading}>
                 <Trans>Create</Trans>
               </Button>
             </div>
