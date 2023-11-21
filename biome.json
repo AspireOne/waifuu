@@ -39,7 +39,7 @@
       },
       "style": {
         "noUnusedTemplateLiteral": "warn",
-        "noNonNullAssertion": "warn",
+        "noNonNullAssertion": "off",
         "noParameterAssign": "off",
         "useTemplate": "warn",
         "useShorthandArrayType": "warn"

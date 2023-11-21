@@ -15,6 +15,7 @@ import { TRPC_ERROR_CODE_KEY, TRPC_ERROR_CODE_NUMBER } from "@trpc/server/src/rp
 import superjson from "superjson";
 import { ZodError, typeToFlattenedError } from "zod";
 
+import { global } from "@/server/global";
 import { retrieveUser } from "@/server/helpers/retrieveUser";
 import { prisma } from "@/server/lib/db";
 import { LocaleCode, locales } from "@lib/i18n";
@@ -135,31 +136,8 @@ const t = initTRPC
     },
   });
 
-/**
- * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
- *
- * These are the pieces you use to build your tRPC API. You should import these a lot in the
- * "/src/server/api/routers" directory.
- */
-
-/**
- * This is how you create new routers and sub-routers in your tRPC API.
- *
- * @see https://trpc.io/docs/router
- */
-export const createTRPCRouter = t.router;
-
-/**
- * Public (unauthenticated) procedure
- *
- * This is the base piece you use to build new queries and mutations on your tRPC API. It does not
- * guarantee that a user querying is authorized, but you can still access user session data if they
- * are logged in.
- */
-export const publicProcedure = t.procedure;
-
 /** Reusable middleware that enforces users are logged in before running the procedure. */
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+const authMiddleware = t.middleware(({ ctx, next }) => {
   if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -171,12 +149,26 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
-/**
- * Protected (authenticated) procedure
- *
- * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
- * the session is valid and guarantees `ctx.user` is not null.
- *
- * @see https://trpc.io/docs/procedures
- */
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+const throttleMiddleware = t.middleware(({ ctx, next }) => {
+  const ip = ctx.req?.socket.remoteAddress;
+  if (!ip) {
+    console.error("No IP address found for request in throttle middleware.");
+    return next();
+  }
+  //const user = ctx.user!;
+
+  global.ipThrottler.addAccess(ip);
+  if (global.ipThrottler.isAboveLimit(ip)) {
+    throw new TRPCError({
+      code: "TOO_MANY_REQUESTS",
+      message: "You are sending too many requests. Please try again later.",
+      toast: "You are too fast. Please wait for a bit.",
+    });
+  }
+
+  return next();
+});
+
+export const createTRPCRouter = t.router;
+export const publicProcedure = t.procedure.use(throttleMiddleware);
+export const protectedProcedure = t.procedure.use(throttleMiddleware).use(authMiddleware);
