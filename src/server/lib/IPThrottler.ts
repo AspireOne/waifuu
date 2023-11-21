@@ -1,10 +1,9 @@
 import parse from "parse-duration";
 
 // Request limits.
-const LIMIT_PER_HOUR = 5000;
-const LIMIT_PER_MINUTE = 200;
-const LIMIT_PER_SECOND = 20;
-const MAX_STORED_ACCESSES = 1000;
+const LIMIT_PER_HOUR = 3000;
+const LIMIT_PER_MINUTE = 110;
+const LIMIT_PER_SECOND = 15;
 
 export class IPThrottler {
   private readonly IPAccesses: Record<string, number[]>;
@@ -27,7 +26,6 @@ export class IPThrottler {
     const accesses = this.IPAccesses[ip]!;
     accesses.push(timestamp);
 
-    // Cleanup if the stored accesses exceed a certain limit
     while (accesses.length > 0 && accesses[0]! <= timestamp - parse("1h")!) {
       accesses.shift();
     }
