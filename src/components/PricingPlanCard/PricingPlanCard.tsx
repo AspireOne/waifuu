@@ -7,6 +7,7 @@ import { useLingui } from "@lingui/react";
 import { Divider, Spacer } from "@nextui-org/react";
 import { PlanId } from "@prisma/client";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import Skeleton from "react-loading-skeleton";
 import { twMerge } from "tailwind-merge";
 
 export const PricingPlanCard = (
@@ -22,8 +23,8 @@ export const PricingPlanCard = (
   const { code, symbol } = useCurrency();
   const { _ } = useLingui();
 
-  const price = props.price[code];
-  const priceStr = _(msg`${price + symbol} / month`);
+  const price = code && props.price[code];
+  const priceStr = code && _(msg`${price! + symbol!} / month`);
   const subscribed = props.currentPlan?.id === props.id;
   // biome-ignore format: off.
   const isDisabled = subscribed || !!props.submittingPlan || props.tier < (props.currentPlan?.tier ?? 0);
@@ -55,7 +56,7 @@ export const PricingPlanCard = (
             <Title as={"h2"} size={"md"} className="mb-0 tracking-tighter">
               {props.name}
             </Title>
-            <p>{priceStr}</p>
+            <p>{priceStr || <Skeleton width={80} />}</p>
           </div>
           {subscribed && (
             <p className={"text-primary-500"}>

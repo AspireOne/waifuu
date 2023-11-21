@@ -389,3 +389,12 @@ model ForumPostLike {
 
   @@index([postId])
 }
+
+model IpInfo {
+  ip       String  @id
+  country  String
+  region   String?
+  city     String?
+  loc      String?
+  timezone String?
+}

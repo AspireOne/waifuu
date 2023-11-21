@@ -1,5 +1,5 @@
 import { getIdToken } from "@lib/firebase";
-import { getLocale } from "@lib/i18n";
+import { getCurrentLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
 import { showErrorToast } from "@lib/utils";
 // frontend api client
@@ -8,7 +8,7 @@ import axios from "axios";
 const apiClient = axios.create({
   baseURL: baseApiUrl(),
   headers: {
-    locale: getLocale(),
+    locale: getCurrentLocale(),
   },
 });
 

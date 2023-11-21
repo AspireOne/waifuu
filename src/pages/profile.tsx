@@ -4,10 +4,10 @@ import { api } from "@/lib/api";
 import updateSelfSchema from "@/server/shared/updateSelfSchema";
 import { AppPage } from "@components/AppPage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LocaleCode, changeAndSaveGlobalLocale, getLocale, locales } from "@lib/i18n";
+
 import { paths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
-import { Avatar, Button, Input, Link, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Avatar, Button, Input, Link, Textarea } from "@nextui-org/react";
 import { User } from "@prisma/client";
 import NextLink from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -80,7 +80,7 @@ export default function Profile() {
 
   async function onlanguageSelected(e: React.ChangeEvent<HTMLSelectElement>) {
     const locale = e.target.value;
-    await changeAndSaveGlobalLocale(locale as LocaleCode);
+    /*await changeAndSaveGlobalLocale(locale as LocaleCode);*/
     toast(t`Language successfully changed`, { type: "success" });
   }
 
@@ -175,7 +175,8 @@ export default function Profile() {
           errorMessage={errors.botContext?.message as string}
         />
 
-        <Select
+        {/* Comment it out since we are not translating it yet. */}
+        {/*<Select
           onChange={onlanguageSelected}
           label={t`Language`}
           defaultSelectedKeys={[getLocale()]}
@@ -185,7 +186,7 @@ export default function Profile() {
               {label}
             </SelectItem>
           ))}
-        </Select>
+        </Select>*/}
 
         <Button
           isLoading={updateUserMutation.isLoading}

@@ -5,6 +5,7 @@ import { PricingPageHeader } from "@components/PricingPage/PricingPageHeader";
 import { useCreateSessionMutation } from "@components/PricingPage/useCreateSessionMutation";
 import { useUnsubscribeMutation } from "@components/PricingPage/useUnsubscribeMutation";
 import { PricingPlanCard } from "@components/PricingPlanCard";
+import { useCurrency } from "@hooks/useCurrency";
 import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
@@ -17,6 +18,7 @@ export const PricingPage = () => {
   const router = useRouter();
   const auth = useSession();
   const { _ } = useLingui();
+  const currency = useCurrency();
 
   const [submittingPlan, setSubmittingPlan] = useState<Plan | null>(null);
 
@@ -37,7 +39,7 @@ export const PricingPage = () => {
 
     setSubmittingPlan(plan);
     // Create session & redirect.
-    createSessionMut.mutate({ planId: plan.id, interval: "month" });
+    createSessionMut.mutate({ planId: plan.id, interval: "month", currency: currency.code! });
   }
 
   function onUnsubscribeClick() {

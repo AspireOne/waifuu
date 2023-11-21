@@ -8,7 +8,7 @@ import { type AppRouter } from "@/server/routers/root";
 import { Capacitor } from "@capacitor/core";
 
 import { ClientTRPCError } from "@/server/lib/trpc";
-import { getLocale } from "@lib/i18n";
+import { getCurrentLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
 import { t } from "@lingui/macro";
 import { observable } from "@trpc/server/observable";
@@ -43,12 +43,15 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
           if (isZodError) return toast(err.message, { type: "error" });
           if (!isTRPCError) return toast(toastMsg, { type: "error" });
 
+          // Do not shown toast if toast === null.
+          if (trpcErrData.toast === null) return;
+
           if (trpcErrData.toast) toastMsg = trpcErrData.toast;
-          else if (trpcErrData.data.code === "PARSE_ERROR") toastMsg = trpcErrData.message; // This zod err could be improved.
 
           // Make the first letter uppercase and remove period from the end, if any.
           const formattedMsg =
             toastMsg.charAt(0).toUpperCase() + toastMsg.slice(1).replace(/\.$/, "");
+
           toast(formattedMsg, { type: trpcErrData.toastType ?? "error" });
           console.log("Server response error toast: ", formattedMsg);
         },
@@ -99,7 +102,7 @@ export const api = createTRPCNext<AppRouter>({
           url: baseApiUrl("/trpc"),
           async fetch(url, options) {
             const idToken = await getIdToken();
-            const locale = getLocale();
+            const locale = getCurrentLocale();
 
             return fetch(url, {
               ...options,

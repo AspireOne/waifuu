@@ -2,7 +2,7 @@ import { createStripeCheckoutSessionJob } from "@/server/jobs/plans/createStripe
 import { stripe } from "@/server/lib/stripe";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { LocaleCode } from "@lib/i18n";
-import { PlanId, PrismaClient, User } from "@prisma/client";
+import { Currency, PlanId, PrismaClient, User } from "@prisma/client";
 import { SubscriptionInterval } from "@prisma/client";
 import { z } from "zod";
 
@@ -11,6 +11,7 @@ export default protectedProcedure
     z.object({
       planId: z.nativeEnum(PlanId),
       interval: z.nativeEnum(SubscriptionInterval),
+      currency: z.nativeEnum(Currency),
     }),
   )
   .mutation(async ({ ctx, input }) => {
@@ -27,6 +28,7 @@ export default protectedProcedure
     const session = await createStripeCheckoutSessionJob({
       planId: input.planId,
       interval: input.interval,
+      currencyCode: input.currency,
       user: ctx.user,
       customerId: customerId,
       locale: ctx.locale,

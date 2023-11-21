@@ -3,6 +3,7 @@ import z from "zod";
 /** Must not be imported from the client! */
 export const envSchema = z.object({
   NODE_ENV: z.string().default("development"),
+  IPINFO_TOKEN: z.string().min(1),
   // Local Postgres server (for local testing), OR remote postgres server for production.
   DATABASE_URL: z.string().url(),
   // The Firebase Admin SDK credentials. This should be an one-line JSON string.

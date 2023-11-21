@@ -20,6 +20,8 @@ import { MountPersistenceProvider } from "@providers/MountPersistenceProvider";
 import { PersistedScrollPositionProvider } from "@providers/PersistedScrollPositionProvider";
 import { getAnalytics } from "firebase/analytics";
 
+initGlobalLocale();
+
 // biome-ignore lint: I keep it here so that I do not forget it exists.
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   // Initialize app.
@@ -29,8 +31,6 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
       const app = getOrInitFirebaseApp();
       const auth = getOrInitFirebaseAuth();
       const analytics = getAnalytics(app);
-
-      await initGlobalLocale();
     }
 
     init();

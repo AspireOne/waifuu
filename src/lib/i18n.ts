@@ -1,14 +1,14 @@
 import { Capacitor } from "@capacitor/core";
 import { Device } from "@capacitor/device";
-import { Preferences } from "@capacitor/preferences";
+
 import { i18n } from "@lingui/core";
-import { CZ, FlagComponent, US } from "country-flag-icons/react/3x2";
+import { FlagComponent, US } from "country-flag-icons/react/3x2";
 
 /**
  * This file contains everything related to internationalization.
  */
 
-export type LocaleCode = "en" | "cs";
+export type LocaleCode = "en" /* | "cs"*/;
 const defaultLoc: LocaleCode = "en";
 
 type Locales = {
@@ -19,14 +19,14 @@ type Locales = {
 
 export const locales: Locales = [
   { code: "en", label: "English", flag: US },
-  { code: "cs", label: "Čeština", flag: CZ },
+  /*{ code: "cs", label: "Čeština", flag: CZ },*/
 ];
 
-export function getLocale() {
-  return i18n.locale;
+export function getCurrentLocale() {
+  return i18n.locale as LocaleCode;
 }
 
-export async function changeAndSaveGlobalLocale(locale: LocaleCode) {
+/*export async function changeAndSaveGlobalLocale(locale: LocaleCode) {
   if (!isLocaleSupported(locale)) {
     throw new Error(`Locale ${locale} is not supported.`);
   }
@@ -37,10 +37,10 @@ export async function changeAndSaveGlobalLocale(locale: LocaleCode) {
   } else {
     await Preferences.set({ key: "locale", value: locale });
   }
-}
+}*/
 
 export async function initGlobalLocale() {
-  const locale = await getMostSuitableLocale();
+  const locale = "en"; /*await getMostSuitableLocale();*/
   await setI18nLocale(locale);
 }
 
@@ -48,15 +48,17 @@ async function setI18nLocale(locale: LocaleCode) {
   const { messages } = await import(`../locales/${locale}/messages`);
   i18n.loadAndActivate({ locale, messages });
   // Set html lang attribute.
-  document.documentElement.lang = locale;
+  if (typeof document !== "undefined") {
+    document.documentElement.lang = locale;
+  }
 }
 
-async function getMostSuitableLocale(): Promise<LocaleCode> {
-  const { value: localeFromStorage } = await Preferences.get({
+export async function getMostSuitableLocale(): Promise<LocaleCode> {
+  /*const { value: localeFromStorage } = await Preferences.get({
     key: "locale",
   });
   if (localeFromStorage && isLocaleSupported(localeFromStorage))
-    return localeFromStorage as LocaleCode;
+    return localeFromStorage as LocaleCode;*/
 
   if (Capacitor.isNativePlatform()) {
     const { value } = await Device.getLanguageCode();
