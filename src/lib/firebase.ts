@@ -44,9 +44,17 @@ const getOrInitFirebaseAuth = () => {
 };
 
 const getIdToken = async (): Promise<string | undefined> => {
+  // TODO: IF NOT SIGNED IN, RETURN UNDEFINED, NO ERROR.
   await getOrInitFirebaseAuth().authStateReady();
-  const result = await FirebaseAuthentication.getIdToken();
-  return result.token;
+  try {
+    const result = await FirebaseAuthentication.getIdToken();
+    return result.token;
+  } catch (e: any) {
+    // If the user is not signed in, it is correct that we cannot get the token.
+    // so do not throw error.
+    if (e.message === "No user is signed in.") return undefined;
+    else throw e;
+  }
 };
 
 export { getIdToken, getOrInitFirebaseApp, getOrInitFirebaseAuth };
