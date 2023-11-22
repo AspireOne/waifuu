@@ -2,14 +2,14 @@ import { paths } from "@/lib/paths";
 import { Card } from "@nextui-org/react";
 import { ForumPost } from "@prisma/client";
 import Link from "next/link";
-import { TbPinnedFilled } from "react-icons/Tb";
+import { AiFillPushpin } from "react-icons/ai";
 
 export const PinnedPost = (data: ForumPost) => {
   return (
     <Link href={paths.forumPost(data.id)}>
       <Card className="flex flex-row gap-3 p-2">
         <div className="h-[30px] w-[30px]">
-          <TbPinnedFilled className="h-[30px] w-[30px] align-center text-primary-500" />
+          <AiFillPushpin className="h-[30px] w-[30px] align-center text-primary-500" />
         </div>
 
         <div className="flex flex-col gap-1">
