@@ -9,15 +9,19 @@ import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
 import { Bot } from "@prisma/client";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 /** This is the actual chat page (e.g. chat with Aqua on mode Roleplay). */
 const BotChat = () => {
-  const pathname = usePathname();
+  const router = useRouter();
   const { _ } = useLingui();
 
-  const chatId = pathname.split("/")[2] as string;
+  let chatId = router.asPath.split("/")[2] as string;
+  // Workaround - it returns this for the first few render cycles before it renders the actual path.
+  if (chatId === "[botId]") chatId = "";
+
+  console.log(chatId);
 
   const bot = useBot(chatId);
   const chat = useBotChat(chatId);
