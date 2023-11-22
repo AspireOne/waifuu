@@ -30,15 +30,43 @@ msgstr "'Adresováno jako' je příliš dlouhé."
 msgid "'Share {0}'s profile with buddies"
 msgstr "Sdílejte profil {0} s přáteli"
 
+#: src/components/PricingPlanCard/PricingPlanCard.tsx:27
+msgid "{0} / month"
+msgstr ""
+
 #: src/components/profile-page/Header.tsx:45
 msgid "{0} is active on companion."
 msgstr "{0} je aktivní v aplikaci Companion."
+
+#: src/components/PricingPlanCard/ButtonSection.tsx:38
+msgid "{buttonText}"
+msgstr ""
 
 #: src/pages/roulette/index.tsx:25
 msgid "<0>What is Character Roulette?</0>Meet new people, roleplay fictional situations and spark fun conversations. Get matched with a stranger for anonymous, entertaining chats!<1/><2/>Easily skip to new matches and scenarios anytime. Unmask profiles to follow each other and turn chats into connections. Roleplay Roulette creates a space for shared imagination with the tap of a button.<3/><4/><5>How does it work?</5>When you enter a chat room, Character Roulette generates an interesting roleplay scenario or a situation to kickstart the conversation. Let your imagination run wild as you and your match improvise and build a fictional world together. From acting out funny slices of life to pretending you're secret agents on a mission, the possibilities are endless!"
 msgstr "<0>Co je Character Roulette?</0>Seznamte se s novými lidmi, hrajte fiktivní situace a podněcujte zábavné konverzace. Nechte se spárovat s cizincem pro anonymní, zábavné rozhovory! <1/> <2/> Snadno přeskakujte k novým spárováním a scénářům kdykoli. Odhalte profily pro vzájemné sledování a proměňte konverzace ve spojení. Character Roulette vytváří prostor pro sdílenou představivost jedním kliknutím. <3/> <4/> <5>Jak to funguje?</5> Když vstoupíte do chatovací místnosti, Character Roulette vygeneruje zajímavý scénář pro rolovou hru nebo situaci, aby odstartoval konverzaci. Nechte vaši představivost běžet, když vy a váš spárovaný improvizujete a společně budujete fiktivní svět. Od hraní vtipných útržků ze života až po předstírání, že jste tajní agenti na misi, možnosti jsou nekonečné!"
 
-#: src/pages/character/create.tsx:81
+#: src/server/shared/plans.ts:65
+msgid "~300 messages a day"
+msgstr ""
+
+#: src/server/shared/plans.ts:39
+msgid "~50 messages per day"
+msgstr ""
+
+#: src/server/shared/plans.ts:40
+msgid "10 custom characters a month"
+msgstr ""
+
+#: src/server/shared/plans.ts:66
+msgid "100 custom characters per month"
+msgstr ""
+
+#: src/emails/templates/RegisterEmailTemplate.tsx:18
+msgid "A warm welcome from Companion ❤️"
+msgstr ""
+
+#: src/pages/character/create.tsx:88
 msgid "About Character"
 msgstr "O postavě"
 
@@ -46,7 +74,16 @@ msgstr "O postavě"
 msgid "About is too long."
 msgstr ""
 
-#: src/pages/character/[botId].tsx:133
+#: src/server/shared/plans.ts:42
+msgid "Access to all community characters"
+msgstr ""
+
+#: src/server/shared/plans.ts:41
+msgid "Access to all official characters"
+msgstr ""
+
+#: src/components/PricingPlanCard/PricingPlanCard.tsx:63
+#: src/pages/character/[botId].tsx:136
 msgid "Active"
 msgstr ""
 
@@ -54,12 +91,12 @@ msgstr ""
 msgid "Active chats"
 msgstr "Aktivní konverzace"
 
-#: src/pages/profile.tsx:144
+#: src/pages/profile.tsx:162
 msgid "Addressed As"
 msgstr "Oslovován/a jako"
 
-#: src/pages/character/create.tsx:159
-#: src/pages/character/create.tsx:169
+#: src/pages/character/create.tsx:165
+#: src/pages/character/create.tsx:175
 msgid "Advanced mood settings"
 msgstr "Pokročilé nastavení nálady"
 
@@ -72,6 +109,10 @@ msgstr "Dobrodružné"
 msgid "Adventure-style game. Let the character guide you through the story!"
 msgstr "Hra ve stylu dobrodružství. Nech postavu vést tě příběhem!"
 
+#: src/server/shared/plans.ts:37
+msgid "All the essentials for a sporadic chatter."
+msgstr ""
+
 #: src/components/ErrorPage/ErrorPage.tsx:40
 msgid "An error occurred."
 msgstr ""
@@ -80,11 +121,20 @@ msgstr ""
 msgid "Are you sure you want to end the chat?"
 msgstr "Opravdu chceš chat ukončit?"
 
+#: src/components/NsfwConfirmDialog/NsfwConfirmDialog.tsx:25
+msgid "Are you sure you want to view NSFW content?"
+msgstr ""
+
+#: src/pages/character/create.tsx:63
+#: src/server/routers/bots/createBot.ts:29
+msgid "Avatar is required"
+msgstr ""
+
 #: src/pages/forum/create.tsx:14
 msgid "Basic post info"
 msgstr ""
 
-#: src/pages/profile.tsx:136
+#: src/pages/profile.tsx:154
 msgid "Bio"
 msgstr "O mně"
 
@@ -100,6 +150,8 @@ msgstr ""
 msgid "Browse more"
 msgstr ""
 
+#: src/components/NsfwConfirmDialog/NsfwConfirmDialog.tsx:34
+#: src/components/PricingPlanCard/ConfirmationModal.tsx:36
 #: src/components/roleplay-roulette/RRInput.tsx:113
 msgid "Cancel"
 msgstr "Zrušit"
@@ -108,7 +160,6 @@ msgstr "Zrušit"
 msgid "Casually chat with the character. Hey, how r u?"
 msgstr "Ležérně s postavou chatujte. Čau, jak je?"
 
-#: src/pages/character/create.tsx:108
 #: src/pages/forum/create.tsx:17
 msgid "Category"
 msgstr "Kategorie"
@@ -117,16 +168,15 @@ msgstr "Kategorie"
 msgid "Classic chat experience, talk about your day, interests, or try to make a romantic partner!"
 msgstr "Klasický chat - mluv o svém dni, zájmech, nebo se pokus vytvořit si romantického partnera!"
 
-#: src/pages/roulette/chat.tsx:138
+#: src/pages/roulette/chat.tsx:139
 msgid "Click search button to chat."
 msgstr "Pro chatování klikni na tlačítko hledání."
 
-#: src/pages/character/create.tsx:166
+#: src/pages/character/create.tsx:172
 msgid "Click to enable advanced mood settings"
 msgstr "Klepnutím povolíš pokročilé nastavení nálady"
 
 #: src/components/AppHeader/UserDropdownSettingsDialog.tsx:70
-#: src/pages/character/create.tsx:192
 msgid "Close"
 msgstr "Zavřít"
 
@@ -143,11 +193,11 @@ msgstr "Komentovat"
 msgid "Comments"
 msgstr "Komentáře"
 
-#: src/pages/roulette/chat.tsx:137
+#: src/pages/roulette/chat.tsx:138
 msgid "Connected."
 msgstr "Připojeno."
 
-#: src/pages/roulette/chat.tsx:133
+#: src/pages/roulette/chat.tsx:134
 msgid "Connecting..."
 msgstr "Připojování..."
 
@@ -156,15 +206,15 @@ msgstr "Připojování..."
 msgid "Contact us"
 msgstr "Kontaktujte nás"
 
-#: src/pages/character/[botId].tsx:160
+#: src/pages/character/[botId].tsx:164
 msgid "Continue your chat"
 msgstr ""
 
-#: src/pages/character/create.tsx:151
+#: src/pages/character/create.tsx:157
 msgid "Cover"
 msgstr "Úvodní obrázek"
 
-#: src/pages/character/create.tsx:195
+#: src/pages/character/create.tsx:199
 msgid "Create"
 msgstr "Vytvořit"
 
@@ -172,11 +222,15 @@ msgstr "Vytvořit"
 msgid "Create a new comment"
 msgstr "Napsat nový komentář"
 
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:174
+msgid "Create a new character"
+msgstr ""
+
 #: src/pages/forum/index.tsx:47
 msgid "Create a new post"
 msgstr "Vytvořit nový příspěvek"
 
-#: src/pages/character/create.tsx:76
+#: src/pages/character/create.tsx:83
 msgid "Create New Character"
 msgstr "Vytvořit novou postavu"
 
@@ -184,11 +238,28 @@ msgstr "Vytvořit novou postavu"
 msgid "Create new post"
 msgstr ""
 
+#: src/components/PricingPlanCard/ButtonSection.tsx:25
+msgid "Current Plan"
+msgstr ""
+
+#: src/emails/templates/RegisterEmailTemplate.tsx:21
+msgid ""
+"Dear {0},\n"
+"{ }\n"
+"Welcome to Companion! We are thrilled to have you join our creative and adventurous community. Get ready to immerse yourself in a world of endless possibilities where your imagination takes center stage.\n"
+"At Companion, you will enter a realm filled with captivating fictional characters waiting to be explored, interacted with, and even created by you. Join in dynamic conversations, craft intriguing narratives, and embark on extraordinary experiences.\n"
+"{ }⠀\n"
+"We cannot wait for what you will create. If you have any problems, insights, or just want to say hello, don't hesitate and reach to us. We are a small team and we want to make your stay here as pleasant as possible.\n"
+"{ }\n"
+"Sincerely,\n"
+"Team Companion"
+msgstr ""
+
 #: src/components/bot-chat/MessageDropdown.tsx:18
 msgid "Delete"
 msgstr "Smazat"
 
-#: src/pages/character/create.tsx:93
+#: src/pages/character/create.tsx:100
 msgid "Description"
 msgstr "Popis"
 
@@ -196,21 +267,25 @@ msgstr "Popis"
 msgid "Discover"
 msgstr "Objevuj"
 
-#: src/pages/discover.tsx:11
+#: src/pages/discover.tsx:16
 msgid "Discover Characters"
 msgstr "Objevuj postavy"
 
 #: src/emails/templates/TestEmailTemplate.tsx:41
 #: src/emails/templates/TestEmailTemplate.tsx:54
-msgctxt "Internal test email"
-msgid "Do you love hot tiddy girls? Check this out!"
+#~ msgctxt "Internal test email"
+#~ msgid "Do you love hot tiddy girls? Check this out!"
+#~ msgstr ""
+
+#: src/components/PricingPlanCard/ConfirmationModal.tsx:28
+msgid "Do you really want to unsubscribe from this subscription? This action cannot be undone."
 msgstr ""
 
 #: src/components/bot-chat/MessageDropdown.tsx:15
 msgid "Edit"
 msgstr "Upravit"
 
-#: src/pages/profile.tsx:128
+#: src/pages/profile.tsx:146
 msgid "Email"
 msgstr "E-mailová adresa"
 
@@ -242,7 +317,7 @@ msgstr "Zadejte své jméno"
 msgid "Enter your phone"
 msgstr "Zadejte svůj telefon"
 
-#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:174
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:189
 msgid "Enter your search term..."
 msgstr ""
 
@@ -251,17 +326,33 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
+#: src/server/routers/chat/genReply.ts:74
+msgid "Error replying, please try again later"
+msgstr ""
+
 #: src/pages/login.tsx:39
 msgid "Error signing in with Google!"
 msgstr "Chyba při přihlášení přes Google!"
 
-#: src/pages/character/create.tsx:130
+#: src/server/shared/plans.ts:64
+msgid "Everything from the Free Plan, plus..."
+msgstr ""
+
+#: src/pages/character/create.tsx:136
 msgid "Example dialogue"
 msgstr "Ukázka dialogu"
 
-#: src/pages/roulette/chat.tsx:135
+#: src/server/routers/plans/unsubscribe.ts:40
+msgid "Failed to cancel the subscription. Please contact support."
+msgstr ""
+
+#: src/pages/roulette/chat.tsx:136
 msgid "Failed to connect."
 msgstr "Připojení se nezdařilo."
+
+#: src/components/PricingPage/useUnsubscribeMutation.ts:18
+msgid "Failed to unsubscribe. Please contact support."
+msgstr ""
 
 #: src/components/profile-page/Stats.tsx:13
 msgid "Followers"
@@ -283,12 +374,25 @@ msgstr "Fórum"
 msgid "Forum Post"
 msgstr "Příspěvek na fóru"
 
-#: src/emails/templates/TestEmailTemplate.tsx:37
-msgctxt "Internal test message"
-msgid "Fuck mee"
+#: src/server/shared/plans.ts:35
+msgctxt "Subscription plan name"
+msgid "Free"
 msgstr ""
 
-#: src/components/AppHeader/UserDropdown.tsx:66
+#: src/server/shared/plans.ts:45
+msgid "Free access to all future community-related features"
+msgstr ""
+
+#: src/server/shared/plans.ts:44
+msgid "Free access to all new features"
+msgstr ""
+
+#: src/emails/templates/TestEmailTemplate.tsx:37
+#~ msgctxt "Internal test message"
+#~ msgid "Fuck mee"
+#~ msgstr ""
+
+#: src/components/AppHeader/UserDropdown.tsx:74
 msgid "General character settings"
 msgstr ""
 
@@ -300,6 +404,10 @@ msgstr ""
 msgid "Got a problem? A question? Or just want to say hi? We are here for you."
 msgstr "Máte problém? otázku? Nebo nás jen chcete pozdravit? Jsme tu pro vás."
 
+#: src/emails/components/EmailFooter.tsx:24
+msgid "here."
+msgstr ""
+
 #: src/components/DiscoverHeader/DiscoverHeader.tsx:26
 msgid "Hi, {0}"
 msgstr "Ahoj, {0}"
@@ -309,11 +417,11 @@ msgid "Home"
 msgstr "Domů"
 
 #: src/emails/templates/TestEmailTemplate.tsx:32
-msgctxt "Internal test email"
-msgid "Hot tiddy girls test"
-msgstr ""
+#~ msgctxt "Internal test email"
+#~ msgid "Hot tiddy girls test"
+#~ msgstr ""
 
-#: src/pages/profile.tsx:145
+#: src/pages/profile.tsx:163
 msgid "How should the character address you?"
 msgstr "Jak by tě měla postava oslovovat?"
 
@@ -334,7 +442,7 @@ msgstr "Roleplay Ruleta"
 #~ msgid "Character settings"
 #~ msgstr "Nastavení postavy"
 
-#: src/pages/character/create.tsx:114
+#: src/pages/character/create.tsx:121
 msgid "Character's character"
 msgstr "Osobnost postavy"
 
@@ -343,12 +451,12 @@ msgstr "Osobnost postavy"
 msgid "Chat"
 msgstr "Chat"
 
-#: src/pages/character/[botId].tsx:107
+#: src/pages/character/[botId].tsx:110
 msgctxt "bot main menu title"
 msgid "Chat with {0}"
 msgstr ""
 
-#: src/pages/character/[botId].tsx:88
+#: src/pages/character/[botId].tsx:91
 msgid "Chat with {0}"
 msgstr "Chatovat s {0}"
 
@@ -356,24 +464,37 @@ msgstr "Chatovat s {0}"
 msgid "Check out {0} on Companion."
 msgstr "Koukni na {0} v aplikaci Companion."
 
-#: src/emails/templates/TestEmailTemplate.tsx:48
-msgctxt "Internal test email"
-msgid "I love hot tiddy girls!"
+#: src/components/NsfwConfirmDialog/NsfwConfirmDialog.tsx:37
+msgid "I am 18 or older"
 msgstr ""
 
-#: src/pages/character/create.tsx:180
+#: src/emails/templates/TestEmailTemplate.tsx:48
+#~ msgctxt "Internal test email"
+#~ msgid "I love hot tiddy girls!"
+#~ msgstr ""
+
+#: src/emails/templates/TestEmailTemplate.tsx:42
+msgctxt "Internal test email"
+msgid "If you love dolor ipsum lorem sit amut, click this"
+msgstr ""
+
+#: src/emails/components/EmailFooter.tsx:22
+msgid "If you no longer wish to receive these emails, you can unsubscribe"
+msgstr ""
+
+#: src/pages/character/create.tsx:186
 msgid "Image for mood 'blushed'"
 msgstr "Obrázek pro náladu 'stud'"
 
-#: src/pages/character/create.tsx:184
+#: src/pages/character/create.tsx:190
 msgid "Image for mood 'happy'"
 msgstr "Obrázek pro náladu 'štěstí'"
 
-#: src/pages/character/create.tsx:172
+#: src/pages/character/create.tsx:178
 msgid "Image for mood 'neutral'"
 msgstr "Obrázek pro náladu 'neutrální'"
 
-#: src/pages/character/create.tsx:176
+#: src/pages/character/create.tsx:182
 msgid "Image for mood 'sad'"
 msgstr "Obrázek pro náladu 'smutek'"
 
@@ -381,16 +502,20 @@ msgstr "Obrázek pro náladu 'smutek'"
 msgid "Image url is too long."
 msgstr "Adresa Url obrázku je příliš dlouhá."
 
-#: src/pages/character/create.tsx:149
+#: src/pages/character/create.tsx:155
 msgctxt "New Character page category name"
 msgid "Images"
 msgstr "Obrázky"
 
-#: src/pages/profile.tsx:162
-msgid "Language"
-msgstr "Jazyk"
+#: src/server/shared/plans.ts:62
+msgid "Immerse yourself in a whole new world of imagination."
+msgstr ""
 
-#: src/pages/profile.tsx:81
+#: src/pages/profile.tsx:162
+#~ msgid "Language"
+#~ msgstr "Jazyk"
+
+#: src/pages/profile.tsx:84
 msgid "Language successfully changed"
 msgstr "Jazyk byl úspěšně změněn"
 
@@ -398,26 +523,31 @@ msgstr "Jazyk byl úspěšně změněn"
 msgid "Let's explore some new characters."
 msgstr "Pojďme prozkoumat nějaké nové postavy."
 
-#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:127
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:143
 msgid "Load more"
 msgstr "Načíst víc"
 
-#: src/pages/character/[botId].tsx:88
-#: src/pages/character/[botId]/[mode].tsx:26
+#: src/pages/character/[botId].tsx:91
+#: src/pages/character/[botId]/[mode].tsx:30
 #: src/pages/forum/index.tsx:53
 msgid "Loading..."
 msgstr "Načítání..."
+
+#: src/emails/templates/TestEmailTemplate.tsx:35
+msgctxt "Internal test message"
+msgid "Message message you lorem ipsum dolor sit amet"
+msgstr ""
 
 #: src/server/shared/updateSelfSchema.ts:24
 msgid "Must be a 2-letter code."
 msgstr "Musí být dvoupísmenný kód."
 
-#: src/components/AppHeader/UserDropdown.tsx:59
+#: src/components/AppHeader/UserDropdown.tsx:66
 msgid "My profile"
 msgstr ""
 
-#: src/pages/character/create.tsx:118
-#: src/pages/profile.tsx:118
+#: src/pages/character/create.tsx:125
+#: src/pages/profile.tsx:136
 msgid "Name"
 msgstr "Jméno"
 
@@ -429,7 +559,7 @@ msgstr "Jméno je povinné."
 msgid "Name is too long."
 msgstr "Jméno je příliš dlouhé."
 
-#: src/pages/roulette/chat.tsx:132
+#: src/pages/roulette/chat.tsx:133
 msgid "No available room found!"
 msgstr "Nenalazena žádná volná mistnost!"
 
@@ -441,7 +571,7 @@ msgstr "Žádné bio."
 msgid "No description."
 msgstr "Žádný popis."
 
-#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:115
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:131
 msgid "No characters found. Try changing your search term."
 msgstr "Nenalezeny žádné postavy. Zkus změnit hledaný výraz."
 
@@ -449,7 +579,7 @@ msgstr "Nenalezeny žádné postavy. Zkus změnit hledaný výraz."
 #~ msgid "NSFW"
 #~ msgstr ""
 
-#: src/pages/character/create.tsx:136
+#: src/pages/character/create.tsx:142
 msgid "NSFW content"
 msgstr "NSFW obsah"
 
@@ -457,11 +587,15 @@ msgstr "NSFW obsah"
 #~ msgid "Only display official characters"
 #~ msgstr "Zobrazit jen oficiální postavy"
 
-#: src/pages/character/create.tsx:104
+#: src/pages/character/create.tsx:111
 msgid "Only for friends"
 msgstr "Pouze pro přátele"
 
-#: src/pages/character/create.tsx:123
+#: src/server/shared/plans.ts:43
+msgid "Our best A.I. engine"
+msgstr ""
+
+#: src/pages/character/create.tsx:130
 msgid "Persona"
 msgstr "Osobnost"
 
@@ -469,35 +603,52 @@ msgstr "Osobnost"
 #~ msgid "Pinned posts"
 #~ msgstr "Připnuté příspěvky"
 
+#: src/pages/profile.tsx:111
+msgid "Plan: <0>{0}</0>"
+msgstr ""
+
+#: src/server/shared/plans.ts:61
+msgctxt "Subscription plan name"
+msgid "Plus"
+msgstr ""
+
 #: src/components/ForumPostsDiscoverCategory/ForumPostsDiscoverCategory.tsx:18
 msgid "Popular forum posts"
 msgstr "Populární příspěvky na fóru"
 
-#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:158
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:173
 msgid "Popular Characters"
 msgstr "Populární postavy"
+
+#: src/server/shared/plans.ts:67
+msgid "Priority access to all new early features"
+msgstr ""
 
 #: src/pages/privacy-policy.tsx:8
 #: src/pages/privacy-policy.tsx:10
 msgid "Privacy Policy"
 msgstr "Ochrana osobních údajů"
 
-#: src/pages/character/create.tsx:101
+#: src/pages/character/create.tsx:108
 msgid "Private"
 msgstr "Soukromé"
 
 #: src/components/ActionBar/ActionBar.tsx:40
-#: src/pages/profile.tsx:86
+#: src/pages/profile.tsx:89
 msgid "Profile"
 msgstr "Profil"
 
-#: src/pages/profile.tsx:21
+#: src/pages/profile.tsx:24
 msgid "Profile updated!"
 msgstr "Profil aktualizován!"
 
-#: src/pages/character/create.tsx:98
+#: src/pages/character/create.tsx:105
 msgid "Public"
 msgstr "Veřejné"
+
+#: src/components/PricingPage/PricingPageHeader.tsx:11
+msgid "Ready to take it to the next level? Immerse yourself in a whole new world of imagination."
+msgstr ""
 
 #: src/pages/forum/index.tsx:39
 msgid "Recent"
@@ -529,27 +680,27 @@ msgstr "Roleplay s postavou - působí skoro skutečně!"
 #~ msgstr "Ruleta"
 
 #: src/components/AppHeader/UserDropdownSettingsDialog.tsx:74
-#: src/pages/profile.tsx:178
+#: src/pages/profile.tsx:197
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:173
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
 msgid "Search by name"
 msgstr ""
 
-#: src/pages/roulette/chat.tsx:131
+#: src/pages/roulette/chat.tsx:132
 msgid "Searching..."
 msgstr "Hledání..."
 
-#: src/pages/character/[botId].tsx:112
+#: src/pages/character/[botId].tsx:115
 msgid "Select one of the available experiences"
 msgstr "Vyber jednu z dostupných možností"
 
-#: src/components/ui/TagMultiSelect.tsx:31
+#: src/components/ui/TagMultiSelect.tsx:37
 msgid "Select tags"
 msgstr ""
 
-#: src/pages/character/create.tsx:96
+#: src/pages/character/create.tsx:103
 msgid "Select visibility"
 msgstr "Vyber viditelnost"
 
@@ -593,9 +744,18 @@ msgstr ""
 msgid "Sign in with google"
 msgstr "Přihlásit se přes Google"
 
-#: src/components/AppHeader/UserDropdown.tsx:51
+#: src/components/AppHeader/UserDropdown.tsx:57
 msgid "Signed in as"
 msgstr "Přihlášen/a jako"
+
+#: src/emails/templates/TestEmailTemplate.tsx:30
+msgctxt "Internal test email"
+msgid "Some superman batman test"
+msgstr ""
+
+#: src/lib/api.ts:40
+msgid "Something went wrong"
+msgstr ""
 
 #: src/pages/roulette/index.tsx:51
 msgid "Start"
@@ -605,7 +765,7 @@ msgstr "Začít"
 msgid "Start conversation"
 msgstr "Zahájit konverzaci"
 
-#: src/pages/character/[botId].tsx:162
+#: src/pages/character/[botId].tsx:166
 msgid "Start the chat"
 msgstr "Zahájit chat"
 
@@ -613,17 +773,38 @@ msgstr "Zahájit chat"
 #~ msgid "Starting chat with {0}"
 #~ msgstr "Zahájit chat s {0}"
 
+#: src/components/PricingPage/useCreateSessionMutation.ts:19
+msgid "Stripe did not load"
+msgstr ""
+
 #: src/pages/forum/[id].tsx:128
 msgid "Submit"
 msgstr "Odeslat"
+
+#: src/components/AppHeader/UserDropdown.tsx:82
+msgid "Subscription plan"
+msgstr ""
+
+#: src/components/PricingPage/PricingPage.tsx:61
+#: src/components/PricingPage/PricingPageHeader.tsx:8
+msgid "Subscriptions"
+msgstr ""
+
+#: src/components/PricingPage/useUnsubscribeMutation.ts:13
+msgid "Successfully unsubscribed."
+msgstr ""
 
 #: src/components/bot-chat/ChatSelectTabs.tsx:20
 msgid "Talk with the character as if you were there with them."
 msgstr "Mluv s postavou, jako bys byl právě s ní."
 
-#: src/pages/profile.tsx:152
+#: src/pages/profile.tsx:170
 msgid "Tell us about yourself"
 msgstr "Řekni nám něco o sobě"
+
+#: src/emails/templates/RegisterEmailTemplate.tsx:17
+msgid "Thank you for joining! What can you look forward to?"
+msgstr ""
 
 #: src/pages/login.tsx:119
 msgid "The companion that is always by your side."
@@ -633,6 +814,20 @@ msgstr "Společnost, která je vždy po vašem boku."
 #~ msgid "Them"
 #~ msgstr "Oni"
 
+#: src/server/routers/bots/getBotByChatId.ts:26
+msgid "There was an error loading the chat."
+msgstr ""
+
+#: src/emails/templates/TestEmailTemplate.tsx:52
+msgctxt "Internal test email"
+msgid "This is a test email, check out the content below!"
+msgstr ""
+
+#: src/emails/templates/TestEmailTemplate.tsx:46
+msgctxt "Internal test email"
+msgid "This is a very important message from companion!"
+msgstr ""
+
 #: src/components/profile-page/InfoCards.tsx:49
 msgid "This user has not created any characters yet :("
 msgstr "Tento uživatel ještě nevytvořil žádné postavy :("
@@ -641,7 +836,7 @@ msgstr "Tento uživatel ještě nevytvořil žádné postavy :("
 msgid "This user has not set a bio yet. Check back later!"
 msgstr "Tento uživatel si ještě nenastavil bio. Koukni se později!"
 
-#: src/pages/character/create.tsx:87
+#: src/pages/character/create.tsx:94
 #: src/pages/forum/create.tsx:16
 msgid "Title"
 msgstr "Název"
@@ -650,11 +845,24 @@ msgstr "Název"
 msgid "Unknown error"
 msgstr ""
 
-#: src/components/ui/FileUploadRaw.tsx:62
+#: src/components/PricingPlanCard/ButtonSection.tsx:53
+#: src/components/PricingPlanCard/ConfirmationModal.tsx:46
+msgid "Unsubscribe"
+msgstr ""
+
+#: src/components/PricingPlanCard/ConfirmationModal.tsx:24
+msgid "Unsubscribe from current plan"
+msgstr ""
+
+#: src/components/PricingPlanCard/ButtonSection.tsx:25
+msgid "Upgrade Plan"
+msgstr ""
+
+#: src/components/ui/FileUploadRaw.tsx:66
 msgid "Uploading..."
 msgstr "Nahrávání..."
 
-#: src/pages/roulette/chat.tsx:136
+#: src/pages/roulette/chat.tsx:137
 msgid "User left."
 msgstr "Uživatel se odpojil."
 
@@ -662,8 +870,8 @@ msgstr "Uživatel se odpojil."
 msgid "User not specified"
 msgstr ""
 
-#: src/pages/profile.tsx:211
-#: src/pages/profile.tsx:212
+#: src/pages/profile.tsx:230
+#: src/pages/profile.tsx:231
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -675,11 +883,15 @@ msgstr "Uživatelské jméno je povinné."
 msgid "Username is too long."
 msgstr "Uživatelské jméno je příliš dlouhé."
 
-#: src/pages/roulette/chat.tsx:134
+#: src/pages/roulette/chat.tsx:135
 msgid "Waiting for user..."
 msgstr "Čekání na uživatele..."
 
-#: src/pages/profile.tsx:137
+#: src/emails/templates/RegisterEmailTemplate.tsx:10
+msgid "Welcome To Companion"
+msgstr ""
+
+#: src/pages/profile.tsx:155
 msgid "What is your special skill?"
 msgstr "Jaká je tvoje speciální dovednost?"
 
@@ -687,15 +899,15 @@ msgstr "Jaká je tvoje speciální dovednost?"
 msgid "What should characters know about you?"
 msgstr ""
 
-#: src/pages/character/[botId].tsx:147
+#: src/pages/character/[botId].tsx:150
 msgid "What should this character know about you?"
 msgstr ""
 
-#: src/pages/profile.tsx:153
+#: src/pages/profile.tsx:171
 msgid "What should your characters know about you?"
 msgstr "Co by o tobě měly tvé postavy určitě vědět?"
 
-#: src/pages/character/create.tsx:139
+#: src/pages/character/create.tsx:145
 msgid "Whether the character will produce content not suitable for minors."
 msgstr "Zda bude postava produkovat obsah, který nemusí být vhodný pro mládež."
 
@@ -707,9 +919,25 @@ msgstr "Zda bude postava produkovat obsah, který nemusí být vhodný pro mlád
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "Zatím nemáš žádné aktivní chaty. Začni nějaký!"
 
+#: src/components/NsfwConfirmDialog/NsfwConfirmDialog.tsx:28
+msgid "You must be 18 years or older to view content only meant for adults."
+msgstr ""
+
+#: src/server/helpers/quota.ts:26
+msgid "Your daily character access limit has been reached. Upgrade your plan to get more characters."
+msgstr ""
+
+#: src/server/helpers/quota.ts:22
+msgid "Your daily message limit has been reached. Upgrade your plan to get more messages."
+msgstr ""
+
 #: src/components/roleplay-roulette/RRInput.tsx:70
 msgid "Your message..."
 msgstr "Vaše zpráva..."
+
+#: src/server/helpers/quota.ts:24
+msgid "Your monthly character creation limit has been reached. Upgrade your plan to get more characters."
+msgstr ""
 
 #: src/components/bot-chat/ChatSelectTabs.tsx:10
 msgid "Your world, your story. You control the character, and you decide how the story will unfold."
