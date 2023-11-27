@@ -12,6 +12,7 @@ type BotProps = {
   avatar: string;
   characterImage: string;
   initialMessage: string;
+  backgroundImage: string;
   tags: CharacterTag[];
 };
 
@@ -25,6 +26,7 @@ async function upsertBot(props: BotProps) {
       description: props.description,
       name: props.title,
       persona: props.persona,
+      backgroundImage: props.backgroundImage,
       nsfw: props.nsfw,
       visibility: BotVisibility.PUBLIC,
       source: BotSource.OFFICIAL,
