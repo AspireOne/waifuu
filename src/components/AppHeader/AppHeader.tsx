@@ -1,4 +1,3 @@
-import { useSession } from "@/hooks/useSession";
 import { UserDropdown } from "@components/AppHeader/UserDropdown";
 import { Button } from "@nextui-org/react";
 import { PropsWithChildren } from "react";
@@ -16,7 +15,6 @@ export const AppHeader = (
     backButtonEnabled: boolean;
   }>,
 ) => {
-  const session = useSession();
   return (
     <div
       className={

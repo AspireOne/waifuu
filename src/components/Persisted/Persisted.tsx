@@ -5,6 +5,9 @@ import { useMountPersistence } from "@providers/MountPersistenceProvider";
 /** When you wrap a component with this wrapper, it will be portalled to the root of the DOM and preserved
  * through remounts (e.g. it's state will persist even when you navigate away from the component).
  *
+ * NOTE: Usually just persisting scroll is enough (see usePersistedScrollPosition), especially
+ * when using react-query/trpc, because it caches data, so it is not reloaded anyways.
+ *
  * Use this only when truly necessary. */
 export const Persisted = (props: PropsWithChildren<{ id: string }>) => {
   const { id, children } = props;

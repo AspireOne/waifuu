@@ -7,7 +7,7 @@ import { semanticPaths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
 import { Button, Card } from "@nextui-org/react";
 import { GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
-import { useSearchParams } from "next/navigation";
+
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
@@ -42,15 +42,16 @@ async function signInUsingGoogleRaw() {
 }
 
 const Login = () => {
-  const searchParams = useSearchParams();
+  //const searchParams = useSearchParams();
   const session = useSession();
   const router = useRouter();
-  const redirect = searchParams.get("redirect");
+  // Uncomment the redirect for now because it does not work properly.
+  //const redirect = searchParams.get("redirect");
 
   //! IMPORTANT Check for session.user instead of session.status.
   useEffect(() => {
     if (session.user?.id) {
-      router.replace(redirect || semanticPaths.appIndex);
+      router.replace(/*redirect || */ semanticPaths.appIndex);
     }
   }, [session.user, session.user?.id]);
 
@@ -65,7 +66,7 @@ const Login = () => {
       // router.replace((redirect as string) || semanticPaths.appIndex);
       // session.refetch();
 
-      window.location.replace(redirect || semanticPaths.appIndex);
+      window.location.replace(/*redirect ||*/ semanticPaths.appIndex);
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);

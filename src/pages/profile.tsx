@@ -10,7 +10,7 @@ import { Trans, t } from "@lingui/macro";
 import { Avatar, Button, Input, Link, Textarea } from "@nextui-org/react";
 import { User } from "@prisma/client";
 import NextLink from "next/link";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, UseFormRegisterReturn, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
@@ -37,14 +37,14 @@ export default function Profile() {
   } = useForm<z.infer<typeof updateSelfSchema>>({
     resolver: zodResolver(updateSelfSchema),
     mode: "all",
-    defaultValues: useMemo(() => getCurrentUserValues(user), [user]),
+    defaultValues: getCurrentUserValues(user),
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageUrl = watch("imageUrl");
   const username = watch("username");
 
-  useEffect(() => reset(getCurrentUserValues(user)), [user, reset]);
+  useEffect(() => reset(getCurrentUserValues(user)), [user]);
 
   function getCurrentUserValues(user?: User | null) {
     return {

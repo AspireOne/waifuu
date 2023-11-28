@@ -75,6 +75,8 @@ export const api = createTRPCNext<AppRouter>({
             refetchIntervalInBackground: false,
             refetchOnReconnect: true,
             refetchOnMount: true,
+            refetchOnWindowFocus:
+              process.env.NODE_ENV === "development" || !process.env.NODE_ENV,
           },
         },
       },

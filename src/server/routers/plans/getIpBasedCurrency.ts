@@ -4,6 +4,7 @@ import { env } from "@/server/env";
 import { TRPCError } from "@/server/lib/TRPCError";
 import { currencyHelpers } from "@/server/shared/currency";
 import axios from "axios";
+
 import { z } from "zod";
 
 type IpInfoResponse = {
@@ -46,7 +47,7 @@ export default publicProcedure
     let country = dbData?.country;
 
     if (!country) {
-      const data = await fetchData(ip === "::1" ? "" : ip); // when localhost, do not specify ip.
+      const data = await fetchDataOrThrow(ip === "::1" ? "" : ip); // when localhost, do not specify ip.
       // TODO(1): Save it AFTER the response is sent.
       await ctx.prisma.ipInfo.create({
         data: {
@@ -66,14 +67,26 @@ export default publicProcedure
     };
   });
 
-async function fetchData(ip: string) {
-  const response = await axios.get(`https://ipinfo.io/${ip}?token=${env.IPINFO_TOKEN}`);
-  const data = response.data as IpInfoResponse;
+async function fetchDataOrThrow(ip: string) {
+  let data: IpInfoResponse;
+
+  try {
+    const response = await axios.get(`https://ipinfo.io/${ip}?token=${env.IPINFO_TOKEN}`);
+    data = response.data as IpInfoResponse;
+  } catch (error) {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: `Could not get IP info. IP: ${ip} | Error: ${error}`,
+      toast: null,
+    });
+  }
 
   if (!data.country) {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "Geo API response object did not contain country.",
+      message: `Geo API response object did not contain country. IP: ${ip} | Response: ${JSON.stringify(
+        data,
+      )}`,
       toast: null,
     });
   }

@@ -83,7 +83,7 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:18
+#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:30
 msgid "Active chats"
 msgstr "Aktivní konverzace"
 
@@ -218,7 +218,7 @@ msgstr "Vytvořit"
 msgid "Create a new comment"
 msgstr "Napsat nový komentář"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:174
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
 msgid "Create a new character"
 msgstr ""
 
@@ -263,7 +263,7 @@ msgstr "Popis"
 msgid "Discover"
 msgstr "Objevuj"
 
-#: src/pages/discover.tsx:16
+#: src/pages/discover.tsx:15
 msgid "Discover Characters"
 msgstr "Objevuj postavy"
 
@@ -307,7 +307,7 @@ msgstr "Zadejte své jméno"
 msgid "Enter your phone"
 msgstr "Zadejte svůj telefon"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:189
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:203
 msgid "Enter your search term..."
 msgstr ""
 
@@ -490,7 +490,7 @@ msgstr "Jazyk byl úspěšně změněn"
 msgid "Let's explore some new characters."
 msgstr "Pojďme prozkoumat nějaké nové postavy."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:143
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:157
 msgid "Load more"
 msgstr "Načíst víc"
 
@@ -513,7 +513,6 @@ msgstr "Musí být dvoupísmenný kód."
 msgid "My profile"
 msgstr ""
 
-#: src/pages/character/create.tsx:125
 #: src/pages/profile.tsx:136
 msgid "Name"
 msgstr "Jméno"
@@ -538,7 +537,7 @@ msgstr "Žádné bio."
 msgid "No description."
 msgstr "Žádný popis."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:131
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:144
 msgid "No characters found. Try changing your search term."
 msgstr "Nenalezeny žádné postavy. Zkus změnit hledaný výraz."
 
@@ -571,7 +570,7 @@ msgstr ""
 msgid "Popular forum posts"
 msgstr "Populární příspěvky na fóru"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:173
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:187
 msgid "Popular Characters"
 msgstr "Populární postavy"
 
@@ -588,7 +587,6 @@ msgstr "Ochrana osobních údajů"
 msgid "Private"
 msgstr "Soukromé"
 
-#: src/components/ActionBar/ActionBar.tsx:40
 #: src/pages/profile.tsx:89
 msgid "Profile"
 msgstr "Profil"
@@ -626,12 +624,11 @@ msgstr "Roleplay"
 msgid "Roleplay with the character, feels just real!"
 msgstr "Roleplay s postavou - působí skoro skutečně!"
 
-#: src/components/AppHeader/UserDropdownSettingsDialog.tsx:74
 #: src/pages/profile.tsx:197
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:202
 msgid "Search by name"
 msgstr ""
 
@@ -643,7 +640,7 @@ msgstr "Hledání..."
 msgid "Select one of the available experiences"
 msgstr "Vyber jednu z dostupných možností"
 
-#: src/components/ui/TagMultiSelect.tsx:37
+#: src/components/ui/TagMultiSelect.tsx:47
 msgid "Select tags"
 msgstr ""
 
@@ -683,11 +680,11 @@ msgstr "Sdílet na Twitteru"
 msgid "Show Profile"
 msgstr "Zobrazit profil"
 
-#: src/pages/login.tsx:106
+#: src/pages/login.tsx:107
 msgid "Sign in"
 msgstr ""
 
-#: src/pages/login.tsx:133
+#: src/pages/login.tsx:134
 msgid "Sign in with google"
 msgstr "Přihlásit se přes Google"
 
@@ -749,7 +746,7 @@ msgstr "Řekni nám něco o sobě"
 msgid "Thank you for joining! What can you look forward to?"
 msgstr ""
 
-#: src/pages/login.tsx:119
+#: src/pages/login.tsx:120
 msgid "The companion that is always by your side."
 msgstr "Společnost, která je vždy po vašem boku."
 
@@ -850,7 +847,7 @@ msgstr "Co by o tobě měly tvé postavy určitě vědět?"
 msgid "Whether the character will produce content not suitable for minors."
 msgstr "Zda bude postava produkovat obsah, který nemusí být vhodný pro mládež."
 
-#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:23
+#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:35
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "Zatím nemáš žádné aktivní chaty. Začni nějaký!"
 

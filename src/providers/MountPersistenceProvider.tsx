@@ -37,7 +37,6 @@ export const MountPersistenceProvider: React.FC<AliveScopeProps> = ({ children }
       return element;
     }
 
-    // biome-ignore lint: it is checked above.
     return nodes[id]!.element;
   };
 

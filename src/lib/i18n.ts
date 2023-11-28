@@ -48,9 +48,9 @@ async function setI18nLocale(locale: LocaleCode) {
   const { messages } = await import(`../locales/${locale}/messages`);
   i18n.loadAndActivate({ locale, messages });
   // Set html lang attribute.
-  if (typeof document !== "undefined") {
+  /*if (typeof document !== "undefined") {
     document.documentElement.lang = locale;
-  }
+  }*/
 }
 
 export async function getMostSuitableLocale(): Promise<LocaleCode> {

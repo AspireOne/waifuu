@@ -9,7 +9,7 @@ type ScrollYPosition = {
 };
 
 /** Use this to persist page scroll position between re-mounts. */
-export function usePersistentScrollPositionHandler(): void {
+export function usePersistedScrollPositionHandler(): void {
   const { getScrollYPosition, setScrollYPosition }: ScrollYPosition =
     usePersistedScrollPosition();
   const router: NextRouter = useRouter();

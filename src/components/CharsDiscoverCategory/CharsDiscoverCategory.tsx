@@ -17,6 +17,8 @@ import { BiTrendingUp } from "react-icons/bi";
 import { TagMultiSelect } from "../ui/TagMultiSelect";
 
 import { Preferences } from "@capacitor/preferences";
+import { useSession } from "@providers/SessionProvider";
+import parse from "parse-duration";
 
 type SearchBotsFilters = {
   textFilter?: string;
@@ -39,6 +41,7 @@ const stringifyFilters = (filters: SearchBotsFilters) => {
 
 export const CharsDiscoverCategory = () => {
   const discoveredBots = discoveredBotStore.getState();
+  const session = useSession();
 
   const [filters, setFilters] = useState<SearchBotsFilters>({
     textFilter: undefined,
@@ -81,6 +84,12 @@ export const CharsDiscoverCategory = () => {
           hasNextPage: data.hasNextPage,
         });
       },
+
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+      staleTime: parse("1h"),
+      enabled: session.status !== "unauthenticated",
+      retry: 2,
     },
   );
 
@@ -108,6 +117,8 @@ export const CharsDiscoverCategory = () => {
     return () => subscription.unsubscribe();
   }, [watch, discoveredBots]);
 
+  const filtersStr = stringifyFilters(filters);
+
   return (
     <form>
       <ParametersHeader
@@ -122,23 +133,26 @@ export const CharsDiscoverCategory = () => {
 
       <Spacer y={6} />
 
-      <div className="flex w-full flex-wrap gap-5">
+      <div className="flex w-full flex-wrap gap-5 min-h-[60vh]">
         {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
 
         {/*&& !isRefetching*/}
-        {discoveredBots.cache[stringifyFilters(filters)]?.characters.length === 0 && (
-          <p className="">
-            <Trans>No characters found. Try changing your search term.</Trans>
-          </p>
+        {discoveredBots.cache[filtersStr]?.characters.length === 0 && (
+          <div className="min-h-full flex flex-col justify-center text-center w-full">
+            <p className={"text-foreground-600"}>
+              {/*TODO: Add some icon or smiley.*/}
+              <Trans>No characters found. Try changing your search term.</Trans>
+            </p>
+          </div>
         )}
 
         <div className="gap-4 flex flex-wrap w-full mx-auto">
-          {discoveredBots.cache[stringifyFilters(filters)]?.characters.map((bot) => {
+          {discoveredBots.cache[filtersStr]?.characters.map((bot) => {
             return <CharacterCard bottom key={bot.id} bot={bot} />;
           })}
         </div>
 
-        {discoveredBots.cache[stringifyFilters(filters)]?.hasNextPage && (
+        {discoveredBots.cache[filtersStr]?.hasNextPage && (
           <Button onClick={skipPage} variant="faded" className="w-full sm:w-[200px] mx-auto">
             <Trans>Load more</Trans>
           </Button>

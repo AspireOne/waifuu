@@ -78,7 +78,7 @@ msgstr "Access to all official characters"
 msgid "Active"
 msgstr "Active"
 
-#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:18
+#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:30
 msgid "Active chats"
 msgstr "Active chats"
 
@@ -213,7 +213,7 @@ msgstr "Create"
 msgid "Create a new comment"
 msgstr "Create a new comment"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:174
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
 msgid "Create a new character"
 msgstr "Create a new character"
 
@@ -267,7 +267,7 @@ msgstr "Description"
 msgid "Discover"
 msgstr "Discover"
 
-#: src/pages/discover.tsx:16
+#: src/pages/discover.tsx:15
 msgid "Discover Characters"
 msgstr "Discover Characters"
 
@@ -311,7 +311,7 @@ msgstr "Enter your name"
 msgid "Enter your phone"
 msgstr "Enter your phone"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:189
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:203
 msgid "Enter your search term..."
 msgstr "Enter your search term..."
 
@@ -494,7 +494,7 @@ msgstr "Language successfully changed"
 msgid "Let's explore some new characters."
 msgstr "Let's explore some new characters."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:143
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:157
 msgid "Load more"
 msgstr "Load more"
 
@@ -517,7 +517,6 @@ msgstr "Must be a 2-letter code."
 msgid "My profile"
 msgstr "My profile"
 
-#: src/pages/character/create.tsx:125
 #: src/pages/profile.tsx:136
 msgid "Name"
 msgstr "Name"
@@ -542,7 +541,7 @@ msgstr "No bio."
 msgid "No description."
 msgstr "No description."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:131
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:144
 msgid "No characters found. Try changing your search term."
 msgstr "No characters found. Try changing your search term."
 
@@ -575,7 +574,7 @@ msgstr "Plus"
 msgid "Popular forum posts"
 msgstr "Popular forum posts"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:173
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:187
 msgid "Popular Characters"
 msgstr "Popular Characters"
 
@@ -592,7 +591,6 @@ msgstr "Privacy Policy"
 msgid "Private"
 msgstr "Private"
 
-#: src/components/ActionBar/ActionBar.tsx:40
 #: src/pages/profile.tsx:89
 msgid "Profile"
 msgstr "Profile"
@@ -630,12 +628,11 @@ msgstr "Roleplay"
 msgid "Roleplay with the character, feels just real!"
 msgstr "Roleplay with the character, feels just real!"
 
-#: src/components/AppHeader/UserDropdownSettingsDialog.tsx:74
 #: src/pages/profile.tsx:197
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:202
 msgid "Search by name"
 msgstr "Search by name"
 
@@ -647,7 +644,7 @@ msgstr "Searching..."
 msgid "Select one of the available experiences"
 msgstr "Select one of the available experiences"
 
-#: src/components/ui/TagMultiSelect.tsx:37
+#: src/components/ui/TagMultiSelect.tsx:47
 msgid "Select tags"
 msgstr "Select tags"
 
@@ -687,11 +684,11 @@ msgstr "Share on Twitter"
 msgid "Show Profile"
 msgstr "Show Profile"
 
-#: src/pages/login.tsx:106
+#: src/pages/login.tsx:107
 msgid "Sign in"
 msgstr "Sign in"
 
-#: src/pages/login.tsx:133
+#: src/pages/login.tsx:134
 msgid "Sign in with google"
 msgstr "Sign in with google"
 
@@ -753,7 +750,7 @@ msgstr "Tell us about yourself"
 msgid "Thank you for joining! What can you look forward to?"
 msgstr "Thank you for joining! What can you look forward to?"
 
-#: src/pages/login.tsx:119
+#: src/pages/login.tsx:120
 msgid "The companion that is always by your side."
 msgstr "The companion that is always by your side."
 
@@ -854,7 +851,7 @@ msgstr "What should your characters know about you?"
 msgid "Whether the character will produce content not suitable for minors."
 msgstr "Whether the character will produce content not suitable for minors."
 
-#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:23
+#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:35
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "You don't have any active chats yet. Start one now!"
 
