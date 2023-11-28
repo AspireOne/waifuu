@@ -8,6 +8,7 @@ const createClient = () => {
     username: "api",
     key: env.MAILGUN_API_KEY,
     timeout: 30_000,
+    url: "https://api.eu.mailgun.net",
   });
 };
 
