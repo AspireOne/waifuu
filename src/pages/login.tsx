@@ -5,7 +5,7 @@ import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { CombinedPage } from "@components/CombinedPage";
 import { semanticPaths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
-import { Button, Card, Image } from "@nextui-org/react";
+import { Button, Card } from "@nextui-org/react";
 import { GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
@@ -104,7 +104,7 @@ const Login = () => {
 
   return (
     <CombinedPage title={t`Sign in`} autoBack={false}>
-      <Image
+      <img
         alt="background"
         loading="eager"
         src={"/assets/background.png"}
@@ -119,7 +119,7 @@ const Login = () => {
           <Trans>The companion that is always by your side.</Trans>
         </h1>
 
-        <Image
+        <img
           alt="background"
           loading="eager"
           src={"/assets/character.png"}
