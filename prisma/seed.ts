@@ -1,5 +1,11 @@
-import { ChatMode, BotSource, PrismaClient, BotVisibility, CharacterTag } from "@prisma/client";
-import Bots from './bots';
+import {
+  ChatMode,
+  BotSource,
+  PrismaClient,
+  BotVisibility,
+  CharacterTag,
+} from "@prisma/client";
+import Bots from "./bots";
 
 const prisma = new PrismaClient();
 type BotProps = {
@@ -32,7 +38,7 @@ async function upsertBot(props: BotProps) {
       source: BotSource.OFFICIAL,
       avatar: props.avatar,
       characterImage: props.characterImage,
-      tags: props.tags
+      tags: props.tags,
     },
   });
 
@@ -54,9 +60,29 @@ async function upsertBot(props: BotProps) {
 }
 
 async function main() {
-  await Promise.all(Bots.map(bot => {
-    return upsertBot(bot);
-  }));
+  let isDev = process.env.NODE_ENV === "development";
+  let isProd =
+    process.env.NODE_ENV === "production" ||
+    process.env.NODE_ENV === "test" ||
+    // @ts-ignore
+    process.env.NODE_ENV === "staging";
+
+  // If seed command is run directly, NODE_ENV is not specified.
+  if (isProd === isDev) {
+    isProd = false;
+    isDev = true;
+    console.warn("seed: NODE_ENV is not specified. Defaulting to development mode.");
+  }
+
+  isProd ? await seedProduction() : await seedDevelopment();
+}
+
+async function seedProduction() {
+  await Promise.all(Bots.map((bot) => upsertBot(bot)));
+}
+
+async function seedDevelopment() {
+  await Promise.all(Bots.map((bot) => upsertBot(bot)));
 }
 
 main()
