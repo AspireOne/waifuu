@@ -13,10 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/server/shared/updateSelfSchema.ts:22
-#~ msgid "'About' is too long."
-#~ msgstr "'About' is too long."
-
 #: src/server/shared/updateSelfSchema.ts:21
 msgid "'Adressed as' is too long."
 msgstr "'Adressed as' is too long."
@@ -30,8 +26,8 @@ msgid "{0} / month"
 msgstr "{0} / month"
 
 #: src/components/profile-page/Header.tsx:45
-msgid "{0} is active on companion."
-msgstr "{0} is active on companion."
+msgid "{0} is active on Waifuu."
+msgstr "{0} is active on Waifuu."
 
 #: src/components/PricingPlanCard/ButtonSection.tsx:38
 msgid "{buttonText}"
@@ -58,8 +54,8 @@ msgid "100 custom characters per month"
 msgstr "100 custom characters per month"
 
 #: src/emails/templates/RegisterEmailTemplate.tsx:18
-msgid "A warm welcome from Companion ❤️"
-msgstr "A warm welcome from Companion ❤️"
+msgid "A warm welcome from Waifuu ❤️"
+msgstr "A warm welcome from Waifuu ❤️"
 
 #: src/pages/character/create.tsx:88
 msgid "About Character"
@@ -241,23 +237,23 @@ msgstr "Current Plan"
 msgid ""
 "Dear {0},\n"
 "{ }\n"
-"Welcome to Companion! We are thrilled to have you join our creative and adventurous community. Get ready to immerse yourself in a world of endless possibilities where your imagination takes center stage.\n"
-"At Companion, you will enter a realm filled with captivating fictional characters waiting to be explored, interacted with, and even created by you. Join in dynamic conversations, craft intriguing narratives, and embark on extraordinary experiences.\n"
+"Welcome to Waifuu! We are thrilled to have you join our creative and adventurous community. Get ready to immerse yourself in a world of endless possibilities where your imagination takes center stage.\n"
+"At Waifuu, you will enter a realm filled with captivating fictional characters waiting to be explored, interacted with, and even created by you. Join in dynamic conversations, craft intriguing narratives, and embark on extraordinary experiences.\n"
 "{ }⠀\n"
 "We cannot wait for what you will create. If you have any problems, insights, or just want to say hello, don't hesitate and reach to us. We are a small team and we want to make your stay here as pleasant as possible.\n"
 "{ }\n"
 "Sincerely,\n"
-"Team Companion"
+"Team Waifuu"
 msgstr ""
 "Dear {0},\n"
 "{ }\n"
-"Welcome to Companion! We are thrilled to have you join our creative and adventurous community. Get ready to immerse yourself in a world of endless possibilities where your imagination takes center stage.\n"
-"At Companion, you will enter a realm filled with captivating fictional characters waiting to be explored, interacted with, and even created by you. Join in dynamic conversations, craft intriguing narratives, and embark on extraordinary experiences.\n"
+"Welcome to Waifuu! We are thrilled to have you join our creative and adventurous community. Get ready to immerse yourself in a world of endless possibilities where your imagination takes center stage.\n"
+"At Waifuu, you will enter a realm filled with captivating fictional characters waiting to be explored, interacted with, and even created by you. Join in dynamic conversations, craft intriguing narratives, and embark on extraordinary experiences.\n"
 "{ }⠀\n"
 "We cannot wait for what you will create. If you have any problems, insights, or just want to say hello, don't hesitate and reach to us. We are a small team and we want to make your stay here as pleasant as possible.\n"
 "{ }\n"
 "Sincerely,\n"
-"Team Companion"
+"Team Waifuu"
 
 #: src/components/bot-chat/MessageDropdown.tsx:18
 msgid "Delete"
@@ -274,12 +270,6 @@ msgstr "Discover"
 #: src/pages/discover.tsx:16
 msgid "Discover Characters"
 msgstr "Discover Characters"
-
-#: src/emails/templates/TestEmailTemplate.tsx:41
-#: src/emails/templates/TestEmailTemplate.tsx:54
-#~ msgctxt "Internal test email"
-#~ msgid "Do you love hot tiddy girls? Check this out!"
-#~ msgstr "Do you love hot tiddy girls? Check this out!"
 
 #: src/components/PricingPlanCard/ConfirmationModal.tsx:28
 msgid "Do you really want to unsubscribe from this subscription? This action cannot be undone."
@@ -391,11 +381,6 @@ msgstr "Free access to all future community-related features"
 msgid "Free access to all new features"
 msgstr "Free access to all new features"
 
-#: src/emails/templates/TestEmailTemplate.tsx:37
-#~ msgctxt "Internal test message"
-#~ msgid "Fuck mee"
-#~ msgstr "Fuck mee"
-
 #: src/components/AppHeader/UserDropdown.tsx:74
 msgid "General character settings"
 msgstr "General character settings"
@@ -420,11 +405,6 @@ msgstr "Hi, {0}"
 msgid "Home"
 msgstr "Home"
 
-#: src/emails/templates/TestEmailTemplate.tsx:32
-#~ msgctxt "Internal test email"
-#~ msgid "Hot tiddy girls test"
-#~ msgstr "Hot tiddy girls test"
-
 #: src/pages/profile.tsx:163
 msgid "How should the character address you?"
 msgstr "How should the character address you?"
@@ -442,10 +422,6 @@ msgstr "Change your user settings"
 msgid "Character Roulette"
 msgstr "Character Roulette"
 
-#: src/components/AppHeader/AppHeaderUserDropdown.tsx:51
-#~ msgid "Character settings"
-#~ msgstr "Character settings"
-
 #: src/pages/character/create.tsx:121
 msgid "Character's character"
 msgstr "Character's character"
@@ -455,27 +431,22 @@ msgstr "Character's character"
 msgid "Chat"
 msgstr "Chat"
 
+#: src/pages/character/[botId].tsx:91
+msgid "Chat with {0}"
+msgstr "Chat with {0}"
+
 #: src/pages/character/[botId].tsx:110
 msgctxt "bot main menu title"
 msgid "Chat with {0}"
 msgstr "Chat with {0}"
 
-#: src/pages/character/[botId].tsx:91
-msgid "Chat with {0}"
-msgstr "Chat with {0}"
-
 #: src/components/profile-page/Header.tsx:44
-msgid "Check out {0} on Companion."
-msgstr "Check out {0} on Companion."
+msgid "Check out {0} on Waifuu."
+msgstr "Check out {0} on Waifuu."
 
 #: src/components/NsfwConfirmDialog/NsfwConfirmDialog.tsx:37
 msgid "I am 18 or older"
 msgstr "I am 18 or older"
-
-#: src/emails/templates/TestEmailTemplate.tsx:48
-#~ msgctxt "Internal test email"
-#~ msgid "I love hot tiddy girls!"
-#~ msgstr "I love hot tiddy girls!"
 
 #: src/emails/templates/TestEmailTemplate.tsx:42
 msgctxt "Internal test email"
@@ -514,10 +485,6 @@ msgstr "Images"
 #: src/server/shared/plans.ts:62
 msgid "Immerse yourself in a whole new world of imagination."
 msgstr "Immerse yourself in a whole new world of imagination."
-
-#: src/pages/profile.tsx:162
-#~ msgid "Language"
-#~ msgstr "Language"
 
 #: src/pages/profile.tsx:84
 msgid "Language successfully changed"
@@ -579,17 +546,9 @@ msgstr "No description."
 msgid "No characters found. Try changing your search term."
 msgstr "No characters found. Try changing your search term."
 
-#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:195
-#~ msgid "NSFW"
-#~ msgstr "NSFW"
-
 #: src/pages/character/create.tsx:142
 msgid "NSFW content"
 msgstr "NSFW content"
-
-#: src/components/PopularCharactersDiscoverCategory/PopularCharactersDiscoverCategory.tsx:187
-#~ msgid "Only display official characters"
-#~ msgstr "Only display official characters"
 
 #: src/pages/character/create.tsx:111
 msgid "Only for friends"
@@ -602,10 +561,6 @@ msgstr "Our best A.I. engine"
 #: src/pages/character/create.tsx:130
 msgid "Persona"
 msgstr "Persona"
-
-#: src/pages/forum/index.tsx:20
-#~ msgid "Pinned posts"
-#~ msgstr "Pinned posts"
 
 #: src/pages/profile.tsx:111
 msgid "Plan: <0>{0}</0>"
@@ -658,10 +613,6 @@ msgstr "Ready to take it to the next level? Immerse yourself in a whole new worl
 msgid "Recent"
 msgstr "Recent"
 
-#: src/pages/forum/index.tsx:36
-#~ msgid "Recent posts"
-#~ msgstr "Recent posts"
-
 #: src/components/bot-chat/SettingsDropdown.tsx:15
 msgid "Remove chat"
 msgstr "Remove chat"
@@ -678,10 +629,6 @@ msgstr "Roleplay"
 #: src/pages/character/[botId].tsx:44
 msgid "Roleplay with the character, feels just real!"
 msgstr "Roleplay with the character, feels just real!"
-
-#: src/components/ActionBar/ActionBar.tsx:33
-#~ msgid "Roulette"
-#~ msgstr "Roulette"
 
 #: src/components/AppHeader/UserDropdownSettingsDialog.tsx:74
 #: src/pages/profile.tsx:197
@@ -773,10 +720,6 @@ msgstr "Start conversation"
 msgid "Start the chat"
 msgstr "Start the chat"
 
-#: src/pages/character/[botId].tsx:65
-#~ msgid "Starting chat with {0}"
-#~ msgstr "Starting chat with {0}"
-
 #: src/components/PricingPage/useCreateSessionMutation.ts:19
 msgid "Stripe did not load"
 msgstr "Stripe did not load"
@@ -814,10 +757,6 @@ msgstr "Thank you for joining! What can you look forward to?"
 msgid "The companion that is always by your side."
 msgstr "The companion that is always by your side."
 
-#: src/components/BotChatContent/BotChatContent.tsx:69
-#~ msgid "Them"
-#~ msgstr "Them"
-
 #: src/server/routers/bots/getBotByChatId.ts:26
 msgid "There was an error loading the chat."
 msgstr "There was an error loading the chat."
@@ -829,8 +768,8 @@ msgstr "This is a test email, check out the content below!"
 
 #: src/emails/templates/TestEmailTemplate.tsx:46
 msgctxt "Internal test email"
-msgid "This is a very important message from companion!"
-msgstr "This is a very important message from companion!"
+msgid "This is a very important message from waifuu!"
+msgstr "This is a very important message from waifuu!"
 
 #: src/components/profile-page/InfoCards.tsx:49
 msgid "This user has not created any characters yet :("
@@ -892,8 +831,8 @@ msgid "Waiting for user..."
 msgstr "Waiting for user..."
 
 #: src/emails/templates/RegisterEmailTemplate.tsx:10
-msgid "Welcome To Companion"
-msgstr "Welcome To Companion"
+msgid "Welcome To Waifuu"
+msgstr "Welcome To Waifuu"
 
 #: src/pages/profile.tsx:155
 msgid "What is your special skill?"
@@ -914,10 +853,6 @@ msgstr "What should your characters know about you?"
 #: src/pages/character/create.tsx:145
 msgid "Whether the character will produce content not suitable for minors."
 msgstr "Whether the character will produce content not suitable for minors."
-
-#: src/components/BotChatContent/BotChatContent.tsx:70
-#~ msgid "You"
-#~ msgstr "You"
 
 #: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:23
 msgid "You don't have any active chats yet. Start one now!"
