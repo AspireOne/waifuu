@@ -5,9 +5,9 @@
   "scripts": {
     "start": "next start",
     "build:production": "cross-env NODE_ENV=production prisma migrate deploy && prisma db seed && npx lingui compile && next build",
-    "build:staging":    "cross-env NODE_ENV=production prisma migrate deploy && prisma db seed && npx lingui compile && next build",
+    "build:staging": "cross-env NODE_ENV=production prisma migrate deploy && prisma db seed && npx lingui compile && next build",
     "build:development": "cross-env NODE_ENV=development next build",
-    "build:native:production":  "cross-env NODE_ENV=production NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
+    "build:native:production": "cross-env NODE_ENV=production NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
     "build:native:development": "cross-env NODE_ENV=development NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
     "dev": "cross-env NODE_ENV=development NEXT_PUBLIC_DEVELOPMENT=1 next dev",
     "dev:external": "cross-env HOST=0.0.0.0 && pnpm dev",
@@ -37,7 +37,10 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": ["biome check --no-errors-on-unmatched --apply-unsafe --organize-imports-enabled true", "pnpm t:extract --clean"]
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "biome check --no-errors-on-unmatched --apply-unsafe --organize-imports-enabled true",
+      "pnpm t:extract --clean"
+    ]
   },
   "dependencies": {
     "@capacitor-firebase/authentication": "^5.2.0",
@@ -124,6 +127,7 @@
     "superjson": "^1.13.3",
     "tailwind-merge": "^1.14.0",
     "trpc-openapi": "^1.2.0",
+    "ts-node": "^10.9.1",
     "use-immer": "^0.9.0",
     "uuid": "^9.0.1",
     "wink-tokenizer": "^5.3.0",
