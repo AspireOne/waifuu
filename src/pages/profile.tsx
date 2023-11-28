@@ -10,12 +10,16 @@ import { Trans, t } from "@lingui/macro";
 import { Avatar, Button, Input, Link, Textarea } from "@nextui-org/react";
 import { User } from "@prisma/client";
 import NextLink from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, UseFormRegisterReturn, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 
+/*TODO: as of nextui v2.2.9, it seems like the Input element is broken - when it is hovered, any data is cleared.
+that does not happen with normal <input>. We'll not fix it for now and wait for a new version.
+However, if one does not come, this must be addressed before launch!
+*  */
 export default function Profile() {
   const { user, refetch } = useSession();
 
@@ -40,7 +44,6 @@ export default function Profile() {
     defaultValues: getCurrentUserValues(user),
   });
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const imageUrl = watch("imageUrl");
   const username = watch("username");
 
@@ -61,21 +64,7 @@ export default function Profile() {
   const onSubmit: SubmitHandler<z.infer<typeof updateSelfSchema>> = (
     data: z.infer<typeof updateSelfSchema>,
   ) => {
-    // Upload the raw image to storage, get the URL, and use that url.
-    const rawUrl = data.imageUrl;
-
     updateUserMutation.mutate(data);
-  };
-
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setValue("imageUrl", reader.result as string);
-      };
-      reader.readAsDataURL(file!);
-    }
   };
 
   async function onlanguageSelected(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -93,10 +82,10 @@ export default function Profile() {
       >
         <div className={"flex flex-col gap-3 items-center justify-center"}>
           <Avatar
-            onClick={() => fileInputRef.current?.click()}
+            //onClick={() => fileInputRef.current?.click()}
             isBordered
             className={
-              "mx-auto h-32 w-auto aspect-square hover:cursor-pointer hover:opacity-80 duration-150"
+              "mx-auto h-32 w-auto aspect-square" /*hover:cursor-pointer hover:opacity-80 duration-150*/
             }
             src={imageUrl ?? undefined}
           />
@@ -114,14 +103,6 @@ export default function Profile() {
             </Link>
           )}
         </div>
-        {/*Comment it out for now.*/}
-        {/*<input
-          type="file"
-          ref={fileInputRef}
-          onChange={onFileChange}
-          style={{ display: "none" }}
-          accept="image/*"
-        />*/}
 
         <div className={"flex flex-row gap-4"}>
           <UsernameInput
@@ -192,7 +173,7 @@ export default function Profile() {
           isLoading={updateUserMutation.isLoading}
           isDisabled={!isDirty || updateUserMutation.isLoading}
           type={"submit"}
-          variant={"flat"}
+          variant={"bordered"}
         >
           <Trans>Save Changes</Trans>
         </Button>
