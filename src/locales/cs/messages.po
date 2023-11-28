@@ -218,7 +218,7 @@ msgstr "Vytvořit"
 msgid "Create a new comment"
 msgstr "Napsat nový komentář"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:189
 msgid "Create a new character"
 msgstr ""
 
@@ -307,7 +307,7 @@ msgstr "Zadejte své jméno"
 msgid "Enter your phone"
 msgstr "Zadejte svůj telefon"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:203
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:204
 msgid "Enter your search term..."
 msgstr ""
 
@@ -490,7 +490,7 @@ msgstr "Jazyk byl úspěšně změněn"
 msgid "Let's explore some new characters."
 msgstr "Pojďme prozkoumat nějaké nové postavy."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:157
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:158
 msgid "Load more"
 msgstr "Načíst víc"
 
@@ -537,7 +537,7 @@ msgstr "Žádné bio."
 msgid "No description."
 msgstr "Žádný popis."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:144
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:145
 msgid "No characters found. Try changing your search term."
 msgstr "Nenalezeny žádné postavy. Zkus změnit hledaný výraz."
 
@@ -570,7 +570,7 @@ msgstr ""
 msgid "Popular forum posts"
 msgstr "Populární příspěvky na fóru"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:187
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
 msgid "Popular Characters"
 msgstr "Populární postavy"
 
@@ -628,7 +628,7 @@ msgstr "Roleplay s postavou - působí skoro skutečně!"
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:202
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:203
 msgid "Search by name"
 msgstr ""
 

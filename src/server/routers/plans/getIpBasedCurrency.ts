@@ -28,6 +28,12 @@ export default publicProcedure
   )
   .query(async ({ ctx }) => {
     const ip = ctx.req?.socket.remoteAddress;
+    // prefixes:
+    // "::ffff:" = IPv4 to IPv6 conversion.
+    // "::1" = localhost.
+    // "::" = IPv6.
+    // we keep it when saving to DB, but remove it when passing it to geo api.
+
     if (!ip)
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
@@ -47,7 +53,8 @@ export default publicProcedure
     let country = dbData?.country;
 
     if (!country) {
-      const data = await fetchDataOrThrow(ip === "::1" ? "" : ip); // when localhost, do not specify ip.
+      const _preparedIp = ip.replace("::ffff:", "").replace("::1", "").replace("::", "");
+      const data = await fetchDataOrThrow(_preparedIp); // when localhost, do not specify ip.
       // TODO(1): Save it AFTER the response is sent.
       await ctx.prisma.ipInfo.create({
         data: {

@@ -213,7 +213,7 @@ msgstr "Create"
 msgid "Create a new comment"
 msgstr "Create a new comment"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:189
 msgid "Create a new character"
 msgstr "Create a new character"
 
@@ -311,7 +311,7 @@ msgstr "Enter your name"
 msgid "Enter your phone"
 msgstr "Enter your phone"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:203
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:204
 msgid "Enter your search term..."
 msgstr "Enter your search term..."
 
@@ -494,7 +494,7 @@ msgstr "Language successfully changed"
 msgid "Let's explore some new characters."
 msgstr "Let's explore some new characters."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:157
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:158
 msgid "Load more"
 msgstr "Load more"
 
@@ -541,7 +541,7 @@ msgstr "No bio."
 msgid "No description."
 msgstr "No description."
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:144
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:145
 msgid "No characters found. Try changing your search term."
 msgstr "No characters found. Try changing your search term."
 
@@ -574,7 +574,7 @@ msgstr "Plus"
 msgid "Popular forum posts"
 msgstr "Popular forum posts"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:187
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:188
 msgid "Popular Characters"
 msgstr "Popular Characters"
 
@@ -632,7 +632,7 @@ msgstr "Roleplay with the character, feels just real!"
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:202
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:203
 msgid "Search by name"
 msgstr "Search by name"
 
