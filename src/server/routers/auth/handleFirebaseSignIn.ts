@@ -33,8 +33,8 @@ export default publicProcedure
 
     console.log("Successfully signed in with Firebase.", { alreadyExisted });
     if (!alreadyExisted && decodedIdToken.email) {
-      // Do not await it.
-      email
+      // TODO(1): Send it asynchronously!.
+      await email
         .send({
           from: email.from.info,
           to: [decodedIdToken.email!],
