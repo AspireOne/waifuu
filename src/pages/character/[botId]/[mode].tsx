@@ -11,6 +11,7 @@ import { Image } from "@nextui-org/react";
 import { Bot } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
+import { twMerge } from "tailwind-merge";
 
 /** This is the actual chat page (e.g. chat with Aqua on mode Roleplay). */
 const BotChat = () => {
@@ -30,7 +31,7 @@ const BotChat = () => {
     <AppPage className="p-0" title={bot?.name || _(msg`Loading...`)}>
       {/*TODO: Make character image only the png of the char.*/}
 
-      {bot && <BgCharacterImage bot={bot} messages={chat.messages} />}
+      {bot && <CharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
       <BotChatContent chat={chat} bot={bot} />
 
@@ -41,7 +42,7 @@ const BotChat = () => {
   );
 };
 
-const BgCharacterImage = ({
+const CharacterImage = ({
   bot,
   messages,
 }: {
@@ -61,7 +62,12 @@ const BgCharacterImage = ({
         alt="background character image"
         loading="eager"
         src={makeDownloadUrl(image)}
-        className="fixed bottom-0 left-[50%] h-[800px] w-full max-w-[500px] translate-x-[-50%] object-cover"
+        className={twMerge(
+          "fixed object-cover",
+          "bottom-0 h-[90%]", // set height
+          "w-auto", // set width
+          "left-[50%] translate-x-[-50%]", // center it horizontally
+        )}
         width={1920}
         height={1080}
       />

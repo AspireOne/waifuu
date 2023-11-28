@@ -82,7 +82,7 @@ msgstr "Active"
 msgid "Active chats"
 msgstr "Active chats"
 
-#: src/pages/profile.tsx:162
+#: src/pages/profile.tsx:143
 msgid "Addressed As"
 msgstr "Addressed As"
 
@@ -125,7 +125,7 @@ msgstr "Avatar is required"
 msgid "Basic post info"
 msgstr "Basic post info"
 
-#: src/pages/profile.tsx:154
+#: src/pages/profile.tsx:135
 msgid "Bio"
 msgstr "Bio"
 
@@ -279,7 +279,7 @@ msgstr "Do you really want to unsubscribe from this subscription? This action ca
 msgid "Edit"
 msgstr "Edit"
 
-#: src/pages/profile.tsx:146
+#: src/pages/profile.tsx:127
 msgid "Email"
 msgstr "Email"
 
@@ -405,7 +405,7 @@ msgstr "Hi, {0}"
 msgid "Home"
 msgstr "Home"
 
-#: src/pages/profile.tsx:163
+#: src/pages/profile.tsx:144
 msgid "How should the character address you?"
 msgstr "How should the character address you?"
 
@@ -486,7 +486,7 @@ msgstr "Images"
 msgid "Immerse yourself in a whole new world of imagination."
 msgstr "Immerse yourself in a whole new world of imagination."
 
-#: src/pages/profile.tsx:84
+#: src/pages/profile.tsx:73
 msgid "Language successfully changed"
 msgstr "Language successfully changed"
 
@@ -517,7 +517,7 @@ msgstr "Must be a 2-letter code."
 msgid "My profile"
 msgstr "My profile"
 
-#: src/pages/profile.tsx:136
+#: src/pages/profile.tsx:117
 msgid "Name"
 msgstr "Name"
 
@@ -561,7 +561,7 @@ msgstr "Our best A.I. engine"
 msgid "Persona"
 msgstr "Persona"
 
-#: src/pages/profile.tsx:111
+#: src/pages/profile.tsx:100
 msgid "Plan: <0>{0}</0>"
 msgstr "Plan: <0>{0}</0>"
 
@@ -591,11 +591,11 @@ msgstr "Privacy Policy"
 msgid "Private"
 msgstr "Private"
 
-#: src/pages/profile.tsx:89
+#: src/pages/profile.tsx:78
 msgid "Profile"
 msgstr "Profile"
 
-#: src/pages/profile.tsx:24
+#: src/pages/profile.tsx:28
 msgid "Profile updated!"
 msgstr "Profile updated!"
 
@@ -628,7 +628,7 @@ msgstr "Roleplay"
 msgid "Roleplay with the character, feels just real!"
 msgstr "Roleplay with the character, feels just real!"
 
-#: src/pages/profile.tsx:197
+#: src/pages/profile.tsx:178
 msgid "Save Changes"
 msgstr "Save Changes"
 
@@ -742,7 +742,7 @@ msgstr "Successfully unsubscribed."
 msgid "Talk with the character as if you were there with them."
 msgstr "Talk with the character as if you were there with them."
 
-#: src/pages/profile.tsx:170
+#: src/pages/profile.tsx:151
 msgid "Tell us about yourself"
 msgstr "Tell us about yourself"
 
@@ -810,8 +810,8 @@ msgstr "User left."
 msgid "User not specified"
 msgstr "User not specified"
 
-#: src/pages/profile.tsx:230
-#: src/pages/profile.tsx:231
+#: src/pages/profile.tsx:211
+#: src/pages/profile.tsx:212
 msgid "Username"
 msgstr "Username"
 
@@ -831,7 +831,7 @@ msgstr "Waiting for user..."
 msgid "Welcome To Waifuu"
 msgstr "Welcome To Waifuu"
 
-#: src/pages/profile.tsx:155
+#: src/pages/profile.tsx:136
 msgid "What is your special skill?"
 msgstr "What is your special skill?"
 
@@ -843,7 +843,7 @@ msgstr "What should characters know about you?"
 msgid "What should this character know about you?"
 msgstr "What should this character know about you?"
 
-#: src/pages/profile.tsx:171
+#: src/pages/profile.tsx:152
 msgid "What should your characters know about you?"
 msgstr "What should your characters know about you?"
 

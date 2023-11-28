@@ -87,7 +87,7 @@ msgstr ""
 msgid "Active chats"
 msgstr "Aktivní konverzace"
 
-#: src/pages/profile.tsx:162
+#: src/pages/profile.tsx:143
 msgid "Addressed As"
 msgstr "Oslovován/a jako"
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Basic post info"
 msgstr ""
 
-#: src/pages/profile.tsx:154
+#: src/pages/profile.tsx:135
 msgid "Bio"
 msgstr "O mně"
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid "Edit"
 msgstr "Upravit"
 
-#: src/pages/profile.tsx:146
+#: src/pages/profile.tsx:127
 msgid "Email"
 msgstr "E-mailová adresa"
 
@@ -401,7 +401,7 @@ msgstr "Ahoj, {0}"
 msgid "Home"
 msgstr "Domů"
 
-#: src/pages/profile.tsx:163
+#: src/pages/profile.tsx:144
 msgid "How should the character address you?"
 msgstr "Jak by tě měla postava oslovovat?"
 
@@ -482,7 +482,7 @@ msgstr "Obrázky"
 msgid "Immerse yourself in a whole new world of imagination."
 msgstr ""
 
-#: src/pages/profile.tsx:84
+#: src/pages/profile.tsx:73
 msgid "Language successfully changed"
 msgstr "Jazyk byl úspěšně změněn"
 
@@ -513,7 +513,7 @@ msgstr "Musí být dvoupísmenný kód."
 msgid "My profile"
 msgstr ""
 
-#: src/pages/profile.tsx:136
+#: src/pages/profile.tsx:117
 msgid "Name"
 msgstr "Jméno"
 
@@ -557,7 +557,7 @@ msgstr ""
 msgid "Persona"
 msgstr "Osobnost"
 
-#: src/pages/profile.tsx:111
+#: src/pages/profile.tsx:100
 msgid "Plan: <0>{0}</0>"
 msgstr ""
 
@@ -587,11 +587,11 @@ msgstr "Ochrana osobních údajů"
 msgid "Private"
 msgstr "Soukromé"
 
-#: src/pages/profile.tsx:89
+#: src/pages/profile.tsx:78
 msgid "Profile"
 msgstr "Profil"
 
-#: src/pages/profile.tsx:24
+#: src/pages/profile.tsx:28
 msgid "Profile updated!"
 msgstr "Profil aktualizován!"
 
@@ -624,7 +624,7 @@ msgstr "Roleplay"
 msgid "Roleplay with the character, feels just real!"
 msgstr "Roleplay s postavou - působí skoro skutečně!"
 
-#: src/pages/profile.tsx:197
+#: src/pages/profile.tsx:178
 msgid "Save Changes"
 msgstr "Uložit změny"
 
@@ -738,7 +738,7 @@ msgstr ""
 msgid "Talk with the character as if you were there with them."
 msgstr "Mluv s postavou, jako bys byl právě s ní."
 
-#: src/pages/profile.tsx:170
+#: src/pages/profile.tsx:151
 msgid "Tell us about yourself"
 msgstr "Řekni nám něco o sobě"
 
@@ -806,8 +806,8 @@ msgstr "Uživatel se odpojil."
 msgid "User not specified"
 msgstr ""
 
-#: src/pages/profile.tsx:230
-#: src/pages/profile.tsx:231
+#: src/pages/profile.tsx:211
+#: src/pages/profile.tsx:212
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -827,7 +827,7 @@ msgstr "Čekání na uživatele..."
 msgid "Welcome To Waifuu"
 msgstr ""
 
-#: src/pages/profile.tsx:155
+#: src/pages/profile.tsx:136
 msgid "What is your special skill?"
 msgstr "Jaká je tvoje speciální dovednost?"
 
@@ -839,7 +839,7 @@ msgstr ""
 msgid "What should this character know about you?"
 msgstr ""
 
-#: src/pages/profile.tsx:171
+#: src/pages/profile.tsx:152
 msgid "What should your characters know about you?"
 msgstr "Co by o tobě měly tvé postavy určitě vědět?"
 

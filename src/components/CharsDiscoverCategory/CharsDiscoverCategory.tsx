@@ -86,6 +86,7 @@ export const CharsDiscoverCategory = () => {
       },
 
       refetchOnWindowFocus: false,
+      refetchOnMount: true,
       keepPreviousData: true,
       staleTime: parse("1h"),
       enabled: session.status !== "unauthenticated",
