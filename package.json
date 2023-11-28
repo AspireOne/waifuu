@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "next start",
-    "build:production": "cross-env NODE_ENV=production prisma migrate deploy && next build",
-    "build:staging":    "cross-env NODE_ENV=production prisma migrate deploy && next build",
+    "build:production": "cross-env NODE_ENV=production prisma migrate deploy && npx lingui compile && next build",
+    "build:staging":    "cross-env NODE_ENV=production prisma migrate deploy && npx lingui compile && next build",
     "build:development": "cross-env NODE_ENV=development next build",
     "build:native:production":  "cross-env NODE_ENV=production NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
     "build:native:development": "cross-env NODE_ENV=development NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
