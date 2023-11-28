@@ -38,7 +38,7 @@ export const generalRouter = createTRPCRouter({
       subject: getTestEmailSubject(),
       template: TestEmailTemplate({
         content:
-          "Batman is dead. I am writing this in the hope of\nO-\n\nNewline. In the hope of-\n\nGotta go, bye!\n\n yor companion",
+          "Batman is dead. I am writing this in the hope of\nO-\n\nNewline. In the hope of-\n\nGotta go, bye!\n\n yor Waifuu",
       }),
     });
   }),

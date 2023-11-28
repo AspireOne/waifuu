@@ -68,8 +68,8 @@ export const baseUrl = () => {
  * @param path Path to append to base URL, e.g. "/api/bots"
  * @returns {string} The full API URL
  *
- * @example apiBase("/api/bots") // "https://companion-red.vercel.app/api/bots"
- * @example apiBase() // "https://companion-red.vercel.app/api"
+ * @example apiBase("/api/bots") // "https://waifuu.com/api/bots"
+ * @example apiBase() // "https://waifuu.com/api"
  **/
 export const baseApiUrl = (path?: string): string => {
   const base = `${baseUrl()}/api`;

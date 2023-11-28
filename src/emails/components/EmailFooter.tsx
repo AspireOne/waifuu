@@ -25,7 +25,7 @@ export const EmailFooter = () => {
             </Link>
           </Text>
           <Text className={"text-center"}>
-            &copy; {new Date().getFullYear()} Companion. All rights reserved.
+            &copy; {new Date().getFullYear()} Waifuu. All rights reserved.
           </Text>
         </Row>
       </Container>

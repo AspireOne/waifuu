@@ -44,7 +44,7 @@ export default ({
         context: "Internal test email",
       })}
       title={t({
-        message: "This is a very important message from companion!",
+        message: "This is a very important message from waifuu!",
         context: "Internal test email",
       })}
     >

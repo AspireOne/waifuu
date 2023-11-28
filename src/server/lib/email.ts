@@ -4,9 +4,9 @@ import { render } from "@jsx-email/render";
 
 const client = emailClient;
 const from = {
-  test: `Companion Test <mailgun@${env.MAILGUN_DOMAIN}>`,
+  test: `Waifuu Test <mailgun@${env.MAILGUN_DOMAIN}>`,
   // TODO: Change this when we have a domain (Companion info@companion.com)
-  info: `Companion <mailgun@${env.MAILGUN_DOMAIN}>`,
+  info: `Waifuu <mailgun@${env.MAILGUN_DOMAIN}>`,
 };
 
 type SendProps = {

@@ -9,7 +9,7 @@ if (process.env.NEXT_PUBLIC_DEVELOPMENT !== "1") {
     dsn: "https://34c0748d79396ead34402eaea3d846c0@o4506082747482112.ingest.sentry.io/4506082817212416",
 
     // https://docs.sentry.io/platforms/javascript/guides/capacitor/
-    release: "companion@1.0.0", // TODO: Put this in an env variable or smthng...
+    release: "waifuu@1.0.0", // TODO: Put this in an env variable or smthng...
     //dist: "1",
 
     // 10%.

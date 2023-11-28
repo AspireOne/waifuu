@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest a new feature or enhancement for Companion.
+about: Suggest a new feature or enhancement for Waifuu.
 title: ''
 labels: enhancement
 assignees: ''

@@ -41,8 +41,8 @@ export default function Header(props: {
 
   async function handleShare() {
     await Share.share({
-      title: _(msg`Check out ${props.username} on Companion.`),
-      text: _(msg`${props.username} is active on companion.`),
+      title: _(msg`Check out ${props.username} on Waifuu.`),
+      text: _(msg`${props.username} is active on Waifuu.`),
       // biome-ignore lint/style/noNonNullAssertion: At the time the user is clicking the button, the username is guaranteed to be defined.
       url: paths.userProfile(props.username!),
       dialogTitle: _(msg`'Share ${props.username}'s profile with buddies`),

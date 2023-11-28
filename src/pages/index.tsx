@@ -29,7 +29,7 @@ const TopBar = () => {
     <div className="sticky top-5 w-full flex flex-row z-10">
       <h1 className="font-bold text-xl flex flex-row gap-2">
         <Emoji className="w-[30px] h-[30px]" name="chat" />
-        Companion
+        Waifuu
       </h1>
 
       <div
@@ -55,7 +55,7 @@ const Header = () => {
       <h1 className="text-8xl w-fit mx-auto font-black flex flex-row gap-6">
         <p>Meet</p>
         <Emoji className="w-[100px] h-[100px]" name="chat" />
-        <p>Companion</p>
+        <p>Waifuu</p>
       </h1>
 
       <Spacer y={5} />
@@ -84,8 +84,8 @@ const Features = () => {
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by himself, it
-            simply feels real.
+            Waifuu is there 24/7 with you, he sometimes sends you message by himself, it simply
+            feels real.
           </p>
         </div>
       </div>
@@ -95,8 +95,8 @@ const Features = () => {
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by himself, it
-            simply feels real.
+            Waifuu is there 24/7 with you, he sometimes sends you message by himself, it simply
+            feels real.
           </p>
         </div>
       </div>
@@ -106,8 +106,8 @@ const Features = () => {
         <div className="mt-24">
           <h1 className="font-bold text-3xl">Always with you</h1>
           <p className="w-[400px]">
-            Companion is there 24/7 with you, he sometimes sends you message by himself, it
-            simply feels real.
+            Waifuu is there 24/7 with you, he sometimes sends you message by himself, it simply
+            feels real.
           </p>
         </div>
       </div>
@@ -165,7 +165,7 @@ const PayPlans = () => {
   );
 };
 
-const CompanionUsageCard = ({ specialClass }: { specialClass?: string }) => {
+const WaifuuUsageCard = ({ specialClass }: { specialClass?: string }) => {
   return (
     <div className={twMerge(["w-[230px] bg-gray-600 h-[150px] rounded-lg", specialClass])}>
       <div
@@ -185,23 +185,23 @@ const CompanionUsage = () => {
   return (
     <div>
       <div className="flex w-fit mx-auto flex-row gap-60 mb-9">
-        <CompanionUsageCard specialClass="mt-16" />
-        <CompanionUsageCard />
-        <CompanionUsageCard specialClass="mt-16" />
+        <WaifuuUsageCard specialClass="mt-16" />
+        <WaifuuUsageCard />
+        <WaifuuUsageCard specialClass="mt-16" />
       </div>
 
       <div className="w-fit text-5xl text-center mx-auto">
         <h1 className="flex flex-row gap-2">
           <Emoji name="blossom" className="w-[50px] h-[50px]" />
-          <p>Companion</p>
+          <p>Waifuu</p>
         </h1>
         <p className="font-bold">can do</p>
       </div>
 
       <div className="flex w-fit mx-auto flex-row gap-60 mt-9">
-        <CompanionUsageCard />
-        <CompanionUsageCard specialClass="mt-16" />
-        <CompanionUsageCard />
+        <WaifuuUsageCard />
+        <WaifuuUsageCard specialClass="mt-16" />
+        <WaifuuUsageCard />
       </div>
     </div>
   );
@@ -264,7 +264,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
       return (
         <PublicPage
           className="bg-[#303030] text-white bg-contain bg-no-repeat bg-[url('/assets/indexbackground.png')]"
-          title={"Meet Companion"}
+          title={"Meet Waifuu"}
           /*TODO: DESCRIPTION*/
           description={""}
         >

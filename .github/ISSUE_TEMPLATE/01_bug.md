@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug encountered with Companion.
+about: Report a bug encountered with Waifuu.
 title: ''
 labels: bug
 assignees: ''

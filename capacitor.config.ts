@@ -2,7 +2,7 @@ import { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.gmail.matejpesl1.companion",
-  appName: "companion",
+  appName: "Waifuu",
   webDir: "out", // Default Next.JS static build output dir.
   server: {
     // The LAN URL of your web app (e.g. http://192.168.x.xx:3000)

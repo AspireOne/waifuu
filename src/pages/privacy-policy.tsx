@@ -56,15 +56,15 @@ export default () => {
         </li>
         <li>
           <p>
-            <strong>Application</strong> refers to Companion, the software program provided by
-            the Company.
+            <strong>Application</strong> refers to Waifuu, the software program provided by the
+            Company.
           </p>
         </li>
         <li>
           <p>
             <strong>Company</strong> (referred to as either &quot;the Company&quot;,
             &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Agreement) refers to
-            Companion.
+            Waifuu.
           </p>
         </li>
         <li>
@@ -121,13 +121,13 @@ export default () => {
         </li>
         <li>
           <p>
-            <strong>Website</strong> refers to Companion, accessible from{" "}
+            <strong>Website</strong> refers to Waifuu, accessible from{" "}
             <a
-              href="https://www.companion-red.vercel.app"
+              href="https://waifuu.com"
               rel="noreferrer external nofollow noopener"
               target="_blank"
             >
-              https://www.companion-red.vercel.app
+              https://waifuu.com
             </a>
           </p>
         </li>
