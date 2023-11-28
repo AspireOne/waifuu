@@ -34,7 +34,7 @@ export const generalRouter = createTRPCRouter({
 
     await email.send({
       from: email.from.test,
-      to: [env.TESTING_EMAIL],
+      to: [env.INFO_EMAIL],
       subject: getTestEmailSubject(),
       template: TestEmailTemplate({
         content:

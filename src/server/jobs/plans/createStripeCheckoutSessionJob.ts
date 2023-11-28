@@ -1,9 +1,9 @@
 import { stripe } from "@/server/lib/stripe";
-import { getCurrencyData } from "@/server/shared/currency";
+import { currencyData } from "@/server/shared/currency";
 import { getPlan } from "@/server/shared/plans";
 import { LocaleCode } from "@lib/i18n";
 import { fullUrl, paths } from "@lib/paths";
-import { PlanId, SubscriptionInterval, User } from "@prisma/client";
+import { Currency, PlanId, SubscriptionInterval, User } from "@prisma/client";
 
 export const createStripeCheckoutSessionJob = async (props: {
   user: User;
@@ -11,10 +11,11 @@ export const createStripeCheckoutSessionJob = async (props: {
   interval: SubscriptionInterval;
   customerId: string;
   locale: LocaleCode;
+  currencyCode: Currency;
 }) => {
-  const { user, locale, interval, customerId, planId } = props;
-  const currency = getCurrencyData(locale);
+  const { user, currencyCode, locale, interval, customerId, planId } = props;
   const plan = getPlan(planId);
+  const currency = currencyData.find((c) => c.code === currencyCode)!;
 
   return await stripe.checkout.sessions.create({
     payment_method_types: ["card", "paypal"],

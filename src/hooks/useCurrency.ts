@@ -1,14 +1,36 @@
-import { getCurrencyData } from "@/server/shared/currency";
-import { LocaleCode } from "@lib/i18n";
-import { i18n } from "@lingui/core";
+import { CurrencyData, currencyHelpers } from "@/server/shared/currency";
+import { api } from "@lib/api";
+import { getMostSuitableLocale } from "@lib/i18n";
+import { Currency } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 export const useCurrency = () => {
-  const [data, setData] = useState(getCurrencyData(i18n.locale as LocaleCode));
+  const [currency, setCurrency] = useState<Currency>();
+  const [data, setData] = useState<CurrencyData>();
+  const ipCurrency = api.plans.getIpBasedCurrency.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchIntervalInBackground: false,
+    refetchInterval: false,
+    refetchOnMount: false,
+    staleTime: Infinity,
+    retry: false,
+  });
 
   useEffect(() => {
-    setData(getCurrencyData(i18n.locale as LocaleCode));
-  }, [i18n, i18n.locale]);
+    if (ipCurrency.status === "success") {
+      setCurrency(ipCurrency.data.currency as Currency);
+    } else if (ipCurrency.status === "error") {
+      getMostSuitableLocale().then((locale) => {
+        const currency = currencyHelpers.byLocale(locale);
+        if (currency) setCurrency(currency.code);
+      });
+    }
+  }, [ipCurrency.status]);
 
-  return { ...data };
+  useEffect(() => {
+    setData(!currency ? undefined : currencyHelpers.byCode(currency));
+  }, [currency]);
+
+  return { ...data, setCurrency };
 };

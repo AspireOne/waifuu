@@ -55,15 +55,18 @@ const ChatMainMenu = () => {
   const [selectedModeIsAlreadyActive, setSelectedModeIsAlreadyActive] =
     useState<boolean>(false);
 
-  const botId = window.location.pathname.split("/")[2] as string;
+  const botId = router.asPath.split("/")[2] as string;
 
-  const getOrCreateBotChat = api.chat.getOrCreate.useMutation({
+  const getOrCreateBotChatMut = api.chat.getOrCreate.useMutation({
     onSuccess: (data) => {
       router.push(paths.botChat(data.id, bot.data?.id ?? ""));
     },
   });
-  const bot = api.bots.getBot.useQuery({ botId: botId });
-  const { data: usedChatModes } = api.bots.getUsedChatModes.useQuery({ botId: botId });
+  const bot = api.bots.getBot.useQuery({ botId: botId }, { enabled: !!botId });
+  const { data: usedChatModes } = api.bots.getUsedChatModes.useQuery(
+    { botId: botId },
+    { enabled: !!botId },
+  );
 
   const { register, setValue, watch, handleSubmit } = useForm<FormProps>();
   const mode = watch("mode");
@@ -71,7 +74,7 @@ const ChatMainMenu = () => {
   const onSubmit = (data: FormProps) => {
     if (!bot.data || !bot.data?.id) return;
 
-    getOrCreateBotChat.mutate({
+    getOrCreateBotChatMut.mutate({
       botId: bot.data.id,
       ...data,
     });
@@ -153,7 +156,7 @@ const ChatMainMenu = () => {
               variant={"solid"}
               color={"primary"}
               isDisabled={!mode}
-              isLoading={getOrCreateBotChat.isLoading}
+              isLoading={getOrCreateBotChatMut.isLoading}
               type="submit"
               className="w-full"
             >

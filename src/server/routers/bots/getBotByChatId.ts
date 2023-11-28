@@ -1,4 +1,6 @@
+import { TRPCError } from "@/server/lib/TRPCError";
 import { protectedProcedure } from "@/server/lib/trpc";
+import { t } from "@lingui/macro";
 import { z } from "zod";
 
 export default protectedProcedure
@@ -17,5 +19,13 @@ export default protectedProcedure
       },
     });
 
-    return chat?.bot;
+    if (!chat) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: `Chat not found based on passed in ID: ${input.chatId}`,
+        toast: t`There was an error loading the chat.`,
+      });
+    }
+
+    return chat.bot;
   });
