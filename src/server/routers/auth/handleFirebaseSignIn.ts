@@ -6,6 +6,7 @@ import { email } from "@/server/lib/email";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
 import { PrismaClient } from "@prisma/client";
+import * as Sentry from "@sentry/nextjs";
 import { TRPCError } from "@trpc/server";
 import { DecodedIdToken } from "firebase-admin/auth";
 import { NextApiResponse } from "next";
@@ -42,8 +43,8 @@ export default publicProcedure
           subject: getRegisterEmailSubject(),
         })
         .catch((err) => {
-          console.error("Error sending registration email.", err);
-          // TODO: Report to sentry.
+          console.error("Error sending registration email. Reported to sentry.", err);
+          Sentry.captureException(err);
         });
     }
 
