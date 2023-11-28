@@ -6,7 +6,7 @@ import * as Sentry from "@sentry/nextjs";
 
 if (process.env.NEXT_PUBLIC_DEVELOPMENT !== "1") {
   Sentry.init({
-    dsn: "https://34c0748d79396ead34402eaea3d846c0@o4506082747482112.ingest.sentry.io/4506082817212416",
+    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
     // https://docs.sentry.io/platforms/javascript/guides/capacitor/
     release: "waifuu@1.0.0", // TODO: Put this in an env variable or smthng...

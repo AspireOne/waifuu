@@ -10,6 +10,8 @@ export const envSchema = z.object({
   SERVICE_ACCOUNT_JSON: z.string().min(1),
   // Sentry.
   SENTRY_AUTH_TOKEN: z.string().min(1),
+  SENTRY_DSN: z.string().min(1),
+  NEXT_PUBLIC_SENTRY_DSN: z.string().min(1),
   NEXT_PUBLIC_BASE_URL: z.string().url(),
   NEXT_PUBLIC_CAPACITOR_BASE_URL: z.string().url(),
 

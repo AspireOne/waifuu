@@ -1,8 +1,9 @@
 import * as Sentry from "@sentry/nextjs";
+import {env} from "@/server/env";
 
 if (process.env.NODE_ENV !== "development") {
   Sentry.init({
-    dsn: "https://34c0748d79396ead34402eaea3d846c0@o4506082747482112.ingest.sentry.io/4506082817212416",
+    dsn: env.NEXT_PUBLIC_SENTRY_DSN,
     tracesSampleRate: 1,
     sampleRate: 1,
   });
