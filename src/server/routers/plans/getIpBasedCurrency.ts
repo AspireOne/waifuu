@@ -27,7 +27,11 @@ export default publicProcedure
     }),
   )
   .query(async ({ ctx }) => {
-    const ip = ctx.req?.socket.remoteAddress;
+    let ip = ctx.req?.headers["x-forwarded-for"] || ctx.req?.socket?.remoteAddress;
+    // 'x-forwarded-for' can return a list of IPs. The client's IP is the first one.
+    if (Array.isArray(ip)) ip = ip[0];
+    else if (typeof ip === "string") ip = ip.split(",")[0];
+
     // prefixes:
     // "::ffff:" = IPv4 to IPv6 conversion.
     // "::1" = localhost.
