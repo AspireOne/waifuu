@@ -228,6 +228,7 @@ const CreateChatPage = () => {
             <Title as={"h2"} description={_(msg`Now the really important part!`)}>
               Images
             </Title>
+            {/*TODO: Add descriptions, improve design.s*/}
             <div className={"space-y-4"}>
               <FileUploadRaw required onUpload={(id) => setAvatar(id)} label="Avatar" />
               <FileUploadRaw onUpload={(id) => setCover(id)} label={_(msg`Cover`)} />

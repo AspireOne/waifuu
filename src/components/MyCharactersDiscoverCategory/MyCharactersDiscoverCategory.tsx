@@ -11,7 +11,6 @@ import { Link } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { inferRouterOutputs } from "@trpc/server";
-import { router } from "next/client";
 import NextLink from "next/link";
 import parse from "parse-duration";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -35,10 +34,11 @@ export const MyCharactersDiscoverCategory = () => {
         <Trans>Your Characters</Trans>
         <Tooltip content={_(msg`Create a new character`)}>
           <Button
+            as={NextLink}
+            href={paths.createBot}
             color={"primary"}
             className={"ml-auto md:ml-1 mr-1"}
             size="sm"
-            onClick={() => router.push(paths.createBot)}
             isIconOnly
           >
             <AiOutlinePlus fontSize={25} fontWeight={700} />
