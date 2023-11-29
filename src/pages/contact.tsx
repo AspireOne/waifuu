@@ -40,8 +40,8 @@ export default () => {
 function Socials(props: { className?: string }) {
   return (
     <div className={`${props.className} text-lg`}>
-      <ContactInfoItem icon={<FiMail />} href="mailto:matejpesl1@gmail.com">
-        matejpesl1@gmail.com
+      <ContactInfoItem icon={<FiMail />} href="mailto:info@waifuu.com">
+        info@waifuu.com
       </ContactInfoItem>
 
       {/*TODO: Add socials.*/}
