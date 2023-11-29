@@ -220,7 +220,7 @@ msgstr "Create"
 msgid "Create a new comment"
 msgstr "Create a new comment"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:189
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:36
 msgid "Create a new character"
 msgstr "Create a new character"
 
@@ -318,7 +318,7 @@ msgstr "Enter your name"
 msgid "Enter your phone"
 msgstr "Enter your phone"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:204
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:194
 msgid "Enter your search term..."
 msgstr "Enter your search term..."
 
@@ -432,7 +432,7 @@ msgstr "Character Roulette"
 msgid "Character's character"
 msgstr "Character's character"
 
-#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:28
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:34
 msgid "Characters you created"
 msgstr "Characters you created"
 
@@ -921,7 +921,7 @@ msgstr "Who will be able to see and access your character?"
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "You don't have any active chats yet. Start one now!"
 
-#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:34
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:51
 msgid "You have not created any characters yet! <0>Let's create one!</0>"
 msgstr "You have not created any characters yet! <0>Let's create one!</0>"
 
@@ -945,7 +945,7 @@ msgstr "Your daily character access limit has been reached. Upgrade your plan to
 msgid "Your daily message limit has been reached. Upgrade your plan to get more messages."
 msgstr "Your daily message limit has been reached. Upgrade your plan to get more messages."
 
-#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:29
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:35
 msgid "Your Characters"
 msgstr "Your Characters"
 

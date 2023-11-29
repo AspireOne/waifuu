@@ -225,7 +225,7 @@ msgstr "Vytvořit"
 msgid "Create a new comment"
 msgstr "Napsat nový komentář"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:189
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:36
 msgid "Create a new character"
 msgstr ""
 
@@ -314,7 +314,7 @@ msgstr "Zadejte své jméno"
 msgid "Enter your phone"
 msgstr "Zadejte svůj telefon"
 
-#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:204
+#: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:194
 msgid "Enter your search term..."
 msgstr ""
 
@@ -428,7 +428,7 @@ msgstr "Roleplay Ruleta"
 msgid "Character's character"
 msgstr "Osobnost postavy"
 
-#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:28
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:34
 msgid "Characters you created"
 msgstr ""
 
@@ -917,7 +917,7 @@ msgstr ""
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "Zatím nemáš žádné aktivní chaty. Začni nějaký!"
 
-#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:34
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:51
 msgid "You have not created any characters yet! <0>Let's create one!</0>"
 msgstr ""
 
@@ -941,7 +941,7 @@ msgstr ""
 msgid "Your daily message limit has been reached. Upgrade your plan to get more messages."
 msgstr ""
 
-#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:29
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:35
 msgid "Your Characters"
 msgstr ""
 
