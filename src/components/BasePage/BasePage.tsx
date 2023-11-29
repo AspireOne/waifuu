@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { PropsWithChildren, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
+import { useCustomHistory } from "@providers/CustomHistoryProvider";
 
 export type PageProps = {
   className?: string;
@@ -50,11 +51,8 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
   const autoBack = props.autoBack ?? true;
   const backPath = props.backPath;
 
-  const [prevPathExists, setPrevPathExists] = React.useState(false);
-  useEffect(() => {
-    // TODO: Make this take into account only our domain.
-    setPrevPathExists(window.history.length > 1);
-  }, []);
+  const { historyStack } = useCustomHistory();
+  const prevPathExists = historyStack.length > 1;
 
   const router = useRouter();
 
@@ -62,7 +60,10 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
   function handleBackClick() {
     if (!backPath && !autoBack) return;
 
+    console.debug("history stack: ", historyStack);
+
     if (autoBack && prevPathExists) {
+      // or use this?: customHistoryStack[customHistoryStack.length - 2]
       router.back();
       props.onBack?.();
       return;

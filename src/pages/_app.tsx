@@ -19,6 +19,7 @@ import { I18nProvider } from "@lingui/react";
 import { MountPersistenceProvider } from "@providers/MountPersistenceProvider";
 import { PersistedScrollPositionProvider } from "@providers/PersistedScrollPositionProvider";
 import { getAnalytics } from "firebase/analytics";
+import {CustomHistoryProvider} from "@providers/CustomHistoryProvider";
 
 initGlobalLocale();
 
@@ -45,23 +46,25 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
       >
         <NextUIProvider>
           <I18nProvider i18n={i18n}>
-            <SessionProvider>
-              <PersistedScrollPositionProvider>
-                <MountPersistenceProvider>
-                  <main className={"bg-background text-foreground dark"}>
-                    <div className="font-inter">
-                      <ToastContainer
-                        autoClose={4000}
-                        limit={4}
-                        newestOnTop={true}
-                        theme={"dark"}
-                      />
-                      <Component {...pageProps} />
-                    </div>
-                  </main>
-                </MountPersistenceProvider>
-              </PersistedScrollPositionProvider>
-            </SessionProvider>
+            <CustomHistoryProvider>
+              <SessionProvider>
+                <PersistedScrollPositionProvider>
+                  <MountPersistenceProvider>
+                    <main className={"bg-background text-foreground dark"}>
+                      <div className="font-inter">
+                        <ToastContainer
+                          autoClose={4000}
+                          limit={4}
+                          newestOnTop={true}
+                          theme={"dark"}
+                        />
+                        <Component {...pageProps} />
+                      </div>
+                    </main>
+                  </MountPersistenceProvider>
+                </PersistedScrollPositionProvider>
+              </SessionProvider>
+            </CustomHistoryProvider>
           </I18nProvider>
         </NextUIProvider>
       </SkeletonTheme>
