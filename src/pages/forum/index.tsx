@@ -3,6 +3,7 @@ import { ForumPostHighlight } from "@/components/forum/ForumPostHighlight";
 import { api } from "@/lib/api";
 import { AppPage } from "@components/AppPage";
 import Title from "@components/ui/Title";
+import { paths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
@@ -15,7 +16,7 @@ export default function ForumPage() {
   const posts = api.forum.getAll.useQuery({ take: 10, skip: 0 });
 
   return (
-    <AppPage title={t`Forum`}>
+    <AppPage backPath={paths.discover} title={t`Forum`}>
       {/*TODO: Implement pinned posts (server-side).*/}
       {/*<Title>
         <Trans>Pinned posts</Trans>

@@ -3,7 +3,7 @@ import { CharacterCardSkeleton } from "@components/CharacterCard/CharacterCardSk
 
 import Title from "@components/ui/Title";
 import { api } from "@lib/api";
-import { Trans } from "@lingui/macro";
+import { Trans, t } from "@lingui/macro";
 
 import { AppRouter } from "@/server/routers/root";
 import { inferRouterOutputs } from "@trpc/server";
@@ -26,13 +26,13 @@ export const ActiveChatsDiscoverCategory = () => {
 
   return (
     <div className="">
-      <Title description="Your active chats with characters" bold icon={FaCompass}>
+      <Title description={t`Your active chats with characters`} bold icon={FaCompass}>
         <Trans>Active chats</Trans>
       </Title>
 
       {bots && bots.length === 0 && (
         <p className="text-foreground-700 mt-3">
-          <Trans>You don't have any active chats yet. Start one now!</Trans>
+          <Trans>You haven't started any chats yet. Start one now!</Trans>
         </p>
       )}
 

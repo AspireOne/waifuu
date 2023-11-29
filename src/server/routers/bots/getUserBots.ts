@@ -16,8 +16,8 @@ export default protectedProcedure
       .optional(),
   )
   .query(async ({ input, ctx }) => {
-    const visibility =
-      !input?.userId || input.userId === ctx.user.id ? undefined : BotVisibility.PUBLIC;
+    const isUser = !input?.userId || input.userId === ctx.user.id;
+    const visibility = isUser ? undefined : BotVisibility.PUBLIC;
 
     return await ctx.prisma.bot.findMany({
       take: input?.limit || undefined,

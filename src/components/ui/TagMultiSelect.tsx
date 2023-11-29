@@ -8,9 +8,10 @@ import { HTMLAttributes, useEffect, useState } from "react";
 
 type Props = {
   onSelectTagIds: (tagIds: CharacterTag[]) => void;
+  description?: string;
 } & HTMLAttributes<HTMLSelectElement>;
 
-export const TagMultiSelect = ({ onSelectTagIds, ...props }: Props) => {
+export const TagMultiSelect = ({ onSelectTagIds, description, ...props }: Props) => {
   const [selected, setSelected] = useState(new Set([]));
   const session = useSession();
 
@@ -39,12 +40,15 @@ export const TagMultiSelect = ({ onSelectTagIds, ...props }: Props) => {
 
   return (
     <Select
+      variant="faded"
       selectionMode="multiple"
+      aria-valuemax={8}
       defaultSelectedKeys="all"
       // @ts-ignore --- Library type bug
       onSelectionChange={setSelected}
       selectedKeys={selected}
       label={t`Select tags`}
+      description={description}
       {...props}
     >
       {items ?? []}

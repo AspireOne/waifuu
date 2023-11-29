@@ -20,10 +20,10 @@ export default function Title(props: {
   const As = props.as ?? "h2";
 
   let iconSize;
-  if (size === "sm") iconSize = 20;
-  else if (size === "md") iconSize = 25;
-  else if (size === "lg") iconSize = 29;
-  else if (size === "xl") iconSize = 34;
+  if (size === "sm") iconSize = 18;
+  else if (size === "md") iconSize = 23;
+  else if (size === "lg") iconSize = 25;
+  else if (size === "xl") iconSize = 29;
   //else if (size === "2xl") iconSize = 38;
 
   return (

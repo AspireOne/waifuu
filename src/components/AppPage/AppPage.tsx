@@ -8,6 +8,7 @@ export type AppPageProps = Omit<PageProps, "showHeader" | "unprotected" | "showA
    * @default false
    * */
   topLevel?: boolean;
+  backPath: string | null;
 };
 
 /**

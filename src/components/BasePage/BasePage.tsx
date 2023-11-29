@@ -4,11 +4,11 @@ import PageHead from "@components/BasePage/PageHead";
 import { useSession } from "@hooks/useSession";
 import { paths } from "@lib/paths";
 import { normalizePath } from "@lib/utils";
+import { useCustomHistory } from "@providers/CustomHistoryProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
-import React, { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
-import { useCustomHistory } from "@providers/CustomHistoryProvider";
 
 export type PageProps = {
   className?: string;
@@ -23,8 +23,8 @@ export type PageProps = {
   /** Default enabled: true */
   showHeader?: boolean;
 
-  /** Explicit path to a page that will be loaded on back button click. */
-  backPath?: string;
+  /** Explicit path to a page that will be loaded on back button click IF autoBack === true || there is no previous path on the stack. */
+  backPath?: string | null;
   /** If enabled, will go to previous page on back button click.
    *
    * If enabled and backPath is specified, will go to previous page if exists, and if it doesn't, will go to the specified page.

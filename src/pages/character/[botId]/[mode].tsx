@@ -4,6 +4,7 @@ import { useBot } from "@/hooks/useBot";
 import useBotChat, { Message } from "@/hooks/useBotChat";
 import { AppPage } from "@components/AppPage";
 import { BotChatContent } from "@components/BotChatContent";
+import { paths } from "@lib/paths";
 import { makeDownloadUrl } from "@lib/utils";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
@@ -28,7 +29,11 @@ const BotChat = () => {
   const chat = useBotChat(chatId);
 
   return (
-    <AppPage noPadding={true} title={bot?.name || _(msg`Loading...`)}>
+    <AppPage
+      backPath={paths.discover}
+      noPadding={true}
+      title={bot?.name || _(msg`Loading...`)}
+    >
       {/*TODO: Make character image only the png of the char.*/}
 
       {bot && <CharacterImage bot={bot} messages={chat.messages} />}

@@ -45,7 +45,7 @@ export const FileUploadRaw = ({ onUpload, label, required }: FileUploadRawProps)
       </label>
 
       <div
-        className={`mb-10 relative rounded-md border-dashed border-2 ${
+        className={`relative rounded-md border-dashed border-2 ${
           responseSuccessful ? "border-green-500" : "border-gray-700"
         } p-4 cursor-pointer`}
       >

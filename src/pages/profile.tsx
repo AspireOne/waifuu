@@ -75,7 +75,7 @@ export default function Profile() {
 
   return (
     /*TODO: Change to false when action bar is again implemented.*/
-    <AppPage title={t`Profile`}>
+    <AppPage backPath={paths.discover} title={t`Profile`}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={"flex md:w-[600px] mx-auto flex-col gap-4"}

@@ -3,16 +3,16 @@ import { CharacterCard } from "@components/CharacterCard";
 import { NsfwConfirmDialog } from "@components/NsfwConfirmDialog";
 import Title from "@components/ui/Title";
 import { api } from "@lib/api";
-import { paths } from "@lib/paths";
+
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Button, Divider, Input, Spacer, Switch, useDisclosure } from "@nextui-org/react";
-import { Tooltip } from "@nextui-org/tooltip";
+
 import { BotSource, CharacterTag } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { UseFormRegisterReturn, useForm } from "react-hook-form";
-import { AiOutlinePlus } from "react-icons/ai";
+
 import { BiTrendingUp } from "react-icons/bi";
 import { TagMultiSelect } from "../ui/TagMultiSelect";
 
@@ -186,21 +186,11 @@ const ParametersHeader = (props: {
             bold
           >
             <Trans>Popular Characters</Trans>
-            <Tooltip content={_(msg`Create a new character`)}>
-              <Button
-                className={"ml-auto md:ml-0"}
-                size="sm"
-                onClick={() => router.push(paths.createBot)}
-                isIconOnly
-              >
-                <AiOutlinePlus fontSize={25} />
-              </Button>
-            </Tooltip>
           </Title>
 
           <Input
             {...props.register("textFilter")}
-            label={_(msg`Search by name`)}
+            variant={"bordered"}
             placeholder={_(msg`Enter your search term...`)}
             className={"flex-1 rounded-lg sm:w-96 text-white"}
             type="text"

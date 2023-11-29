@@ -53,11 +53,15 @@ msgstr "10 custom characters a month"
 msgid "100 custom characters per month"
 msgstr "100 custom characters per month"
 
+#: src/pages/character/create.tsx:139
+msgid "A short public description of your character."
+msgstr "A short public description of your character."
+
 #: src/emails/templates/RegisterEmailTemplate.tsx:18
 msgid "A warm welcome from Waifuu ❤️"
 msgstr "A warm welcome from Waifuu ❤️"
 
-#: src/pages/character/create.tsx:88
+#: src/pages/character/create.tsx:123
 msgid "About Character"
 msgstr "About Character"
 
@@ -116,12 +120,15 @@ msgstr "Are you sure you want to end the chat?"
 msgid "Are you sure you want to view NSFW content?"
 msgstr "Are you sure you want to view NSFW content?"
 
-#: src/pages/character/create.tsx:63
-#: src/server/routers/bots/createBot.ts:29
+#: src/pages/character/create.tsx:95
 msgid "Avatar is required"
 msgstr "Avatar is required"
 
-#: src/pages/forum/create.tsx:14
+#: src/pages/character/create.tsx:236
+msgid "Background image"
+msgstr "Background image"
+
+#: src/pages/forum/create.tsx:15
 msgid "Basic post info"
 msgstr "Basic post info"
 
@@ -151,7 +158,7 @@ msgstr "Cancel"
 msgid "Casually chat with the character. Hey, how r u?"
 msgstr "Casually chat with the character. Hey, how r u?"
 
-#: src/pages/forum/create.tsx:17
+#: src/pages/forum/create.tsx:18
 msgid "Category"
 msgstr "Category"
 
@@ -201,11 +208,11 @@ msgstr "Contact us"
 msgid "Continue your chat"
 msgstr "Continue your chat"
 
-#: src/pages/character/create.tsx:157
+#: src/pages/character/create.tsx:233
 msgid "Cover"
 msgstr "Cover"
 
-#: src/pages/character/create.tsx:199
+#: src/pages/character/create.tsx:292
 msgid "Create"
 msgstr "Create"
 
@@ -217,15 +224,15 @@ msgstr "Create a new comment"
 msgid "Create a new character"
 msgstr "Create a new character"
 
-#: src/pages/forum/index.tsx:47
+#: src/pages/forum/index.tsx:48
 msgid "Create a new post"
 msgstr "Create a new post"
 
-#: src/pages/character/create.tsx:83
+#: src/pages/character/create.tsx:115
 msgid "Create New Character"
 msgstr "Create New Character"
 
-#: src/pages/forum/create.tsx:19
+#: src/pages/forum/create.tsx:20
 msgid "Create new post"
 msgstr "Create new post"
 
@@ -259,7 +266,7 @@ msgstr ""
 msgid "Delete"
 msgstr "Delete"
 
-#: src/pages/character/create.tsx:100
+#: src/pages/character/create.tsx:142
 msgid "Description"
 msgstr "Description"
 
@@ -267,7 +274,7 @@ msgstr "Description"
 msgid "Discover"
 msgstr "Discover"
 
-#: src/pages/discover.tsx:15
+#: src/pages/discover.tsx:16
 msgid "Discover Characters"
 msgstr "Discover Characters"
 
@@ -332,7 +339,7 @@ msgstr "Error signing in with Google!"
 msgid "Everything from the Free Plan, plus..."
 msgstr "Everything from the Free Plan, plus..."
 
-#: src/pages/character/create.tsx:136
+#: src/pages/character/create.tsx:219
 msgid "Example dialogue"
 msgstr "Example dialogue"
 
@@ -360,7 +367,7 @@ msgstr "Following"
 msgid "Form submitted!"
 msgstr "Form submitted!"
 
-#: src/pages/forum/index.tsx:18
+#: src/pages/forum/index.tsx:19
 msgid "Forum"
 msgstr "Forum"
 
@@ -417,7 +424,6 @@ msgstr "How you wish characters to address you..."
 msgid "Change your user settings"
 msgstr "Change your user settings"
 
-#: src/pages/roulette/chat.tsx:20
 #: src/pages/roulette/index.tsx:22
 msgid "Character Roulette"
 msgstr "Character Roulette"
@@ -425,6 +431,10 @@ msgstr "Character Roulette"
 #: src/pages/character/create.tsx:121
 msgid "Character's character"
 msgstr "Character's character"
+
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:28
+msgid "Characters you created"
+msgstr "Characters you created"
 
 #: src/components/bot-chat/ChatSelectTabs.tsx:13
 #: src/pages/character/[botId].tsx:33
@@ -456,6 +466,10 @@ msgstr "If you love dolor ipsum lorem sit amut, click this"
 #: src/emails/components/EmailFooter.tsx:22
 msgid "If you no longer wish to receive these emails, you can unsubscribe"
 msgstr "If you no longer wish to receive these emails, you can unsubscribe"
+
+#: src/pages/character/create.tsx:221
+msgid "If you want to specify your character's behavior even more precisely, you can provide an example dialogue."
+msgstr "If you want to specify your character's behavior even more precisely, you can provide an example dialogue."
 
 #: src/pages/character/create.tsx:186
 msgid "Image for mood 'blushed'"
@@ -494,13 +508,15 @@ msgstr "Language successfully changed"
 msgid "Let's explore some new characters."
 msgstr "Let's explore some new characters."
 
+#: src/pages/character/create.tsx:48
+msgid "Listed publicly among community characters."
+msgstr "Listed publicly among community characters."
+
 #: src/components/CharsDiscoverCategory/CharsDiscoverCategory.tsx:158
 msgid "Load more"
 msgstr "Load more"
 
-#: src/pages/character/[botId].tsx:91
-#: src/pages/character/[botId]/[mode].tsx:30
-#: src/pages/forum/index.tsx:53
+#: src/pages/forum/index.tsx:54
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -517,6 +533,7 @@ msgstr "Must be a 2-letter code."
 msgid "My profile"
 msgstr "My profile"
 
+#: src/pages/character/create.tsx:202
 #: src/pages/profile.tsx:117
 msgid "Name"
 msgstr "Name"
@@ -545,6 +562,14 @@ msgstr "No description."
 msgid "No characters found. Try changing your search term."
 msgstr "No characters found. Try changing your search term."
 
+#: src/pages/character/create.tsx:228
+msgid "Now the really important part!"
+msgstr "Now the really important part!"
+
+#: src/pages/character/create.tsx:283
+msgid "NSFW"
+msgstr "NSFW"
+
 #: src/pages/character/create.tsx:142
 msgid "NSFW content"
 msgstr "NSFW content"
@@ -553,11 +578,20 @@ msgstr "NSFW content"
 msgid "Only for friends"
 msgstr "Only for friends"
 
+#: src/pages/character/create.tsx:177
+msgid "Only friends"
+msgstr "Only friends"
+
+#: src/pages/character/create.tsx:49
+msgid "Only you can view or access the character."
+msgstr "Only you can view or access the character."
+
 #: src/server/shared/plans.ts:43
 msgid "Our best A.I. engine"
 msgstr "Our best A.I. engine"
 
-#: src/pages/character/create.tsx:130
+#: src/pages/character/create.tsx:193
+#: src/pages/character/create.tsx:210
 msgid "Persona"
 msgstr "Persona"
 
@@ -587,7 +621,7 @@ msgstr "Priority access to all new early features"
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
-#: src/pages/character/create.tsx:108
+#: src/pages/character/create.tsx:170
 msgid "Private"
 msgstr "Private"
 
@@ -599,7 +633,7 @@ msgstr "Profile"
 msgid "Profile updated!"
 msgstr "Profile updated!"
 
-#: src/pages/character/create.tsx:105
+#: src/pages/character/create.tsx:163
 msgid "Public"
 msgstr "Public"
 
@@ -607,7 +641,7 @@ msgstr "Public"
 msgid "Ready to take it to the next level? Immerse yourself in a whole new world of imagination."
 msgstr "Ready to take it to the next level? Immerse yourself in a whole new world of imagination."
 
-#: src/pages/forum/index.tsx:39
+#: src/pages/forum/index.tsx:40
 msgid "Recent"
 msgstr "Recent"
 
@@ -644,13 +678,17 @@ msgstr "Searching..."
 msgid "Select one of the available experiences"
 msgstr "Select one of the available experiences"
 
-#: src/components/ui/TagMultiSelect.tsx:47
+#: src/components/ui/TagMultiSelect.tsx:50
 msgid "Select tags"
 msgstr "Select tags"
 
-#: src/pages/character/create.tsx:103
+#: src/pages/character/create.tsx:150
 msgid "Select visibility"
 msgstr "Select visibility"
+
+#: src/pages/character/create.tsx:182
+msgid "Select what describes the character best."
+msgstr "Select what describes the character best."
 
 #: src/components/ContactUsForm/ContactUsForm.tsx:70
 msgid "Send message"
@@ -754,6 +792,26 @@ msgstr "Thank you for joining! What can you look forward to?"
 msgid "The companion that is always by your side."
 msgstr "The companion that is always by your side."
 
+#: src/pages/character/create.tsx:50
+msgid "The character will only be accessible through a link."
+msgstr "The character will only be accessible through a link."
+
+#: src/pages/character/create.tsx:203
+msgid "The name of your character."
+msgstr "The name of your character."
+
+#: src/pages/character/create.tsx:212
+msgid "The personality of your character itself. The more information, the better."
+msgstr "The personality of your character itself. The more information, the better."
+
+#: src/pages/character/create.tsx:121
+msgid "The public information about your character."
+msgstr "The public information about your character."
+
+#: src/pages/character/create.tsx:130
+msgid "The public title of your character."
+msgstr "The public title of your character."
+
 #: src/server/routers/bots/getBotByChatId.ts:26
 msgid "There was an error loading the chat."
 msgstr "There was an error loading the chat."
@@ -768,6 +826,10 @@ msgctxt "Internal test email"
 msgid "This is a very important message from waifuu!"
 msgstr "This is a very important message from waifuu!"
 
+#: src/pages/character/create.tsx:191
+msgid "This specifies how the character will actually behave."
+msgstr "This specifies how the character will actually behave."
+
 #: src/components/profile-page/InfoCards.tsx:49
 msgid "This user has not created any characters yet :("
 msgstr "This user has not created any characters yet :("
@@ -776,8 +838,8 @@ msgstr "This user has not created any characters yet :("
 msgid "This user has not set a bio yet. Check back later!"
 msgstr "This user has not set a bio yet. Check back later!"
 
-#: src/pages/character/create.tsx:94
-#: src/pages/forum/create.tsx:16
+#: src/pages/character/create.tsx:134
+#: src/pages/forum/create.tsx:17
 msgid "Title"
 msgstr "Title"
 
@@ -851,13 +913,29 @@ msgstr "What should your characters know about you?"
 msgid "Whether the character will produce content not suitable for minors."
 msgstr "Whether the character will produce content not suitable for minors."
 
+#: src/pages/character/create.tsx:154
+msgid "Who will be able to see and access your character?"
+msgstr "Who will be able to see and access your character?"
+
 #: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:35
 msgid "You don't have any active chats yet. Start one now!"
 msgstr "You don't have any active chats yet. Start one now!"
 
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:34
+msgid "You have not created any characters yet! <0>Let's create one!</0>"
+msgstr "You have not created any characters yet! <0>Let's create one!</0>"
+
+#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:35
+msgid "You haven't started any chats yet. Start one now!"
+msgstr "You haven't started any chats yet. Start one now!"
+
 #: src/components/NsfwConfirmDialog/NsfwConfirmDialog.tsx:28
 msgid "You must be 18 years or older to view content only meant for adults."
 msgstr "You must be 18 years or older to view content only meant for adults."
+
+#: src/components/ActiveChatsDiscoverCategory/ActiveChatsDiscoverCategory.tsx:29
+msgid "Your active chats with characters"
+msgstr "Your active chats with characters"
 
 #: src/server/helpers/quota.ts:26
 msgid "Your daily character access limit has been reached. Upgrade your plan to get more characters."
@@ -866,6 +944,10 @@ msgstr "Your daily character access limit has been reached. Upgrade your plan to
 #: src/server/helpers/quota.ts:22
 msgid "Your daily message limit has been reached. Upgrade your plan to get more messages."
 msgstr "Your daily message limit has been reached. Upgrade your plan to get more messages."
+
+#: src/components/MyCharactersDiscoverCategory/MyCharactersDiscoverCategory.tsx:29
+msgid "Your Characters"
+msgstr "Your Characters"
 
 #: src/components/roleplay-roulette/RRInput.tsx:70
 msgid "Your message..."

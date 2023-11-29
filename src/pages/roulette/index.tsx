@@ -19,7 +19,7 @@ export default function RRIndex() {
   }
 
   return (
-    <AppPage title={_(msg`Character Roulette`)} topLevel>
+    <AppPage backPath={paths.discover} title={_(msg`Character Roulette`)} topLevel>
       <Card>
         <CardBody>
           <Trans>
