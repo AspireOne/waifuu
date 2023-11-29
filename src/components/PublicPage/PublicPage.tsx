@@ -14,13 +14,11 @@ export const PublicPage = (
 ) => {
   return (
     <BasePage
-      title={props.title}
-      description={props.description}
-      className={props.className}
-      unprotected
+      unprotected={true}
       showHeader={false}
       showActionBar={false}
       autoBack={true}
+      {...props}
     >
       {/*TODO: Navbar*/}
       {props.children}

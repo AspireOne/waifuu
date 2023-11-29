@@ -24,12 +24,9 @@ export const AppPage = (props: PropsWithChildren<AppPageProps>) => {
     <BasePage
       showHeader={true}
       unprotected={false}
-      title={props.title}
-      description={props.description}
-      className={props.className}
-      backPath={props.backPath}
       showActionBar={!!props.topLevel}
       autoBack={props.autoBack === undefined ? !props.topLevel : props.autoBack}
+      {...props}
     >
       {props.children}
     </BasePage>

@@ -28,7 +28,7 @@ const BotChat = () => {
   const chat = useBotChat(chatId);
 
   return (
-    <AppPage className="p-0" title={bot?.name || _(msg`Loading...`)}>
+    <AppPage noPadding={true} title={bot?.name || _(msg`Loading...`)}>
       {/*TODO: Make character image only the png of the char.*/}
 
       {bot && <CharacterImage bot={bot} messages={chat.messages} />}

@@ -34,6 +34,7 @@ export type PageProps = {
   autoBack?: boolean;
   /** Triggered when the back button is clicked. Can be used for cleanups. */
   onBack?: () => void;
+  noPadding?: boolean;
 };
 
 /**
@@ -97,6 +98,7 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
         unprotected={unprotected}
         showingBottomNav={showActionBar}
         showingHeader={showHeader}
+        noPadding={props.noPadding}
         className={twMerge("flex-1", props.className)}
       >
         {props.children}
@@ -113,6 +115,7 @@ function PageWrapper(
     unprotected: boolean;
     showingBottomNav: boolean;
     showingHeader: boolean;
+    noPadding?: boolean;
   }>,
 ) {
   const router = useRouter();
@@ -146,9 +149,9 @@ function PageWrapper(
       >
         <div
           className={twMerge(
-            "mx-auto px-4 sm:px-8 md:px-14 lg:px-14",
-            paddingTop,
-            paddingBottom,
+            !props.noPadding && "mx-auto px-4 sm:px-8 md:px-14 lg:px-14",
+            !props.noPadding && paddingTop,
+            !props.noPadding && paddingBottom,
             props.className,
           )}
         >
