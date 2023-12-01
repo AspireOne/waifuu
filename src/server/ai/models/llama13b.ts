@@ -6,12 +6,12 @@ type Message = {
   content: string;
 };
 
-type ReplicateLlama13bInput = {
+type Input = {
   system_prompt: string;
   prompt: Message | Message[] | string;
 };
 
-const run = async (input: ReplicateLlama13bInput): Promise<string> => {
+const run = async (input: Input): Promise<string> => {
   let formattedPrompt;
 
   if (typeof input.prompt === "string") {
@@ -22,7 +22,7 @@ const run = async (input: ReplicateLlama13bInput): Promise<string> => {
     formattedPrompt = formatMessage(input.prompt);
   }
 
-  console.log("LLM Prompt:", formattedPrompt);
+  console.debug("llama13b replicate prompt: ", formattedPrompt);
 
   const output = (await replicate.run(
     "a16z-infra/llama-2-13b-chat:9dff94b1bed5af738655d4a7cbcdcde2bd503aa85c94334fe1f42af7f3dd5ee3",
@@ -34,7 +34,7 @@ const run = async (input: ReplicateLlama13bInput): Promise<string> => {
     },
   )) as string[];
 
-  console.log("LLM Output:", output.join(""));
+  console.debug("llama13b replicate output: ", formattedPrompt);
 
   return output.join("");
 };
@@ -69,4 +69,4 @@ const formatMessages = (messages: Message[]) => {
 export const llama13b = {
   run,
 };
-export type { ReplicateLlama13bInput };
+export type ReplicateLlama13bInput = Input;

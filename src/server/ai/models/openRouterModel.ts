@@ -48,6 +48,8 @@ const run = async (input: OpenRouterModelInput) => {
     };
   });
 
+  console.debug("open router input: ", msgsTransformed.map((msg) => msg.content).join(" "));
+
   const response = (await axios({
     method: "post",
     url: "https://openrouter.ai/api/v1/chat/completions",
@@ -69,11 +71,11 @@ const run = async (input: OpenRouterModelInput) => {
     },
   })) as { data: Output };
 
-  console.log("open router response: ", response.data);
-
   if (!response.data.choices || response.data.choices.length === 0) {
     throw new Error("Open router did not return any choices.");
   }
+
+  console.debug("open router output: ", response.data.choices[0]!.message.content);
 
   return response.data.choices[0]!.message.content;
 };
