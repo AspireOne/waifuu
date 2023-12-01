@@ -7,7 +7,7 @@ type Message = {
   content: string;
 };
 
-type Model = "openai/gpt-3.5-turbo" | "jebcarter/psyfighter-13b" | "gryphe/mythomax-l2-13b-8k";
+type Model = "openai/gpt-3.5-turbo" | "jebcarter/psyfighter-13b" | "gryphe/mythomax-l2-13b";
 
 type Output = {
   id: string;
