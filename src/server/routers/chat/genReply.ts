@@ -1,5 +1,5 @@
 import { getCharacterSystemPrompt } from "@/server/ai/character-chat/characterSystemPrompt";
-import { llama13b } from "@/server/ai/models/llama13b";
+
 import { protectedProcedure } from "@/server/lib/trpc";
 import { Bot, Chat, Message, PrismaClient, User } from "@prisma/client";
 // Yes, this does show error. There is no typescript version.
@@ -8,6 +8,7 @@ import { Bot, Chat, Message, PrismaClient, User } from "@prisma/client";
 import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
+import { openRouterModel } from "@/server/ai/models/openRouterModel";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { t } from "@lingui/macro";
 
@@ -62,9 +63,10 @@ async function genOutput(
   chat: Chat & { bot: Bot } & { user: User } & { messages: Message[] },
 ) {
   try {
-    return await llama13b.run({
+    return await openRouterModel.run({
+      model: "gryphe/mythomax-l2-13b-8k",
       system_prompt: await getCharacterSystemPrompt(chat),
-      prompt: chat.messages,
+      messages: chat.messages,
     });
   } catch (e) {
     console.error(e);

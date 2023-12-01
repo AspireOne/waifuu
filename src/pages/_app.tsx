@@ -1,3 +1,9 @@
+import "@/styles/globals.css";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import "filepond/dist/filepond.min.css";
+import "react-loading-skeleton/dist/skeleton.css";
+import "react-toastify/dist/ReactToastify.css";
+
 import { api } from "@/lib/api";
 import { NextUIProvider } from "@nextui-org/react";
 import { type AppType } from "next/app";
@@ -5,21 +11,15 @@ import { useEffect } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import { ToastContainer } from "react-toastify";
 
-import "@/styles/globals.css";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import "filepond/dist/filepond.min.css";
-import "react-loading-skeleton/dist/skeleton.css";
-import "react-toastify/dist/ReactToastify.css";
-
 import { SessionProvider } from "@/providers/SessionProvider";
 import { getOrInitFirebaseApp, getOrInitFirebaseAuth } from "@lib/firebase";
 import { initGlobalLocale } from "@lib/i18n";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
+import { CustomHistoryProvider } from "@providers/CustomHistoryProvider";
 import { MountPersistenceProvider } from "@providers/MountPersistenceProvider";
 import { PersistedScrollPositionProvider } from "@providers/PersistedScrollPositionProvider";
 import { getAnalytics } from "firebase/analytics";
-import {CustomHistoryProvider} from "@providers/CustomHistoryProvider";
 
 initGlobalLocale();
 
