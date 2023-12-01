@@ -22,7 +22,7 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
 
   // TODO: Get amount of messages based on the model's context window length.
   // For now we hardcode it.
-  const chat = await retrieveChatOrThrow(input.chatId, ctx.prisma, 20);
+  const chat = await retrieveChatOrThrow(input.chatId, ctx.prisma, 30);
 
   // Push the new message to the msg history so that it is included in the prompt without saving them just yet.
   chat.messages.push(createPlaceholderMessage(input));
@@ -80,26 +80,24 @@ async function genOutput(
 }
 
 async function saveMessages(input: z.infer<typeof Input>, output: string, db: PrismaClient) {
-  // Note: They MUST NOT be CREATED IN PARALLEL (ASYNCHRONOUSLY), because
-  // otherwise the order of the messages will be messed up.
-
-  // Create user message.
-  const userMsg = await db.message.create({
-    data: {
-      chatId: input.chatId,
-      content: input.message,
-      role: "USER",
-    },
-  });
-
-  const botMsg = await db.message.create({
-    data: {
-      chatId: input.chatId,
-      content: output,
-      mood: "HAPPY",
-      role: "BOT",
-    },
-  });
+  // Use Prisma's $transaction to ensure operations are executed in order
+  const [userMsg, botMsg] = await db.$transaction([
+    db.message.create({
+      data: {
+        chatId: input.chatId,
+        content: input.message,
+        role: "USER",
+      },
+    }),
+    db.message.create({
+      data: {
+        chatId: input.chatId,
+        content: output,
+        mood: "HAPPY",
+        role: "BOT",
+      },
+    }),
+  ]);
 
   return {
     userMsg,

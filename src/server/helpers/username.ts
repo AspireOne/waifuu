@@ -73,13 +73,11 @@ export async function generateUniqueUsername(name?: string, email?: string): Pro
   if (name) {
     base = normalize(name);
   } else if (email?.includes("@")) {
-    // biome-ignore lint/style/noNonNullAssertion: This will not be null.
     base = normalize(email.split("@")[0]!);
   }
 
   // If the normalized base is too short, choose a random base.
   if (!base || base.length < 3) {
-    // biome-ignore lint/style/noNonNullAssertion: This will never be null.
     base = usernameBases[Math.floor(Math.random() * usernameBases.length)]!;
   }
 
