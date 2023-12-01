@@ -78,11 +78,11 @@ async function main() {
 }
 
 async function seedProduction() {
-  await Promise.all(Bots.map((bot) => upsertBot(bot)));
+  await Promise.all(Bots.map((bot) => upsertBot(bot as any)));
 }
 
 async function seedDevelopment() {
-  await Promise.all(Bots.map((bot) => upsertBot(bot)));
+  await Promise.all(Bots.map((bot) => upsertBot(bot as any)));
 }
 
 main()
