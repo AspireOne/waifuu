@@ -31,11 +31,10 @@ export const envSchema = z.object({
   // NEXT_PUBLIC_PUSHER_HOST: z.string(),
 
   // MINIO
-  MINIO_ROOT_USER: z.string(),
-  MINIO_ROOT_PASSWORD: z.string(),
-  MINIO_DEFAULT_BUCKET: z.string(),
-  MINIO_ACCESS_KEY: z.string(),
-  MINIO_SECRET_KEY: z.string(),
+  S3_ACCESS_KEY: z.string().min(1),
+  S3_SECRET_KEY: z.string().min(1),
+  S3_REGION: z.string().min(1),
+  S3_DEFAULT_BUCKET: z.string().min(1),
 
   REDIS_PASSWORD: z.string(),
   // EMAIL

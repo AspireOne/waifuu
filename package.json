@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.462.0",
     "@capacitor-firebase/authentication": "^5.3.0",
     "@capacitor/android": "^5.5.1",
     "@capacitor/app": "^5.0.6",
