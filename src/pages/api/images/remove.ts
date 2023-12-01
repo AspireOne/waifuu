@@ -3,13 +3,6 @@ import { prisma } from '@/server/lib/db';
 import metaHandler from '@/server/lib/metaHandler';
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
 
-type ResponseCode = 200 | 400 | 401 | 405;
-
-type Response = {
-  status: ResponseCode;
-  message: string;
-};
-
 const s3Client = new S3Client({
   region: env.S3_REGION,
   credentials: {
@@ -32,14 +25,12 @@ export default metaHandler.protected(async (req, res, ctx) => {
   }
 
   try {
-    // Use the S3 SDK to delete the object
     const deleteParams = {
       Bucket: env.S3_DEFAULT_BUCKET,
       Key: params.id,
     };
     await s3Client.send(new DeleteObjectCommand(deleteParams));
 
-    // Delete the record from the database
     const item = await prisma.asset.delete({
       where: {
         id: params.id,

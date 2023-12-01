@@ -87,7 +87,6 @@ export default metaHandler.protected(async (req, res, ctx) => {
     for (const file of files) {
       if (!file[1].originalFilename) return;
 
-      // Use convertToS3Name to generate the S3 object name
       const objectName = convertToS3Name(file[1].originalFilename);
 
       const tempPath = file[1].filepath;
@@ -96,7 +95,6 @@ export default metaHandler.protected(async (req, res, ctx) => {
       await fs.rename(tempPath, targetFilePath);
 
       try {
-        // Use the S3 SDK to upload the object
         const uploadParams = {
           Bucket: env.S3_DEFAULT_BUCKET,
           Key: objectName,
