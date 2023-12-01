@@ -1,41 +1,5 @@
 import { baseApiUrl } from "@lib/paths";
 import React from "react";
-import { toast } from "react-toastify";
-
-/**
- * Generates a random UUID (Universally Unique Identifier).
- * Example: 8b3e8a1e-4b9b-4b4b-9b9b-4b9b4b9b4b9b
- * @returns {string} A randomly generated UUID string.
- */
-export default function generateUUID(): string {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-
-/**
- * Generates a random alphanumeric string of custom length.
- * @param {number} length - The length of the string to generate.
- * @returns {string} A randomly generated alphanumeric string.
- */
-export function generateID(length: number): string {
-  let id = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (let i = 0; i < length; i += 1) {
-    id += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-
-  return id;
-}
-
-export function showErrorToast(error: Error) {
-  toast(error?.message || "Something went wrong", {
-    type: "error",
-  });
-}
 
 /**
  * Takes in a string and applies markdown: *italic*, **bold**, `code`.

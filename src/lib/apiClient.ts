@@ -1,9 +1,9 @@
 import { getIdToken } from "@lib/firebase";
 import { getCurrentLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
-import { showErrorToast } from "@lib/utils";
 // frontend api client
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const apiClient = axios.create({
   baseURL: baseApiUrl(),
@@ -23,7 +23,9 @@ apiClient.interceptors.request.use(
     return config;
   },
   (error: Error) => {
-    showErrorToast(error);
+    toast(error?.message || "Something went wrong", {
+      type: "error",
+    });
     console.error(error);
     // Rejecting it will cause the error to be thrown in the place where it was called.
     return Promise.reject(error);
