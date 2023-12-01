@@ -3,8 +3,9 @@ import path from "path";
 import { env } from "@/server/env";
 import { prisma } from "@/server/lib/db";
 import metaHandler from "@/server/lib/metaHandler";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
+import { s3Client } from "@/server/lib/s3Client";
 import * as formidable from "formidable";
 
 type ProcessedFiles = [string, formidable.File][];
@@ -25,23 +26,11 @@ type Response = {
   message: unknown;
 };
 
-const s3Client = new S3Client({
-  region: env.S3_REGION,
-  credentials: {
-    accessKeyId: env.S3_ACCESS_KEY,
-    secretAccessKey: env.S3_SECRET_KEY,
+export const config = {
+  api: {
+    bodyParser: false,
   },
-});
-
-function convertToS3Name(inputString: string): string {
-  const sanitizedString = inputString.replace(/[^a-zA-Z0-9\-_.~]/g, "");
-
-  if (Buffer.from(sanitizedString).length > 1024) {
-    throw new Error("Object name exceeds the maximum length of 1024 bytes.");
-  }
-
-  return sanitizedString.replace(/(^[-_~.]+|[-_~.]+$)/g, "");
-}
+};
 
 export default metaHandler.protected(async (req, res, ctx) => {
   let status = 200;
@@ -75,59 +64,63 @@ export default metaHandler.protected(async (req, res, ctx) => {
     throw new Error("Upload error");
   });
 
-  if (files?.length) {
-    const targetPath = path.join(process.cwd(), "/uploads/");
-    try {
-      await fs.access(targetPath);
-    } catch (e) {
-      await fs.mkdir(targetPath);
-    }
+  if (!files?.length) return res.status(status).json(resultBody);
 
-    const result: ResultData[] = [];
-    for (const file of files) {
-      if (!file[1].originalFilename) return;
-
-      const objectName = convertToS3Name(file[1].originalFilename);
-
-      const tempPath = file[1].filepath;
-      const targetFilePath = targetPath + file[1].originalFilename;
-
-      await fs.rename(tempPath, targetFilePath);
-
-      const uploadParams = {
-        Bucket: env.S3_DEFAULT_BUCKET,
-        Key: objectName,
-        Body: await fs.readFile(targetFilePath),
-      };
-
-      s3Client.send(new PutObjectCommand(uploadParams)).catch((e) => {
-        throw new Error(e);
-      });
-
-      result.push({
-        fileName: file[1].originalFilename,
-        id: objectName, // Use the generated object name as the ID
-      });
-    }
-
-    await prisma.asset.createMany({
-      data: result.map((item) => ({
-        id: item.id,
-        authorId: ctx.user.id,
-      })),
-    });
-
-    resultBody = {
-      status: ResponseCode.OK,
-      message: result,
-    };
+  const targetPath = path.join(process.cwd(), "/uploads/");
+  try {
+    await fs.access(targetPath);
+  } catch (e) {
+    await fs.mkdir(targetPath);
   }
+
+  const result: ResultData[] = [];
+  for (const file of files) {
+    if (!file[1].originalFilename) return;
+
+    const objectName = convertToS3Name(file[1].originalFilename);
+
+    const tempPath = file[1].filepath;
+    const targetFilePath = targetPath + file[1].originalFilename;
+
+    await fs.rename(tempPath, targetFilePath);
+
+    const uploadParams = {
+      Bucket: env.S3_DEFAULT_BUCKET,
+      Key: objectName,
+      Body: await fs.readFile(targetFilePath),
+    };
+
+    await s3Client.send(new PutObjectCommand(uploadParams));
+
+    result.push({
+      fileName: file[1].originalFilename,
+      id: objectName, // Use the generated object name as the ID
+    });
+  }
+
+  await prisma.asset.createMany({
+    data: result.map((item) => ({
+      id: item.id,
+      authorId: ctx.user.id,
+    })),
+  });
+
+  resultBody = {
+    status: ResponseCode.OK,
+    message: result,
+  };
 
   return res.status(status).json(resultBody);
 });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+function convertToS3Name(inputString: string): string {
+  const sanitizedString = inputString
+    .replace(/[^a-zA-Z0-9\-_.~]/g, "") // sanitize.
+    .replace(/(^[-_~.]+|[-_~.]+$)/g, ""); // Trims leading and trailing special characters.
+
+  if (Buffer.from(sanitizedString).length > 1024) {
+    throw new Error("Object name exceeds the maximum length of 1024 bytes.");
+  }
+
+  return sanitizedString;
+}
