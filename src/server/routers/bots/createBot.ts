@@ -1,7 +1,4 @@
-import {
-  getInitialMessageSystemPrompt,
-  initialMessagePrompt,
-} from "@/server/ai/character-chat/prompts";
+import { getInitialMessagePrompt, getSystemPrompt } from "@/server/ai/character-chat/prompts";
 
 import { openRouterModel } from "@/server/ai/models/openRouterModel";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
@@ -16,6 +13,7 @@ import {
   ChatMode,
   ChatRole,
   PrismaClient,
+  User,
 } from "@prisma/client";
 import { z } from "zod";
 
@@ -83,9 +81,9 @@ export default protectedProcedure.input(botCreationInput).mutation(async ({ inpu
 
   // Create initial messages.
   await Promise.all([
-    createInitialMessage(ChatMode.ROLEPLAY, bot, ctx.prisma),
-    createInitialMessage(ChatMode.CHAT, bot, ctx.prisma),
-    createInitialMessage(ChatMode.ADVENTURE, bot, ctx.prisma),
+    createInitialMessage(ChatMode.ROLEPLAY, bot, ctx.user, ctx.prisma),
+    createInitialMessage(ChatMode.CHAT, bot, ctx.user, ctx.prisma),
+    createInitialMessage(ChatMode.ADVENTURE, bot, ctx.user, ctx.prisma),
   ]);
 
   // TODO(1): Do it async after request.
@@ -107,9 +105,6 @@ async function ensureNotDuplicateOrThrow(
       nsfw: input.nsfw,
       avatar: input.avatar,
       exampleDialogue: input.dialogue,
-      // Not checking for images because I am
-      // not sure whether they are an ID or binary or what.
-      // Anyways this might be enough.
     },
   });
 
@@ -121,11 +116,24 @@ async function ensureNotDuplicateOrThrow(
   }
 }
 
-async function createInitialMessage(mode: ChatMode, bot: Bot, db: PrismaClient) {
+async function createInitialMessage(mode: ChatMode, bot: Bot, user: User, db: PrismaClient) {
+  const systemPrompt = await getSystemPrompt(mode, bot.persona, bot.name);
+  const initialMessagePrompt = getInitialMessagePrompt(
+    mode,
+    user.addressedAs,
+    user.botContext,
+  );
+  console.debug({ systemPrompt, initialMessagePrompt });
+
   const output = await openRouterModel.run({
-    model: "gryphe/mythomax-l2-13b-8k",
-    system_prompt: await getInitialMessageSystemPrompt(mode, bot.persona),
-    messages: [{ role: ChatRole.USER, content: initialMessagePrompt }],
+    model: "jebcarter/psyfighter-13b",
+    system_prompt: systemPrompt,
+    messages: [
+      {
+        role: ChatRole.USER,
+        content: initialMessagePrompt,
+      },
+    ],
   });
 
   return await db.initialMessage.create({

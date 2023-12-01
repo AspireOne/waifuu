@@ -7,6 +7,8 @@ type Message = {
   content: string;
 };
 
+type Model = "openai/gpt-3.5-turbo" | "jebcarter/psyfighter-13b" | "gryphe/mythomax-l2-13b-8k";
+
 type Output = {
   id: string;
   model: string;
@@ -32,7 +34,7 @@ const chatRoleToOpenaiRole = (role: ChatRole) => {
 };
 
 type OpenRouterModelInput = {
-  model: "openai/gpt-3.5-turbo" | "jebcarter/psyfighter-13b" | "gryphe/mythomax-l2-13b-8k";
+  model: Model;
   system_prompt: string;
   messages: Message[];
 };

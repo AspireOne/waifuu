@@ -30,6 +30,11 @@ type Mode = {
 const getModes = (): Mode[] => {
   return [
     {
+      title: t`Roleplay`,
+      description: t`Roleplay with the character, feels just real!`,
+      value: ChatMode.ROLEPLAY,
+    },
+    {
       title: t`Chat`,
       description: t`Classic chat experience, talk about your day, interests, or try to make a romantic partner!`,
       value: ChatMode.CHAT,
@@ -38,11 +43,6 @@ const getModes = (): Mode[] => {
       title: t`Adventure`,
       description: t`Adventure-style game. Let the character guide you through the story!`,
       value: ChatMode.ADVENTURE,
-    },
-    {
-      title: t`Roleplay`,
-      description: t`Roleplay with the character, feels just real!`,
-      value: ChatMode.ROLEPLAY,
     },
   ];
 };
