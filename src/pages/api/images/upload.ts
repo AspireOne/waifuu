@@ -1,11 +1,11 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import { env } from '@/server/env';
-import { prisma } from '@/server/lib/db';
-import metaHandler from '@/server/lib/metaHandler';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { promises as fs } from "fs";
+import path from "path";
+import { env } from "@/server/env";
+import { prisma } from "@/server/lib/db";
+import metaHandler from "@/server/lib/metaHandler";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
-import * as formidable from 'formidable';
+import * as formidable from "formidable";
 
 type ProcessedFiles = [string, formidable.File][];
 type ResultData = {
@@ -34,13 +34,13 @@ const s3Client = new S3Client({
 });
 
 function convertToS3Name(inputString: string): string {
-  const sanitizedString = inputString.replace(/[^a-zA-Z0-9\-_.~]/g, '');
+  const sanitizedString = inputString.replace(/[^a-zA-Z0-9\-_.~]/g, "");
 
   if (Buffer.from(sanitizedString).length > 1024) {
-    throw new Error('Object name exceeds the maximum length of 1024 bytes.');
+    throw new Error("Object name exceeds the maximum length of 1024 bytes.");
   }
 
-  return sanitizedString.replace(/(^[-_~.]+|[-_~.]+$)/g, '');
+  return sanitizedString.replace(/(^[-_~.]+|[-_~.]+$)/g, "");
 }
 
 export default metaHandler.protected(async (req, res, ctx) => {
@@ -51,17 +51,17 @@ export default metaHandler.protected(async (req, res, ctx) => {
     const form = new formidable.IncomingForm();
     const files: ProcessedFiles = [];
 
-    form.on('file', (field, file) => {
+    form.on("file", (field, file) => {
       files.push([field, file]);
     });
-    form.on('end', () => resolve(files));
-    form.on('error', (err) => reject(err));
+    form.on("end", () => resolve(files));
+    form.on("error", (err) => reject(err));
     form.parse(req, () => {
       if (!files.length) {
         status = 400;
         resultBody = {
           status: ResponseCode.BAD_REQUEST,
-          message: 'No files were uploaded',
+          message: "No files were uploaded",
         };
         reject();
       }
@@ -70,13 +70,13 @@ export default metaHandler.protected(async (req, res, ctx) => {
     status = 500;
     resultBody = {
       status: ResponseCode.SERVER_ERROR,
-      message: 'Upload error',
+      message: "Upload error",
     };
-    throw new Error('Upload error');
+    throw new Error("Upload error");
   });
 
   if (files?.length) {
-    const targetPath = path.join(process.cwd(), '/uploads/');
+    const targetPath = path.join(process.cwd(), "/uploads/");
     try {
       await fs.access(targetPath);
     } catch (e) {
@@ -94,24 +94,15 @@ export default metaHandler.protected(async (req, res, ctx) => {
 
       await fs.rename(tempPath, targetFilePath);
 
-      try {
-        const uploadParams = {
-          Bucket: env.S3_DEFAULT_BUCKET,
-          Key: objectName,
-          Body: await fs.readFile(targetFilePath),
-        };
+      const uploadParams = {
+        Bucket: env.S3_DEFAULT_BUCKET,
+        Key: objectName,
+        Body: await fs.readFile(targetFilePath),
+      };
 
-        s3Client.send(new PutObjectCommand(uploadParams)).catch((e) => {
-          throw new Error(e);
-        })
-      } catch (err) {
-        status = 500;
-        resultBody = {
-          status: ResponseCode.SERVER_ERROR,
-          message: err,
-        };
-        return res.status(500).json(resultBody);
-      }
+      s3Client.send(new PutObjectCommand(uploadParams)).catch((e) => {
+        throw new Error(e);
+      });
 
       result.push({
         fileName: file[1].originalFilename,
