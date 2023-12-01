@@ -5,9 +5,8 @@
   "scripts": {
     "start": "next start",
     "build:production": "cross-env NODE_ENV=production prisma migrate deploy && prisma db seed && npx lingui extract && npx lingui compile && next build",
-    "build:staging":    "cross-env NODE_ENV=production prisma migrate deploy && prisma db seed && npx lingui extract && npx lingui compile && next build",
+    "build:staging": "cross-env NODE_ENV=production prisma migrate deploy && prisma db seed && npx lingui extract && npx lingui compile && next build",
     "build:development": "cross-env NODE_ENV=development next build",
-
     "build:native:production": "cross-env NODE_ENV=production NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
     "build:native:development": "cross-env NODE_ENV=development NEXT_PUBLIC_BUILDING_NATIVE=1 next build",
     "dev": "cross-env NODE_ENV=development NEXT_PUBLIC_DEVELOPMENT=1 next dev",
@@ -80,6 +79,7 @@
     "@zilliz/milvus2-sdk-node": "^2.3.5",
     "autoprefixer": "^10.4.16",
     "axios": "^1.6.2",
+    "class-variance-authority": "^0.7.0",
     "cors": "^2.8.5",
     "country-flag-icons": "^1.5.9",
     "cross-env": "^7.0.3",

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
 import { LargeText } from "../ui/LargeText";
+import { cx } from 'class-variance-authority';
 
 type CharacterCardProps = {
   bot: Bot;
@@ -38,7 +39,7 @@ export const CharacterCard = ({
 
         <CardBody className="min-w-[190px]">
           <b className="text-md flex flex-row text-white text-center mx-auto">
-            <p className="text-center mx-auto w-fit">{bot.name}</p>
+            <p className="text-center mx-auto w-fit line-clamp-1">{bot.name}</p>
 
             {bot.source === BotSource.OFFICIAL && (
               <MdVerified fontSize={23} className="ml-2 text-primary" />
@@ -46,9 +47,10 @@ export const CharacterCard = ({
           </b>
           {!chatType && (
             <LargeText
-              className="table mx-auto text-center w-[150px] text-sm mt-2"
+              className="table mx-auto text-center text-sm mt-2"
               content={bot.description}
               maxLength={35}
+              lines={2}
             />
           )}
           <div className="flex flex-row gap-2">
@@ -70,7 +72,7 @@ export const CharacterCard = ({
         </CardBody>
 
         {bottom && (
-          <div className="flex flex-row px-4 items-end">
+          <div className={cx(["flex flex-row px-4 items-end", !likes && "mx-auto w-fit"])}>
             <div className="mx-auto ml-0 w-fit">
               <Chip variant="flat">{bot.nsfw ? "NSFW" : "SFW"}</Chip>
             </div>
