@@ -47,6 +47,8 @@ export const envSchema = z.object({
   NEXT_PUBLIC_STRIPE_PK: z.string().min(1),
   STRIPE_SK: z.string().min(1),
   STRIPE_SIGNING_SECRET: z.string().min(1),
+
+  OPENROUTER_API_KEY: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

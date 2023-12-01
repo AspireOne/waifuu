@@ -11,10 +11,7 @@ type ReplicateLlama13bInput = {
   prompt: Message | Message[] | string;
 };
 
-const run = async (input: {
-  system_prompt: string;
-  prompt: Message | Message[] | string;
-}): Promise<string> => {
+const run = async (input: ReplicateLlama13bInput): Promise<string> => {
   let formattedPrompt;
 
   if (typeof input.prompt === "string") {

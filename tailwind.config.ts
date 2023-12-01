@@ -24,7 +24,13 @@ export default {
       addCommonColors: true, // override common colors (e.g. "blue", "green", "pink").
       defaultTheme: "dark", // default theme from the themes object
       defaultExtendTheme: "dark", // default theme to extend on custom themes
-      layout: {}, // common layout tokens (applied to all themes)
+      layout: {
+        radius: {
+          small: "6px", // rounded-small
+          medium: "10px", // rounded-medium
+          large: "11px", // rounded-large
+        },
+      }, // common layout tokens (applied to all themes)
       themes: {
         light: {
           layout: {},

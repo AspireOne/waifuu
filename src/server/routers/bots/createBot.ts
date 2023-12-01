@@ -2,7 +2,8 @@ import {
   getInitialMessageSystemPrompt,
   initialMessagePrompt,
 } from "@/server/ai/character-chat/prompts";
-import { llama13b } from "@/server/ai/models/llama13b";
+
+import { openRouterModel } from "@/server/ai/models/openRouterModel";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { TRPCError } from "@/server/lib/TRPCError";
 import { protectedProcedure } from "@/server/lib/trpc";
@@ -13,6 +14,7 @@ import {
   BotVisibility,
   CharacterTag,
   ChatMode,
+  ChatRole,
   PrismaClient,
 } from "@prisma/client";
 import { z } from "zod";
@@ -120,9 +122,10 @@ async function ensureNotDuplicateOrThrow(
 }
 
 async function createInitialMessage(mode: ChatMode, bot: Bot, db: PrismaClient) {
-  const output = await llama13b.run({
+  const output = await openRouterModel.run({
+    model: "gryphe/mythomax-l2-13b-8k",
     system_prompt: await getInitialMessageSystemPrompt(mode, bot.persona),
-    prompt: initialMessagePrompt,
+    messages: [{ role: ChatRole.USER, content: initialMessagePrompt }],
   });
 
   return await db.initialMessage.create({
