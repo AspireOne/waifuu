@@ -136,7 +136,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.3.3",
+    "@biomejs/biome": "1.4.0",
     "@capacitor/cli": "^5.5.1",
     "@jsx-email/render": "^3.0.1",
     "@lingui/cli": "^4.5.0",

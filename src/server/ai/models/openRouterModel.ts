@@ -37,6 +37,7 @@ type OpenRouterModelInput = {
   messages: Message[];
 };
 
+// TODO: Refactor all models to one class/interface.
 const run = async (input: OpenRouterModelInput) => {
   const msgsTransformed = input.messages.map((msg) => {
     return {
