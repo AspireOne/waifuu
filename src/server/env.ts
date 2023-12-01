@@ -30,6 +30,12 @@ export const envSchema = z.object({
   // NEXT_PUBLIC_PUSHER_CLUSTER: z.string(),
   // NEXT_PUBLIC_PUSHER_HOST: z.string(),
 
+  // MINIO
+  S3_ACCESS_KEY: z.string().min(1),
+  S3_SECRET_KEY: z.string().min(1),
+  S3_REGION: z.string().min(1),
+  S3_DEFAULT_BUCKET: z.string().min(1),
+
   REDIS_PASSWORD: z.string(),
   // EMAIL
   MAILGUN_API_KEY: z.string().min(1),
