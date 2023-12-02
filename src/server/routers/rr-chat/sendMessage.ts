@@ -1,4 +1,4 @@
-import pusherServer from "@/server/lib/pusherServer";
+import pusherServer from "@/server/clients/pusherServer";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { z } from "zod";
 

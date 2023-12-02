@@ -7,7 +7,6 @@ import { initializeApp } from "firebase-admin/app";
  * If it does exist, it will return the existing one.
  */
 export const serverFirebaseApp = () => {
-  //  biome-ignore lint/style/noNonNullAssertion: Will not be null.
   if (admin.apps.length > 0) return admin.apps[0]!;
 
   return initializeApp({

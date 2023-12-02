@@ -1,11 +1,11 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { prisma } from "@/server/clients/db";
 import { env } from "@/server/env";
-import { prisma } from "@/server/lib/db";
 import metaHandler from "@/server/lib/metaHandler";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 
-import { s3Client } from "@/server/lib/s3Client";
+import { s3Client } from "@/server/clients/s3Client";
 import * as formidable from "formidable";
 
 type ProcessedFiles = [string, formidable.File][];

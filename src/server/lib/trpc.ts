@@ -15,9 +15,9 @@ import { TRPC_ERROR_CODE_KEY, TRPC_ERROR_CODE_NUMBER } from "@trpc/server/src/rp
 import superjson from "superjson";
 import { ZodError, typeToFlattenedError } from "zod";
 
-import { global } from "@/server/global";
+import { prisma } from "@/server/clients/db";
+import { ipThrottler } from "@/server/clients/ipThrottler";
 import { retrieveUser } from "@/server/helpers/retrieveUser";
-import { prisma } from "@/server/lib/db";
 import { LocaleCode, locales } from "@lib/i18n";
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -157,8 +157,8 @@ const throttleMiddleware = t.middleware(({ ctx, next }) => {
   }
   //const user = ctx.user!;
 
-  global.ipThrottler.addAccess(ip);
-  if (global.ipThrottler.isAboveLimit(ip)) {
+  ipThrottler.addAccess(ip);
+  if (ipThrottler.isAboveLimit(ip)) {
     throw new TRPCError({
       code: "TOO_MANY_REQUESTS",
       message: "You are sending too many requests. Please try again later.",

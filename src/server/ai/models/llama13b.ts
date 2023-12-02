@@ -1,4 +1,4 @@
-import { replicate } from "@/server/lib/replicate";
+import { replicate } from "@/server/clients/replicate";
 import { ChatRole } from "@prisma/client";
 
 type Message = {

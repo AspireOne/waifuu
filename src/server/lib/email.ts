@@ -1,5 +1,5 @@
+import { emailClient } from "@/server/clients/emailClient";
 import { env } from "@/server/env";
-import { emailClient } from "@/server/lib/emailClient";
 import { render } from "@jsx-email/render";
 
 const client = emailClient;

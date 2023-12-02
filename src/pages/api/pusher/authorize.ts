@@ -1,6 +1,6 @@
-import { prisma } from "@/server/lib/db";
+import { prisma } from "@/server/clients/db";
+import pusher from "@/server/clients/pusherServer";
 import metaHandler from "@/server/lib/metaHandler";
-import pusher from "@/server/lib/pusherServer";
 
 export default metaHandler.protected(async (req, res, ctx) => {
   const socketId = req.body.socket_id;

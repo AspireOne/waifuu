@@ -1,4 +1,4 @@
-import { serverFirebaseApp } from "@/server/lib/serverFirebaseApp";
+import { serverFirebaseApp } from "@/server/clients/serverFirebaseApp";
 import { getAuth } from "firebase-admin/auth";
 
 export const serverFirebaseAuth = () => {

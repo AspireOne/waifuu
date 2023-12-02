@@ -1,4 +1,4 @@
-import { prisma } from "@/server/lib/db";
+import { prisma } from "@/server/clients/db";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { User } from "@prisma/client";
 import { NextApiRequest } from "next";

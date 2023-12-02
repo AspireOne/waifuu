@@ -1,5 +1,5 @@
+import { stripe } from "@/server/clients/stripe";
 import { createStripeCheckoutSessionJob } from "@/server/jobs/plans/createStripeCheckoutSessionJob";
-import { stripe } from "@/server/lib/stripe";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { LocaleCode } from "@lib/i18n";
 import { Currency, PlanId, PrismaClient, User } from "@prisma/client";

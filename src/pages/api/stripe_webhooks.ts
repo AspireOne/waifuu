@@ -1,7 +1,7 @@
+import { prisma } from "@/server/clients/db";
+import { stripe } from "@/server/clients/stripe";
 import { env } from "@/server/env";
-import { prisma } from "@/server/lib/db";
 import metaHandler from "@/server/lib/metaHandler";
-import { stripe } from "@/server/lib/stripe";
 import { Currency, SubscriptionInterval } from "@prisma/client";
 import { PlanId } from "@prisma/client";
 import { buffer } from "micro";
@@ -237,9 +237,8 @@ async function getSubscriptionOrNot(stripeSub: Stripe.Subscription) {
         "but it was created less than 2 minutes ago, so this is the intended behavior. Ignoring.",
     );
     return null;
-  } else {
-    throw new Error("Subscription is not saved in db but it should.");
   }
+  throw new Error("Subscription is not saved in db but it should.");
 }
 
 export default metaHandler.public(handler);

@@ -1,6 +1,6 @@
+import { prisma } from "@/server/clients/db";
+import { stripe } from "@/server/clients/stripe";
 import { TRPCError } from "@/server/lib/TRPCError";
-import { prisma } from "@/server/lib/db";
-import { stripe } from "@/server/lib/stripe";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { t } from "@lingui/macro";
 

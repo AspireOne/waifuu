@@ -1,4 +1,4 @@
-import { stripe } from "@/server/lib/stripe";
+import { stripe } from "@/server/clients/stripe";
 import { currencyData } from "@/server/shared/currency";
 import { getPlan } from "@/server/shared/plans";
 import { LocaleCode } from "@lib/i18n";

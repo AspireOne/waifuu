@@ -1,5 +1,5 @@
+import pusher from "@/server/clients/pusherServer";
 import metaHandler from "@/server/lib/metaHandler";
-import pusher from "@/server/lib/pusherServer";
 import PresenceChannelMember from "@/server/shared/presenceChannelMember";
 
 export default metaHandler.protected((req, res, ctx) => {
