@@ -5,6 +5,7 @@ import { CombinedPage } from "@components/CombinedPage";
 import { Button } from "@nextui-org/react";
 import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function Test() {
   const health = api.general.health.useQuery();
@@ -36,6 +37,18 @@ export default function Test() {
         }}
       >
         Send test email
+      </Button>
+
+      <Button
+        variant={"bordered"}
+        onClick={() => {
+          // random type between "success", "error", "info", "warn"
+          const type = ["success", "error", "info", "warn"][Math.floor(Math.random() * 4)];
+          // @ts-ignore
+          toast("Hey I fucked up", { type: type });
+        }}
+      >
+        Test toast
       </Button>
 
       <button

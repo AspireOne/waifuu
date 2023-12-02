@@ -1,109 +1,118 @@
 @tailwind base;
 
+.Toastify__toast, .Toastify__toast-body, .Toastify__toast-container {
+    @apply rounded-3xl;
+}
+
+.Toastify__toast {
+    @apply border-neutral-800 border-2 bg-content1;
+}
+
 html,
 body {
-  @apply min-h-full;
+    @apply min-h-full;
 
-  /*Remove the blue flash when clicking on elements on mobile devices.*/
-  -webkit-tap-highlight-color: transparent;
+    /*Remove the blue flash when clicking on elements on mobile devices.*/
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* scrollbar */
 ::-webkit-scrollbar {
-  height: 5px;
-  width: 5px;
+    height: 5px;
+    width: 5px;
 }
 
 /* scrollbar track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px transparent;
-  border-radius: 10px;
+    box-shadow: inset 0 0 5px transparent;
+    border-radius: 10px;
 }
 
 /* scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-700 transition duration-100;
-  border-radius: 10px;
+    @apply bg-gray-700 transition duration-100;
+    border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary-500 transition duration-100;
+    @apply bg-secondary-500 transition duration-100;
 }
 
 /* use a hand cursor intead of arrow for the action buttons */
 .filepond--file-action-button {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 /* the text color of the drop label*/
 .filepond--drop-label {
-  color: #555;
+    color: #555;
 }
 
 /* underline color for "Browse" button */
 .filepond--label-action {
-  text-decoration-color: #aaa;
+    text-decoration-color: #aaa;
 }
 
 /* the background color of the filepond drop area */
 .filepond--panel-root {
-  background-color: #eee;
+    background-color: #eee;
 }
 
 /* the border radius of the drop area */
 .filepond--panel-root {
-  border-radius: 0.5em;
+    border-radius: 0.5em;
 }
 
 /* the border radius of the file item */
 .filepond--item-panel {
-  border-radius: 0.5em;
+    border-radius: 0.5em;
 }
 
 /* the background color of the file and file panel (used when dropping an image) */
 .filepond--item-panel {
-  background-color: #555;
+    background-color: #555;
 }
 
 /* the background color of the drop circle */
 .filepond--drip-blob {
-  background-color: #999;
+    background-color: #999;
 }
 
 /* the background color of the black action buttons */
 .filepond--file-action-button {
-  background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* the icon color of the black action buttons */
 .filepond--file-action-button {
-  color: white;
+    color: white;
 }
 
 /* the color of the focus ring */
 .filepond--file-action-button:hover,
 .filepond--file-action-button:focus {
-  box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.9);
 }
 
 /* the text color of the file status and info labels */
 .filepond--file {
-  color: white;
+    color: white;
 }
 
 /* error state color */
 [data-filepond-item-state*="error"] .filepond--item-panel,
 [data-filepond-item-state*="invalid"] .filepond--item-panel {
-  background-color: red;
+    background-color: red;
 }
 
 [data-filepond-item-state="processing-complete"] .filepond--item-panel {
-  background-color: green;
+    background-color: green;
 }
 
 /* bordered drop area */
 .filepond--panel-root {
-  background-color: transparent;
-  border: 2px solid #2c3340;
+    background-color: transparent;
+    border: 2px solid #2c3340;
 }
 
 @tailwind components;
