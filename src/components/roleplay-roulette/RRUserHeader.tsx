@@ -1,4 +1,4 @@
-import UserProfile from "@/pages/user/[user]";
+import UserProfile from "@/pages/user/[username]";
 import PresenceChannelMember from "@/server/shared/presenceChannelMember";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";

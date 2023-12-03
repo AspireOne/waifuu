@@ -5,7 +5,7 @@ import { ErrorPage } from "@components/ErrorPage";
 import Header from "@/components/profile-page/Header";
 import InfoCards from "@/components/profile-page/InfoCards";
 import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
+import { paths, semanticPaths } from "@/lib/paths";
 import { CombinedPage } from "@components/CombinedPage";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
@@ -15,19 +15,23 @@ import { useEffect } from "react";
 export default function UserProfile(props: { username?: string }) {
   const { _ } = useLingui();
   const router = useRouter();
-  const username = router.asPath.split("/")[2] as string;
+  const username = router.query.username as string | undefined;
 
-  if (!username) {
-    return <ErrorPage message={_(msg`User not specified`)} />;
+  if (!username && router.isReady) {
+    return <ErrorPage message={_(msg`No username specified`)} />;
   }
 
   // Needed to make the gradient stay below other elements.
   return (
     /*TODO: Description*/
-    <CombinedPage title={username} description={""}>
+    <CombinedPage
+      backPath={semanticPaths.appIndex}
+      title={username ?? _(msg`Loading..`)}
+      description={""}
+    >
       <div
         className={
-          "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-secondary-400/30 via-secondary-400/5"
+          "absolute left-0 right-0 top-0 z-[0] h-72 bg-gradient-to-b from-primary-500/60 via-primary-500/20 to-transparent"
         }
       />
       <div className={"relative z-[1]"}>
@@ -37,12 +41,12 @@ export default function UserProfile(props: { username?: string }) {
   );
 }
 
-function Content(props: { username: string }) {
+function Content(props: { username?: string }) {
   const router = useRouter();
   const username = props.username;
 
   const { data: user, isLoading } = api.users.getPublic.useQuery(
-    { username: username },
+    { username: username! },
     { enabled: !!username },
   );
 

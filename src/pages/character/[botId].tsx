@@ -135,7 +135,7 @@ const ChatMainMenu = () => {
   const [selectedModeIsAlreadyActive, setSelectedModeIsAlreadyActive] =
     useState<boolean>(false);
 
-  const botId = router.asPath.split("/")[2] as string;
+  const botId = router.query.botId as string;
 
   const getOrCreateBotChatMut = api.chat.getOrCreate.useMutation({
     onSuccess: (data) => {

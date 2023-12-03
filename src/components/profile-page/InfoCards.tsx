@@ -30,10 +30,15 @@ function InfoCard(
   );
 }
 
-export default function InfoCards(props: { username: string }) {
-  const { isInitialLoading, data: user } = api.users.getPublic.useQuery({
-    username: props.username,
-  });
+export default function InfoCards(props: { username?: string }) {
+  const { isInitialLoading, data: user } = api.users.getPublic.useQuery(
+    {
+      username: props.username!,
+    },
+    {
+      enabled: !!props.username,
+    },
+  );
 
   const hasBots = user?.bots && user.bots.length > 0;
 
