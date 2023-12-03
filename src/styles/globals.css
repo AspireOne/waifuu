@@ -8,6 +8,22 @@
     @apply border-neutral-800 border-2 bg-content1;
 }
 
+@keyframes slide-fade {
+    0% {
+        transform: translateX(35%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animation-slide-fade {
+    animation: slide-fade 0.59s ease-out forwards;
+}
+
+
 html,
 body {
     @apply min-h-full;

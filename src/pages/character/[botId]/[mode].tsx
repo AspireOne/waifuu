@@ -5,7 +5,6 @@ import useBotChat, { Message } from "@/hooks/useBotChat";
 import { AppPage } from "@components/AppPage";
 import { BotChatContent } from "@components/BotChatContent";
 import { paths } from "@lib/paths";
-import { makeDownloadUrl } from "@lib/utils";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
@@ -66,12 +65,12 @@ const CharacterImage = ({
       <Image
         alt="background character image"
         loading="eager"
-        src={makeDownloadUrl(image)}
+        src={bot.characterImage ?? ""}
         className={twMerge(
-          "fixed object-cover",
+          "animation-slide-fade fixed object-cover",
           "bottom-0 h-[90%]", // set height
           "w-auto", // set width
-          "left-[50%] translate-x-[-50%]", // center it horizontally
+          "left-0 right-0 mx-auto", // center it horizontally
         )}
         width={1920}
         height={1080}
