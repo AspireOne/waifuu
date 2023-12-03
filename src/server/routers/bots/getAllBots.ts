@@ -38,12 +38,12 @@ export default publicProcedure
       description: { search: textFilter },
       name: { search: textFilter },*/
 
-      ...(input?.tags &&
-        input.tags.length > 0 && {
-          tags: {
-            hasEvery: input?.tags ?? undefined,
-          },
-        }),
+      ...(input?.tags?.length && {
+        tags: {
+          // Can be changed to hasOne in the future.
+          hasSome: input?.tags ?? undefined,
+        },
+      }),
     };
 
     const query = ctx.prisma.bot.findMany({

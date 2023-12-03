@@ -222,7 +222,7 @@ const ParametersHeader = (props: {
         </div>
       </div>
 
-      <Divider className="my-4" />
+      <Divider className="my-6" />
 
       <NsfwConfirmDialog
         onConfirm={async () => {
