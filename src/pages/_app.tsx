@@ -20,11 +20,13 @@ import { CustomHistoryProvider } from "@providers/CustomHistoryProvider";
 import { MountPersistenceProvider } from "@providers/MountPersistenceProvider";
 import { PersistedScrollPositionProvider } from "@providers/PersistedScrollPositionProvider";
 import { getAnalytics } from "firebase/analytics";
+import { useRouter } from "next/router";
 
 initGlobalLocale();
 
 // biome-ignore lint: I keep it here so that I do not forget it exists.
 const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
+  const router = useRouter();
   // Initialize app.
   useEffect(() => {
     async function init() {
@@ -44,7 +46,7 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
         highlightColor={"rgba(255, 255, 255, 0.5)"}
         borderRadius={"0.7rem"}
       >
-        <NextUIProvider>
+        <NextUIProvider navigate={router.push}>
           <I18nProvider i18n={i18n}>
             <CustomHistoryProvider>
               <SessionProvider>

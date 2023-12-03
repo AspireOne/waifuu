@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { api } from "@lib/api";
 import { t } from "@lingui/macro";
 import { Select, SelectItem } from "@nextui-org/react";
 import { CharacterTag } from "@prisma/client";

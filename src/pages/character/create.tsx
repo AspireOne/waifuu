@@ -1,11 +1,12 @@
 import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
-import { TagMultiSelect } from "@/components/ui/TagMultiSelect";
 import { api } from "@/lib/api";
 import { paths } from "@/lib/paths";
 import { AppPage } from "@components/AppPage";
+import { TagRowSelector } from "@components/TagRowSelector";
 import Title from "@components/ui/Title";
 import { Trans, msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
+import { CardBody } from "@nextui-org/card";
 import {
   Button,
   Card,
@@ -115,7 +116,7 @@ const CreateChatPage = () => {
     <AppPage title={_(msg`Create New Character`)} backPath={paths.discover}>
       <form className="md:w-[600px] mx-auto" onSubmit={handleSubmit(submitHandler)}>
         <Card>
-          <div className="p-4">
+          <CardBody>
             <Title
               as={"h2"}
               description={_(msg`The public information about your character.`)}
@@ -182,7 +183,7 @@ const CreateChatPage = () => {
                 </SelectItem>
               </Select>
 
-              <TagMultiSelect
+              <TagRowSelector
                 description={_(msg`Select what describes the character best.`)}
                 onSelectTagIds={(ids) => setValue("tags", ids)}
               />
@@ -303,7 +304,7 @@ const CreateChatPage = () => {
                 <Trans>Create</Trans>
               </Button>
             </div>
-          </div>
+          </CardBody>
         </Card>
       </form>
     </AppPage>

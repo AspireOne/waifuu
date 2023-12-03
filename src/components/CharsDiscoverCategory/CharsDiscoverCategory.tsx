@@ -14,9 +14,9 @@ import { useEffect, useState } from "react";
 import { UseFormRegisterReturn, useForm } from "react-hook-form";
 
 import { BiTrendingUp } from "react-icons/bi";
-import { TagMultiSelect } from "../ui/TagMultiSelect";
 
 import { Preferences } from "@capacitor/preferences";
+import { TagRowSelector } from "@components/TagRowSelector";
 import { useSession } from "@providers/SessionProvider";
 import parse from "parse-duration";
 
@@ -198,8 +198,8 @@ const ParametersHeader = (props: {
         </div>
 
         <div className="mx-auto mr-0 flex flex-col gap-3">
-          <TagMultiSelect className="w-full sm:hidden" onSelectTagIds={props.onTagsChange} />
-          <div className="flex flex-row gap-6">
+          {/*<TagMultiSelect className="w-full sm:hidden" onSelectTagIds={props.onTagsChange} />*/}
+          <div className="flex flex-row gap-6 my-1">
             <Switch
               onValueChange={(value) => props.onOnlyOfficialChange(value)}
               isSelected={props.searchData.source === "OFFICIAL"}
@@ -217,12 +217,8 @@ const ParametersHeader = (props: {
             >
               NSFW
             </Switch>
-
-            <TagMultiSelect
-              className="w-48 hidden sm:block"
-              onSelectTagIds={props.onTagsChange}
-            />
           </div>
+          <TagRowSelector onSelectTagIds={props.onTagsChange} />
         </div>
       </div>
 

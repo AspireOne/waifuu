@@ -9,7 +9,7 @@ export default protectedProcedure
     }),
   )
   .query(() => {
-    const characterTagMapping: Record<CharacterTag, string> = {
+    return {
       [CharacterTag.GIRLFRIEND]: "Girlfriend",
       [CharacterTag.BOYFRIEND]: "Boyfriend",
       [CharacterTag.ROMANCE]: "Romance",
@@ -31,6 +31,4 @@ export default protectedProcedure
       [CharacterTag.BOOKS]: "Books",
       [CharacterTag.OC]: "OC",
     };
-
-    return characterTagMapping;
   });
