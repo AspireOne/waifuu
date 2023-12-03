@@ -10,7 +10,7 @@
 
 @keyframes slide-fade {
     0% {
-        transform: translateX(35%);
+        transform: translateX(28%);
         opacity: 0;
     }
     100% {
@@ -20,7 +20,7 @@
 }
 
 .animation-slide-fade {
-    animation: slide-fade 0.59s ease-out forwards;
+    animation: slide-fade 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 
