@@ -8,6 +8,7 @@ import { type AppRouter } from "@/server/routers/root";
 import { Capacitor } from "@capacitor/core";
 
 import { ClientTRPCError } from "@/server/lib/trpc";
+import { hmacEncode } from "@lib/hmacEncode";
 import { getCurrentLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
 import { t } from "@lingui/macro";
@@ -105,6 +106,7 @@ export const api = createTRPCNext<AppRouter>({
           async fetch(url, options) {
             const idToken = await getIdToken();
             const locale = getCurrentLocale();
+            const encoded = hmacEncode(options?.body);
 
             return fetch(url, {
               ...options,
@@ -112,6 +114,7 @@ export const api = createTRPCNext<AppRouter>({
               credentials: Capacitor.isNativePlatform() ? "include" : undefined,
               headers: {
                 ...options?.headers,
+                ...encoded.headers,
                 Authorization: idToken ? `Bearer ${idToken}` : "",
                 locale: locale,
               },

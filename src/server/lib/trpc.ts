@@ -18,6 +18,7 @@ import { ZodError, typeToFlattenedError } from "zod";
 import { prisma } from "@/server/clients/db";
 import { ipThrottler } from "@/server/clients/ipThrottler";
 import { retrieveUser } from "@/server/helpers/retrieveUser";
+import { verifyHmac } from "@/server/lib/verifyHmac";
 import { LocaleCode, locales } from "@lib/i18n";
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -136,6 +137,43 @@ const t = initTRPC
     },
   });
 
+const hmacMiddleware = t.middleware(({ ctx, next }) => {
+  let nonce = ctx.req?.headers["x-nonce"];
+  let timestamp = ctx.req?.headers["x-timestamp"];
+  let signature = ctx.req?.headers["x-signature"];
+
+  if (!nonce || !timestamp || !signature) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Missing HMAC headers.",
+      toast: "Missing HMAC headers.",
+    });
+  }
+
+  if (Array.isArray(nonce)) nonce = nonce[0];
+  else nonce = nonce as string;
+
+  if (Array.isArray(timestamp)) timestamp = timestamp[0];
+  else timestamp = timestamp as string;
+
+  if (Array.isArray(signature)) signature = signature[0];
+  else signature = signature as string;
+
+  console.log("server", { nonce, timestamp, signature });
+
+  const verified = verifyHmac(ctx.req?.body, nonce!, timestamp!, signature!);
+  console.log({ verified });
+  if (!verified) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid HMAC signature.",
+      toast: "Invalid HMAC signature.",
+    });
+  }
+
+  return next();
+});
+
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const authMiddleware = t.middleware(({ ctx, next }) => {
   if (!ctx.user) {
@@ -170,5 +208,8 @@ const throttleMiddleware = t.middleware(({ ctx, next }) => {
 });
 
 export const createTRPCRouter = t.router;
-export const publicProcedure = t.procedure.use(throttleMiddleware);
-export const protectedProcedure = t.procedure.use(throttleMiddleware).use(authMiddleware);
+export const publicProcedure = t.procedure.use(hmacMiddleware).use(throttleMiddleware);
+export const protectedProcedure = t.procedure
+  .use(hmacMiddleware)
+  .use(throttleMiddleware)
+  .use(authMiddleware);

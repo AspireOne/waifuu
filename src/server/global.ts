@@ -17,6 +17,7 @@ export type Global = {
   replicate?: Replicate;
   s3Client?: S3Client;
   stripe?: Stripe;
+  nonces?: string[];
 };
 
 /** Wraps globalThis and extends it with additional types. Used for storing global variables. */
