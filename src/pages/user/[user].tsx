@@ -9,14 +9,13 @@ import { paths } from "@/lib/paths";
 import { CombinedPage } from "@components/CombinedPage";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function UserProfile(props: { username?: string }) {
   const { _ } = useLingui();
-  const searchParams = useSearchParams();
-  const username = props.username || searchParams.get("user");
+  const router = useRouter();
+  const username = router.asPath.split("/")[2] as string;
 
   if (!username) {
     return <ErrorPage message={_(msg`User not specified`)} />;

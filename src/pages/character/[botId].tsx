@@ -7,14 +7,20 @@ import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card } from "@nextui-org/card";
-import { Button, Image, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
-import { ChatMode } from "@prisma/client";
+import { Button, Image, Link, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
+import { Bot, BotVisibility, ChatMode } from "@prisma/client";
 import { useRouter } from "next/router";
 
+import { Capacitor } from "@capacitor/core";
+import { Share } from "@capacitor/share";
 import Title from "@components/ui/Title";
+import { Tooltip } from "@nextui-org/tooltip";
+import NextLink from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { IoChatbubbleEllipsesSharp, IoShareSocialOutline } from "react-icons/io5";
 import Skeleton from "react-loading-skeleton";
+import { toast } from "react-toastify";
 
 type FormProps = {
   mode: ChatMode;
@@ -46,6 +52,80 @@ const getModes = (): Mode[] => {
     },
   ];
 };
+
+function Header(props: {
+  isLoading: boolean;
+  bot?: Bot | null;
+  creatorUsername?: string | null;
+}) {
+  const bot = props.bot;
+  return (
+    <div className="relative">
+      <img
+        src={props.bot?.backgroundImage ?? ""}
+        alt="background"
+        // loading strategy
+        loading="eager"
+        onLoad={(e) => {
+          (e.target as HTMLImageElement).style.opacity = "1";
+        }}
+        className="duration-1000 opacity-0 absolute inset-0 w-full h-full object-cover z-[-5] pb-[1px]"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-default-50 z-[-4]" />
+
+      <div className={"z-2 flex flex-col text-center items-center gap-2 p-3 pt-5 z-[10]"}>
+        <Image
+          radius={"lg"}
+          className={"z-0 h-[90px] w-[90px] mx-auto block object-cover shadow-lg"}
+          isLoading={props.isLoading}
+          isBlurred={true}
+          src={makeDownloadUrl(props.bot?.avatar ?? "")}
+        />
+        <div>
+          <div className="flex flex-col">
+            <Spacer x={2} y={2} />
+
+            <Title
+              as={"h1"}
+              size={"sm"}
+              bold={false}
+              className={"text-center mx-auto mb-0 font-normal"}
+            >
+              <Trans context={"bot main menu title"}>
+                Chat with{" "}
+                {props.isLoading ? (
+                  <Skeleton />
+                ) : (
+                  <b className={"-ml-1 font-semibold"}>{props.bot?.name}</b>
+                )}
+              </Trans>
+            </Title>
+            <p className={"text-center text-foreground-400 text-sm"}>
+              {bot?.source === "OFFICIAL" && <Trans>Official character</Trans>}
+              {bot?.source !== "OFFICIAL" && props.creatorUsername && (
+                <Trans>
+                  Character by{" "}
+                  <Link
+                    as={NextLink}
+                    color={"secondary"}
+                    className={"text-sm"}
+                    href={paths.userProfile(props.creatorUsername)}
+                  >
+                    {props.creatorUsername}
+                  </Link>
+                </Trans>
+              )}
+            </p>
+            <Spacer y={4} />
+            <p className="text-foreground-500">
+              <Trans>Select one of the available experiences</Trans>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /** Main page of the bot for creating new chats. */
 const ChatMainMenu = () => {
@@ -81,9 +161,25 @@ const ChatMainMenu = () => {
   };
 
   function handleRadioValueChange(value: string) {
-    // biome-ignore lint: this will not be null here.
     setSelectedModeIsAlreadyActive(usedChatModes!.includes(value as ChatMode));
     setValue("mode", value as ChatMode);
+  }
+
+  async function handleShare() {
+    if (!bot.data) return;
+
+    if (!Capacitor.isNativePlatform()) {
+      await navigator.clipboard.writeText(paths.botChatMainMenu(bot.data.id));
+      toast(t`Copied link to clipboard`, { type: "default", autoClose: 2000 });
+      return;
+    }
+
+    await Share.share({
+      title: _(msg`Character ${bot.data.name} | Waifuu`),
+      text: _(msg`Try out character ${bot.data.name} on Waifuu.`),
+      url: paths.botChatMainMenu(bot.data.id),
+      dialogTitle: _(msg`'Share ${bot.data.name} with friends`),
+    });
   }
 
   return (
@@ -93,31 +189,32 @@ const ChatMainMenu = () => {
       backPath={paths.discover}
     >
       <Card className="z-20 mx-auto md:w-[600px]">
-        <div className="flex flex-col text-center gap-2 p-3 items-center">
-          <Spacer y={2} />
+        {bot.data?.visibility !== BotVisibility.PRIVATE && (
+          <Tooltip content={t`Share`} closeDelay={0}>
+            <Button
+              onClick={handleShare}
+              className={"absolute left-3 top-3 bg-transparent p-0 z-[20]"}
+              isIconOnly={true}
+            >
+              <IoShareSocialOutline size={28} />
+            </Button>
+          </Tooltip>
+        )}
 
-          <Image
-            radius={"lg"}
-            className={"z-0 h-[90px] w-[90px] mx-auto block object-cover"}
-            isLoading={bot.isLoading}
-            isBlurred={true}
-            src={makeDownloadUrl(bot.data?.avatar) ?? ""}
-          />
-          <div>
-            <div className="flex flex-col">
-              <Spacer x={2} y={2} />
+        {/* TODO: Implement edit. */}
+        {/*{
+          <Tooltip content={t`Edit Character`} closeDelay={0}>
+            <Button className={"absolute right-3 top-3 bg-transparent p-0"} isIconOnly={true}>
+              <HiOutlinePencil size={28} />
+            </Button>
+          </Tooltip>
+        }*/}
 
-              <Title as={"h1"} size={"sm"} bold={false} className={"text-center mx-auto mb-0"}>
-                <Trans context={"bot main menu title"}>
-                  Chat with {bot.isLoading ? <Skeleton /> : bot.data?.name}
-                </Trans>
-              </Title>
-              <p className="text-foreground-500">
-                <Trans>Select one of the available experiences</Trans>
-              </p>
-            </div>
-          </div>
-        </div>
+        <Header
+          creatorUsername={bot.data?.creator?.username}
+          isLoading={bot.isLoading}
+          bot={bot.data}
+        />
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-3">
           <RadioGroup onValueChange={handleRadioValueChange} className="w-full">
@@ -126,12 +223,12 @@ const ChatMainMenu = () => {
               return (
                 <CustomRadio
                   key={mode.value}
-                  className={isActive ? "border-foreground-400" : ""}
+                  className={isActive ? "bg-default-100/30" : ""}
                   description={_(mode.description)}
                   value={mode.value}
                 >
                   <p>
-                    {mode.title}{" "}
+                    {mode.title}
                     {isActive && (
                       <span className={"text-sm ml-2 text-blue-300"}>
                         <Trans>Active</Trans>
@@ -162,9 +259,13 @@ const ChatMainMenu = () => {
               className="w-full"
             >
               {selectedModeIsAlreadyActive ? (
-                <Trans>Continue your chat</Trans>
+                <Trans>
+                  <IoChatbubbleEllipsesSharp size={20} /> Continue your chat
+                </Trans>
               ) : (
-                <Trans>Start the chat</Trans>
+                <Trans>
+                  <IoChatbubbleEllipsesSharp size={20} /> Start the chat
+                </Trans>
               )}
             </Button>
           </div>

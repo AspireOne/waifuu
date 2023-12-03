@@ -12,5 +12,12 @@ export default publicProcedure
       where: {
         id: input.botId,
       },
+      include: {
+        creator: {
+          select: {
+            username: true,
+          },
+        },
+      },
     });
   });

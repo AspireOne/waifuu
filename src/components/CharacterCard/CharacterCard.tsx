@@ -1,12 +1,13 @@
 import { paths } from "@/lib/paths";
 import { makeDownloadUrl, normalizePath } from "@lib/utils";
+import { useLingui } from "@lingui/react";
 import { Card, CardBody, Chip, Image, Spacer } from "@nextui-org/react";
 import { Bot, BotSource, ChatMode } from "@prisma/client";
+import { cx } from "class-variance-authority";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
 import { LargeText } from "../ui/LargeText";
-import { cx } from 'class-variance-authority';
 
 type CharacterCardProps = {
   bot: Bot;
@@ -23,6 +24,7 @@ export const CharacterCard = ({
   bottom,
   likes,
 }: CharacterCardProps) => {
+  const { _ } = useLingui();
   return (
     /*Margin bottom so that scrollbar is not glitched.*/
     <Card className={"w-full min-w-[220px] sm:max-w-[220px] hover:bg-zinc-800 mb-2"}>

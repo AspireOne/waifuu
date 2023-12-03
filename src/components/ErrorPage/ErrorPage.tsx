@@ -4,7 +4,7 @@ import Title from "@components/ui/Title";
 import { paths } from "@lib/paths";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Button } from "@nextui-org/react";
+import { Button, Spacer } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 export const ErrorPage = (props: { message?: string }) => {
@@ -16,6 +16,10 @@ export const ErrorPage = (props: { message?: string }) => {
     setHref(status === "unauthenticated" ? paths.index : paths.discover);
   }, [status]);
 
+  function handleBack() {
+    window.history.back();
+  }
+
   return (
     /*TODO: Description*/
     <CombinedPage
@@ -26,18 +30,23 @@ export const ErrorPage = (props: { message?: string }) => {
     >
       <div
         className={
-          "flex flex-col items-center justify-center w-full h-screen text-center md:max-w-[500px] lg:max-w-[700px]"
+          "flex flex-col gap-1 items-center justify-center text-center w-full h-screen mx-auto md:max-w-[500px] lg:max-w-[700px]"
         }
       >
-        <Title as={"h1"}>
-          {props.message
-            ? `${_(msg`Error`)}: ${props.message?.substring(0, 100)}`
-            : _(msg`Unknown error`)}
+        <Title as={"h1"} className={"mb-0"}>
+          <Trans>An error occurred :(</Trans>
         </Title>
-        <Button href={href}>
+        <p className={"text-foreground-500"}>
+          {props.message ? (
+            `${props.message?.substring(0, 100)}`
+          ) : (
+            <Trans>Unknown error</Trans>
+          )}
+        </p>
+        <Spacer y={2} />
+        <Button onClick={handleBack} href={href}>
           <Trans>Go back</Trans>
         </Button>
-        <p className={"text-lg"}>{_(msg`An error occurred.`)}</p>
       </div>
     </CombinedPage>
   );

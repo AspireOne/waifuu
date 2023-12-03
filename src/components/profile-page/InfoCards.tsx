@@ -1,12 +1,11 @@
 import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
+import { CharacterCard } from "@components/CharacterCard";
+import { CharacterCardSkeleton } from "@components/CharacterCard/CharacterCardSkeleton";
+import Title from "@components/ui/Title";
 import { Trans } from "@lingui/macro";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
-import { Chip } from "@nextui-org/react";
 import { Bot } from "@prisma/client";
-import Link from "next/link";
 import { PropsWithChildren } from "react";
-import { FaEye, FaHeart } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 
 function InfoCard(
@@ -22,7 +21,9 @@ function InfoCard(
   return (
     <Card className={props.className}>
       <CardHeader>
-        <h4 className={"text-xl font-bold"}>{props.title}</h4>
+        <Title size={"md"} className={"mb-0"}>
+          {props.title}
+        </Title>
       </CardHeader>
       <CardBody>{props.children}</CardBody>
     </Card>
@@ -43,7 +44,7 @@ export default function InfoCards(props: { username: string }) {
       </InfoCard>
 
       <InfoCard isLoaded={!isInitialLoading} title={"Characters"}>
-        {hasBots && <BotList bots={user?.bots} />}
+        {hasBots && <CharacterList bots={user?.bots} />}
         {!hasBots && (
           <p>
             <Trans>This user has not created any characters yet :(</Trans>
@@ -54,6 +55,7 @@ export default function InfoCards(props: { username: string }) {
   );
 }
 
+/*
 function BotList(props: { bots: Bot[] }) {
   console.log(props.bots);
   return (
@@ -83,7 +85,7 @@ function BotList(props: { bots: Bot[] }) {
                 color="default"
                 className={"px-3"}
               >
-                {/*<Trans>Likes</Trans>*/}
+                {/!*<Trans>Likes</Trans>*!/}
               </Chip>
               <Chip
                 startContent={<FaEye />}
@@ -91,7 +93,7 @@ function BotList(props: { bots: Bot[] }) {
                 color="default"
                 className={"px-3"}
               >
-                {/*<Trans>Views</Trans>*/}
+                {/!*<Trans>Views</Trans>*!/}
               </Chip>
             </div>
           </Card>
@@ -100,3 +102,16 @@ function BotList(props: { bots: Bot[] }) {
     </Card>
   );
 }
+*/
+
+const CharacterList = (props: { bots?: Bot[] | null }) => {
+  return (
+    <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
+      {props.bots?.map((bot) => {
+        return <CharacterCard key={bot.id} bot={bot} />;
+      })}
+
+      {!props.bots && <CharacterCardSkeleton inline count={2} />}
+    </div>
+  );
+};
