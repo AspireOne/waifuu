@@ -1,4 +1,5 @@
 import { getIdToken } from "@lib/firebase";
+import { hmacEncode } from "@lib/hmacEncode";
 import { getCurrentLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
 // frontend api client
@@ -18,7 +19,11 @@ apiClient.interceptors.request.use(
     const token = await getIdToken();
 
     // Update config with new token.
+    const encoded = hmacEncode(config.data);
     config.headers.Authorization = token ? `Bearer ${token}` : "";
+    config.headers["X-Signature"] = encoded.headers["X-Signature"];
+    config.headers["X-Nonce"] = encoded.headers["X-Nonce"];
+    config.headers["X-Timestamp"] = encoded.headers["X-Timestamp"];
 
     return config;
   },

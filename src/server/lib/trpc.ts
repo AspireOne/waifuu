@@ -159,8 +159,6 @@ const hmacMiddleware = t.middleware(({ ctx, next }) => {
   if (Array.isArray(signature)) signature = signature[0];
   else signature = signature as string;
 
-  console.log("server", { nonce, timestamp, signature });
-
   const verified = verifyHmac(ctx.req?.body, nonce!, timestamp!, signature!);
   console.log({ verified });
   if (!verified) {
