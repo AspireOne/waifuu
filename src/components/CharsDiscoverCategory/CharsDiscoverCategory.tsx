@@ -19,6 +19,7 @@ import { Preferences } from "@capacitor/preferences";
 import { TagRowSelector } from "@components/TagRowSelector";
 import { useSession } from "@providers/SessionProvider";
 import parse from "parse-duration";
+import { twMerge } from "tailwind-merge";
 
 type SearchBotsFilters = {
   textFilter?: string;
@@ -119,6 +120,7 @@ export const CharsDiscoverCategory = () => {
   }, [watch, discoveredBots]);
 
   const filtersStr = stringifyFilters(filters);
+  const charAmount = discoveredBots.cache[filtersStr]?.characters.length;
 
   return (
     <form>
@@ -138,7 +140,7 @@ export const CharsDiscoverCategory = () => {
         {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
 
         {/*&& !isRefetching*/}
-        {discoveredBots.cache[filtersStr]?.characters.length === 0 && (
+        {charAmount === 0 && (
           <div className="min-h-full flex flex-col justify-center text-center w-full">
             <p className={"text-foreground-600"}>
               {/*TODO: Add some icon or smiley.*/}
@@ -147,7 +149,7 @@ export const CharsDiscoverCategory = () => {
           </div>
         )}
 
-        <div className="gap-4 flex flex-wrap w-full mx-auto">
+        <div className={twMerge("gap-4 flex flex-wrap w-full mx-auto self-baseline")}>
           {discoveredBots.cache[filtersStr]?.characters.map((bot) => {
             return <CharacterCard bottom key={bot.id} bot={bot} />;
           })}
