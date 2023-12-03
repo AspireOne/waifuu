@@ -128,6 +128,8 @@ const CreateChatPage = () => {
                 variant={"faded"}
                 labelPlacement={"inside"}
                 description={_(msg`The public title of your character.`)}
+                max={43}
+                maxLength={43}
                 {...register("title")}
                 isRequired
                 type="text"
@@ -136,7 +138,9 @@ const CreateChatPage = () => {
 
               <Textarea
                 {...register("description")}
-                description={_(msg`A short public description of your character.`)}
+                description={_(msg`A public description of your character.`)}
+                max={1000}
+                maxLength={1000}
                 isRequired
                 type="text"
                 label={_(msg`Description`)}
@@ -188,7 +192,7 @@ const CreateChatPage = () => {
 
             <Title
               as={"h2"}
-              description={_(msg`This specifies how the character will actually behave.`)}
+              description={_(msg`Define how the character will act and respond.`)}
             >
               <Trans>Persona</Trans>
             </Title>
@@ -199,6 +203,8 @@ const CreateChatPage = () => {
                 {...register("name")}
                 isRequired
                 type="text"
+                max={43}
+                maxLength={43}
                 label={_(msg`Name`)}
                 description={_(msg`The name of your character.`)}
               />
@@ -208,8 +214,11 @@ const CreateChatPage = () => {
                 {...register("persona")}
                 isRequired
                 label={_(msg`Persona`)}
+                max={500}
+                maxLength={500}
+                maxRows={3}
                 description={_(
-                  msg`The personality of your character itself. The more information, the better.`,
+                  msg`The personality of your character. Keep it short and simple. Our AI can infer a lot.`,
                 )}
               />
 
@@ -217,6 +226,7 @@ const CreateChatPage = () => {
                 variant={"faded"}
                 {...register("dialogue")}
                 label={_(msg`Example dialogue`)}
+                placeholder={_(msg`User: Hello! Bot: Hi!`)}
                 description={_(
                   msg`If you want to specify your character's behavior even more precisely, you can provide an example dialogue.`,
                 )}

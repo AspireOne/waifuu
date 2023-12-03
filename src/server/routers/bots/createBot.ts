@@ -18,18 +18,16 @@ import {
 import { z } from "zod";
 
 const botCreationInput = z.object({
-  // Public image (meaning on discover page ex.)
-  cover: z.string().optional(),
-  title: z.string(),
-  description: z.string(),
+  title: z.string().min(1, t`Title is required`).max(50, t`Title is too long`),
+  description: z.string().max(1200, t`Description is too long`),
   visibility: z.nativeEnum(BotVisibility),
   tags: z.array(z.nativeEnum(CharacterTag)).default([]),
 
-  // in Chat data
+  cover: z.string().optional(),
   avatar: z.string().min(1, t`Avatar is required`),
   backgroundImage: z.string().optional(),
-  name: z.string(),
-  persona: z.string(),
+  name: z.string().min(1, t`Name is required`).max(50, t`Name is too long`),
+  persona: z.string().max(500, t`Persona is too long`),
   dialogue: z.string().nullish(),
   nsfw: z.boolean(),
 
