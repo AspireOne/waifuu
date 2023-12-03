@@ -48,6 +48,7 @@ export const envSchema = z.object({
   STRIPE_SIGNING_SECRET: z.string().min(1),
 
   OPENROUTER_API_KEY: z.string().min(1),
+  NEXT_PUBLIC_HMAC_SHARED_KEY: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);
