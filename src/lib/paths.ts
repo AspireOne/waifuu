@@ -63,6 +63,16 @@ export const baseUrl = () => {
   throw new Error("NEXT_PUBLIC_BASE_URL is not set!");
 };
 
+export const baseS3Url = () => {
+  if (!process.env.NEXT_PUBLIC_S3_BASE_PATH) {
+    throw new Error(
+      "NEXT_PUBLIC_S3_BASE_PATH is not set!"
+    )
+  };
+
+  return process.env.NEXT_PUBLIC_S3_BASE_PATH;
+}
+
 /**
  * Adds base API path in front of the given path.
  * @param path Path to append to base URL, e.g. "/api/bots"

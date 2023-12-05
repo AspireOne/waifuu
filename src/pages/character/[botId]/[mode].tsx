@@ -2,6 +2,7 @@ import ChatGradientOverlay from "@/components/bot-chat/ChatGradientOverlay";
 import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
 import useBotChat, { Message } from "@/hooks/useBotChat";
+import { makeDownloadUrl } from "@/lib/utils";
 import { AppPage } from "@components/AppPage";
 import { BotChatContent } from "@components/BotChatContent";
 import { paths } from "@lib/paths";
@@ -63,9 +64,9 @@ const CharacterImage = ({
   return useMemo(
     () => (
       <Image
-        alt="background character image"
+        alt="character image"
         loading="eager"
-        src={bot.characterImage ?? ""}
+        src={makeDownloadUrl(bot.characterImage)}
         className={twMerge(
           "animation-slide-fade fixed object-cover",
           "bottom-0 h-[90%]", // set height

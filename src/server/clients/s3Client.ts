@@ -10,3 +10,6 @@ export const s3Client = (global.s3Client ??= new S3Client({
     secretAccessKey: env.S3_SECRET_KEY,
   },
 }));
+
+export const s3DefaultBucket =
+  process.env.NODE_ENV === "production" ? env.S3_DEFAULT_BUCKET : env.S3_DEFAULT_ENV_BUCKET;

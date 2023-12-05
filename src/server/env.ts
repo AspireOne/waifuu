@@ -35,6 +35,8 @@ export const envSchema = z.object({
   S3_SECRET_KEY: z.string().min(1),
   S3_REGION: z.string().min(1),
   S3_DEFAULT_BUCKET: z.string().min(1),
+  S3_DEFAULT_ENV_BUCKET: z.string().min(1),
+  NEXT_PUBLIC_S3_BASE_PATH: z.string().url(),
 
   REDIS_PASSWORD: z.string(),
   // EMAIL

@@ -1,3 +1,4 @@
+import { makeDownloadUrl } from "@/lib/utils";
 import { Card, CardBody } from "@nextui-org/card";
 import { Avatar } from "@nextui-org/react";
 import { Mood } from "@prisma/client";
@@ -42,7 +43,7 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
 
         <CardBody className={"p-1 flex flex-row gap-4"}>
           <Avatar
-            src={author.avatar ?? undefined}
+            src={makeDownloadUrl(author.avatar) ?? undefined}
             alt="avatar"
             className="w-[40px] h-[40px] min-w-[40px] rounded-full aspect-square"
           />
