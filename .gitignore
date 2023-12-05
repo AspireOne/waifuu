@@ -54,4 +54,7 @@ volumes
 
 .flaskenv*
 !.env.project
-!.env.vault
+
+# Ignore .env.vault because it's a feature for dynamically using .env using dotenv in production,
+# but we are not and will not be using it.
+.env.vault
