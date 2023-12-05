@@ -8,10 +8,12 @@ export const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   // The Firebase Admin SDK credentials. This should be an one-line JSON string.
   SERVICE_ACCOUNT_JSON: z.string().min(1),
+
   // Sentry.
   SENTRY_AUTH_TOKEN: z.string().min(1),
   SENTRY_DSN: z.string().min(1),
   NEXT_PUBLIC_SENTRY_DSN: z.string().min(1),
+
   NEXT_PUBLIC_BASE_URL: z.string().url(),
   NEXT_PUBLIC_CAPACITOR_BASE_URL: z.string().url(),
 
@@ -37,10 +39,13 @@ export const envSchema = z.object({
   S3_DEFAULT_BUCKET: z.string().min(1),
 
   REDIS_PASSWORD: z.string(),
-  // EMAIL
-  MAILGUN_API_KEY: z.string().min(1),
-  MAILGUN_DOMAIN: z.string().min(1),
-  NEXT_PUBLIC_MAILGUN_API_KEY: z.string().min(1),
+
+  MAIL_HOST: z.string().min(1),
+  MAIL_PORT: z.string().min(1),
+  MAIL_USERNAME: z.string().min(1),
+  MAIL_PASSWORD: z.string().min(1),
+  MAIL_ENCRYPTION: z.string().min(3),
+  MAIL_INFO_ADDRESS: z.string().min(1).email("Invalid email address"),
 
   // STRIPE
   NEXT_PUBLIC_STRIPE_PK: z.string().min(1),

@@ -133,12 +133,6 @@ const Login = () => {
           <Button size="lg" startContent={<FcGoogle />} onClick={handleGoogleSignIn}>
             <Trans>Sign in with google</Trans>
           </Button>
-          {/*<Button size="lg" startContent={<AiFillFacebook />}>
-            Login with Facebook
-          </Button>
-          <Button size="lg" startContent={<BsTwitter />}>
-            Login with Twitter
-          </Button>*/}
         </Card>
       </div>
     </CombinedPage>

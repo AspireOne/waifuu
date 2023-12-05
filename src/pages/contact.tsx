@@ -40,6 +40,7 @@ export default () => {
 function Socials(props: { className?: string }) {
   return (
     <div className={`${props.className} text-lg`}>
+      {/*TODO: EXtract out the mail into constants perhaps.*/}
       <ContactInfoItem icon={<FiMail />} href="mailto:info@waifuu.com">
         info@waifuu.com
       </ContactInfoItem>
