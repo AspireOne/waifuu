@@ -263,7 +263,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
       // Todo: meta description.
       return (
         <PublicPage
-          className="bg-[#303030] text-white bg-contain bg-no-repeat bg-[url('/assets/indexbackground.png')]"
+          className="bg-background text-white bg-contain bg-no-repeat"
           title={"Meet Waifuu"}
           /*TODO: DESCRIPTION*/
           description={""}
