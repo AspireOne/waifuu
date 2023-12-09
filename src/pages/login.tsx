@@ -3,57 +3,35 @@ import { api } from "@/lib/api";
 import { getOrInitFirebaseAuth } from "@/lib/firebase";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { CombinedPage } from "@components/CombinedPage";
-import { semanticPaths } from "@lib/paths";
+import { paths, semanticPaths } from "@lib/paths";
 import { Trans, t } from "@lingui/macro";
 import { Button, Card } from "@nextui-org/react";
 import { GoogleAuthProvider, signInWithCredential, signOut } from "firebase/auth";
 
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 
-function getCsrfToken() {
-  return document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("csrfToken"))
-    ?.split("=")[1];
-}
-
-async function signInUsingGoogleRaw() {
-  console.log("Signing in using google...");
-
-  try {
-    const result = await FirebaseAuthentication.signInWithGoogle({
-      scopes: ["email", "profile"],
-      mode: "popup",
-    });
-
-    // Sign in on the web layer using the id token.
-    const credential = GoogleAuthProvider.credential(result.credential?.idToken);
-    const auth = getOrInitFirebaseAuth();
-    await signInWithCredential(auth, credential);
-    return true;
-  } catch (e) {
-    console.error("Error signing in using Google!", e);
-    toast(t`Error signing in with Google!`, { type: "error" });
-    return false;
-  }
-}
-
 const Login = () => {
-  //const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
   const session = useSession();
   const router = useRouter();
   // Uncomment the redirect for now because it does not work properly.
-  //const redirect = searchParams.get("redirect");
+  let redirect = searchParams.get("redirect");
+  if ((redirect || "").replace("/", "").includes(paths.login().replace("/", ""))) {
+    redirect = null;
+    // remove the "redirect" query param from the url using next router
+    if (router?.isReady) router.replace(router.pathname);
+  }
 
   //! IMPORTANT Check for session.user instead of session.status.
   useEffect(() => {
-    if (session.user?.id) {
-      router.replace(/*redirect || */ semanticPaths.appIndex);
+    if (session.user?.id && router.isReady && router.pathname !== semanticPaths.appIndex) {
+      router.replace(redirect || semanticPaths.appIndex);
     }
-  }, [session.user, session.user?.id]);
+  }, [router, session.user, session.user?.id]);
 
   const googleAuthMutation = api.auth.handleFirebaseSignIn.useMutation({
     onSuccess: async (data, variables, context) => {
@@ -66,7 +44,9 @@ const Login = () => {
       // router.replace((redirect as string) || semanticPaths.appIndex);
       // session.refetch();
 
-      window.location.replace(/*redirect ||*/ semanticPaths.appIndex);
+      if (router.pathname !== semanticPaths.appIndex) {
+        await router.replace(redirect || semanticPaths.appIndex);
+      }
     },
     onError: async (error) => {
       console.error("Error logging in with Google!", error);
@@ -130,7 +110,12 @@ const Login = () => {
         />
 
         <Card className="flex-column flex gap-3 p-2">
-          <Button size="lg" startContent={<FcGoogle />} onClick={handleGoogleSignIn}>
+          <Button
+            isLoading={googleAuthMutation.isLoading}
+            size="lg"
+            startContent={<FcGoogle />}
+            onClick={handleGoogleSignIn}
+          >
             <Trans>Sign in with google</Trans>
           </Button>
         </Card>
@@ -138,5 +123,33 @@ const Login = () => {
     </CombinedPage>
   );
 };
+
+function getCsrfToken() {
+  return document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("csrfToken"))
+    ?.split("=")[1];
+}
+
+async function signInUsingGoogleRaw() {
+  console.log("Signing in using google...");
+
+  try {
+    const result = await FirebaseAuthentication.signInWithGoogle({
+      scopes: ["email", "profile"],
+      mode: "popup",
+    });
+
+    // Sign in on the web layer using the id token.
+    const credential = GoogleAuthProvider.credential(result.credential?.idToken);
+    const auth = getOrInitFirebaseAuth();
+    await signInWithCredential(auth, credential);
+    return true;
+  } catch (e) {
+    console.error("Error signing in using Google!", e);
+    toast(t`Error signing in with Google!`, { type: "error" });
+    return false;
+  }
+}
 
 export default Login;
