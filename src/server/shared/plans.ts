@@ -23,6 +23,7 @@ type Plan = {
 type Plans = {
   free: Plan;
   plus: Plan;
+  pro: Plan;
 };
 
 // TODO: Add images so that we can put them to stripe checkout session.
@@ -65,6 +66,7 @@ export const subscriptionPlans = (): Plans => {
         t`~300 messages a day`,
         t`100 custom characters per month`,
         t`Priority access to all new early features`,
+        t`Priority customer support`,
       ],
       limits: {
         messagesPerDay: 300,
@@ -75,6 +77,31 @@ export const subscriptionPlans = (): Plans => {
         USD: 6.59,
         CZK: 149,
         EUR: 5.49,
+      },
+    },
+    pro: {
+      id: PlanId.SUBSCRIPTION_PLAN_PRO_V1,
+      tier: 2,
+      name: t({ message: "PRO", context: "Subscription plan name" }),
+      description: t`The ultimate experience for the most demanding users.`,
+      features: [
+        t`Everything from the Plus Plan, plus...`,
+        t`~1000 messages a day`,
+        t`500 custom characters per month`,
+        t`Special recognition within the community (badge)`,
+        t`Priority characters in community marketplace`,
+        t`Access to all beta features`,
+        t`Access to all future features`,
+      ],
+      limits: {
+        messagesPerDay: 1000,
+        charactersAccessedPerDay: 1000,
+        customCharactersPerMonth: 500,
+      },
+      price: {
+        USD: 14.99,
+        CZK: 299,
+        EUR: 12.99,
       },
     },
   };

@@ -40,7 +40,7 @@ type OpenRouterModelInput = {
 };
 
 // TODO: Refactor all models to one class/interface.
-const run = async (input: OpenRouterModelInput) => {
+const run = async (input: OpenRouterModelInput): Promise<string> => {
   const msgsTransformed = input.messages.map((msg) => {
     return {
       role: chatRoleToOpenaiRole(msg.role),

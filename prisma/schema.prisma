@@ -10,6 +10,7 @@ datasource db {
 enum PlanId {
   SUBSCRIPTION_PLAN_FREE_V1
   SUBSCRIPTION_PLAN_PLUS_V1
+  SUBSCRIPTION_PLAN_PRO_V1
 }
 
 enum Currency {
