@@ -25,7 +25,7 @@ export const paths = {
   forumPost: (id: string) => `/forum/${id}`,
 };
 
-export const publicNavbarPaths = [
+export const getNavbarPaths = () => [
   { title: t`Home`, href: paths.index },
   { title: t`Pricing`, href: paths.pricing },
   /*{ title: t`Forum`, href: paths.forum },*/

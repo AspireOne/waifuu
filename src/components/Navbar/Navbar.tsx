@@ -1,4 +1,4 @@
-import { paths, publicNavbarPaths } from "@lib/paths";
+import { getNavbarPaths, paths } from "@lib/paths";
 import { Trans } from "@lingui/macro";
 import { NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/navbar";
 import {
@@ -33,7 +33,7 @@ export const Navbar = () => {
         <p className="font-bold text-inherit">Waifuu</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {publicNavbarPaths.map((path) => {
+        {getNavbarPaths().map((path) => {
           const isActive =
             path.href === paths.index
               ? activeHref === paths.index
@@ -62,7 +62,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        {publicNavbarPaths.map((path) => {
+        {getNavbarPaths().map((path) => {
           const isActive = activeHref.includes(path.href);
           return (
             <NavbarMenuItem key={path.href} isActive={isActive}>
