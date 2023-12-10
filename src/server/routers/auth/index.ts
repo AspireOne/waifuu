@@ -1,8 +1,8 @@
 import { createTRPCRouter } from "@/server/lib/trpc";
-import handleFirebaseSignIn from "@/server/routers/auth/handleFirebaseSignIn";
+import handleSignIn from "@/server/routers/auth/handleSignIn";
 import logOut from "@/server/routers/auth/logOut";
 
 export const authRouter = createTRPCRouter({
   logOut,
-  handleFirebaseSignIn,
+  handleSignIn,
 });

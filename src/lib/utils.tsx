@@ -103,3 +103,10 @@ export function isUrl(str: string): boolean {
     return false;
   }
 }
+
+export function getCsrfToken() {
+  return document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("csrfToken"))
+    ?.split("=")[1];
+}
