@@ -28,7 +28,7 @@ export const paths = {
 export const publicNavbarPaths = [
   { title: t`Home`, href: paths.index },
   { title: t`Pricing`, href: paths.pricing },
-  { title: t`Forum`, href: paths.forum },
+  /*{ title: t`Forum`, href: paths.forum },*/
   { title: t`Contact`, href: paths.contact },
 ];
 

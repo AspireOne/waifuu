@@ -15,12 +15,11 @@ export const PublicPage = (
   return (
     <BasePage
       unprotected={true}
-      showHeader={false}
+      topBar={"navbar"}
       showActionBar={false}
       autoBack={true}
       {...props}
     >
-      {/*TODO: Navbar*/}
       {props.children}
     </BasePage>
   );

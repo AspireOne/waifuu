@@ -28,17 +28,15 @@ export const CombinedPage = (props: PropsWithChildren<Props>) => {
 
   return (
     <BasePage
-      unprotected={true}
-      showActionBar={false}
-      showHeader={status === "authenticated"}
-      /*TODO: Show navbar*/
       title={props.title}
       description={props.description}
       className={props.className}
+      unprotected={true}
+      showActionBar={false}
+      topBar={status === "authenticated" ? "app-header" : "navbar"}
       backPath={props.backPath}
       autoBack={props.autoBack === undefined ? true : props.autoBack}
     >
-      {/*TODO: Navbar*/}
       {props.children}
     </BasePage>
   );
