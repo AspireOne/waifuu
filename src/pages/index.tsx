@@ -1,9 +1,22 @@
 import { Emoji } from "@/components/ui/Emoji";
 import Discover from "@/pages/discover";
-import { Spacer } from "@nextui-org/react";
+import {
+  Button,
+  Link,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Spacer,
+} from "@nextui-org/react";
 import Image from "next/image";
 
 import { PublicPage } from "@components/PublicPage";
+import { paths, publicNavbarPaths } from "@lib/paths";
+import { Trans } from "@lingui/macro";
+import { NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/navbar";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
@@ -243,18 +256,11 @@ const Footer = () => {
   );
 };
 
-// prettier-ignore
 export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
   ? Discover
   : function LandingPage() {
       // const { status } = useSession();
       // const router = useRouter();
-
-      // React.useEffect(() => {
-      //   if (Capacitor.isNativePlatform()) {
-      //     router.replace(semanticPaths.appIndex);
-      //   }
-      // }, []);
 
       // React.useEffect(() => {
       //   if (status === "authenticated") router.push(semanticPaths.appIndex);
@@ -268,19 +274,84 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
           /*TODO: DESCRIPTION*/
           description={""}
         >
-          <TopBar />
+          <Nav />
 
           <Spacer y={40} />
           <Header />
           <Spacer y={40} />
           <Features />
           <Spacer y={40} />
-          <PayPlans />
+          {/*<PayPlans />*/}
           <Spacer y={40} />
-          <CompanionUsage />
+          {/*<CompanionUsage />*/}
           <Spacer y={40} />
           <Footer />
           <Spacer y={40} />
         </PublicPage>
       );
     };
+
+const Nav = () => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
+  const [activeHref, setActiveHref] = React.useState<string>(paths.index);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router?.isReady) return;
+    setActiveHref(router.pathname);
+  }, [router, router.pathname]);
+
+  return (
+    <Navbar onMenuOpenChange={setIsMenuOpen}>
+      <NavbarContent className="sm:hidden" justify="start">
+        <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
+      </NavbarContent>
+
+      <NavbarBrand>
+        <div>logo here</div>
+        <p className="font-bold text-inherit">Waifuu</p>
+      </NavbarBrand>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        {publicNavbarPaths.map((path) => {
+          const isActive = activeHref.includes(path.href);
+          return (
+            <NavbarItem key={path.href} isActive={isActive}>
+              <Link color={isActive ? undefined : "foreground"} href={path.href}>
+                {path.title}
+              </Link>
+            </NavbarItem>
+          );
+        })}
+      </NavbarContent>
+      <NavbarContent justify="end">
+        <NavbarItem className="hidden lg:flex">
+          <Link href={paths.login()}>
+            <Trans>Login</Trans>
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Button as={Link} color="primary" href={paths.login()} variant="flat">
+            <Trans>Sign Up</Trans>
+          </Button>
+        </NavbarItem>
+      </NavbarContent>
+
+      <NavbarMenu>
+        {publicNavbarPaths.map((path) => {
+          const isActive = activeHref.includes(path.href);
+          return (
+            <NavbarMenuItem key={path.href} isActive={isActive}>
+              <Link
+                className={"w-full"}
+                color={isActive ? undefined : "foreground"}
+                href={path.href}
+              >
+                {path.title}
+              </Link>
+            </NavbarMenuItem>
+          );
+        })}
+      </NavbarMenu>
+    </Navbar>
+  );
+};

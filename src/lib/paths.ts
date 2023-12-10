@@ -1,4 +1,5 @@
 import { Capacitor } from "@capacitor/core";
+import { t } from "@lingui/macro";
 import { toast } from "react-toastify";
 
 /**
@@ -23,6 +24,13 @@ export const paths = {
   botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,
   forumPost: (id: string) => `/forum/${id}`,
 };
+
+export const publicNavbarPaths = [
+  { title: t`Home`, href: paths.index },
+  { title: t`Pricing`, href: paths.pricing },
+  { title: t`Forum`, href: paths.forum },
+  { title: t`Contact`, href: paths.contact },
+];
 
 /**
  * Contains paths that have a specific meaning.
