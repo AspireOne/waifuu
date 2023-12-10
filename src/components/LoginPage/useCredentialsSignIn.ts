@@ -17,7 +17,7 @@ export const useCredentialsSignIn = (onSignedIn: () => void, onSignInError: () =
 
     const { success: isValid } = credentialsSignInSchema.safeParse(creds);
     if (!isValid) {
-      toast("Invalid credentials. Check your email/password.", { type: "warning" });
+      toast("Please check your email/password.", { type: "warning" });
       return;
     }
 
@@ -40,12 +40,16 @@ async function signIn(creds: { email: string; password: string }) {
   try {
     return await FirebaseAuthentication.signInWithEmailAndPassword(creds);
   } catch (e: any) {
-    // biome-ignore format: off.
-    if (e.code === "auth/user-not-found") toast(t`Invalid credentials.`, { type: "error" });
-    else if (e.code === "auth/wrong-password") toast(t`Invalid credentials.`, { type: "error" });
-    else if (e.code === "auth/invalid-credential") toast(t`Invalid credentials.`, { type: "error" });
-    else if (e.code === "auth/invalid-email") toast(t`Invalid credentials.`, { type: "error" });
-    else toast(t`Error signing in.`, { type: "error" });
+    if (
+      e.code === "auth/user-not-found" ||
+      e.code === "auth/wrong-password" ||
+      e.code === "auth/invalid-credential" ||
+      e.code === "auth/invalid-email"
+    ) {
+      toast(t`Wrong email/password.`, { type: "error" });
+    } else {
+      toast(t`There was an error signing in.`, { type: "error" });
+    }
 
     return false;
   }
@@ -56,17 +60,14 @@ async function signUp(creds: { email: string; password: string }) {
     return await FirebaseAuthentication.createUserWithEmailAndPassword(creds);
   } catch (error: any) {
     // biome-ignore format: off.
-    if (error.code === "auth/email-already-in-use") toast(t`Invalid credentials.`, { type: "error" });
-    else if (error.code === "auth/user-not-found") toast(t`Invalid credentials.`, { type: "error" });
-    else if (error.code === "auth/wrong-password") toast(t`Invalid credentials.`, { type: "error" });
-    else if (error.code === "auth/invalid-email") toast(t`Invalid credentials.`, { type: "error" });
-
+    if (error.code === "auth/email-already-in-use") toast(t`Account already exists.`, { type: "error" });
     else if (error.code === "auth/weak-password") toast(t`Password is too weak.`, { type: "error" });
     else if (error.code === "auth/too-many-requests") toast(t`Too many attempts. Please try again later.`, { type: "error" });
     else if (error.code === "auth/user-disabled") toast(t`User disabled.`, { type: "error" });
-    else if (error.code === "auth/operation-not-allowed") toast(t`Not allowed.`, { type: "error" });
-    else toast(t`Error signing in.`, { type: "error" });
+    else if (error.code === "auth/operation-not-allowed") toast(t`Disallowed.`, { type: "error" });
+    else if (error.code === "auth/invalid-email") toast(t`Invalid email.`, { type: "error" });
 
+    else toast(t`There was an error signing up.`, { type: "error" });
     return false;
   }
 }

@@ -5,15 +5,17 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 
-export const Ui = (props: {
+export type UiProps = {
   mode: SignInMode;
   onModeSwitch: (mode: SignInMode) => void;
 
-  onGoogleSignInTriggered: () => void;
-  onCredentialsSignInTriggered: (email: string, password: string, mode: SignInMode) => void;
+  onGoogleSignTriggered: () => void;
+  onCredentialsSignTriggered: (email: string, password: string, mode: SignInMode) => void;
 
   loading?: boolean;
-}) => {
+};
+
+export const Ui = (props: UiProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -27,7 +29,7 @@ export const Ui = (props: {
       return;
     }
 
-    props.onCredentialsSignInTriggered(email, password, props.mode);
+    props.onCredentialsSignTriggered(email, password, props.mode);
   }
 
   return (
@@ -88,7 +90,7 @@ export const Ui = (props: {
         onClick={handleSubmit}
         color={"secondary"}
         className={"mt-4"}
-        disabled={props.loading}
+        isDisabled={props.loading}
       >
         {isSignUpMode ? <Trans>Sign Up</Trans> : <Trans>Sign In</Trans>}
       </Button>
@@ -96,10 +98,9 @@ export const Ui = (props: {
       <OauthDivider />
 
       <Button
-        disabled={props.loading}
-        //isLoading={googleAuthMutation.isLoading}
+        isDisabled={props.loading}
         startContent={<FcGoogle />}
-        onClick={props.onGoogleSignInTriggered}
+        onClick={props.onGoogleSignTriggered}
       >
         {isSignUpMode ? (
           <Trans>Sign up with google</Trans>

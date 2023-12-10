@@ -5,23 +5,30 @@ import { Trans, t } from "@lingui/macro";
 import { Card, Spacer, Tab, Tabs } from "@nextui-org/react";
 import { signOut } from "firebase/auth";
 
-import { Ui } from "@components/LoginPage/Ui";
+import { Ui, UiProps } from "@components/LoginPage/Ui";
 import { useAutoRedirect } from "@components/LoginPage/useAutoRedirect";
 import { useCredentialsSignIn } from "@components/LoginPage/useCredentialsSignIn";
 import { useGoogleSignIn } from "@components/LoginPage/useGoogleSignIn";
 import { CardBody } from "@nextui-org/card";
-import { useState } from "react";
+import { useSession } from "@providers/SessionProvider";
+import { useEffect, useState } from "react";
 
 export type SignInMode = "sign-in" | "sign-up";
 
 export const LoginPage = () => {
+  const { refetch, user } = useSession();
   const [selectedMode, setSelectedMode] = useState<SignInMode>("sign-up");
   const { redirectOnSuccessfulSignIn } = useAutoRedirect();
   const { handleGoogleSign } = useGoogleSignIn(onSignedIn, onSignInError);
   const { handleCredentialsSign } = useCredentialsSignIn(onSignedIn, onSignInError);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => setLoading(user ? true : loading), [user]);
 
   async function onSignedIn() {
+    refetch();
     await redirectOnSuccessfulSignIn();
+    setLoading(false);
   }
 
   async function onSignInError() {
@@ -31,7 +38,24 @@ export const LoginPage = () => {
     } catch (e) {
       console.error("Error signing out from Firebase", e);
     }
+    setLoading(false);
   }
+
+  const uiProps: UiProps = {
+    loading: loading,
+    onCredentialsSignTriggered: async (email, password, mode) => {
+      setLoading(true);
+      await handleCredentialsSign(email, password, mode);
+      setLoading(false);
+    },
+    onGoogleSignTriggered: async () => {
+      setLoading(true);
+      await handleGoogleSign();
+      setLoading(false);
+    },
+    onModeSwitch: setSelectedMode,
+    mode: selectedMode,
+  };
 
   return (
     <CombinedPage title={t`Sign in`} autoBack={false}>
@@ -70,22 +94,13 @@ export const LoginPage = () => {
               onSelectionChange={setSelectedMode}
               aria-label="Sign-options"
               className={"mb-6"}
+              isDisabled={loading}
             >
               <Tab key="sign-in" title="Sign In">
-                <Ui
-                  onCredentialsSignInTriggered={handleCredentialsSign}
-                  onGoogleSignInTriggered={handleGoogleSign}
-                  onModeSwitch={setSelectedMode}
-                  mode={selectedMode}
-                />
+                <Ui {...uiProps} />
               </Tab>
               <Tab key="sign-up" title="Sign Up">
-                <Ui
-                  onCredentialsSignInTriggered={handleCredentialsSign}
-                  onGoogleSignInTriggered={handleGoogleSign}
-                  onModeSwitch={setSelectedMode}
-                  mode={selectedMode}
-                />
+                <Ui {...uiProps} />
               </Tab>
             </Tabs>
           </CardBody>
