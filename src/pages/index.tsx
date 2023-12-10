@@ -4,6 +4,10 @@ import { Spacer } from "@nextui-org/react";
 import Image from "next/image";
 
 import { PublicPage } from "@components/PublicPage";
+import { semanticPaths } from "@lib/paths";
+import { useSession } from "@providers/SessionProvider";
+import { useRouter } from "next/router";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
@@ -246,12 +250,12 @@ const Footer = () => {
 export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
   ? Discover
   : function LandingPage() {
-      // const { status } = useSession();
-      // const router = useRouter();
+      const { status } = useSession();
+      const router = useRouter();
 
-      // React.useEffect(() => {
-      //   if (status === "authenticated") router.push(semanticPaths.appIndex);
-      // }, [status]);
+      React.useEffect(() => {
+        if (status === "authenticated") router.push(semanticPaths.appIndex);
+      }, [status]);
 
       // Todo: meta description.
       return (
