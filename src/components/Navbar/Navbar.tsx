@@ -1,13 +1,16 @@
+import { useEarlyAccessStore } from "@/stores";
 import { getNavbarPaths, paths } from "@lib/paths";
 import { Trans } from "@lingui/macro";
 import { NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/navbar";
 import {
   Button,
+  Chip,
   Link,
   Navbar as NextNav,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  Spacer,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -16,6 +19,7 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
   const [activeHref, setActiveHref] = React.useState<string>(paths.index);
   const router = useRouter();
+  const { requested: requestedEarlyAccess } = useEarlyAccessStore();
 
   useEffect(() => {
     if (!router?.isReady) return;
@@ -38,6 +42,10 @@ export const Navbar = () => {
           className={"h-auto"}
         />
         <p className="font-bold text-inherit">Waifuu</p>
+        <Spacer x={4} />
+        <Chip variant={"flat"} color={"warning"}>
+          Closed Beta
+        </Chip>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {getNavbarPaths().map((path) => {
@@ -55,8 +63,10 @@ export const Navbar = () => {
           );
         })}
       </NavbarContent>
+
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
+        {/*TODO: This will be used when we are out of early access*/}
+        {/*<NavbarItem className="hidden lg:flex">
           <Link href={paths.login()}>
             <Trans>Login</Trans>
           </Link>
@@ -65,6 +75,18 @@ export const Navbar = () => {
           <Button as={Link} color="primary" href={paths.login()} variant="flat">
             <Trans>Sign Up</Trans>
           </Button>
+        </NavbarItem>*/}
+        <NavbarItem>
+          {!requestedEarlyAccess && (
+            <Button as={Link} color="primary" href={paths.requestAccess} variant="shadow">
+              <Trans>Request Access</Trans>
+            </Button>
+          )}
+          {requestedEarlyAccess && (
+            <Chip color={"warning"} variant={"dot"}>
+              <Trans>Requested access</Trans>
+            </Chip>
+          )}
         </NavbarItem>
       </NavbarContent>
 

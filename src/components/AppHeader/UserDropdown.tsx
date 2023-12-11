@@ -1,4 +1,6 @@
 import { useSession } from "@/hooks/useSession";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { getOrInitFirebaseAuth } from "@lib/firebase";
 import { paths } from "@lib/paths";
 import { Trans } from "@lingui/macro";
 import {
@@ -9,9 +11,13 @@ import {
   DropdownTrigger,
   useDisclosure,
 } from "@nextui-org/react";
+import * as Sentry from "@sentry/nextjs";
+import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { AiOutlineStar, AiOutlineUser } from "react-icons/ai";
+import { CiLogout } from "react-icons/ci";
 import { LiaFantasyFlightGames } from "react-icons/lia";
+import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
 
@@ -31,6 +37,18 @@ export const UserDropdown = (props: { className?: string }) => {
   };
 
   const hidden = status === "unauthenticated";
+
+  async function handleSignout() {
+    try {
+      await FirebaseAuthentication.signOut();
+      await signOut(getOrInitFirebaseAuth());
+    } catch (e) {
+      console.error("Error signing out from Firebase", e);
+      toast("There was a problem signing out", { type: "error" });
+      // log to Sentry
+      Sentry.captureException(e);
+    }
+  }
 
   return (
     <>
@@ -80,6 +98,14 @@ export const UserDropdown = (props: { className?: string }) => {
             key="subscription-plan"
           >
             <Trans>Subscription plan</Trans>
+          </DropdownItem>
+          <DropdownItem
+            textValue={"Sign Out"}
+            startContent={<CiLogout />}
+            onClick={handleSignout}
+            key="sign-out"
+          >
+            <Trans>Sign Out</Trans>
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

@@ -1,10 +1,10 @@
-import { PageTitle } from "@components/LargeTitle";
-import { PageDescription } from "@components/PageTitleDescription";
 import { Trans } from "@lingui/macro";
+import { PageDescription } from "src/components/PageDescription";
+import { PageTitle } from "src/components/PageTitle";
 
 export const PricingPageHeader = () => {
   return (
-    <div className="flex flex-col items-center space-y-4 text-center">
+    <div className="flex flex-col items-center text-center">
       <PageTitle>
         <Trans>Subscriptions</Trans>
       </PageTitle>

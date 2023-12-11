@@ -17,6 +17,7 @@ export const paths = {
   createBot: "/character/create",
   forum: "/forum",
   privacyPolicy: "/privacy-policy",
+  requestAccess: "/early-access",
   subscriptionSuccess: "/pricing", // TODO: Success page.
   subscriptionCancel: "/pricing", // TODO: Cancel page.
   login: (redirect?: string) => `/login${redirect ? `?redirect=${redirect}` : ""}`,
@@ -28,7 +29,7 @@ export const paths = {
 
 export const getNavbarPaths = () => [
   { title: t`Home`, href: paths.index },
-  { title: t`Pricing`, href: paths.pricing },
+  /*{ title: t`Pricing`, href: paths.pricing },*/
   /*{ title: t`Forum`, href: paths.forum },*/
   { title: t`Contact`, href: paths.contact },
 ];

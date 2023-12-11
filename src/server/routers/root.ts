@@ -3,6 +3,7 @@ import { authRouter } from "@/server/routers/auth";
 import { botsRouter } from "@/server/routers/bots";
 import { chatRouter } from "@/server/routers/chat";
 import { contactRouter } from "@/server/routers/contact";
+import { earlyAccessRouter } from "@/server/routers/early-access";
 import { plansRouter } from "@/server/routers/plans";
 import { RRChatRouter } from "@/server/routers/rr-chat";
 import { usersRouter } from "@/server/routers/users";
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   contact: contactRouter,
   chat: chatRouter,
   plans: plansRouter,
+  earlyAccess: earlyAccessRouter,
 });
 
 // export type definition of API

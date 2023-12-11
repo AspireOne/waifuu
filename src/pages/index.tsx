@@ -260,6 +260,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
       // Todo: meta description.
       return (
         <PublicPage
+          disableXPadding
           className="bg-contain bg-no-repeat"
           title={"Meet Waifuu"}
           /*TODO: DESCRIPTION*/

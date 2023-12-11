@@ -12,6 +12,8 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import { ToastContainer } from "react-toastify";
 
 import { SessionProvider } from "@/providers/SessionProvider";
+import { useInitializeEarlyAccess } from "@/stores";
+import useIsMobile from "@hooks/useIsMobile";
 import { getOrInitFirebaseApp, getOrInitFirebaseAuth } from "@lib/firebase";
 import { initGlobalLocale } from "@lib/i18n";
 import { i18n } from "@lingui/core";
@@ -25,8 +27,10 @@ import { useRouter } from "next/router";
 initGlobalLocale();
 
 // biome-ignore lint: I keep it here so that I do not forget it exists.
-const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
+const Waifuu: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const router = useRouter();
+  const isMobile = useIsMobile();
+  useInitializeEarlyAccess();
   // Initialize app.
   useEffect(() => {
     async function init() {
@@ -59,6 +63,7 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
                           limit={4}
                           newestOnTop={true}
                           theme={"dark"}
+                          position={isMobile ? "top-center" : "bottom-center"}
                         />
                         <Component {...pageProps} />
                       </div>
@@ -74,4 +79,4 @@ const MyApp: AppType<{}> = ({ Component, pageProps: { ...pageProps } }) => {
   );
 };
 
-export default api.withTRPC(MyApp);
+export default api.withTRPC(Waifuu);

@@ -59,6 +59,7 @@ export const PricingPage = () => {
     /*TODO: Desc...*/
     <CombinedPage
       title={_(msg`Subscriptions`)}
+      disableXPadding
       backPath={auth.status === "authenticated" ? paths.discover : paths.index}
     >
       <div className="mx-auto">

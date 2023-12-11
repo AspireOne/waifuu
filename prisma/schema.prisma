@@ -84,6 +84,19 @@ enum ChatMode {
   CHAT
 }
 
+model EarlyAccess {
+  @@id([email])
+  email       String  @unique
+  name        String
+  age         Int?
+  hearAboutUs String
+  granted     Boolean @default(false)
+  ip          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model User {
   // User uid.
   id               String  @id @unique
@@ -96,7 +109,7 @@ model User {
 
   bio         String?
   botContext  String?
-  addressedAs String?         @default("Senpai")
+  addressedAs String?
   Quota       PlanQuotaUsage?
   planId      PlanId?
 

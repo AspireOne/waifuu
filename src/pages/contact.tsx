@@ -4,18 +4,18 @@ import { Trans, t } from "@lingui/macro";
 import { Card, CardBody } from "@nextui-org/card";
 
 import { CombinedPage } from "@components/CombinedPage";
-import { PageTitle } from "@components/LargeTitle";
-import { PageDescription } from "@components/PageTitleDescription";
 import { FiMail } from "react-icons/fi";
+import { PageDescription } from "src/components/PageDescription";
+import { PageTitle } from "src/components/PageTitle";
 
 export default () => {
   return (
     /*TODO: Description*/
-    <CombinedPage title={t`Contact us`} description={""}>
+    <CombinedPage disableXPadding title={t`Contact us`} description={""}>
       <div className="container mx-auto max-w-5xl sm:px-10 lg:px-0 lg:mt-20">
         <div className="flex flex-col items-center lg:items-start lg:flex-row gap-20 justify-between sm:px-4">
           <div>
-            <PageTitle size={"md"}>
+            <PageTitle className={"text-left"} center={false}>
               <Trans>Contact us</Trans>
             </PageTitle>
             <PageDescription>

@@ -41,7 +41,7 @@ export const AppHeader = (
         {/*mr-2 to offset the dropdown, because it is natively slightly off.*/}
         {/*min-w-max to make it NOT shrink when title is too long*/}
         {/*User button, on the right*/}
-        <UserDropdown className={"ml-auto mr-2 min-w-max"} />
+        <UserDropdown className={"ml-auto mr-2 min-w-max aspect-square"} />
       </div>
     </div>
   );

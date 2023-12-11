@@ -2,8 +2,15 @@ import { SessionStatus, useSession } from "@/providers/SessionProvider";
 import * as React from "react";
 import { PropsWithChildren, useEffect } from "react";
 import { BasePage, PageProps } from "src/components/BasePage";
+import { PagePadding } from "src/components/PagePadding";
 
-type Props = Pick<PageProps, "title" | "description" | "className" | "backPath" | "autoBack">;
+type Props = Pick<
+  PageProps,
+  "title" | "description" | "className" | "backPath" | "autoBack"
+> & {
+  disableXPadding?: boolean;
+  disableYPadding?: boolean;
+};
 /**
  * A combination of public/app page
  * - Does NOT require authentication
@@ -38,7 +45,12 @@ export const CombinedPage = (props: PropsWithChildren<Props>) => {
       backPath={props.backPath}
       autoBack={props.autoBack === undefined ? true : props.autoBack}
     >
-      {props.children}
+      <PagePadding
+        disableXPadding={props.disableXPadding}
+        disableYPadding={props.disableYPadding}
+      >
+        {props.children}
+      </PagePadding>
     </BasePage>
   );
 };
