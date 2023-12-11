@@ -254,7 +254,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
       const router = useRouter();
 
       React.useEffect(() => {
-        if (status === "authenticated") router.push(semanticPaths.appIndex);
+        if (status === "authenticated") router.replace(semanticPaths.appIndex);
       }, [status]);
 
       // Todo: meta description.
