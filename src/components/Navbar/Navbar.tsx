@@ -10,7 +10,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Spacer,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -28,25 +27,22 @@ export const Navbar = () => {
 
   return (
     <NextNav onMenuOpenChange={setIsMenuOpen} className={"fixed"}>
-      <NavbarContent className="sm:hidden" justify="start">
+      {/*@ts-ignore*/}
+      <NavbarContent className="sm:hidden" justify="">
         <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
       </NavbarContent>
 
       <NavbarBrand>
         {/*TODO: LOGO*/}
-        <img
-          src={"/assets/logo.png"}
-          alt={"logo"}
-          width={"50px"}
-          height={"50px"}
-          className={"h-auto"}
-        />
-        <p className="font-bold text-inherit">Waifuu</p>
-        <Spacer x={4} />
-        <Chip variant={"flat"} color={"warning"}>
-          Closed Beta
-        </Chip>
+        <img src={"/assets/logo.png"} alt={"logo"} width={"50px"} height={"50px"} />
+        <div>
+          <p className="font-bold text-inherit">Waifuu</p>
+          <Chip variant={"flat"} color={"warning"} size={"sm"} className={"sm:hidden"}>
+            Closed Beta
+          </Chip>
+        </div>
       </NavbarBrand>
+
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {getNavbarPaths().map((path) => {
           const isActive =

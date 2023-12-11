@@ -1,4 +1,10 @@
-import { TRPCLink, httpLink, loggerLink } from "@trpc/client";
+import {
+  TRPCLink,
+  createTRPCProxyClient,
+  httpBatchLink,
+  httpLink,
+  loggerLink,
+} from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
@@ -63,6 +69,32 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
     });
   };
 };
+
+export const proxyApi = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: baseApiUrl("/trpc"),
+      async fetch(url, options) {
+        const idToken = await getIdToken();
+        const locale = getCurrentLocale();
+        const encoded = hmacEncode(options?.body);
+
+        return fetch(url, {
+          ...options,
+          // 'include' is required for cookies to be sent to the server.
+          credentials: Capacitor.isNativePlatform() ? "include" : undefined,
+          headers: {
+            ...options?.headers,
+            ...encoded.headers,
+            Authorization: idToken ? `Bearer ${idToken}` : "",
+            locale: locale,
+          },
+        });
+      },
+    }),
+  ],
+  transformer: superjson,
+});
 
 export const api = createTRPCNext<AppRouter>({
   config() {

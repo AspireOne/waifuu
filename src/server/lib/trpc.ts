@@ -205,8 +205,23 @@ const throttleMiddleware = t.middleware(({ ctx, next }) => {
   return next();
 });
 
+const adminMiddleware = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  const match = await prisma.adminEmail.findUnique({ where: { email: ctx.user.email } });
+  if (!match) throw new TRPCError({ code: "UNAUTHORIZED" });
+
+  return next();
+});
+
 export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure.use(hmacMiddleware).use(throttleMiddleware);
+export const adminProcedure = t.procedure
+  .use(hmacMiddleware)
+  .use(throttleMiddleware)
+  .use(adminMiddleware);
 export const protectedProcedure = t.procedure
   .use(hmacMiddleware)
   .use(throttleMiddleware)

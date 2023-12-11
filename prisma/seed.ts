@@ -8,6 +8,13 @@ import {
 import Bots from "./bots";
 
 const prisma = new PrismaClient();
+
+const adminEmails = [
+  "matejpesl1@gmail.com",
+  "dornicakkuba@gmail.com",
+  "jakubdornicak@gmail.com",
+];
+
 type BotProps = {
   id: string;
   title: string;
@@ -21,6 +28,59 @@ type BotProps = {
   backgroundImage: string;
   tags: CharacterTag[];
 };
+
+async function main() {
+  let isDev = process.env.NODE_ENV === "development";
+  let isProd =
+    process.env.NODE_ENV === "production" ||
+    process.env.NODE_ENV === "test" ||
+    // @ts-ignore
+    process.env.NODE_ENV === "staging";
+
+  // If seed command is run directly, NODE_ENV is not specified.
+  if (isProd === isDev) {
+    isProd = false;
+    isDev = true;
+    console.warn("seed: NODE_ENV is not specified. Defaulting to development mode.");
+  }
+
+  isProd ? await seedProduction() : await seedDevelopment();
+}
+
+async function seedProduction() {
+  let jobs = [];
+  jobs.push(Bots.map((bot) => upsertBot(bot as any)));
+  jobs.push(adminEmails.map(upsertAdminEmail));
+
+  await Promise.all(jobs);
+}
+
+async function seedDevelopment() {
+  let jobs = [];
+  jobs.push(Bots.map((bot) => upsertBot(bot as any)));
+  jobs.push(adminEmails.map(upsertAdminEmail));
+
+  await Promise.all(jobs);
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
+
+
+async function upsertAdminEmail(email: string) {
+  await prisma.adminEmail.upsert({
+    where: { email },
+    update: {},
+    create: { email },
+  });
+}
 
 async function upsertBot(props: BotProps) {
   const bot = await prisma.bot.upsert({
@@ -58,39 +118,3 @@ async function upsertBot(props: BotProps) {
 
   return bot;
 }
-
-async function main() {
-  let isDev = process.env.NODE_ENV === "development";
-  let isProd =
-    process.env.NODE_ENV === "production" ||
-    process.env.NODE_ENV === "test" ||
-    // @ts-ignore
-    process.env.NODE_ENV === "staging";
-
-  // If seed command is run directly, NODE_ENV is not specified.
-  if (isProd === isDev) {
-    isProd = false;
-    isDev = true;
-    console.warn("seed: NODE_ENV is not specified. Defaulting to development mode.");
-  }
-
-  isProd ? await seedProduction() : await seedDevelopment();
-}
-
-async function seedProduction() {
-  await Promise.all(Bots.map((bot) => upsertBot(bot as any)));
-}
-
-async function seedDevelopment() {
-  await Promise.all(Bots.map((bot) => upsertBot(bot as any)));
-}
-
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });

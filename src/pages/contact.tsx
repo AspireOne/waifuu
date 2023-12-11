@@ -4,6 +4,7 @@ import { Trans, t } from "@lingui/macro";
 import { Card, CardBody } from "@nextui-org/card";
 
 import { CombinedPage } from "@components/CombinedPage";
+import { Link } from "@nextui-org/react";
 import { FiMail } from "react-icons/fi";
 import { PageDescription } from "src/components/PageDescription";
 import { PageTitle } from "src/components/PageTitle";
@@ -73,9 +74,7 @@ function ContactInfoItem(props: {
   return (
     <div className="flex flex-row items-center gap-4">
       {props.icon}
-      <a href={props.href} className={"text-[#529BAB] hover:text-blue-400"}>
-        {props.children}
-      </a>
+      <Link href={props.href}>{props.children}</Link>
     </div>
   );
 }

@@ -84,8 +84,11 @@ enum ChatMode {
   CHAT
 }
 
+model AdminEmail {
+  email String @id
+}
+
 model EarlyAccess {
-  @@id([email])
   email       String  @unique
   name        String
   age         Int?
@@ -95,6 +98,8 @@ model EarlyAccess {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@id([email])
 }
 
 model User {
