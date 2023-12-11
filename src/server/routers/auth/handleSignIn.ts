@@ -4,6 +4,7 @@ import { verifyRequest } from "@/server/jobs/auth/verifyIdToken";
 import { TRPCError } from "@/server/lib/TRPCError";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
+import { t } from "@lingui/macro";
 import { NextApiResponse } from "next";
 import { z } from "zod";
 
@@ -27,11 +28,19 @@ export default publicProcedure
     });
 
     if (!hasEarlyAccess) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "You don't have early access.",
-        toast: "You don't have early access.",
+      const isAdmin = await ctx.prisma.adminEmail.findUnique({
+        where: {
+          email: decodedIdToken.email,
+        },
       });
+      if (!isAdmin) {
+        throw new TRPCError({
+          // Do not specify "UNAUTHORIZED" here.
+          code: "BAD_REQUEST",
+          message: "You don't have early access.",
+          toast: t`You don't have early access.`,
+        });
+      }
     }
 
     const { alreadyExisted } = await upsertUser(ctx.prisma, decodedIdToken);

@@ -45,7 +45,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (session.status === "unauthenticated" || (status !== "loading" && !isAdmin)) {
-      router.replace(paths.login());
+      router.replace(paths.login(paths.adminPanel));
     }
   }, [session, session.status, status, isAdmin]);
 

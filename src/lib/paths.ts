@@ -18,6 +18,7 @@ export const paths = {
   forum: "/forum",
   privacyPolicy: "/privacy-policy",
   requestAccess: "/early-access",
+  adminPanel: "/admin",
   subscriptionSuccess: "/pricing", // TODO: Success page.
   subscriptionCancel: "/pricing", // TODO: Cancel page.
   login: (redirect?: string) => `/login${redirect ? `?redirect=${redirect}` : ""}`,
