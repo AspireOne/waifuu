@@ -37,7 +37,7 @@ export const Ui = (props: UiProps) => {
       <Input
         variant={"bordered"}
         label="Email"
-        placeholder="Email"
+        placeholder="john.doe@gmail.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />

@@ -18,6 +18,7 @@ export const PublicPage = (
       topBar={"navbar"}
       showActionBar={false}
       autoBack={true}
+      showFooter={true}
       {...props}
     >
       {props.children}

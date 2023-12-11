@@ -1,7 +1,10 @@
 import { PropsWithChildren } from "react";
 import { BasePage, PageProps } from "src/components/BasePage";
 
-export type AppPageProps = Omit<PageProps, "topBar" | "unprotected" | "showActionBar"> & {
+export type AppPageProps = Omit<
+  PageProps,
+  "topBar" | "unprotected" | "showActionBar" | "showFooter"
+> & {
   /**
    * Main page = pages on the first level in the app. Shown in the bottom tab bar.
    *
@@ -26,6 +29,7 @@ export const AppPage = (props: PropsWithChildren<AppPageProps>) => {
       topBar={"app-header"}
       unprotected={false}
       showActionBar={!!props.topLevel}
+      showFooter={false}
       autoBack={props.autoBack === undefined ? !props.topLevel : props.autoBack}
       {...props}
     >

@@ -29,7 +29,14 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarBrand>
-        <div>logo here</div>
+        {/*TODO: LOGO*/}
+        <img
+          src={"/assets/logo.png"}
+          alt={"logo"}
+          width={"50px"}
+          height={"50px"}
+          className={"h-auto"}
+        />
         <p className="font-bold text-inherit">Waifuu</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">

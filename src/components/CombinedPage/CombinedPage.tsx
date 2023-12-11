@@ -34,6 +34,7 @@ export const CombinedPage = (props: PropsWithChildren<Props>) => {
       unprotected={true}
       showActionBar={false}
       topBar={status === "authenticated" ? "app-header" : "navbar"}
+      showFooter={status === "unauthenticated"}
       backPath={props.backPath}
       autoBack={props.autoBack === undefined ? true : props.autoBack}
     >

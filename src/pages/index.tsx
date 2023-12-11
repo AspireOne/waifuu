@@ -211,7 +211,7 @@ const CompanionUsage = () => {
   );
 };
 
-const Footer = () => {
+const MiniFooter = () => {
   return (
     <footer className="text-center">
       <p className="font-bold text-lg text-gray-400">Trusted by 1000+ users</p>
@@ -274,7 +274,7 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
           <Spacer y={40} />
           {/*<CompanionUsage />*/}
           <Spacer y={40} />
-          <Footer />
+          <MiniFooter />
           <Spacer y={40} />
         </PublicPage>
       );

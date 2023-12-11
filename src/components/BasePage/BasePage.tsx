@@ -1,10 +1,12 @@
 import { ActionBar } from "@components/ActionBar";
 import { AppHeader } from "@components/AppHeader";
 import PageHead from "@components/BasePage/PageHead";
+import Footer from "@components/Footer/Footer";
 import { Navbar } from "@components/Navbar";
 import { useSession } from "@hooks/useSession";
 import { paths } from "@lib/paths";
 import { normalizePath } from "@lib/utils";
+import { Spacer } from "@nextui-org/react";
 import { useCustomHistory } from "@providers/CustomHistoryProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -20,6 +22,7 @@ export type PageProps = {
   unprotected: boolean;
   topBar: "navbar" | "app-header";
   showActionBar: boolean;
+  showFooter: boolean;
 
   /** Explicit path to a page that will be loaded on back button click IF autoBack === true || there is no previous path on the stack. */
   backPath?: string | null;
@@ -42,7 +45,7 @@ export type PageProps = {
  * @constructor
  */
 export const BasePage = (props: PropsWithChildren<PageProps>) => {
-  let { unprotected, showActionBar, topBar, autoBack, backPath } = props;
+  let { unprotected, showActionBar, showFooter, topBar, autoBack, backPath } = props;
   showActionBar = false;
 
   const { historyStack } = useCustomHistory();
@@ -98,6 +101,11 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
       </PageWrapper>
 
       {showActionBar && <ActionBar />}
+      {showFooter && (
+        <>
+          <Spacer y={8} /> <Footer />
+        </>
+      )}
     </div>
   );
 };
@@ -142,7 +150,7 @@ function PageWrapper(
       >
         <div
           className={twMerge(
-            !props.noPadding && "mx-auto px-4 sm:px-8 md:px-14 lg:px-14",
+            !props.noPadding && "mx-auto px-4 sm:px-8 md:px-14 lg:px-14 min-h-[99vh]",
             !props.noPadding && paddingTop,
             !props.noPadding && paddingBottom,
             props.className,
