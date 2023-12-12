@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 /**
  * Contains all paths/routes for the app.
  */
+// Note IMPORTANT: When adding a new path that should be public, you must add it to robots.txt!
 export const paths = {
   index: "/",
   home: "/home",

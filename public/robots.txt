@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /
+Allow: /$
+Allow: /pricing$
+Allow: /contact$
+Allow: /login$
+Allow: /privacy-policy$
+Allow: /privacy$
+Allow: /sign-up$
+Allow: /signup$
+Allow: /signin$
+Allow: /sign-in$
+
+# Explanation: Disallow all pages, except the ones listed above.
+# When adding a new public page, it must be added manually to the list above to be indexed by search engines.
