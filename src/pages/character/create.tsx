@@ -240,7 +240,7 @@ const CreateChatPage = () => {
               Images
             </Title>
             {/*TODO: Add descriptions, improve design.s*/}
-            <div className={"space-y-4"}>
+            <div className={"flex flex-col sm:flex-row gap-4 sm:gap-8"}>
               <FileUploadRaw required onUpload={(id) => setAvatar(id)} label="Avatar" />
               <FileUploadRaw onUpload={(id) => setCover(id)} label={_(msg`Cover`)} />
               <FileUploadRaw

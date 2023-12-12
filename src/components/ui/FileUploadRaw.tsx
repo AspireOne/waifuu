@@ -1,6 +1,9 @@
-import { Trans } from "@lingui/macro";
+import { Image } from "@nextui-org/react";
 import { apiPostImage } from "@services/imageService";
-import { ChangeEvent, useState } from "react";
+import { cva } from "class-variance-authority";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { MdImage } from "react-icons/md";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type FileUploadRawProps = {
   onUpload: (id: string) => void;
@@ -8,28 +11,64 @@ type FileUploadRawProps = {
   required?: boolean;
 };
 
-export const FileUploadRaw = ({ onUpload, label, required }: FileUploadRawProps) => {
-  const [selectedFile, setSelectedFile] = useState<File | undefined>(undefined);
+const textClass = cva(["font-base"], {
+  variants: {
+    successful: {
+      true: "text-green-500",
+      false: "text-red-500",
+      undefined: "text-gray-700",
+    },
+  },
+});
+
+const containerClass = cva(
+  [
+    "w-36 h-36 bg-gray-700/20 border-[1.5px] rounded-lg items-center justify-center flex",
+  ],
+  {
+    variants: {
+      successful: {
+        true: "border-green-500",
+        false: "border-red-500",
+        undefined: "border-gray-700",
+      },
+    },
+  }
+);
+
+export const FileUploadRaw = ({
+  onUpload,
+  label,
+  required,
+}: FileUploadRawProps) => {
   const [uploading, setUploading] = useState(false);
-  const [responseSuccessful, setResponseSuccessful] = useState<boolean | undefined>(undefined);
+  const [responseSuccessful, setResponseSuccessful] = useState<
+    boolean | undefined
+  >(undefined);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [showLoadingOverlay, setShowLoadingOverlay] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setShowLoadingOverlay(uploading);
+  }, [uploading]);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target?.files?.[0];
-    setSelectedFile(file);
 
     if (file) {
+      setImageUrl(URL.createObjectURL(file));
       setUploading(true);
 
-      // TODO: I converted this to axios without testing, TEST IT.
-      const formData = new FormData();
-      formData.append("file", file);
-
       try {
-        const response = await apiPostImage(formData);
+        const formData = new FormData();
+        formData.append("file", file);
+        const { message } = await apiPostImage(formData);
+
         setResponseSuccessful(true);
-        onUpload(response.message[0]?.id ?? "");
+        onUpload(message[0]?.id ?? "");
       } catch (error) {
-        console.error("File upload error:", error);
         setResponseSuccessful(false);
       } finally {
         setUploading(false);
@@ -38,43 +77,46 @@ export const FileUploadRaw = ({ onUpload, label, required }: FileUploadRawProps)
   };
 
   return (
-    <div>
-      <label className="block text-white text-sm font-bold mb-2">
-        {label}
-        {required ? <span className={"text-red-600 ml-[2px]"}>*</span> : ""}
-      </label>
+    // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+    <div onClick={() => inputRef.current?.click()}>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg, image/png"
+        className="hidden"
+        onChange={handleFileChange}
+        id={`fileInput_${label}`}
+      />
 
-      <div
-        className={`relative rounded-md border-dashed border-2 ${
-          responseSuccessful ? "border-green-500" : "border-gray-700"
-        } p-4 cursor-pointer`}
-      >
-        <input
-          type="file"
-          accept="image/jpeg, image/png"
-          className="hidden"
-          onChange={handleFileChange}
-          id={`fileInput_${label}`}
-        />
+      {imageUrl && (
+        <div className={containerClass({ successful: responseSuccessful })}>
+          <div className="relative group">
+            {showLoadingOverlay && (
+              <div className="absolute inset-0 z-50 flex items-center justify-center bg-gray-700/70 rounded-lg">
+                <div className="animate-spin z-50 rounded-full h-8 w-8 border-t-2 border-gray-300" />
+              </div>
+            )}
 
-        <label
-          htmlFor={`fileInput_${label}`}
-          className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center text-gray-600"
-        >
-          {uploading ? (
-            <span className="text-2xl text-gray-600">
-              <Trans>Uploading...</Trans>
-            </span>
-          ) : (
-            <span
-              className={`text-2xl ${
-                selectedFile?.name && "text-sm w-3/4 overflow-hidden text-center"
-              }`}
-            >
-              {selectedFile?.name ?? "Browse"}
-            </span>
-          )}
-        </label>
+            <Image
+              className="aspect-square z-0 rounded-lg h-full w-full"
+              src={imageUrl}
+              alt="Uploaded"
+            />
+          </div>
+        </div>
+      )}
+
+      {!imageUrl && (
+        <div className={containerClass()}>
+          <MdImage className="w-20 h-20 text-gray-700" />
+        </div>
+      )}
+
+      <div className="flex flex-row gap-2">
+        {required && !responseSuccessful && (
+          <p className="text-red-400 text-xl">*</p>
+        )}
+        <p className={textClass({ successful: responseSuccessful })}>{label}</p>
       </div>
     </div>
   );
