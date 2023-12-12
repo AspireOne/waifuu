@@ -1,7 +1,8 @@
 import { Card, CardBody } from "@nextui-org/card";
 import { Avatar } from "@nextui-org/react";
 import { Mood } from "@prisma/client";
-import { useMemo } from "react";
+import Markdown from "markdown-to-jsx";
+import { PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -17,16 +18,16 @@ type Props = {
 };
 
 const ChatMessage = ({ author, message, className, mood, id }: Props) => {
-  const formattedMessage = useMemo(() => {
+  /*  const formattedMessage = useMemo(() => {
     return message
-      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*/g, "<em>$1</em>")
+      .replace(/\*\*(.*?)\*\*!/g, "<strong>$1</strong>")
+      .replace(/\*(.*?)\*!/g, "<em>$1</em>")
       .replace(/__(.*?)__/g, "<strong>$1</strong>")
       .replace(/_(.*?)_/g, "<em>$1</em>")
       .replace(/@@(.*?)@@/g, "<s>$1</s>")
       .replace(/`(.*?)`/g, "<code>$1</code>")
-      .replace(/```(.*?)```/g, "<pre>$1</pre>");
-  }, [message]);
+      .replace(/```(.*?)```/g, "<pre>$1</pre>")
+  }, [message]);*/
 
   return (
     <div
@@ -46,14 +47,28 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
             alt="avatar"
             className="w-[40px] h-[40px] min-w-[40px] rounded-full aspect-square"
           />
-
           <div>
             <p className={"font-bold"}>{author.name}</p>
-            <p
+            <Markdown
+              className="max-w-xs overflow-ellipsis overflow-hidden whitespace-pre-line"
+              options={{
+                forceBlock: true,
+                overrides: {
+                  em: {
+                    component: (props: PropsWithChildren) => (
+                      <em className="italic block text-foreground-600">{props.children}</em>
+                    ),
+                  },
+                },
+              }}
+            >
+              {message}
+            </Markdown>
+            {/*<p
               className="max-w-xs overflow-ellipsis overflow-hidden"
               // biome-ignore lint/security/noDangerouslySetInnerHtml: // TODO: Fix this later!
               dangerouslySetInnerHTML={{ __html: formattedMessage }}
-            />
+            />*/}
           </div>
         </CardBody>
       </Card>

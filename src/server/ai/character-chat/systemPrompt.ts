@@ -2,7 +2,7 @@ import { ChatMode } from "@prisma/client";
 import { PromptTemplate } from "langchain/prompts";
 
 const roleplaySystemPrompt = PromptTemplate.fromTemplate(
-  'You are roleplaying {characterName} in a chat with user. This is your character: "{characterPersona}".',
+  'You are roleplaying {characterName} in a chat with user. Use asterisks (*) for expressing actions. This is your character: "{characterPersona}".',
 );
 
 const chatSystemPrompt = PromptTemplate.fromTemplate(

@@ -19,7 +19,7 @@ import { z } from "zod";
 
 const botCreationInput = z.object({
   title: z.string().min(1, t`Title is required`).max(50, t`Title is too long`),
-  description: z.string().max(1200, t`Description is too long`),
+  description: z.string().max(700, t`Description is too long`),
   visibility: z.nativeEnum(BotVisibility),
   tags: z.array(z.nativeEnum(CharacterTag)).default([]),
 
