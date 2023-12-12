@@ -12,4 +12,4 @@ export const s3Client = (global.s3Client ??= new S3Client({
 }));
 
 export const s3DefaultBucket =
-  process.env.NODE_ENV === "production" ? env.S3_DEFAULT_BUCKET : env.S3_DEFAULT_ENV_BUCKET;
+  process.env.NODE_ENV === "production" ? env.S3_DEFAULT_BUCKET : env.S3_DEFAULT_DEV_BUCKET;

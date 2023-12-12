@@ -1,6 +1,5 @@
-import { env } from "@/server/env";
 import React from "react";
-import { baseS3Url, baseUrl } from "./paths";
+import { baseS3Url } from "./paths";
 
 /**
  * Takes in a string and applies markdown: *italic*, **bold**, `code`.
@@ -91,7 +90,7 @@ export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T
     return pathOrId;
   }
 
-  return `${baseS3Url()}${pathOrId}`
+  return `${baseS3Url()}/${pathOrId}`
 }
 
 export function isUrl(str: string): boolean {

@@ -64,13 +64,17 @@ export const baseUrl = () => {
 };
 
 export const baseS3Url = () => {
-  if (!process.env.NEXT_PUBLIC_S3_BASE_PATH) {
+  if (!process.env.NEXT_PUBLIC_S3_BASE_PATH && !process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH) {
     throw new Error(
       "NEXT_PUBLIC_S3_BASE_PATH is not set!"
-    )
+    );
   };
 
-  return process.env.NEXT_PUBLIC_S3_BASE_PATH;
+  if (process.env.NODE_ENV === "production") {
+    return process.env.NEXT_PUBLIC_S3_BASE_PATH;
+  } else {
+    return process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH;
+  }
 }
 
 /**
