@@ -46,7 +46,7 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
     output: output,
   });
 
-  const msgs = await saveMessages(input, output, ctx.prisma);
+  const msgs = await saveMessages(input, output.text, ctx.prisma);
   // TODO(1): Do it async after request.
   await incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma);
 

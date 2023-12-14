@@ -84,7 +84,7 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-const run = async (input: Input): Promise<string> => {
+const run = async (input: Input) => {
   const msgsTransformed = input.messages.map((msg) => {
     return {
       role: convertToOpenaiRole(msg.role),
@@ -133,6 +133,9 @@ const run = async (input: Input): Promise<string> => {
       completionTokens: stats.tokens_completion,
       totalTokens: stats.tokens_prompt + stats.tokens_completion,
     },
+    metadata: {
+      price: stats.usage,
+    },
   });
   generation.end();
 
@@ -140,8 +143,11 @@ const run = async (input: Input): Promise<string> => {
     throw new Error("Open router did not return any choices.");
   }
 
-  const textOutout = response.choices[0]!.message.content;
-  return textOutout;
+  const textOutput = response.choices[0]!.message.content;
+  return {
+    text: textOutput,
+    price: stats.usage,
+  };
 };
 
 const convertToOpenaiRole = (role: ChatRole) => {
@@ -155,5 +161,5 @@ const convertToOpenaiRole = (role: ChatRole) => {
   }
 };
 
-export const roleplayLlm = { run };
+export const roleplayLlm = { run, model: llm[0]! };
 export type { Message };

@@ -150,7 +150,7 @@ async function createInitialMessage(
 
   return await db.initialMessage.create({
     data: {
-      message: output,
+      message: output.text,
       chatMode: mode,
       botId: bot.id,
     },
