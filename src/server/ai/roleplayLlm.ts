@@ -8,30 +8,6 @@ type Message = {
   content: string;
 };
 
-const models = {
-  psyfighter: {
-    model: "jebcarter/psyfighter-13b",
-    tokens: 1024,
-  },
-};
-
-const llm = [
-  "jebcarter/psyfighter-13b",
-  "gryphe/mythomax-l2-13b",
-  "teknium/openhermes-2.5-mistral-7b",
-  "mistralai/mixtral-8x7b-instruct",
-];
-
-// Note: change this according to model.
-const params = {
-  temperature: 0.89,
-  max_tokens: 1024,
-  frequency_penalty: 0.3,
-  route: "fallback",
-  //transforms: ["middle-out"],
-  stream: false,
-};
-
 type OpenRouterOutput = {
   id: string;
   model: string;
@@ -45,10 +21,67 @@ type OpenRouterOutput = {
   object: string;
 };
 
+type OpenRouterStatsJsonOutput = {
+  id: string;
+  model: string;
+  streamed: boolean;
+  generation_time: number;
+  created_at: string;
+  tokens_prompt: number;
+  tokens_completion: number;
+  native_tokens_prompt: null;
+  native_tokens_completion: null;
+  num_media_prompt: null;
+  num_media_completion: null;
+  origin: string;
+  usage: number;
+};
+
 type Input = {
   system_prompt: string;
   messages: Message[];
   trace: LangfuseTraceClient;
+};
+
+// Note: change this according to model.
+const universalParams = {
+  temperature: 0.89,
+  max_tokens: 1024,
+  frequency_penalty: 0.3,
+  route: "fallback",
+  stream: false,
+};
+
+const models = {
+  psyfighter: {
+    model: "jebcarter/psyfighter-13b",
+    tokens: 4096,
+    params: universalParams,
+  },
+  mythomax: {
+    model: "gryphe/mythomax-l2-13b",
+    tokens: 4096,
+    params: universalParams,
+  },
+  openhermes25: {
+    model: "teknium/openhermes-2.5-mistral-7b",
+    tokens: 4096,
+    params: universalParams,
+  },
+  mixtral: {
+    model: "mistralai/mixtral-8x7b-instruct",
+    tokens: 32768,
+    params: universalParams,
+  },
+};
+
+const llm = [models.psyfighter, models.mythomax, models.openhermes25, models.mixtral];
+
+const headers = {
+  Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
+  "HTTP-Referer": `${"https://waifuu.com"}`,
+  "X-Title": `${"Waifuu"}`,
+  "Content-Type": "application/json",
 };
 
 const run = async (input: Input): Promise<string> => {
@@ -61,26 +94,19 @@ const run = async (input: Input): Promise<string> => {
 
   const generation = input.trace.generation({
     name: "roleplay-generation",
-    model: llm[0],
+    model: llm[0]!.model,
     startTime: new Date(),
     completionStartTime: new Date(),
-    modelParameters: params,
+    modelParameters: universalParams,
   });
 
   const { data: response } = (await axios({
     method: "post",
     url: "https://openrouter.ai/api/v1/chat/completions",
-    headers: {
-      Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
-      "HTTP-Referer": `${"https://waifuu.com"}`,
-      "X-Title": `${"Waifuu"}`,
-      "Content-Type": "application/json",
-    },
-    // TODO: Make it specific to the model.
+    headers: headers,
     data: {
-      // TODO: models
-      model: llm,
-      ...params,
+      model: llm.map((m) => m.model),
+      ...llm[0]!.params,
       messages: [
         {
           role: "system",
@@ -91,16 +117,22 @@ const run = async (input: Input): Promise<string> => {
     },
   })) as { data: OpenRouterOutput };
 
-  //const tokens = response.json();
-  //console.log({ tokens });
+  const statsResponse = await fetch(
+    `https://openrouter.ai/api/v1/generation?id=${response.id}`,
+    {
+      headers,
+    },
+  );
+
+  const stats = (await statsResponse.json()) as OpenRouterStatsJsonOutput;
 
   // TODO: Price.
   generation.update({
-    /*usage: {
-      promptTokens: tokens.tokens_prompt,
-      completionTokens: tokens.tokens_completion,
-      totalTokens: tokens.tokens_prompt + tokens.tokens_completion,
-    },*/
+    usage: {
+      promptTokens: stats.tokens_prompt,
+      completionTokens: stats.tokens_completion,
+      totalTokens: stats.tokens_prompt + stats.tokens_completion,
+    },
   });
   generation.end();
 
@@ -108,8 +140,8 @@ const run = async (input: Input): Promise<string> => {
     throw new Error("Open router did not return any choices.");
   }
 
-  const responseContent = response.choices[0]!.message.content;
-  return responseContent;
+  const textOutout = response.choices[0]!.message.content;
+  return textOutout;
 };
 
 const convertToOpenaiRole = (role: ChatRole) => {
