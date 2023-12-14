@@ -5,6 +5,7 @@ import React from "react";
  * Takes in a string and applies markdown: *italic*, **bold**, `code`.
  * @example "Hello *world*! I am **Kate**" -> ["Hello ", <i>world</i>, "!", " I am ", <b>Kate</b>]
  */
+// TODO: Use the packagr we r using.
 export function applyMarkdown(text: string): React.ReactNode[] {
   const result: (string | React.ReactNode)[] = [];
 

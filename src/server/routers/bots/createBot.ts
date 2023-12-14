@@ -1,6 +1,7 @@
 import { getInitialMessagePrompt, getSystemPrompt } from "@/server/ai/character-chat/prompts";
 
-import { openRouterModel } from "@/server/ai/models/openRouterModel";
+import { roleplayLlm } from "@/server/ai/roleplayLlm";
+import { langfuse } from "@/server/clients/langfuse";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { TRPCError } from "@/server/lib/TRPCError";
 import { protectedProcedure } from "@/server/lib/trpc";
@@ -15,6 +16,7 @@ import {
   PrismaClient,
   User,
 } from "@prisma/client";
+import { LangfuseTraceClient } from "langfuse";
 import { z } from "zod";
 
 const botCreationInput = z.object({
@@ -78,10 +80,16 @@ export default protectedProcedure.input(botCreationInput).mutation(async ({ inpu
   });
 
   // Create initial messages.
+  const trace = langfuse.trace({
+    name: "initial-message-generation",
+    userId: ctx.user.id,
+    metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
+  });
+
   await Promise.all([
-    createInitialMessage(ChatMode.ROLEPLAY, bot, ctx.user, ctx.prisma),
-    createInitialMessage(ChatMode.CHAT, bot, ctx.user, ctx.prisma),
-    createInitialMessage(ChatMode.ADVENTURE, bot, ctx.user, ctx.prisma),
+    createInitialMessage(ChatMode.ROLEPLAY, bot, ctx.user, ctx.prisma, trace),
+    createInitialMessage(ChatMode.CHAT, bot, ctx.user, ctx.prisma, trace),
+    createInitialMessage(ChatMode.ADVENTURE, bot, ctx.user, ctx.prisma, trace),
   ]);
 
   // TODO(1): Do it async after request.
@@ -114,7 +122,13 @@ async function ensureNotDuplicateOrThrow(
   }
 }
 
-async function createInitialMessage(mode: ChatMode, bot: Bot, user: User, db: PrismaClient) {
+async function createInitialMessage(
+  mode: ChatMode,
+  bot: Bot,
+  user: User,
+  db: PrismaClient,
+  trace: LangfuseTraceClient,
+) {
   const systemPrompt = await getSystemPrompt(mode, bot.persona, bot.name);
   const initialMessagePrompt = getInitialMessagePrompt(
     mode,
@@ -123,8 +137,7 @@ async function createInitialMessage(mode: ChatMode, bot: Bot, user: User, db: Pr
   );
   console.debug({ systemPrompt, initialMessagePrompt });
 
-  const output = await openRouterModel.run({
-    model: "jebcarter/psyfighter-13b",
+  const output = await roleplayLlm.run({
     system_prompt: systemPrompt,
     messages: [
       {
@@ -132,11 +145,12 @@ async function createInitialMessage(mode: ChatMode, bot: Bot, user: User, db: Pr
         content: initialMessagePrompt,
       },
     ],
+    trace,
   });
 
   return await db.initialMessage.create({
     data: {
-      message: output,
+      message: output.text,
       chatMode: mode,
       botId: bot.id,
     },

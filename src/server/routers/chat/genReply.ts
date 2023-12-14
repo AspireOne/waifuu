@@ -7,9 +7,12 @@ import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
 import { getSystemPrompt } from "@/server/ai/character-chat/prompts";
-import { openRouterModel } from "@/server/ai/models/openRouterModel";
+import { roleplayLlm } from "@/server/ai/roleplayLlm";
+import { langfuse } from "@/server/clients/langfuse";
+import { tokensToMessages } from "@/server/helpers/helpers";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { t } from "@lingui/macro";
+import { LangfuseTraceClient } from "langfuse";
 
 const Input = z.object({
   chatId: z.string(),
@@ -19,21 +22,28 @@ const Input = z.object({
 export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) => {
   await ensureWithinQuotaOrThrow("messagesSent", ctx.prisma, ctx.user.id, ctx.user.planId);
 
-  // TODO: Get amount of messages based on the model's context window length.
-  // For now we hardcode it.
-  const chat = await retrieveChatOrThrow(input.chatId, ctx.prisma, 30);
+  const chat = await retrieveChatOrThrow(
+    input.chatId,
+    ctx.prisma,
+    tokensToMessages(roleplayLlm.model.params.max_tokens),
+  );
 
   // Push the new message to the msg history so that it is included in the prompt without saving them just yet.
   chat.messages.push(createPlaceholderMessage(input));
 
-  console.log(
-    "messages total text length: ",
-    chat.messages.reduce((acc, msg) => acc + msg.content.length, 0),
-  );
-  //console.log("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
+  const trace = langfuse.trace({
+    name: "llm-reply",
+    userId: ctx.user.id,
+    input: input.message,
+    metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
+  });
 
-  const output = await genOutput(chat);
-  const msgs = await saveMessages(input, output, ctx.prisma);
+  const output = await genOutput(chat, trace);
+  trace.update({
+    output: output,
+  });
+
+  const msgs = await saveMessages(input, output.text, ctx.prisma);
   // TODO(1): Do it async after request.
   await incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma);
 
@@ -60,12 +70,13 @@ function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
 
 async function genOutput(
   chat: Chat & { bot: Bot } & { user: User } & { messages: Message[] },
+  trace: LangfuseTraceClient,
 ) {
   try {
-    return await openRouterModel.run({
-      model: "jebcarter/psyfighter-13b",
+    return await roleplayLlm.run({
       system_prompt: await getSystemPrompt(chat.mode, chat.bot.persona, chat.bot.name),
       messages: chat.messages,
+      trace,
     });
   } catch (e) {
     console.error(e);
