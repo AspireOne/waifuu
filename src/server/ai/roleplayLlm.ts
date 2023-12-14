@@ -8,7 +8,13 @@ type Message = {
   content: string;
 };
 
-// "openai/gpt-3.5-turbo"
+const models = {
+  psyfighter: {
+    model: "jebcarter/psyfighter-13b",
+    tokens: 1024,
+  },
+};
+
 const llm = [
   "jebcarter/psyfighter-13b",
   "gryphe/mythomax-l2-13b",
@@ -45,17 +51,6 @@ type Input = {
   trace: LangfuseTraceClient;
 };
 
-const convertToOpenaiRole = (role: ChatRole) => {
-  switch (role) {
-    case ChatRole.USER:
-      return "user";
-    case ChatRole.BOT:
-      return "assistant";
-    default:
-      throw new Error("Invalid chat role.");
-  }
-};
-
 const run = async (input: Input): Promise<string> => {
   const msgsTransformed = input.messages.map((msg) => {
     return {
@@ -64,18 +59,15 @@ const run = async (input: Input): Promise<string> => {
     };
   });
 
-  console.debug("open router input: ", msgsTransformed.map((msg) => msg.content).join(" "));
-
   const generation = input.trace.generation({
-    name: "reply-generation",
+    name: "roleplay-generation",
     model: llm[0],
     startTime: new Date(),
-    // TODO: modelParameters:
     completionStartTime: new Date(),
     modelParameters: params,
   });
 
-  const response = (await axios({
+  const { data: response } = (await axios({
     method: "post",
     url: "https://openrouter.ai/api/v1/chat/completions",
     headers: {
@@ -99,18 +91,36 @@ const run = async (input: Input): Promise<string> => {
     },
   })) as { data: OpenRouterOutput };
 
+  //const tokens = response.json();
+  //console.log({ tokens });
+
+  // TODO: Price.
+  generation.update({
+    /*usage: {
+      promptTokens: tokens.tokens_prompt,
+      completionTokens: tokens.tokens_completion,
+      totalTokens: tokens.tokens_prompt + tokens.tokens_completion,
+    },*/
+  });
   generation.end();
 
-  if (!response.data.choices || response.data.choices.length === 0) {
+  if (!response.choices || response.choices.length === 0) {
     throw new Error("Open router did not return any choices.");
   }
 
-  console.debug("open router output: ", response.data.choices[0]!.message.content);
-
-  const responseContent = response.data.choices[0]!.message.content;
-  console.log(JSON.stringify(response.data));
-
+  const responseContent = response.choices[0]!.message.content;
   return responseContent;
+};
+
+const convertToOpenaiRole = (role: ChatRole) => {
+  switch (role) {
+    case ChatRole.USER:
+      return "user";
+    case ChatRole.BOT:
+      return "assistant";
+    default:
+      throw new Error("Invalid chat role.");
+  }
 };
 
 export const roleplayLlm = { run };
