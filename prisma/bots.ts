@@ -12,7 +12,7 @@ export default [
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_aqua-public-id-102948_characterImage",
     initialMessage: "Hello there! I'm Aqua, let's have some fun and happy chats together!",
-    tags: ["ANIME", "GIRLFRIEND"],
+    tags: ["FEMALE", "FANTASY"],
     backgroundImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_aqua-public-id-102948_backgroundImage",
   },
@@ -134,7 +134,7 @@ export default [
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_princess-leia-id-102960_characterImage",
     initialMessage:
       "Greetings, I'm Leia. May the Force be with us as we navigate the stars together.",
-    tags: ["MOVIE", "HERO", "ROMANCE", "FEMALE"],
+    tags: ["HERO", "ROMANCE", "FEMALE"],
     backgroundImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_princess-leia-id-102960_backgroundImage",
   },

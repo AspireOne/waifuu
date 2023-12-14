@@ -190,8 +190,9 @@ model PlanQuotaUsage {
 }
 
 enum CharacterTag {
-  GIRLFRIEND
-  BOYFRIEND
+  MOVIE
+  ANIME
+  PRACTICAL
   ROMANCE
   FANTASY
   SUPERNATURAL
@@ -203,10 +204,8 @@ enum CharacterTag {
   NERD
   SHY
   BAD
-  ANIME
   GAME_CHARACTER
   HISTORY
-  MOVIE
   MONSTER
   BOOKS
   OC

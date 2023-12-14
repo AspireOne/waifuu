@@ -160,7 +160,6 @@ const hmacMiddleware = t.middleware(({ ctx, next }) => {
   else signature = signature as string;
 
   const verified = verifyHmac(ctx.req?.body, nonce!, timestamp!, signature!);
-  console.log({ verified });
   if (!verified) {
     throw new TRPCError({
       code: "UNAUTHORIZED",

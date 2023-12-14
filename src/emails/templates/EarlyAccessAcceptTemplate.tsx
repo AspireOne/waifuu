@@ -1,6 +1,6 @@
 import { Email } from "@/emails/components/Email";
-import { Text } from "@jsx-email/all";
-import { paths } from "@lib/paths";
+import { Link, Row, Text } from "@jsx-email/all";
+import { fullUrl, paths } from "@lib/paths";
 import { t } from "@lingui/macro";
 
 type RegisterEmailProps = {
@@ -23,19 +23,22 @@ export default ({ email = "john.doe@gmail.com" }: EarlyAccessEmailProps) => {
       title={t`Your early access request to Waifuu has been accepted`}
     >
       <Text className={"whitespace-pre-wrap"}>
-        {t({
-          message: `Dear user,
-          
-            We have just accepted your request to join early access program. You can now ${(
-              <a href={paths.login()}>{t`create an account`}</a>
-            )} with this email and start using Waifuu.
-            
-            If you encounter a bug, or have a feature request, we would greatly appreciate if you let us know using the built-in feedback feature. Remember, Waifuu is still in beta, so there might be some hiccups here and there. We are actively working to polish all rough edges based on your feedback.            
-            
-            If you have any problems, insights, or just want to say hello, don't hesitate and reach to us.
-            We cannot wait for what you will create. Sincerely,
-            Team Waifuu`,
-        })}
+        Dear user,
+        <Row />
+        We have just accepted your request to join early access program. You can now{" "}
+        {<Link href={fullUrl(paths.login())}>create an account</Link>} with this email and
+        start using Waifuu.
+        <Row />
+        <Row />
+        If you encounter a bug, or have a feature request, we would greatly appreciate if you
+        let us know using the built-in feedback feature. Remember, Waifuu is still in beta, so
+        there might be some hiccups here and there. We are actively working to polish all rough
+        edges based on your feedback.
+        <Row />
+        <Row />
+        We cannot wait for what you will create. Sincerely,
+        <Row />
+        Team Waifuu`,
       </Text>
     </Email>
   );
