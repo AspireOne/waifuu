@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState, FC, ReactNode } from "react";
 import { useRouter } from "next/router";
+import { FC, ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 // Type for the custom history context value
 interface CustomHistoryContextValue {
@@ -28,7 +28,6 @@ export const CustomHistoryProvider: FC<CustomHistoryProviderProps> = ({ children
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      console.log("route changed: ", url)
       setHistoryStack((prevStack) => [...prevStack, url]);
     };
 

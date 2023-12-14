@@ -202,12 +202,13 @@ const ParametersHeader = (props: {
         <div className="mx-auto mr-0 flex flex-col gap-3">
           {/*<TagMultiSelect className="w-full sm:hidden" onSelectTagIds={props.onTagsChange} />*/}
           <div className="flex flex-row gap-6 my-1">
-            <Switch
+            {/*TODO: Removed official switch*/}
+            {/*<Switch
               onValueChange={(value) => props.onOnlyOfficialChange(value)}
               isSelected={props.searchData.source === "OFFICIAL"}
             >
               Official
-            </Switch>
+            </Switch>*/}
 
             <Switch
               isSelected={props.searchData.nsfw}

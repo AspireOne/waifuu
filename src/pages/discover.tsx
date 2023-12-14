@@ -14,8 +14,8 @@ const Discover = () => {
 
   return (
     <AppPage backPath={null} title={t`Discover Characters`} topLevel>
-      <DiscoverHeader />
-      <Spacer y={14} />
+      <DiscoverHeader className={"h-[200px]"} />
+      <Spacer className={"h-[210px] lg:h-[150px]"} />
 
       <div className="w-full mx-auto flex flex-col gap-16">
         <ActiveChatsDiscoverCategory />

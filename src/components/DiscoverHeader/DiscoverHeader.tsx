@@ -2,23 +2,24 @@ import { useSession } from "@/providers/SessionProvider";
 import Title from "@components/ui/Title";
 import { Trans } from "@lingui/macro";
 import Image from "next/image";
+import { twMerge } from "tailwind-merge";
 
-export const DiscoverHeader = () => {
+export const DiscoverHeader = (props: { className?: string }) => {
   const { user } = useSession();
 
   return (
     /*mb is to offset the absolute position.*/
-    <div className="relative mb-10">
+    <div className={twMerge("absolute left-0 right-0 top-14 lg:top-0", props.className)}>
       <Image
         alt="background"
         loading="eager"
-        className="opacity-30 h-[140px] mt-[-20px] object-cover z-10"
+        className="opacity-30 h-full w-full object-cover z-10 absolute"
         src={"/assets/background.png"}
         width={1920}
         height={1080}
       />
 
-      <div className="mx-auto mt-[-120px] z-20 relative">
+      <div className="z-20 relative sm:ml-10 ml-5 lg:ml-20 mt-10">
         <p className="text-2xl md:text-4xl">👋</p>
 
         <div>

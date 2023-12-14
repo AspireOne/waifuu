@@ -20,10 +20,11 @@ export const AppHeader = (
 
   return (
     <div
-      className={
-        "z-[100] h-[55px] fixed top-0 left-0 right-0 " +
-        "backdrop-blur-md bg-background/50 border-b-1 border-foreground-100 shadow"
-      }
+      className={twMerge(
+        "z-[100] h-[55px] fixed top-0 left-0 right-0",
+        "backdrop-blur-md bg-background/50 border-b-1 border-foreground-100 shadow",
+        "lg:top-4 lg:rounded-full lg:mx-72 lg:border lg:border-2 lg:background-blur-xl",
+      )}
     >
       <div className={"flex flex-row items-center gap-5 h-full px-1"}>
         {/*Back button, on the left*/}
@@ -38,7 +39,12 @@ export const AppHeader = (
         </Button>
 
         {/*Text, absolute, centered*/}
-        <h2 className={twMerge("my-auto mx-auto text-center text-xl line-clamp-1 flex-1", "")}>
+        <h2
+          className={twMerge(
+            "my-auto mx-auto text-center text-[19px] line-clamp-1 flex-1",
+            "",
+          )}
+        >
           {props.children}
         </h2>
 
