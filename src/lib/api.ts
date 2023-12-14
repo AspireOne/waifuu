@@ -14,6 +14,7 @@ import { type AppRouter } from "@/server/routers/root";
 import { Capacitor } from "@capacitor/core";
 
 import { ClientTRPCError } from "@/server/lib/trpc";
+import { getIsOnline } from "@hooks/useIsOnline";
 import { hmacEncode } from "@lib/hmacEncode";
 import { getCurrentLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
@@ -31,6 +32,14 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
         error(err) {
           // This already logs the error to the console.
           observer.error(err);
+
+          // If not online, do not make the request so that there are not errors.
+          // The query WILL be refetched when the user comes back online,
+          // as per tRPC's default behaviour.
+          if (!getIsOnline()) {
+            console.log("Not showing toast errors, because user is offline.");
+            return;
+          }
 
           // Get the custom data we sent from the server.
           const trpcErrData = (err.meta?.responseJSON as any)?.error?.json as

@@ -1,5 +1,6 @@
 import { useSession } from "@/hooks/useSession";
 import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+import { useIsOnline } from "@hooks/useIsOnline";
 import { getOrInitFirebaseAuth } from "@lib/firebase";
 import { paths } from "@lib/paths";
 import { Trans } from "@lingui/macro";
@@ -24,6 +25,7 @@ import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
 export const UserDropdown = (props: { className?: string }) => {
   const { user, status } = useSession();
   const router = useRouter();
+  const isOnline = useIsOnline();
 
   const {
     isOpen: isSettingsOpen,
@@ -52,7 +54,7 @@ export const UserDropdown = (props: { className?: string }) => {
 
   return (
     <>
-      <Dropdown placement="bottom-end" size={"lg"}>
+      <Dropdown placement="bottom-end" size={"lg"} isDisabled={!isOnline}>
         <DropdownTrigger className={`${hidden && "invisible"}`}>
           <Avatar
             isBordered

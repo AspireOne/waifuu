@@ -1,4 +1,5 @@
 import { UserDropdown } from "@components/AppHeader/UserDropdown";
+import { useIsOnline } from "@hooks/useIsOnline";
 import { Button } from "@nextui-org/react";
 import { PropsWithChildren } from "react";
 import { BiArrowBack } from "react-icons/bi";
@@ -15,6 +16,8 @@ export const AppHeader = (
     backButtonEnabled: boolean;
   }>,
 ) => {
+  const isOnline = useIsOnline();
+
   return (
     <div
       className={
@@ -25,6 +28,7 @@ export const AppHeader = (
       <div className={"flex flex-row items-center gap-5 h-full px-1"}>
         {/*Back button, on the left*/}
         <Button
+          isDisabled={!isOnline}
           variant={"light"}
           isIconOnly
           onClick={props.backButtonEnabled ? props.onBackButtonPressed : undefined}
