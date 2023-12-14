@@ -1,20 +1,32 @@
 import { env } from "@/server/env";
 import { ChatRole } from "@prisma/client";
 import axios from "axios";
+import { LangfuseTraceClient } from "langfuse";
 
 type Message = {
   role: ChatRole;
   content: string;
 };
 
-type OpenRouterModel =
-  | "openai/gpt-3.5-turbo"
-  | "jebcarter/psyfighter-13b"
-  | "gryphe/mythomax-l2-13b"
-  | "teknium/openhermes-2.5-mistral-7b"
-  | "mistralai/mixtral-8x7b-instruct";
+// "openai/gpt-3.5-turbo"
+const llm = [
+  "jebcarter/psyfighter-13b",
+  "gryphe/mythomax-l2-13b",
+  "teknium/openhermes-2.5-mistral-7b",
+  "mistralai/mixtral-8x7b-instruct",
+];
 
-type Output = {
+// Note: change this according to model.
+const params = {
+  temperature: 0.89,
+  max_tokens: 1024,
+  frequency_penalty: 0.3,
+  route: "fallback",
+  //transforms: ["middle-out"],
+  stream: false,
+};
+
+type OpenRouterOutput = {
   id: string;
   model: string;
   choices: {
@@ -27,7 +39,13 @@ type Output = {
   object: string;
 };
 
-const chatRoleToOpenaiRole = (role: ChatRole) => {
+type Input = {
+  system_prompt: string;
+  messages: Message[];
+  trace: LangfuseTraceClient;
+};
+
+const convertToOpenaiRole = (role: ChatRole) => {
   switch (role) {
     case ChatRole.USER:
       return "user";
@@ -38,21 +56,24 @@ const chatRoleToOpenaiRole = (role: ChatRole) => {
   }
 };
 
-type OpenRouterModelInput = {
-  model: OpenRouterModel;
-  system_prompt: string;
-  messages: Message[];
-};
-
-const run = async (input: OpenRouterModelInput): Promise<string> => {
+const run = async (input: Input): Promise<string> => {
   const msgsTransformed = input.messages.map((msg) => {
     return {
-      role: chatRoleToOpenaiRole(msg.role),
+      role: convertToOpenaiRole(msg.role),
       content: msg.content,
     };
   });
 
   console.debug("open router input: ", msgsTransformed.map((msg) => msg.content).join(" "));
+
+  const generation = input.trace.generation({
+    name: "reply-generation",
+    model: llm[0],
+    startTime: new Date(),
+    // TODO: modelParameters:
+    completionStartTime: new Date(),
+    modelParameters: params,
+  });
 
   const response = (await axios({
     method: "post",
@@ -63,12 +84,11 @@ const run = async (input: OpenRouterModelInput): Promise<string> => {
       "X-Title": `${"Waifuu"}`,
       "Content-Type": "application/json",
     },
+    // TODO: Make it specific to the model.
     data: {
       // TODO: models
-      model: [input.model],
-      route: "fallback",
-      transforms: ["middle-out"],
-      stream: false,
+      model: llm,
+      ...params,
       messages: [
         {
           role: "system",
@@ -77,7 +97,9 @@ const run = async (input: OpenRouterModelInput): Promise<string> => {
         ...msgsTransformed,
       ],
     },
-  })) as { data: Output };
+  })) as { data: OpenRouterOutput };
+
+  generation.end();
 
   if (!response.data.choices || response.data.choices.length === 0) {
     throw new Error("Open router did not return any choices.");
@@ -91,5 +113,5 @@ const run = async (input: OpenRouterModelInput): Promise<string> => {
   return responseContent;
 };
 
-export const openRouterModel = { run };
+export const roleplayLlm = { run };
 export type { Message };

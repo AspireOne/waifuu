@@ -7,10 +7,11 @@ import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
 import { getSystemPrompt } from "@/server/ai/character-chat/prompts";
-import { openRouterModel } from "@/server/ai/openRouterModel";
+import { roleplayLlm } from "@/server/ai/roleplayLlm";
 import { langfuse } from "@/server/clients/langfuse";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { t } from "@lingui/macro";
+import { LangfuseTraceClient } from "langfuse";
 
 const Input = z.object({
   chatId: z.string(),
@@ -40,16 +41,7 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
     metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
   });
 
-  const generation = trace.generation({
-    name: "reply-generation",
-    // TODO asttrsct out
-    model: "jebcarter/psyfighter-13b",
-    startTime: new Date(),
-  });
-
-  const output = await genOutput(chat);
-
-  generation.end();
+  const output = await genOutput(chat, trace);
   trace.update({
     output: output,
   });
@@ -81,12 +73,13 @@ function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
 
 async function genOutput(
   chat: Chat & { bot: Bot } & { user: User } & { messages: Message[] },
+  trace: LangfuseTraceClient,
 ) {
   try {
-    return await openRouterModel.run({
-      model: "jebcarter/psyfighter-13b",
+    return await roleplayLlm.run({
       system_prompt: await getSystemPrompt(chat.mode, chat.bot.persona, chat.bot.name),
       messages: chat.messages,
+      trace,
     });
   } catch (e) {
     console.error(e);
