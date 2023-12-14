@@ -1,6 +1,6 @@
 import { getInitialMessagePrompt, getSystemPrompt } from "@/server/ai/character-chat/prompts";
 
-import { openRouterModel } from "@/server/ai/models/openRouterModel";
+import { openRouterModel } from "@/server/ai/openRouterModel";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { TRPCError } from "@/server/lib/TRPCError";
 import { protectedProcedure } from "@/server/lib/trpc";

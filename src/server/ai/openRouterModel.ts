@@ -7,7 +7,12 @@ type Message = {
   content: string;
 };
 
-type Model = "openai/gpt-3.5-turbo" | "jebcarter/psyfighter-13b" | "gryphe/mythomax-l2-13b";
+type OpenRouterModel =
+  | "openai/gpt-3.5-turbo"
+  | "jebcarter/psyfighter-13b"
+  | "gryphe/mythomax-l2-13b"
+  | "teknium/openhermes-2.5-mistral-7b"
+  | "mistralai/mixtral-8x7b-instruct";
 
 type Output = {
   id: string;
@@ -34,12 +39,11 @@ const chatRoleToOpenaiRole = (role: ChatRole) => {
 };
 
 type OpenRouterModelInput = {
-  model: Model;
+  model: OpenRouterModel;
   system_prompt: string;
   messages: Message[];
 };
 
-// TODO: Refactor all models to one class/interface.
 const run = async (input: OpenRouterModelInput): Promise<string> => {
   const msgsTransformed = input.messages.map((msg) => {
     return {
@@ -60,7 +64,11 @@ const run = async (input: OpenRouterModelInput): Promise<string> => {
       "Content-Type": "application/json",
     },
     data: {
-      model: input.model,
+      // TODO: models
+      model: [input.model],
+      route: "fallback",
+      transforms: ["middle-out"],
+      stream: false,
       messages: [
         {
           role: "system",
@@ -77,7 +85,10 @@ const run = async (input: OpenRouterModelInput): Promise<string> => {
 
   console.debug("open router output: ", response.data.choices[0]!.message.content);
 
-  return response.data.choices[0]!.message.content;
+  const responseContent = response.data.choices[0]!.message.content;
+  console.log(JSON.stringify(response.data));
+
+  return responseContent;
 };
 
 export const openRouterModel = { run };

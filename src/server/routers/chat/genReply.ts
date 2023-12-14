@@ -7,7 +7,8 @@ import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
 import { getSystemPrompt } from "@/server/ai/character-chat/prompts";
-import { openRouterModel } from "@/server/ai/models/openRouterModel";
+import { openRouterModel } from "@/server/ai/openRouterModel";
+import { langfuse } from "@/server/clients/langfuse";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { t } from "@lingui/macro";
 
@@ -32,7 +33,27 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
   );
   //console.log("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
 
+  const trace = langfuse.trace({
+    name: "ai-reply",
+    userId: ctx.user.id,
+    input: input.message,
+    metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
+  });
+
+  const generation = trace.generation({
+    name: "reply-generation",
+    // TODO asttrsct out
+    model: "jebcarter/psyfighter-13b",
+    startTime: new Date(),
+  });
+
   const output = await genOutput(chat);
+
+  generation.end();
+  trace.update({
+    output: output,
+  });
+
   const msgs = await saveMessages(input, output, ctx.prisma);
   // TODO(1): Do it async after request.
   await incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma);
