@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 
 import { Capacitor } from "@capacitor/core";
 import { Share } from "@capacitor/share";
+import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import Title from "@components/ui/Title";
 import { Tooltip } from "@nextui-org/tooltip";
 import NextLink from "next/link";
@@ -187,6 +188,7 @@ const ChatMainMenu = () => {
       title={bot.isLoading ? _(msg`Loading...`) : _(msg`Chat with ${bot.data?.name}`)}
       className={"space-y-12"}
       backPath={paths.discover}
+      appHeaderEndContent={<AppHeaderCharSettingsButton />}
     >
       <Card className="z-20 mx-auto md:w-[600px]">
         {bot.data?.visibility !== BotVisibility.PRIVATE && (

@@ -17,10 +17,8 @@ import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { AiOutlineStar, AiOutlineUser } from "react-icons/ai";
 import { CiLogout } from "react-icons/ci";
-import { LiaFantasyFlightGames } from "react-icons/lia";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-import { UserDropdownSettingsDialog } from "./UserDropdownSettingsDialog";
 
 export const UserDropdown = (props: { className?: string }) => {
   const { user, status } = useSession();
@@ -86,14 +84,6 @@ export const UserDropdown = (props: { className?: string }) => {
             <Trans>My profile</Trans>
           </DropdownItem>
           <DropdownItem
-            textValue={"Character settings"}
-            startContent={<LiaFantasyFlightGames />}
-            onClick={toggleSettingsOpen}
-            key="settings"
-          >
-            <Trans>General character settings</Trans>
-          </DropdownItem>
-          <DropdownItem
             textValue={"Subscription plan"}
             startContent={<AiOutlineStar />}
             onClick={() => router.push(paths.pricing)}
@@ -111,8 +101,6 @@ export const UserDropdown = (props: { className?: string }) => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-
-      <UserDropdownSettingsDialog isOpen={isSettingsOpen} onOpenChange={toggleSettingsOpen} />
     </>
   );
 };

@@ -1,4 +1,5 @@
 import { env } from "@/server/env";
+import { Model, models } from "@/server/lib/models";
 import { ChatRole } from "@prisma/client";
 import axios from "axios";
 import { LangfuseTraceClient } from "langfuse";
@@ -41,46 +42,15 @@ type Input = {
   system_prompt: string;
   messages: Message[];
   trace: LangfuseTraceClient;
-  preferredModel?: string | null;
+  model: Model;
 };
 
-// Note: change this according to model.
-const universalParams = {
-  temperature: 0.89,
-  max_tokens: 1024,
-  frequency_penalty: 0.3,
-  route: "fallback",
-  stream: false,
-};
-
-export const models = {
-  psyfighter: {
-    model: "jebcarter/psyfighter-13b",
-    tokens: 4096,
-    params: universalParams,
-  },
-  mythomax: {
-    model: "gryphe/mythomax-l2-13b",
-    tokens: 4096,
-    params: universalParams,
-  },
-  openhermes25: {
-    model: "teknium/openhermes-2.5-mistral-7b",
-    tokens: 4096,
-    params: universalParams,
-  },
-  mixtral: {
-    model: "mistralai/mixtral-8x7b-instruct",
-    tokens: 32768,
-    params: universalParams,
-  },
-};
-
-export const getModel = (model: string) => {
-  return Object.values(models).find((m) => m.model === model);
-};
-
-const llms = [models.psyfighter, models.mythomax, models.openhermes25, models.mixtral];
+const fallbacks = [
+  models.psyfighter.id,
+  models.mythomax.id,
+  models.openhermes25.id,
+  models.mixtral.id,
+];
 
 const headers = {
   Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
@@ -100,19 +70,12 @@ const run = async (input: Input) => {
 
   // Create a generation trace.
   const generation = input.trace.generation({
-    name: "roleplay-generation",
-    model: llms[0]!.model,
+    name: "reply_generation",
+    model: input.model.id,
     startTime: new Date(),
     completionStartTime: new Date(),
-    modelParameters: universalParams,
+    modelParameters: input.model.params,
   });
-
-  // Set the models to use.
-  const modelsToUse = llms.map((m) => m.model);
-  const preferredModel = input.preferredModel ? getModel(input.preferredModel) : null;
-  if (preferredModel) {
-    modelsToUse.filter((m) => m !== preferredModel.model).unshift(preferredModel.model);
-  }
 
   // Make the actual fetch.
   const { data: response } = (await axios({
@@ -120,8 +83,8 @@ const run = async (input: Input) => {
     url: "https://openrouter.ai/api/v1/chat/completions",
     headers: headers,
     data: {
-      model: modelsToUse,
-      ...llms[0]!.params,
+      model: [input.model.id, ...fallbacks],
+      ...input.model.params,
       messages: [
         {
           role: "system",
@@ -177,5 +140,5 @@ const convertToOpenaiRole = (role: ChatRole) => {
   }
 };
 
-export const roleplayLlm = { run, model: llms[0]! };
+export const mainLlm = { run };
 export type { Message };

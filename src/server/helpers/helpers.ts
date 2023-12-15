@@ -6,5 +6,5 @@ export const tokensToMessages = (tokens: number) => {
   if (value > MAX_MESSAGES) {
     value = MAX_MESSAGES;
   }
-  return value;
+  return Math.round(value);
 };

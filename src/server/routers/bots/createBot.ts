@@ -1,9 +1,10 @@
 import { getInitialMessagePrompt, getSystemPrompt } from "@/server/ai/character-chat/prompts";
 
-import { roleplayLlm } from "@/server/ai/roleplayLlm";
+import { mainLlm } from "@/server/ai/mainLlm";
 import { langfuse } from "@/server/clients/langfuse";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { TRPCError } from "@/server/lib/TRPCError";
+import { getModelToUse } from "@/server/lib/models";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { t } from "@lingui/macro";
 import {
@@ -137,7 +138,7 @@ async function createInitialMessage(
   );
   console.debug({ systemPrompt, initialMessagePrompt });
 
-  const output = await roleplayLlm.run({
+  const output = await mainLlm.run({
     system_prompt: systemPrompt,
     messages: [
       {
@@ -146,6 +147,7 @@ async function createInitialMessage(
       },
     ],
     trace,
+    model: getModelToUse(mode),
   });
 
   return await db.initialMessage.create({

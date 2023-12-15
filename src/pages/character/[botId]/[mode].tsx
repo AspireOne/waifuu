@@ -2,6 +2,7 @@ import ChatGradientOverlay from "@/components/bot-chat/ChatGradientOverlay";
 import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
 import useBotChat, { Message } from "@/hooks/useBotChat";
+import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import { AppPage } from "@components/AppPage";
 import { BotChatContent } from "@components/BotChatContent";
 import { paths } from "@lib/paths";
@@ -31,6 +32,7 @@ const BotChat = () => {
     <AppPage
       backPath={paths.discover}
       noPadding={true}
+      appHeaderEndContent={<AppHeaderCharSettingsButton />}
       title={bot?.name || _(msg`Loading...`)}
     >
       {/*TODO: Make character image only the png of the char.*/}
