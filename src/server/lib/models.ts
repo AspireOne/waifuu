@@ -50,7 +50,7 @@ export const models: Record<ModelKey, Model> = {
   },
   openhermes25: {
     id: "teknium/openhermes-2.5-mistral-7b",
-    friendlyName: "",
+    friendlyName: "Open Hermes 2.5",
     description:
       "Good roleplaying capabilities, fast replies, but output quality (consistency & repeating) may vary.",
     tokens: 4096,

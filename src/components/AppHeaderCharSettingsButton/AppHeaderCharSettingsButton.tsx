@@ -75,7 +75,6 @@ export const AppHeaderCharSettingsButton = () => {
         onOpenChange={onOpenChange}
         size={"lg"}
         backdrop={"blur"}
-        placement={"center"}
       >
         <ModalContent>
           {(onClose) => (
