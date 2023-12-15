@@ -37,28 +37,30 @@ export const models: Record<ModelKey, Model> = {
   psyfighter: {
     id: "jebcarter/psyfighter-13b",
     friendlyName: "Psyfighter",
-    description: "todo desc 1",
+    description: "Good overall capabilities - high in roleplaying and output consistency.",
     tokens: 4096,
     params: universalParams,
   },
   mythomax: {
     id: "gryphe/mythomax-l2-13b",
     friendlyName: "MythoMax",
-    description: "todo desc 2",
+    description: "Good overall capabilities - high in roleplaying and storytelling.",
     tokens: 4096,
     params: universalParams,
   },
   openhermes25: {
     id: "teknium/openhermes-2.5-mistral-7b",
-    friendlyName: "Open Hermes 2.5",
-    description: "todo desc 3",
+    friendlyName: "",
+    description:
+      "Good roleplaying capabilities, fast replies, but output quality (consistency & repeating) may vary.",
     tokens: 4096,
     params: universalParams,
   },
   mixtral: {
     id: "mistralai/mixtral-8x7b-instruct",
     friendlyName: "Mixtral",
-    description: "todo desc 4",
+    description:
+      "Great memory, high in reasoning (on par with ChatGPT), but creativity and roleplaying abilities may vary.",
     tokens: 32768,
     params: universalParams,
   },
