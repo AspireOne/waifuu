@@ -69,8 +69,8 @@ dependencies:
     specifier: ^1.1.2
     version: 1.1.2
   '@prisma/client':
-    specifier: ^5.6.0
-    version: 5.6.0(prisma@5.6.0)
+    specifier: ^5.7.0
+    version: 5.7.0(prisma@5.7.0)
   '@sentry/capacitor':
     specifier: ^0.14.0
     version: 0.14.0(@capacitor/core@5.5.1)
@@ -118,19 +118,19 @@ dependencies:
     version: 7.0.3
   filepond-plugin-file-validate-size:
     specifier: ^2.2.8
-    version: 2.2.8(filepond@4.30.4)
+    version: 2.2.8(filepond@4.30.5)
   filepond-plugin-file-validate-type:
     specifier: ^1.2.8
-    version: 1.2.8(filepond@4.30.4)
+    version: 1.2.8(filepond@4.30.5)
   filepond-plugin-image-crop:
     specifier: ^2.0.6
-    version: 2.0.6(filepond@4.30.4)
+    version: 2.0.6(filepond@4.30.5)
   filepond-plugin-image-exif-orientation:
     specifier: ^1.0.11
-    version: 1.0.11(filepond@4.30.4)
+    version: 1.0.11(filepond@4.30.5)
   filepond-plugin-image-preview:
     specifier: ^4.6.11
-    version: 4.6.11(filepond@4.30.4)
+    version: 4.6.11(filepond@4.30.5)
   firebase:
     specifier: ^10.7.0
     version: 10.7.0
@@ -183,8 +183,8 @@ dependencies:
     specifier: ^1.1.0
     version: 1.1.0
   prisma:
-    specifier: ^5.6.0
-    version: 5.6.0
+    specifier: ^5.7.0
+    version: 5.7.0
   pusher:
     specifier: ^5.2.0
     version: 5.2.0
@@ -199,7 +199,7 @@ dependencies:
     version: 18.2.0(react@18.2.0)
   react-filepond:
     specifier: ^7.1.2
-    version: 7.1.2(filepond@4.30.4)(react-dom@18.2.0)(react@18.2.0)
+    version: 7.1.2(filepond@4.30.5)(react-dom@18.2.0)(react@18.2.0)
   react-hook-form:
     specifier: ^7.48.2
     version: 7.48.2(react@18.2.0)
@@ -4341,8 +4341,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@prisma/client@5.6.0(prisma@5.6.0):
-    resolution: {integrity: sha512-mUDefQFa1wWqk4+JhKPYq8BdVoFk9NFMBXUI8jAkBfQTtgx8WPx02U2HB/XbAz3GSUJpeJOKJQtNvaAIDs6sug==}
+  /@prisma/client@5.7.0(prisma@5.7.0):
+    resolution: {integrity: sha512-cZmglCrfNbYpzUtz7HscVHl38e9CrUs31nrVoGUK1nIPXGgt8hT4jj2s657UXcNdQ/jBUxDgGmHyu2Nyrq1txg==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -4351,17 +4351,39 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee
-      prisma: 5.6.0
+      prisma: 5.7.0
     dev: false
 
-  /@prisma/engines-version@5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee:
-    resolution: {integrity: sha512-UoFgbV1awGL/3wXuUK3GDaX2SolqczeeJ5b4FVec9tzeGbSWJboPSbT0psSrmgYAKiKnkOPFSLlH6+b+IyOwAw==}
+  /@prisma/debug@5.7.0:
+    resolution: {integrity: sha512-tZ+MOjWlVvz1kOEhNYMa4QUGURY+kgOUBqLHYIV8jmCsMuvA1tWcn7qtIMLzYWCbDcQT4ZS8xDgK0R2gl6/0wA==}
     dev: false
 
-  /@prisma/engines@5.6.0:
-    resolution: {integrity: sha512-Mt2q+GNJpU2vFn6kif24oRSBQv1KOkYaterQsi0k2/lA+dLvhRX6Lm26gon6PYHwUM8/h8KRgXIUMU0PCLB6bw==}
+  /@prisma/engines-version@5.7.0-41.79fb5193cf0a8fdbef536e4b4a159cad677ab1b9:
+    resolution: {integrity: sha512-V6tgRVi62jRwTm0Hglky3Scwjr/AKFBFtS+MdbsBr7UOuiu1TKLPc6xfPiyEN1+bYqjEtjxwGsHgahcJsd1rNg==}
+    dev: false
+
+  /@prisma/engines@5.7.0:
+    resolution: {integrity: sha512-TkOMgMm60n5YgEKPn9erIvFX2/QuWnl3GBo6yTRyZKk5O5KQertXiNnrYgSLy0SpsKmhovEPQb+D4l0SzyE7XA==}
     requiresBuild: true
+    dependencies:
+      '@prisma/debug': 5.7.0
+      '@prisma/engines-version': 5.7.0-41.79fb5193cf0a8fdbef536e4b4a159cad677ab1b9
+      '@prisma/fetch-engine': 5.7.0
+      '@prisma/get-platform': 5.7.0
+    dev: false
+
+  /@prisma/fetch-engine@5.7.0:
+    resolution: {integrity: sha512-zIn/qmO+N/3FYe7/L9o+yZseIU8ivh4NdPKSkQRIHfg2QVTVMnbhGoTcecbxfVubeTp+DjcbjS0H9fCuM4W04w==}
+    dependencies:
+      '@prisma/debug': 5.7.0
+      '@prisma/engines-version': 5.7.0-41.79fb5193cf0a8fdbef536e4b4a159cad677ab1b9
+      '@prisma/get-platform': 5.7.0
+    dev: false
+
+  /@prisma/get-platform@5.7.0:
+    resolution: {integrity: sha512-ZeV/Op4bZsWXuw5Tg05WwRI8BlKiRFhsixPcAM+5BKYSiUZiMKIi713tfT3drBq8+T0E1arNZgYSA9QYcglWNA==}
+    dependencies:
+      '@prisma/debug': 5.7.0
     dev: false
 
   /@protobufjs/aspromise@1.1.2:
@@ -7853,48 +7875,48 @@ packages:
       minimatch: 5.1.6
     dev: true
 
-  /filepond-plugin-file-validate-size@2.2.8(filepond@4.30.4):
+  /filepond-plugin-file-validate-size@2.2.8(filepond@4.30.5):
     resolution: {integrity: sha512-yzb8scATmkWqPTP7oKQz6L8WwJm6Xmgc/fuq6DFGRaLz0I7372BUvBsxagBk/hypMIjvieNzhggm33Y60x3rcw==}
     peerDependencies:
       filepond: '>=3.1.2 <5.x'
     dependencies:
-      filepond: 4.30.4
+      filepond: 4.30.5
     dev: false
 
-  /filepond-plugin-file-validate-type@1.2.8(filepond@4.30.4):
+  /filepond-plugin-file-validate-type@1.2.8(filepond@4.30.5):
     resolution: {integrity: sha512-UBTqIWbk5+5R0GBELI8svu01MHWjFSLfc9DfCMvFtHKXLdJMxY1p37ChC4YKQjhfODaTuvLnNVRsukMGMFZBBg==}
     peerDependencies:
       filepond: '>=1.x <5.x'
     dependencies:
-      filepond: 4.30.4
+      filepond: 4.30.5
     dev: false
 
-  /filepond-plugin-image-crop@2.0.6(filepond@4.30.4):
+  /filepond-plugin-image-crop@2.0.6(filepond@4.30.5):
     resolution: {integrity: sha512-bSy/KND4EP/QtW8MxIj23qgSEPUVRrT8XdktJ+OU9y8xRjFjTG+qcuw1LsycARQYRtzi8cZrD3P4POOITfkywQ==}
     peerDependencies:
       filepond: '>=3.x <5.x'
     dependencies:
-      filepond: 4.30.4
+      filepond: 4.30.5
     dev: false
 
-  /filepond-plugin-image-exif-orientation@1.0.11(filepond@4.30.4):
+  /filepond-plugin-image-exif-orientation@1.0.11(filepond@4.30.5):
     resolution: {integrity: sha512-hLBc12Fk6Zkj3L8mSAn+elugHOqT5rLUbgVXQQIQjMe0FsGjtpoxqeVR6jt4IWHGat2L9sFAgU2TGmd1mqosCg==}
     peerDependencies:
       filepond: '>=3.x <5.x'
     dependencies:
-      filepond: 4.30.4
+      filepond: 4.30.5
     dev: false
 
-  /filepond-plugin-image-preview@4.6.11(filepond@4.30.4):
+  /filepond-plugin-image-preview@4.6.11(filepond@4.30.5):
     resolution: {integrity: sha512-0EmQ9HnOb/X0xc5rLcNRhhmdUbp7oiicRwQrcr90ZfVmPJOOZoX3ZGUEsEPj7luMI55huguhcVozdESxtqnuRw==}
     peerDependencies:
       filepond: '>=4.x <5.x'
     dependencies:
-      filepond: 4.30.4
+      filepond: 4.30.5
     dev: false
 
-  /filepond@4.30.4:
-    resolution: {integrity: sha512-FCwsMvG9iiEs6uobdDrTaKsCgsqys0NuLgPPD8n37AYVYBiiDkrPkk9MSIU5rT2FahYcL1bScYI9huIPtlzqyA==}
+  /filepond@4.30.5:
+    resolution: {integrity: sha512-+uZrwbZmqkqONl5ApWAE8zsonipXEm6yAX6B71TUuYWRogmJ2nYJCt9E7KiOHtphyChyKKNJTKuV52gn0oQihw==}
     dev: false
 
   /filesize@6.4.0:
@@ -10791,13 +10813,13 @@ packages:
       extend-shallow: 2.0.1
       js-beautify: 1.14.11
 
-  /prisma@5.6.0:
-    resolution: {integrity: sha512-EEaccku4ZGshdr2cthYHhf7iyvCcXqwJDvnoQRAJg5ge2Tzpv0e2BaMCp+CbbDUwoVTzwgOap9Zp+d4jFa2O9A==}
+  /prisma@5.7.0:
+    resolution: {integrity: sha512-0rcfXO2ErmGAtxnuTNHQT9ztL0zZheQjOI/VNJzdq87C3TlGPQtMqtM+KCwU6XtmkoEr7vbCQqA7HF9IY0ST+Q==}
     engines: {node: '>=16.13'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 5.6.0
+      '@prisma/engines': 5.7.0
     dev: false
 
   /progress@2.0.3:
@@ -11008,14 +11030,14 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-filepond@7.1.2(filepond@4.30.4)(react-dom@18.2.0)(react@18.2.0):
+  /react-filepond@7.1.2(filepond@4.30.5)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-vrlx9o/n+jGikh6jLey+PpUGYtEZn8MdeB6JFeX/5/N/Mu75IHG+MFQbv8R27bNXvS41mDtV9Fo5DG+s6siVIA==}
     peerDependencies:
       filepond: '>=3.7.x < 5.x'
       react: 16 - 18
       react-dom: 16 - 18
     dependencies:
-      filepond: 4.30.4
+      filepond: 4.30.5
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
