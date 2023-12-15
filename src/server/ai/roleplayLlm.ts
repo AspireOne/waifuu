@@ -41,6 +41,7 @@ type Input = {
   system_prompt: string;
   messages: Message[];
   trace: LangfuseTraceClient;
+  preferredModel?: string | null;
 };
 
 // Note: change this according to model.
@@ -52,7 +53,7 @@ const universalParams = {
   stream: false,
 };
 
-const models = {
+export const models = {
   psyfighter: {
     model: "jebcarter/psyfighter-13b",
     tokens: 4096,
@@ -75,7 +76,11 @@ const models = {
   },
 };
 
-const llm = [models.psyfighter, models.mythomax, models.openhermes25, models.mixtral];
+export const getModel = (model: string) => {
+  return Object.values(models).find((m) => m.model === model);
+};
+
+const llms = [models.psyfighter, models.mythomax, models.openhermes25, models.mixtral];
 
 const headers = {
   Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
@@ -85,6 +90,7 @@ const headers = {
 };
 
 const run = async (input: Input) => {
+  // Transform the messages to openAi format.
   const msgsTransformed = input.messages.map((msg) => {
     return {
       role: convertToOpenaiRole(msg.role),
@@ -92,21 +98,30 @@ const run = async (input: Input) => {
     };
   });
 
+  // Create a generation trace.
   const generation = input.trace.generation({
     name: "roleplay-generation",
-    model: llm[0]!.model,
+    model: llms[0]!.model,
     startTime: new Date(),
     completionStartTime: new Date(),
     modelParameters: universalParams,
   });
 
+  // Set the models to use.
+  const modelsToUse = llms.map((m) => m.model);
+  const preferredModel = input.preferredModel ? getModel(input.preferredModel) : null;
+  if (preferredModel) {
+    modelsToUse.filter((m) => m !== preferredModel.model).unshift(preferredModel.model);
+  }
+
+  // Make the actual fetch.
   const { data: response } = (await axios({
     method: "post",
     url: "https://openrouter.ai/api/v1/chat/completions",
     headers: headers,
     data: {
-      model: llm.map((m) => m.model),
-      ...llm[0]!.params,
+      model: modelsToUse,
+      ...llms[0]!.params,
       messages: [
         {
           role: "system",
@@ -117,13 +132,13 @@ const run = async (input: Input) => {
     },
   })) as { data: OpenRouterOutput };
 
+  // Get stats for the generation.
   const statsResponse = await fetch(
     `https://openrouter.ai/api/v1/generation?id=${response.id}`,
     {
       headers,
     },
   );
-
   const stats = (await statsResponse.json()) as OpenRouterStatsJsonOutput;
 
   // TODO: Price.
@@ -137,6 +152,7 @@ const run = async (input: Input) => {
       price: stats.usage,
     },
   });
+
   generation.end();
 
   if (!response.choices || response.choices.length === 0) {
@@ -161,5 +177,5 @@ const convertToOpenaiRole = (role: ChatRole) => {
   }
 };
 
-export const roleplayLlm = { run, model: llm[0]! };
+export const roleplayLlm = { run, model: llms[0]! };
 export type { Message };

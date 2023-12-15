@@ -7,7 +7,7 @@ import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
 import { getSystemPrompt } from "@/server/ai/character-chat/prompts";
-import { roleplayLlm } from "@/server/ai/roleplayLlm";
+import { getModel, roleplayLlm } from "@/server/ai/roleplayLlm";
 import { langfuse } from "@/server/clients/langfuse";
 import { tokensToMessages } from "@/server/helpers/helpers";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
@@ -38,7 +38,19 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
     metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
   });
 
-  const output = await genOutput(chat, trace);
+  const preferredModel = ctx.user.preferredModelId
+    ? getModel(ctx.user.preferredModelId)
+    : null;
+
+  // If the user has a preferred model but the id does not exist, remove the preferred model.
+  if (ctx.user.preferredModelId && !preferredModel) {
+    ctx.prisma.user.update({
+      where: { id: ctx.user.id },
+      data: { preferredModelId: null },
+    });
+  }
+
+  const output = await genOutput(chat, trace, preferredModel?.model);
   trace.update({
     output: output,
   });
@@ -71,12 +83,14 @@ function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
 async function genOutput(
   chat: Chat & { bot: Bot } & { user: User } & { messages: Message[] },
   trace: LangfuseTraceClient,
+  preferredModel?: string | null,
 ) {
   try {
     return await roleplayLlm.run({
       system_prompt: await getSystemPrompt(chat.mode, chat.bot.persona, chat.bot.name),
       messages: chat.messages,
       trace,
+      preferredModel,
     });
   } catch (e) {
     console.error(e);

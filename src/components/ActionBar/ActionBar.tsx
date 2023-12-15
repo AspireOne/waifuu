@@ -63,7 +63,6 @@ export const ActionBar = () => {
 
     // Check which button is active.
     for (let i = 0; i < getButtons().length; i++) {
-      // biome-ignore lint/style/noNonNullAssertion: Will not be null.
       const button = getButtons()[i]!;
       const pathname = normalizePath(button.path);
 

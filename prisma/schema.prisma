@@ -111,6 +111,8 @@ model User {
   image            String  @default("https://github-production-user-asset-6210df.s3.amazonaws.com/57546404/280538836-8c16b1b3-391f-4cdf-889c-e2e279f3167b.png")
   username         String  @unique
   stripeCustomerId String? @unique
+  // Not making this an enum yet, because models will be changed a lot.
+  preferredModelId    String?
 
   bio         String?
   botContext  String?
