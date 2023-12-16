@@ -1,14 +1,19 @@
+import { api } from "@lib/api";
 import { Card, CardBody } from "@nextui-org/card";
-import { Avatar } from "@nextui-org/react";
-import { Mood } from "@prisma/client";
+import { Avatar, Button } from "@nextui-org/react";
+import { Feedback, Mood } from "@prisma/client";
 import Markdown from "markdown-to-jsx";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
+import { AiFillDislike, AiFillLike } from "react-icons/ai";
+import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
   message: string;
+  messageId: number;
+  chatId: string;
+  feedback?: Feedback;
   className?: string;
-  id?: number;
   author: {
     bot: boolean;
     avatar?: string | null;
@@ -17,17 +22,44 @@ type Props = {
   mood?: Mood;
 };
 
-const ChatMessage = ({ author, message, className, mood, id }: Props) => {
-  /*  const formattedMessage = useMemo(() => {
-    return message
-      .replace(/\*\*(.*?)\*\*!/g, "<strong>$1</strong>")
-      .replace(/\*(.*?)\*!/g, "<em>$1</em>")
-      .replace(/__(.*?)__/g, "<strong>$1</strong>")
-      .replace(/_(.*?)_/g, "<em>$1</em>")
-      .replace(/@@(.*?)@@/g, "<s>$1</s>")
-      .replace(/`(.*?)`/g, "<code>$1</code>")
-      .replace(/```(.*?)```/g, "<pre>$1</pre>")
-  }, [message]);*/
+const ChatMessage = ({
+  author,
+  message,
+  className,
+  mood,
+  messageId,
+  chatId,
+  feedback,
+}: Props) => {
+  const logFeedbackMutation = api.chat.logFeedback.useMutation({
+    onSuccess: () => {
+      console.log("Feedback logged!");
+      toast("Thank you for your feedback!", {
+        type: "success",
+        autoClose: 1500,
+        position: "top-center",
+      });
+    },
+  });
+
+  const [currFeedback, setCurrFeedback] = useState<Feedback | undefined>(undefined);
+
+  function handleFeedback(type: Feedback) {
+    if (type === currFeedback) setCurrFeedback(undefined);
+    else setCurrFeedback(type);
+
+    logFeedbackMutation.mutate({
+      messageId,
+      feedback: type === currFeedback ? null : type,
+      chatId,
+    });
+  }
+
+  const getFeedbackColor = (type: Feedback) => {
+    if (currFeedback === undefined) return "text-default-300";
+    if (currFeedback === type) return "text-primary-400/80";
+    if (currFeedback !== type) return "text-default-200";
+  };
 
   return (
     <div
@@ -37,10 +69,28 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
         className,
       )}
     >
-      <Card className={twMerge("w-full rounded-lg p-3 bg-neutral-900/80 backdrop-blur-lg")}>
-        {/*Comment this out for now, because it is not needed.*/}
-        {/*<MsgDropdown/>*/}
-
+      <Card
+        className={twMerge(
+          "w-full rounded-lg p-3 bg-neutral-900/80 backdrop-blur-lg relative",
+        )}
+      >
+        <div
+          className={twMerge(
+            "absolute flex flex-row right-0 top-0 z-10",
+            !author.bot && "hidden",
+          )}
+        >
+          <Button isIconOnly variant={"light"} onClick={() => handleFeedback(Feedback.LIKE)}>
+            <AiFillLike size={20} className={getFeedbackColor(Feedback.LIKE)} />
+          </Button>
+          <Button
+            isIconOnly
+            variant={"light"}
+            onClick={() => handleFeedback(Feedback.DISLIKE)}
+          >
+            <AiFillDislike size={20} className={getFeedbackColor(Feedback.DISLIKE)} />
+          </Button>
+        </div>
         <CardBody className={"p-1 flex flex-row gap-4"}>
           <Avatar
             src={author.avatar ?? undefined}
@@ -64,11 +114,6 @@ const ChatMessage = ({ author, message, className, mood, id }: Props) => {
             >
               {message}
             </Markdown>
-            {/*<p
-              className="max-w-xs overflow-ellipsis overflow-hidden"
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: // TODO: Fix this later!
-              dangerouslySetInnerHTML={{ __html: formattedMessage }}
-            />*/}
           </div>
         </CardBody>
       </Card>

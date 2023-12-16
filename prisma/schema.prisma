@@ -88,6 +88,11 @@ model AdminEmail {
   email String @id
 }
 
+enum Feedback {
+  LIKE
+  DISLIKE
+}
+
 model EarlyAccess {
   email       String  @unique
   name        String
@@ -112,7 +117,7 @@ model User {
   username         String  @unique
   stripeCustomerId String? @unique
   // Not making this an enum yet, because models will be changed a lot.
-  preferredModelId    String?
+  preferredModelId String?
 
   bio         String?
   botContext  String?
@@ -325,15 +330,17 @@ model Chat {
 }
 
 model Message {
-  id         Int      @id @default(autoincrement())
-  chatId     String
-  chat       Chat     @relation(fields: [chatId], references: [id])
-  content    String
-  mood       Mood     @default(NEUTRAL)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  role       ChatRole
-  remembered Boolean  @default(false)
+  id                      Int                       @id @default(autoincrement())
+  chatId                  String
+  chat                    Chat                      @relation(fields: [chatId], references: [id])
+  content                 String
+  mood                    Mood                      @default(NEUTRAL)
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  role                    ChatRole
+  remembered              Boolean                   @default(false)
+  MessageFeedbackMetadata MessageFeedbackMetadata[]
+  feedback                Feedback?
 
   @@index([chatId])
 }
@@ -408,6 +415,19 @@ model ForumPostLike {
   createdAt DateTime  @default(now())
 
   @@index([postId])
+}
+
+model MessageFeedbackMetadata {
+  messageId         Int      @id
+  message           Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  previousMessageId Int?
+  modelId           String
+  feedback          Feedback
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([messageId])
 }
 
 model IpInfo {

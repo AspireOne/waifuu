@@ -23,8 +23,6 @@ const BotChat = () => {
   // Workaround - it returns this for the first few render cycles before it renders the actual path.
   if (chatId === "[botId]") chatId = "";
 
-  console.log(chatId);
-
   const bot = useBot(chatId);
   const chat = useBotChat(chatId);
 

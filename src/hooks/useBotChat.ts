@@ -102,6 +102,7 @@ export default function useBotChat(chatId: string, enabled = true) {
 
   return {
     messages,
+    id: chatId,
     loadingMore: fetchMore.isLoading,
     hasMore: cursor !== undefined,
     loadingReply: replyMutation.isLoading,

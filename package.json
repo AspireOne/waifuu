@@ -2,8 +2,8 @@
   "name": "waifuu",
   "version": "0.1.0",
   "private": true,
-  "engines" : {
-    "node" : ">=20.0.0"
+  "engines": {
+    "node": ">=20.0.0"
   },
   "scripts": {
     "start": "next start",

@@ -3,7 +3,6 @@ import { ChatMode } from "@prisma/client";
 
 const universalParams = {
   temperature: 0.89,
-  max_tokens: 1024,
   frequency_penalty: 0.3,
   route: "fallback",
   stream: false,
@@ -39,14 +38,14 @@ export const models: Record<ModelKey, Model> = {
     friendlyName: "Psyfighter",
     description: "Good overall capabilities - high in roleplaying and output consistency.",
     tokens: 4096,
-    params: universalParams,
+    params: { ...universalParams, max_tokens: 3996 },
   },
   mythomax: {
     id: "gryphe/mythomax-l2-13b",
     friendlyName: "MythoMax",
     description: "Good overall capabilities - high in roleplaying and storytelling.",
     tokens: 4096,
-    params: universalParams,
+    params: { ...universalParams, max_tokens: 3996 },
   },
   openhermes25: {
     id: "teknium/openhermes-2.5-mistral-7b",
@@ -54,7 +53,7 @@ export const models: Record<ModelKey, Model> = {
     description:
       "Good roleplaying capabilities, fast replies, but output quality (consistency & repeating) may vary.",
     tokens: 4096,
-    params: universalParams,
+    params: { ...universalParams, max_tokens: 3996 },
   },
   mixtral: {
     id: "mistralai/mixtral-8x7b-instruct",
@@ -62,7 +61,7 @@ export const models: Record<ModelKey, Model> = {
     description:
       "Great memory, high in reasoning (on par with ChatGPT), but creativity and roleplaying abilities may vary.",
     tokens: 32768,
-    params: universalParams,
+    params: { ...universalParams, max_tokens: 32668 },
   },
 };
 

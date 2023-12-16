@@ -23,20 +23,45 @@ const Input = z.object({
 export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) => {
   await ensureWithinQuotaOrThrow("messagesSent", ctx.prisma, ctx.user.id, ctx.user.planId);
 
+  const trace = langfuse.trace({
+    name: `chat_${input.chatId}`,
+    id: input.chatId, // TODO: This should be message id.
+    userId: ctx.user.id,
+    sessionId: input.chatId,
+    metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
+  });
+
+  const execution = trace.span({
+    name: "chat_reply",
+    input: input.message,
+  });
+
+  const chatRetrievalSpan = execution.span({
+    name: "chat_retrieval",
+    input: input.chatId,
+  });
+
   const chat = await retrieveChatOrThrow(input.chatId, ctx.prisma);
+
+  chatRetrievalSpan.end({
+    output: {
+      mode: chat.mode,
+      model: getModelToUse(chat.mode, ctx.user.preferredModelId),
+    },
+  });
 
   // Push the new message to the msg history so that it is included in the prompt without saving them just yet.
   chat.messages.push(createPlaceholderMessage(input));
 
-  const trace = langfuse.trace({
-    name: `${chat.mode}_chat_reply`,
-    userId: ctx.user.id,
-    input: input.message,
-    metadata: { env: process.env.NODE_ENV, user: ctx.user.email, mode: chat.mode },
-  });
-
   // If the user has a preferred model but the id does not exist, remove the preferred model.
   if (ctx.user.preferredModelId && !getModelById(ctx.user.preferredModelId)) {
+    execution.event({
+      name: "preferred_model_not_found",
+      input: {
+        preferredModelId: ctx.user.preferredModelId,
+      },
+    });
+
     await ctx.prisma.user.update({
       where: { id: ctx.user.id },
       data: { preferredModelId: null },
@@ -48,14 +73,16 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
     ctx.user.preferredModelId as ModelId | null | undefined,
   );
 
-  const output = await genOutput(chat, trace, model);
-  trace.update({
-    output: output,
-  });
+  const output = await genOutput(chat, execution, model);
 
-  const newMessages = await saveMessages(input, output.text, ctx.prisma);
+  execution.end({});
+
   // TODO(1): Do it async after request.
-  await incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma);
+  const [newMessages, _, __] = await Promise.all([
+    saveMessages(input, output.text, ctx.prisma),
+    incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma),
+    langfuse.flush(),
+  ]);
 
   return {
     message: newMessages.botMsg,
@@ -67,6 +94,7 @@ function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
   return {
     content: input.message,
     chatId: input.chatId,
+    feedback: null,
 
     // Bogus data (not important):
     role: "USER",

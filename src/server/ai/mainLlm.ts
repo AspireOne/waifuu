@@ -70,11 +70,12 @@ const run = async (input: Input) => {
 
   // Create a generation trace.
   const generation = input.trace.generation({
-    name: "reply_generation",
+    name: "generation",
     model: input.model.id,
     startTime: new Date(),
     completionStartTime: new Date(),
     modelParameters: input.model.params,
+    prompt: input.system_prompt,
   });
 
   // Make the actual fetch.
@@ -95,6 +96,11 @@ const run = async (input: Input) => {
     },
   })) as { data: OpenRouterOutput };
 
+  const statsRetrievalSpan = generation.span({
+    name: "stats_retrieval",
+    input: response.id,
+  });
+
   // Get stats for the generation.
   const statsResponse = await fetch(
     `https://openrouter.ai/api/v1/generation?id=${response.id}`,
@@ -102,10 +108,23 @@ const run = async (input: Input) => {
       headers,
     },
   );
-  const stats = (await statsResponse.json()) as OpenRouterStatsJsonOutput;
 
-  // TODO: Price.
-  generation.update({
+  const stats = (await statsResponse.json())?.data as OpenRouterStatsJsonOutput;
+
+  statsRetrievalSpan.end({
+    output: {
+      stats,
+    },
+    statusMessage: statsResponse.statusText,
+  });
+
+  if (!response.choices || response.choices.length === 0) {
+    throw new Error("Open router did not return any choices.");
+  }
+
+  const textOutput = response.choices[0]!.message.content;
+
+  generation.end({
     usage: {
       promptTokens: stats.tokens_prompt,
       completionTokens: stats.tokens_completion,
@@ -114,15 +133,9 @@ const run = async (input: Input) => {
     metadata: {
       price: stats.usage,
     },
+    completion: textOutput,
   });
 
-  generation.end();
-
-  if (!response.choices || response.choices.length === 0) {
-    throw new Error("Open router did not return any choices.");
-  }
-
-  const textOutput = response.choices[0]!.message.content;
   return {
     text: textOutput,
     price: stats.usage,

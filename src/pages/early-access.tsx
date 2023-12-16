@@ -87,7 +87,6 @@ const EarlyAccessForm = () => {
   });
 
   const onSubmit: SubmitHandler<RequestEarlyAccessFormValues> = (data) => {
-    console.log(data);
     requestMutation.mutate(data);
   };
 

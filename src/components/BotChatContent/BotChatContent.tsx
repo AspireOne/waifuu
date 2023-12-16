@@ -65,7 +65,8 @@ const Messages = (props: {
 
       return (
         <ChatMessage
-          id={message.id}
+          messageId={message.id}
+          chatId={chat.id}
           key={message.id}
           className={"z-[10]"}
           author={{
