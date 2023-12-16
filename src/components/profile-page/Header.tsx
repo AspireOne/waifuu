@@ -1,4 +1,4 @@
-import { paths } from "@/lib/paths";
+import { fullUrl, paths } from "@/lib/paths";
 
 import { Share } from "@capacitor/share";
 import { Trans, msg } from "@lingui/macro";
@@ -43,18 +43,22 @@ export default function Header(props: {
   const { _ } = useLingui();
 
   async function handleShare() {
+    const url = fullUrl(paths.userProfile(props.username!));
+
     if (!Capacitor.isNativePlatform()) {
+      await navigator.clipboard.writeText(url);
       toast(_(msg`Copied link to clipboard!`), {
-        autoClose: 2000,
+        autoClose: 1500,
+        pauseOnHover: false,
+        type: "success",
       });
-      await navigator.clipboard.writeText(paths.userProfile(props.username!));
       return;
     }
 
     await Share.share({
       title: _(msg`Check out ${props.username} on Waifuu.`),
       text: _(msg`Check out ${props.username} on Waifuu.`),
-      url: paths.userProfile(props.username!),
+      url: url,
       dialogTitle: _(msg`'Share ${props.username}'s profile with friend.`),
     });
   }

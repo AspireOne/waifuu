@@ -1,7 +1,7 @@
 import { CustomRadio } from "@/components/ui/CustomRadio";
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
+import { fullUrl, paths } from "@/lib/paths";
 import { AppPage } from "@components/AppPage";
 import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg, t } from "@lingui/macro";
@@ -168,17 +168,22 @@ const ChatMainMenu = () => {
 
   async function handleShare() {
     if (!bot.data) return;
+    const url = fullUrl(paths.botChatMainMenu(bot.data.id));
 
     if (!Capacitor.isNativePlatform()) {
-      await navigator.clipboard.writeText(paths.botChatMainMenu(bot.data.id));
-      toast(t`Copied link to clipboard`, { type: "default", autoClose: 2000 });
+      await navigator.clipboard.writeText(url);
+      toast(t`Copied link to clipboard`, {
+        type: "success",
+        autoClose: 1500,
+        pauseOnHover: false,
+      });
       return;
     }
 
     await Share.share({
-      title: _(msg`Character ${bot.data.name} | Waifuu`),
-      text: _(msg`Try out character ${bot.data.name} on Waifuu.`),
-      url: paths.botChatMainMenu(bot.data.id),
+      title: _(msg`${bot.data.name} | Waifuu`),
+      text: _(msg`Try out ${bot.data.name} on Waifuu.`),
+      url: url,
       dialogTitle: _(msg`'Share ${bot.data.name} with friends`),
     });
   }
