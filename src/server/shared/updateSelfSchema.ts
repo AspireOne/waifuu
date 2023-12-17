@@ -1,7 +1,7 @@
 import { t } from "@lingui/macro";
 import { z } from "zod";
 
-export default z.object({
+const updateSelfSchema = z.object({
   username: z
     .string()
     .min(3, { message: t`Username is required.` })
@@ -22,4 +22,9 @@ export default z.object({
   botContext: z.string().max(500, { message: t`About is too long.` }).optional(),
   imageUrl: z.string().max(500, { message: t`Image url is too long.` }).optional(),
   locale: z.string().length(2, { message: t`Must be a 2-letter code.` }).optional(),
+  preferredModelId: z.string().optional(),
 });
+
+export default updateSelfSchema;
+
+export type UpdateSelfInput = z.infer<typeof updateSelfSchema>;

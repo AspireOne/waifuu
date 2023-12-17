@@ -1,5 +1,5 @@
 import { ActionBar } from "@components/ActionBar";
-import { AppHeader } from "@components/AppHeader";
+import { AppHeader, AppHeaderInput } from "@components/AppHeader";
 import PageHead from "@components/BasePage/PageHead";
 import Footer from "@components/Footer/Footer";
 import { Navbar } from "@components/Navbar";
@@ -22,6 +22,7 @@ export type PageProps = {
   unprotected: boolean;
   topBar: "navbar" | "app-header";
   showActionBar: boolean;
+  appHeaderEndContent?: AppHeaderInput["endContent"];
   showFooter: boolean;
 
   /** Explicit path to a page that will be loaded on back button click IF autoBack === true || there is no previous path on the stack. */
@@ -83,6 +84,7 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
         <AppHeader
           backButtonEnabled={(autoBack && prevPathExists) || !!backPath}
           onBackButtonPressed={handleBackClick}
+          endContent={props.appHeaderEndContent}
         >
           {props.title}
         </AppHeader>

@@ -6,6 +6,7 @@ import { ActiveChatsDiscoverCategory } from "src/components/ActiveChatsDiscoverC
 
 import { CharsDiscoverCategory } from "src/components/CharsDiscoverCategory";
 
+import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import { MyCharactersDiscoverCategory } from "@components/MyCharactersDiscoverCategory";
 import { usePersistedScrollPositionHandler } from "@hooks/usePersistedScrollPositionHandler";
 
@@ -13,9 +14,14 @@ const Discover = () => {
   usePersistedScrollPositionHandler();
 
   return (
-    <AppPage backPath={null} title={t`Discover Characters`} topLevel>
-      <DiscoverHeader />
-      <Spacer y={14} />
+    <AppPage
+      appHeaderEndContent={<AppHeaderCharSettingsButton />}
+      backPath={null}
+      title={t`Discover Characters`}
+      topLevel
+    >
+      <DiscoverHeader className={"h-[200px]"} />
+      <Spacer className={"h-[210px] lg:h-[150px]"} />
 
       <div className="w-full mx-auto flex flex-col gap-16">
         <ActiveChatsDiscoverCategory />

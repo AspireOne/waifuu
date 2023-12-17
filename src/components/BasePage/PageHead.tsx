@@ -10,7 +10,7 @@ export default function PageHead(
       <title key={"page-title"}>{props.title ? `${props.title} | Waifuu` : "Waifuu"}</title>
       {props.description && (
         <meta
-          key="page-description"
+          key="description"
           name="description"
           content={
             props.description ?? "A role-playing app to make all your imaginations come true."

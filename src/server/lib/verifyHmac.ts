@@ -12,7 +12,6 @@ export const verifyHmac = (
   providedSignature: string,
 ) => {
   const msg = nonce + timestamp;
-  console.log(msg);
 
   // Verify the timestamp
   if (!timestampValid(timestamp)) return false;

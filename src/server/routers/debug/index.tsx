@@ -1,7 +1,9 @@
 import * as fs from "fs";
 import path from "path";
-import TestEmailTemplate, { getTestEmailSubject } from "@/emails/templates/TestEmailTemplate";
 
+import EarlyAccessAcceptTemplate, {
+  getEarlyAccessSubject,
+} from "@/emails/templates/EarlyAccessAcceptTemplate";
 import { email } from "@/server/lib/email";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/lib/trpc";
 import { render } from "@jsx-email/render";
@@ -35,10 +37,9 @@ export const generalRouter = createTRPCRouter({
     await email.send({
       from: email.from.info,
       to: [ctx.user.email],
-      subject: getTestEmailSubject(),
-      template: TestEmailTemplate({
-        content:
-          "Batman is dead. I am writing this in the hope of\nO-\n\nNewline. In the hope of-\n\nGotta go, bye!\n\n yor Waifuu",
+      subject: getEarlyAccessSubject(),
+      template: EarlyAccessAcceptTemplate({
+        email: "matejpesl1@gmail.com",
       }),
     });
   }),

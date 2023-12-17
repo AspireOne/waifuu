@@ -1,7 +1,7 @@
 import { CustomRadio } from "@/components/ui/CustomRadio";
 import { useSession } from "@/hooks/useSession";
 import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
+import { fullUrl, paths } from "@/lib/paths";
 import { AppPage } from "@components/AppPage";
 import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg, t } from "@lingui/macro";
@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 
 import { Capacitor } from "@capacitor/core";
 import { Share } from "@capacitor/share";
+import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import Title from "@components/ui/Title";
 import { Tooltip } from "@nextui-org/tooltip";
 import NextLink from "next/link";
@@ -62,7 +63,7 @@ function Header(props: {
   return (
     <div className="relative">
       <img
-        src={props.bot?.backgroundImage ?? ""}
+        src={makeDownloadUrl(props.bot?.backgroundImage) ?? ""}
         alt="background"
         // loading strategy
         loading="eager"
@@ -167,17 +168,22 @@ const ChatMainMenu = () => {
 
   async function handleShare() {
     if (!bot.data) return;
+    const url = fullUrl(paths.botChatMainMenu(bot.data.id));
 
     if (!Capacitor.isNativePlatform()) {
-      await navigator.clipboard.writeText(paths.botChatMainMenu(bot.data.id));
-      toast(t`Copied link to clipboard`, { type: "default", autoClose: 2000 });
+      await navigator.clipboard.writeText(url);
+      toast(t`Copied link to clipboard`, {
+        type: "success",
+        autoClose: 1500,
+        pauseOnHover: false,
+      });
       return;
     }
 
     await Share.share({
-      title: _(msg`Character ${bot.data.name} | Waifuu`),
-      text: _(msg`Try out character ${bot.data.name} on Waifuu.`),
-      url: paths.botChatMainMenu(bot.data.id),
+      title: _(msg`${bot.data.name} | Waifuu`),
+      text: _(msg`Try out ${bot.data.name} on Waifuu.`),
+      url: url,
       dialogTitle: _(msg`'Share ${bot.data.name} with friends`),
     });
   }
@@ -187,6 +193,7 @@ const ChatMainMenu = () => {
       title={bot.isLoading ? _(msg`Loading...`) : _(msg`Chat with ${bot.data?.name}`)}
       className={"space-y-12"}
       backPath={paths.discover}
+      appHeaderEndContent={<AppHeaderCharSettingsButton />}
     >
       <Card className="z-20 mx-auto md:w-[600px]">
         {bot.data?.visibility !== BotVisibility.PRIVATE && (

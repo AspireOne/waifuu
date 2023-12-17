@@ -5,7 +5,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { api } from "@/lib/api";
-import { NextUIProvider } from "@nextui-org/react";
+import { Modal, ModalContent, NextUIProvider } from "@nextui-org/react";
 import { type AppType } from "next/app";
 import { useEffect } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
@@ -13,11 +13,15 @@ import { ToastContainer } from "react-toastify";
 
 import { SessionProvider } from "@/providers/SessionProvider";
 import { useInitializeEarlyAccess } from "@/stores";
+import Title from "@components/ui/Title";
 import useIsMobile from "@hooks/useIsMobile";
+import { useIsOnline } from "@hooks/useIsOnline";
 import { getOrInitFirebaseApp, getOrInitFirebaseAuth } from "@lib/firebase";
 import { initGlobalLocale } from "@lib/i18n";
 import { i18n } from "@lingui/core";
+import { Trans } from "@lingui/macro";
 import { I18nProvider } from "@lingui/react";
+import { Spinner } from "@nextui-org/spinner";
 import { CustomHistoryProvider } from "@providers/CustomHistoryProvider";
 import { MountPersistenceProvider } from "@providers/MountPersistenceProvider";
 import { PersistedScrollPositionProvider } from "@providers/PersistedScrollPositionProvider";
@@ -26,11 +30,12 @@ import { useRouter } from "next/router";
 
 initGlobalLocale();
 
-// biome-ignore lint: I keep it here so that I do not forget it exists.
 const Waifuu: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   useInitializeEarlyAccess();
+  const isOnline = useIsOnline();
+
   // Initialize app.
   useEffect(() => {
     async function init() {
@@ -56,6 +61,25 @@ const Waifuu: AppType = ({ Component, pageProps: { ...pageProps } }) => {
               <SessionProvider>
                 <PersistedScrollPositionProvider>
                   <MountPersistenceProvider>
+                    <Modal size={"full"} isOpen={!isOnline}>
+                      <ModalContent>
+                        {(onClose) => (
+                          <div className={"flex flex-col justify-center h-full text-center"}>
+                            <div>
+                              <Title
+                                className={"mx-auto flex flex-row justify-center"}
+                                size={"md"}
+                              >
+                                <Trans>
+                                  Lost internet connection, waiting to reconnect...
+                                </Trans>
+                              </Title>
+                              <Spinner />
+                            </div>
+                          </div>
+                        )}
+                      </ModalContent>
+                    </Modal>
                     <main className={"bg-background text-foreground dark"}>
                       <div className="font-inter">
                         <ToastContainer

@@ -10,8 +10,6 @@ export default protectedProcedure
   )
   .query(() => {
     return {
-      [CharacterTag.GIRLFRIEND]: "Girlfriend",
-      [CharacterTag.BOYFRIEND]: "Boyfriend",
       [CharacterTag.ROMANCE]: "Romance",
       [CharacterTag.FANTASY]: "Fantasy",
       [CharacterTag.SUPERNATURAL]: "Supernatural",

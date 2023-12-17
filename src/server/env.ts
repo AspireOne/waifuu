@@ -37,6 +37,8 @@ export const envSchema = z.object({
   S3_SECRET_KEY: z.string().min(1),
   S3_REGION: z.string().min(1),
   S3_DEFAULT_BUCKET: z.string().min(1),
+  S3_DEFAULT_DEV_BUCKET: z.string().min(1),
+  NEXT_PUBLIC_S3_BASE_PATH: z.string().url(),
 
   REDIS_PASSWORD: z.string(),
 
@@ -54,6 +56,9 @@ export const envSchema = z.object({
 
   OPENROUTER_API_KEY: z.string().min(1),
   NEXT_PUBLIC_HMAC_SHARED_KEY: z.string().min(1),
+
+  LANGFUSE_SK: z.string().min(1),
+  NEXT_PUBLIC_LANGFUSE_PK: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

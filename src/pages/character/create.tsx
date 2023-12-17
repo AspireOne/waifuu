@@ -240,7 +240,7 @@ const CreateChatPage = () => {
               Images
             </Title>
             {/*TODO: Add descriptions, improve design.s*/}
-            <div className={"space-y-4"}>
+            <div className={"flex flex-col sm:flex-row gap-4 sm:gap-8"}>
               <FileUploadRaw required onUpload={(id) => setAvatar(id)} label="Avatar" />
               <FileUploadRaw onUpload={(id) => setCover(id)} label={_(msg`Cover`)} />
               <FileUploadRaw
@@ -292,7 +292,7 @@ const CreateChatPage = () => {
 
             <div className="flex flex-row justify-between w-full items-center">
               <Switch isSelected={isSelected} onValueChange={setIsSelected}>
-                <Trans>NSFW</Trans>
+                <Trans>NSFW?</Trans>
               </Switch>
               {/* TODO: Add some fun texts or submit it and show some loading toast, because this might take long time. */}
               <Button

@@ -4,6 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+let redirectCount = 0;
+
 export const useAutoRedirect = () => {
   const searchParams = useSearchParams();
   const session = useSession();
@@ -26,7 +28,14 @@ export const useAutoRedirect = () => {
   // If the user is already logged in, redirect to 'redirect' or the app.
   // IMPORTANT: Check for session.user instead of session.status.
   useEffect(() => {
+    // Just a safety handle, because there was some rare cycling issues.
+    if (redirectCount > 10) {
+      window.location.replace(semanticPaths.appIndex);
+      return;
+    }
+
     if (session.user?.id && router.isReady && router.pathname !== semanticPaths.appIndex) {
+      redirectCount++;
       router.replace(redirect || semanticPaths.appIndex);
     }
   }, [router, session.user, session.user?.id]);

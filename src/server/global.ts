@@ -2,6 +2,7 @@ import { IPThrottler } from "@/server/lib/IPThrottler";
 import { S3Client } from "@aws-sdk/client-s3";
 import { PrismaClient } from "@prisma/client";
 import Redis from "ioredis";
+import Langfuse from "langfuse";
 import PusherServer from "pusher";
 import Replicate from "replicate";
 import Stripe from "stripe";
@@ -15,6 +16,7 @@ export type Global = {
   replicate?: Replicate;
   s3Client?: S3Client;
   stripe?: Stripe;
+  langfuse?: Langfuse;
   nonces?: string[];
 };
 
