@@ -58,7 +58,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <CombinedPage title={t`Sign in`} autoBack={false}>
+    <CombinedPage backPath={null} title={t`Sign in`} autoBack={false}>
       <img
         alt="background"
         loading="eager"

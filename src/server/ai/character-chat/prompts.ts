@@ -17,10 +17,19 @@ const getSystemPrompt = (
 // TODO: Change the system prompt based on mode.
 const getInitialMessagePrompt = (mode: ChatMode, userContext?: string | null) => {
   if (mode === ChatMode.ADVENTURE) {
-    return "{{Set the evironment, scene, and engage the user.}}";
+    return "{{Set the evironment, scene, and engage the user. Make it short - 3 sentences max.}}";
   }
 
-  return "{{Welcome and engage the user with something fun. Stay in your character.}}";
+  if (mode === ChatMode.ROLEPLAY) {
+    return "{{Create an initial situation (very short, max 3 sentences), put it in asterisks (*), and then engage the user shortly in character (in first person perspective!). Do not prepend text with any prefix.}}";
+  }
+
+  if (mode === ChatMode.CHAT) {
+    return "{{Greet the user casually.}}";
+  }
+
+  throw new Error(`Unknown mode: ${mode}`);
+
   // ${userContext ? ` Note this additional info about the user: '${userContext}'.` : ""}
 };
 

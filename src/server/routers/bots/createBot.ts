@@ -146,6 +146,22 @@ async function createInitialMessage(
     model: getModelToUse(mode),
   });
 
+  if (mode === ChatMode.ADVENTURE) {
+    // if the output does not start or end with *, add it. And if the output starts or ends with {{}}, remove it.
+    if (!output.text.startsWith("*")) {
+      output.text = `*${output.text}`;
+    }
+    if (!output.text.endsWith("*")) {
+      output.text = `${output.text}*`;
+    }
+    if (output.text.startsWith("{{")) {
+      output.text = output.text.slice(2);
+    }
+    if (output.text.endsWith("}}")) {
+      output.text = output.text.slice(0, -2);
+    }
+  }
+
   return await db.initialMessage.create({
     data: {
       message: output.text,

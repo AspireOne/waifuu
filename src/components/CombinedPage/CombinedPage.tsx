@@ -1,4 +1,5 @@
 import { SessionStatus, useSession } from "@/providers/SessionProvider";
+import { paths } from "@lib/paths";
 import * as React from "react";
 import { PropsWithChildren, useEffect } from "react";
 import { BasePage, PageProps } from "src/components/BasePage";
@@ -42,7 +43,7 @@ export const CombinedPage = (props: PropsWithChildren<Props>) => {
       showActionBar={false}
       topBar={status === "authenticated" ? "app-header" : "navbar"}
       showFooter={status === "unauthenticated"}
-      backPath={props.backPath}
+      backPath={props.backPath || (props.backPath === null ? null : paths.discover)}
       autoBack={props.autoBack === undefined ? true : props.autoBack}
     >
       <PagePadding

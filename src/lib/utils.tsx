@@ -1,4 +1,9 @@
+import { t } from "@lingui/macro";
+import { BotVisibility } from "@prisma/client";
 import React from "react";
+import { IconType } from "react-icons";
+import { FaUserFriends } from "react-icons/fa";
+import { IoLockClosed, IoLockOpenOutline } from "react-icons/io5";
 import { baseS3Url } from "./paths";
 
 /**
@@ -85,13 +90,13 @@ export function normalizePath(path: string, keepSlash = false): string {
  * @param {string | null} pathOrId - The url or ID of the image.
  */
 export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T): string {
-  if (!pathOrId && pathOrId !== "" || pathOrId === "") return "";
+  if ((!pathOrId && pathOrId !== "") || pathOrId === "") return "";
 
   if (isUrl(pathOrId)) {
     return pathOrId;
   }
 
-  return `${baseS3Url()}/${pathOrId}`
+  return `${baseS3Url()}/${pathOrId}`;
 }
 
 export function isUrl(str: string): boolean {
@@ -109,3 +114,29 @@ export function getCsrfToken() {
     .find((row) => row.startsWith("csrfToken"))
     ?.split("=")[1];
 }
+
+export const getBotVisibilityIcon = (
+  visibility: BotVisibility,
+): React.FC<React.ComponentProps<IconType>> => {
+  const icons = {
+    [BotVisibility.PUBLIC]: IoLockOpenOutline,
+    [BotVisibility.PRIVATE]: IoLockClosed,
+    [BotVisibility.LINK]: FaUserFriends,
+  };
+
+  if (!icons[visibility]) throw new Error(`Invalid visibility: ${visibility}`);
+
+  const IconComponent = icons[visibility];
+  return (props) => <IconComponent {...props} />;
+};
+
+export const getVisibilityIconTitle = (visibility: BotVisibility) => {
+  const titles = {
+    [BotVisibility.PUBLIC]: t`Public`,
+    [BotVisibility.PRIVATE]: t`Private`,
+    [BotVisibility.LINK]: t`Link-Only`,
+  };
+
+  if (!titles[visibility]) throw new Error(`Invalid visibility: ${visibility}`);
+  return titles[visibility];
+};

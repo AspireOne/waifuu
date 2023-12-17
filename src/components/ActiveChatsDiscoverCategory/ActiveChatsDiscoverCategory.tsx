@@ -47,10 +47,11 @@ const CharacterList = (props: { bots?: GetAllUsedBotsOutput | null }) => {
       {props.bots?.map((bot) => {
         return (
           <CharacterCard
+            //showVisibility={true}
             key={bot.id + bot.chatType}
             chatType={bot.chatType}
             chatId={bot.chatId}
-            bot={bot}
+            character={bot}
           />
         );
       })}

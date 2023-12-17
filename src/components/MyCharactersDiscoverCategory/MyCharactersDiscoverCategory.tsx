@@ -66,7 +66,9 @@ const CharacterList = (props: { bots?: GetUserBotsOutput | null }) => {
   return (
     <div className="flex w-full flex-row gap-5 overflow-scroll overflow-x-visible">
       {props.bots?.map((bot) => {
-        return <CharacterCard key={bot.id + bot.createdAt} bot={bot} />;
+        return (
+          <CharacterCard key={bot.id + bot.createdAt} character={bot} showVisibility={true} />
+        );
       })}
 
       {!props.bots && <CharacterCardSkeleton inline count={2} />}

@@ -71,39 +71,18 @@ export const defaultModels = {
   chat: models.mixtral,
 };
 
-export const getRoleplayModel = (preferredModelId?: ModelId | string | null) => {
-  if (preferredModelId && getModelById(preferredModelId)) {
-    return getModelById(preferredModelId)!;
-  }
-  return defaultModels.roleplay;
-};
-
-export const getAdventureModel = () => {
-  return defaultModels.adventure;
-};
-
-export const getChatModel = (preferredModelId?: ModelId | string | null) => {
-  if (preferredModelId && getModelById(preferredModelId)) {
-    return getModelById(preferredModelId)!;
-  }
-  return defaultModels.chat;
-};
-
 export const getModelToUse = (
   mode: ChatMode,
   preferredModelId?: ModelId | string | null,
 ): Model => {
-  switch (mode) {
-    case ChatMode.ROLEPLAY:
-      return getRoleplayModel(preferredModelId);
-    case ChatMode.ADVENTURE:
-      return getAdventureModel();
-    case ChatMode.CHAT:
-      return getChatModel(preferredModelId);
-    default:
-      console.warn(`Unknown mode: ${mode}`);
-      return getRoleplayModel(preferredModelId);
-  }
+  const hasPreferredModel = preferredModelId && getModelById(preferredModelId);
+  const preferredModel = hasPreferredModel ? getModelById(preferredModelId)! : null;
+
+  if (ChatMode.ROLEPLAY) return preferredModel ?? defaultModels.roleplay;
+  if (ChatMode.CHAT) return preferredModel ?? defaultModels.chat;
+  if (ChatMode.ADVENTURE) return defaultModels.adventure;
+
+  throw new Error(`Unknown mode: ${mode}`);
 };
 
 export const getModelById = (modelId: ModelId | string) => {

@@ -207,7 +207,7 @@ const CreateChatPage = () => {
                 max={43}
                 maxLength={43}
                 label={_(msg`Name`)}
-                description={_(msg`The name of your character.`)}
+                description={_(msg`The actual name of your character.`)}
               />
 
               <Textarea
@@ -240,12 +240,22 @@ const CreateChatPage = () => {
               Images
             </Title>
             {/*TODO: Add descriptions, improve design.s*/}
-            <div className={"flex flex-col sm:flex-row gap-4 sm:gap-8"}>
-              <FileUploadRaw required onUpload={(id) => setAvatar(id)} label="Avatar" />
-              <FileUploadRaw onUpload={(id) => setCover(id)} label={_(msg`Cover`)} />
+            <div className={"flex flex-row flex-wrap gap-8 sm:justify-center sm:gap-8"}>
+              <FileUploadRaw
+                required
+                onUpload={(id) => setAvatar(id)}
+                label="Avatar"
+                description={_(msg`The character's avatar shown in chat`)}
+              />
+              <FileUploadRaw
+                onUpload={(id) => setCover(id)}
+                label={_(msg`Character image`)}
+                description={_(msg`should be a transparent image of the character`)}
+              />
               <FileUploadRaw
                 onUpload={(id) => setBackground(id)}
                 label={_(msg`Background image`)}
+                description={_(msg`Shown in the background of the whole chat`)}
               />
             </div>
 
