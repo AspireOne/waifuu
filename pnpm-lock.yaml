@@ -8,6 +8,9 @@ dependencies:
   '@aws-sdk/client-s3':
     specifier: ^3.474.0
     version: 3.474.0
+  '@aws-sdk/s3-presigned-post':
+    specifier: ^3.474.0
+    version: 3.474.0
   '@capacitor-firebase/authentication':
     specifier: ^5.3.0
     version: 5.3.0(@capacitor/core@5.6.0)(firebase@10.7.1)
@@ -107,6 +110,9 @@ dependencies:
   axios:
     specifier: ^1.6.2
     version: 1.6.2
+  browser-image-compression:
+    specifier: ^2.0.2
+    version: 2.0.2
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -116,21 +122,6 @@ dependencies:
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
-  filepond-plugin-file-validate-size:
-    specifier: ^2.2.8
-    version: 2.2.8(filepond@4.30.5)
-  filepond-plugin-file-validate-type:
-    specifier: ^1.2.8
-    version: 1.2.8(filepond@4.30.5)
-  filepond-plugin-image-crop:
-    specifier: ^2.0.6
-    version: 2.0.6(filepond@4.30.5)
-  filepond-plugin-image-exif-orientation:
-    specifier: ^1.0.11
-    version: 1.0.11(filepond@4.30.5)
-  filepond-plugin-image-preview:
-    specifier: ^4.6.12
-    version: 4.6.12(filepond@4.30.5)
   firebase:
     specifier: ^10.7.1
     version: 10.7.1
@@ -140,9 +131,6 @@ dependencies:
   form-data:
     specifier: ^4.0.0
     version: 4.0.0
-  formidable:
-    specifier: ^3.5.1
-    version: 3.5.1
   framer-motion:
     specifier: ^10.16.16
     version: 10.16.16(react-dom@18.2.0)(react@18.2.0)
@@ -810,6 +798,23 @@ packages:
       tslib: 2.6.2
     dev: false
 
+  /@aws-sdk/s3-presigned-post@3.474.0:
+    resolution: {integrity: sha512-znY30ceUIbzogsVkEmA+Hig21605zR0SpCTtFeRAvk4XaFte1Sorpi9o6wTH5Lt+bLYsCbiPKiPAzJlkFvIg0Q==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@aws-sdk/client-s3': 3.474.0
+      '@aws-sdk/types': 3.468.0
+      '@aws-sdk/util-format-url': 3.468.0
+      '@smithy/middleware-endpoint': 2.2.3
+      '@smithy/signature-v4': 2.0.18
+      '@smithy/types': 2.7.0
+      '@smithy/util-hex-encoding': 2.0.0
+      '@smithy/util-utf8': 2.0.2
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - aws-crt
+    dev: false
+
   /@aws-sdk/signature-v4-multi-region@3.474.0:
     resolution: {integrity: sha512-93OWRQgTJZASXLrlUNX7mmXknNkYxFYldRLARmYQccONmnIqgYQW0lQj8BFwqkHJTzSMik3/UsU0SHKwZ9ynYA==}
     engines: {node: '>=14.0.0'}
@@ -888,6 +893,16 @@ packages:
     dependencies:
       '@aws-sdk/types': 3.468.0
       '@smithy/util-endpoints': 1.0.7
+      tslib: 2.6.2
+    dev: false
+
+  /@aws-sdk/util-format-url@3.468.0:
+    resolution: {integrity: sha512-CtHApPmudJz/Z2MHVogWfkaSw4wWHQKVLQs4Q5XjvLcDSzODzxHbiOIckFCXQm2Mme4+TTe4GFU9g869ufegXg==}
+    engines: {node: '>=14.0.0'}
+    dependencies:
+      '@aws-sdk/types': 3.468.0
+      '@smithy/querystring-builder': 2.0.15
+      '@smithy/types': 2.7.0
       tslib: 2.6.2
     dev: false
 
@@ -6625,10 +6640,6 @@ packages:
     dev: false
     optional: true
 
-  /asap@2.0.6:
-    resolution: {integrity: sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==}
-    dev: false
-
   /astral-regex@2.0.0:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
     engines: {node: '>=8'}
@@ -6797,6 +6808,12 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.0.1
+
+  /browser-image-compression@2.0.2:
+    resolution: {integrity: sha512-pBLlQyUf6yB8SmmngrcOw3EoS4RpQ1BcylI3T9Yqn7+4nrQTXJD4sJDe5ODnJdrvNMaio5OicFo75rDyJD2Ucw==}
+    dependencies:
+      uzip: 0.20201231.0
+    dev: false
 
   /browserslist@4.22.2:
     resolution: {integrity: sha512-0UgcrvQmBDvZHFGdYUehrCNIazki7/lUP3kkoi/r3YB2amZbFM9J43ZRkJTXBUZK4gmx56+Sqk9+Vs9mwZx9+A==}
@@ -7433,13 +7450,6 @@ packages:
       dequal: 2.0.3
     dev: true
 
-  /dezalgo@1.0.4:
-    resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
-    dependencies:
-      asap: 2.0.6
-      wrappy: 1.0.2
-    dev: false
-
   /didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
 
@@ -7899,46 +7909,6 @@ packages:
       minimatch: 5.1.6
     dev: true
 
-  /filepond-plugin-file-validate-size@2.2.8(filepond@4.30.5):
-    resolution: {integrity: sha512-yzb8scATmkWqPTP7oKQz6L8WwJm6Xmgc/fuq6DFGRaLz0I7372BUvBsxagBk/hypMIjvieNzhggm33Y60x3rcw==}
-    peerDependencies:
-      filepond: '>=3.1.2 <5.x'
-    dependencies:
-      filepond: 4.30.5
-    dev: false
-
-  /filepond-plugin-file-validate-type@1.2.8(filepond@4.30.5):
-    resolution: {integrity: sha512-UBTqIWbk5+5R0GBELI8svu01MHWjFSLfc9DfCMvFtHKXLdJMxY1p37ChC4YKQjhfODaTuvLnNVRsukMGMFZBBg==}
-    peerDependencies:
-      filepond: '>=1.x <5.x'
-    dependencies:
-      filepond: 4.30.5
-    dev: false
-
-  /filepond-plugin-image-crop@2.0.6(filepond@4.30.5):
-    resolution: {integrity: sha512-bSy/KND4EP/QtW8MxIj23qgSEPUVRrT8XdktJ+OU9y8xRjFjTG+qcuw1LsycARQYRtzi8cZrD3P4POOITfkywQ==}
-    peerDependencies:
-      filepond: '>=3.x <5.x'
-    dependencies:
-      filepond: 4.30.5
-    dev: false
-
-  /filepond-plugin-image-exif-orientation@1.0.11(filepond@4.30.5):
-    resolution: {integrity: sha512-hLBc12Fk6Zkj3L8mSAn+elugHOqT5rLUbgVXQQIQjMe0FsGjtpoxqeVR6jt4IWHGat2L9sFAgU2TGmd1mqosCg==}
-    peerDependencies:
-      filepond: '>=3.x <5.x'
-    dependencies:
-      filepond: 4.30.5
-    dev: false
-
-  /filepond-plugin-image-preview@4.6.12(filepond@4.30.5):
-    resolution: {integrity: sha512-Y8ETX5QVV0mbPB0586UH8AUmG9tZg8PuN5bdEAIlZVJFTct5ebViJ7+Am94/VhTPjLqZjBf1zmDq5JU6XRsZKw==}
-    peerDependencies:
-      filepond: '>=4.x <5.x'
-    dependencies:
-      filepond: 4.30.5
-    dev: false
-
   /filepond@4.30.5:
     resolution: {integrity: sha512-+uZrwbZmqkqONl5ApWAE8zsonipXEm6yAX6B71TUuYWRogmJ2nYJCt9E7KiOHtphyChyKKNJTKuV52gn0oQihw==}
     dev: false
@@ -8057,14 +8027,6 @@ packages:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 4.0.0-beta.3
-    dev: false
-
-  /formidable@3.5.1:
-    resolution: {integrity: sha512-WJWKelbRHN41m5dumb0/k8TeAx7Id/y3a+Z7QfhxP/htI9Js5zYaEDtG8uMgG0vM0lOlqnmjE99/kfpOYi/0Og==}
-    dependencies:
-      dezalgo: 1.0.4
-      hexoid: 1.0.0
-      once: 1.4.0
     dev: false
 
   /fraction.js@4.3.7:
@@ -8589,11 +8551,6 @@ packages:
       property-information: 6.4.0
       space-separated-tokens: 2.0.2
     dev: true
-
-  /hexoid@1.0.0:
-    resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
-    engines: {node: '>=8'}
-    dev: false
 
   /hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
@@ -12669,6 +12626,10 @@ packages:
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
+    dev: false
+
+  /uzip@0.20201231.0:
+    resolution: {integrity: sha512-OZeJfZP+R0z9D6TmBgLq2LHzSSptGMGDGigGiEe0pr8UBe/7fdflgHlHBNDASTXB5jnFuxHpNaJywSg8YFeGng==}
     dev: false
 
   /v8-compile-cache-lib@3.0.1:

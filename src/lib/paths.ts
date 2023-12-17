@@ -93,9 +93,9 @@ export const baseS3Url = () => {
 
   if (process.env.NODE_ENV === "production") {
     return process.env.NEXT_PUBLIC_S3_BASE_PATH;
-  } else {
-    return process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH;
   }
+  
+  return process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH;
 }
 
 /**

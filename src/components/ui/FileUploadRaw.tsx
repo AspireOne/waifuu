@@ -1,14 +1,16 @@
 import { Image } from "@nextui-org/react";
-import { apiPostImage } from "@services/imageService";
+import { apiImageUpload, apiPresignUrl } from "@services/imageService";
 import { cva } from "class-variance-authority";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MdImage } from "react-icons/md";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import imageCompression from 'browser-image-compression';
 
 type FileUploadRawProps = {
-  onUpload: (id: string) => void;
   label: string;
   required?: boolean;
+  maxSizeMB?: number;
+  maxWidthOrHeight?: number;
+  onUpload: (id: string) => void;
 };
 
 const textClass = cva(["font-base"], {
@@ -40,6 +42,8 @@ export const FileUploadRaw = ({
   onUpload,
   label,
   required,
+  maxSizeMB = 1,
+  maxWidthOrHeight = 1920,
 }: FileUploadRawProps) => {
   const [uploading, setUploading] = useState(false);
   const [responseSuccessful, setResponseSuccessful] = useState<
@@ -55,19 +59,24 @@ export const FileUploadRaw = ({
   }, [uploading]);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target?.files?.[0];
+    const file = await imageCompression(event.target?.files?.[0] as File, {
+      maxSizeMB,
+      maxWidthOrHeight,
+      useWebWorker: true,
+    });
 
     if (file) {
       setImageUrl(URL.createObjectURL(file));
       setUploading(true);
 
       try {
-        const formData = new FormData();
-        formData.append("file", file);
-        const { message } = await apiPostImage(formData);
+        const data = await apiPresignUrl({ contentType: file.type });
+
+        const updatedFile = new File([file], data.id, { type: file.type });
+        await apiImageUpload(updatedFile, data);
 
         setResponseSuccessful(true);
-        onUpload(message[0]?.id ?? "");
+        onUpload(data.id);
       } catch (error) {
         setResponseSuccessful(false);
       } finally {
