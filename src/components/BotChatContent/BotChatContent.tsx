@@ -37,10 +37,9 @@ export const BotChatContent = (props: {
           size={90}
           offset={-5} // fixes the shadow being cut off.
           ref={containerRef}
-          className="flex md:w-[500px] mx-auto flex-col p-5 gap-5 h-[430px] w-full z-[30] overflow-scroll overscroll-auto pt-10"
+          className="flex md:w-[500px] mx-auto flex-col p-5 gap-5 h-[430px] w-full z-[30] overflow-scroll overscroll-auto pt-10 no-scrollbar"
         >
           <Messages chat={chat} bot={props.bot} />
-
           {chat.loadingReply && <ChatTypingIndicator className={"z-[30]"} />}
 
           <div ref={bottomRef} />
