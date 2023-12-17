@@ -25,7 +25,7 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
 
   const trace = langfuse.trace({
     name: `chat_${input.chatId}`,
-    id: input.chatId, // TODO: This should be message id.
+    id: generateRandomId(10),
     userId: ctx.user.id,
     sessionId: input.chatId,
     metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
@@ -75,7 +75,9 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
 
   const output = await genOutput(chat, execution, model);
 
-  execution.end({});
+  execution.end({
+    output: output.text,
+  });
 
   // TODO(1): Do it async after request.
   const [newMessages, _, __] = await Promise.all([
@@ -89,6 +91,16 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
     userMessage: newMessages.userMsg,
   };
 });
+
+function generateRandomId(length: number) {
+  let result = "";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
 function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
   return {
@@ -116,7 +128,12 @@ async function genOutput(
 ) {
   try {
     return await mainLlm.run({
-      system_prompt: await getSystemPrompt(chat.mode, chat.bot.persona, chat.bot.name),
+      system_prompt: await getSystemPrompt(
+        chat.mode,
+        chat.bot.persona,
+        chat.bot.name,
+        chat.user.addressedAs,
+      ),
       messages: chat.messages,
       trace,
       model,
@@ -126,7 +143,7 @@ async function genOutput(
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to generate a reply.",
-      toast: t`Error replying, please try again later`,
+      toast: t`Failed to reply, please try again later.`,
       cause: e,
     });
   }
