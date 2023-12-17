@@ -1,16 +1,6 @@
+import { retrieveIp } from "@/server/helpers/helpers";
 import { publicProcedure } from "@/server/lib/trpc";
 import { requestEarlyAccessFormValues } from "@/server/shared/requestEarlyAccessFormValuesSchema";
-import { NextApiRequest } from "next";
-
-function retrieveIp(req?: NextApiRequest | null) {
-  let ip = req?.headers["x-forwarded-for"] || req?.socket?.remoteAddress;
-  if (Array.isArray(ip)) {
-    if (ip.length > 0) ip = ip[0];
-    else ip = undefined;
-  }
-  if (!ip) ip = undefined;
-  return ip;
-}
 
 export default publicProcedure
   .input(requestEarlyAccessFormValues)

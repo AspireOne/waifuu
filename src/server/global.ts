@@ -1,4 +1,5 @@
 import { IPThrottler } from "@/server/lib/IPThrottler";
+import RateLimiter from "@/server/lib/RateLimiter";
 import { S3Client } from "@aws-sdk/client-s3";
 import { PrismaClient } from "@prisma/client";
 import Redis from "ioredis";
@@ -13,6 +14,7 @@ export type Global = {
   pusher?: PusherServer;
   ioredis?: Redis;
   ipThrottler?: IPThrottler;
+  rateLimiter?: RateLimiter;
   replicate?: Replicate;
   s3Client?: S3Client;
   stripe?: Stripe;

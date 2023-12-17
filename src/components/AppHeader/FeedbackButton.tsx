@@ -24,6 +24,7 @@ export const FeedbackButton = () => {
     onSuccess() {
       toast(t`Feedback sent. Thank you!`, { type: "success", delay: 1500 });
       onClose();
+      setFeedback("");
     },
   });
 

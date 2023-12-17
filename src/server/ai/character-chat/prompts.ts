@@ -16,6 +16,10 @@ const getSystemPrompt = (
 
 // TODO: Change the system prompt based on mode.
 const getInitialMessagePrompt = (mode: ChatMode, userContext?: string | null) => {
+  if (mode === ChatMode.ADVENTURE) {
+    return "{{Set the evironment, scene, and engage the user.}}";
+  }
+
   return `{{Welcome and engage the user with something fun. Stay in your character.${
     userContext ? ` Note this additional info about the user: '${userContext}'.` : ""
   }}}`;

@@ -11,7 +11,7 @@ const chatSystemPrompt = PromptTemplate.fromTemplate(
 
 // TODO: Add example.
 const adventureSystemPrompt = PromptTemplate.fromTemplate(
-  "You are the Dungeon Master in a DND-like adventure with a user. Your role is to lead the story, narrate the environment, respond to the player's actions, and facilitate gameplay elements like challenges, combat etc.",
+  "You are the Dungeon Master in a DND-like adventure with a user. Your role is to lead the story, narrate the environment, respond to the player's actions, and facilitate gameplay elements like challenges, combat, or minigames.",
 );
 
 const getSystemPrompt = (mode: ChatMode) => {
