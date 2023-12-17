@@ -130,12 +130,8 @@ async function createInitialMessage(
   db: PrismaClient,
   trace: LangfuseTraceClient,
 ) {
-  const systemPrompt = await getSystemPrompt(mode, bot.persona, bot.name);
-  const initialMessagePrompt = getInitialMessagePrompt(
-    mode,
-    user.addressedAs,
-    user.botContext,
-  );
+  const systemPrompt = await getSystemPrompt(mode, bot.persona, bot.name, user.addressedAs);
+  const initialMessagePrompt = getInitialMessagePrompt(mode, user.botContext);
   console.debug({ systemPrompt, initialMessagePrompt });
 
   const output = await mainLlm.run({

@@ -59,7 +59,7 @@ export const models: Record<ModelKey, Model> = {
     id: "mistralai/mixtral-8x7b-instruct",
     friendlyName: "Mixtral",
     description:
-      "Great memory, high in reasoning (on par with ChatGPT), but creativity and roleplaying abilities may vary.",
+      "Great memory, high in reasoning (on par with ChatGPT), good roleplaying capabilities, but might repeat itself a bit.",
     tokens: 32768,
     params: { ...universalParams, max_tokens: 32668 },
   },

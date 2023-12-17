@@ -84,12 +84,12 @@ export const AppHeaderCharSettingsButton = () => {
               </ModalHeader>
               <ModalBody>
                 <div>
-                  <Title size={"md"}>Preferred A.I. model</Title>
-                  <Models />
-                </div>
-                <div>
                   <Title size={"md"}>User settings</Title>
                   <UserSettings />
+                </div>
+                <div>
+                  <Title size={"md"}>Preferred A.I. model</Title>
+                  <Models />
                 </div>
               </ModalBody>
               <ModalFooter>
