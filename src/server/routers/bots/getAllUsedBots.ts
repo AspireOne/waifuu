@@ -19,6 +19,10 @@ export default protectedProcedure
       include: {
         bot: true,
       },
+      // order from the most recently used to the least.
+      orderBy: {
+        updatedAt: "desc",
+      },
     });
 
     return chats.map((chat) => {

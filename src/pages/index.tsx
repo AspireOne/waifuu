@@ -4,6 +4,10 @@ import { Spacer } from "@nextui-org/react";
 import Image from "next/image";
 
 import { PublicPage } from "@components/PublicPage";
+import { semanticPaths } from "@lib/paths";
+import { useSession } from "@providers/SessionProvider";
+import { useRouter } from "next/router";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 // If building for a native app, we don't want to show the landing page as the index screen.
@@ -207,7 +211,7 @@ const CompanionUsage = () => {
   );
 };
 
-const Footer = () => {
+const MiniFooter = () => {
   return (
     <footer className="text-center">
       <p className="font-bold text-lg text-gray-400">Trusted by 1000+ users</p>
@@ -243,43 +247,35 @@ const Footer = () => {
   );
 };
 
-// prettier-ignore
 export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
   ? Discover
   : function LandingPage() {
-      // const { status } = useSession();
-      // const router = useRouter();
+      const { status } = useSession();
+      const router = useRouter();
 
-      // React.useEffect(() => {
-      //   if (Capacitor.isNativePlatform()) {
-      //     router.replace(semanticPaths.appIndex);
-      //   }
-      // }, []);
-
-      // React.useEffect(() => {
-      //   if (status === "authenticated") router.push(semanticPaths.appIndex);
-      // }, [status]);
+      React.useEffect(() => {
+        if (status === "authenticated") router.replace(semanticPaths.appIndex);
+      }, [status]);
 
       // Todo: meta description.
       return (
         <PublicPage
-          className="bg-[#303030] text-white bg-contain bg-no-repeat bg-[url('/assets/indexbackground.png')]"
+          disableXPadding
+          className="bg-contain bg-no-repeat"
           title={"Meet Waifuu"}
           /*TODO: DESCRIPTION*/
           description={""}
         >
-          <TopBar />
-
           <Spacer y={40} />
           <Header />
           <Spacer y={40} />
           <Features />
           <Spacer y={40} />
-          <PayPlans />
+          {/*<PayPlans />*/}
           <Spacer y={40} />
-          <CompanionUsage />
+          {/*<CompanionUsage />*/}
           <Spacer y={40} />
-          <Footer />
+          <MiniFooter />
           <Spacer y={40} />
         </PublicPage>
       );

@@ -1,27 +1,29 @@
 import { ContactUsForm } from "@components/ContactUsForm";
 
-import Title from "@components/ui/Title";
 import { Trans, t } from "@lingui/macro";
 import { Card, CardBody } from "@nextui-org/card";
 
 import { CombinedPage } from "@components/CombinedPage";
+import { Link } from "@nextui-org/react";
 import { FiMail } from "react-icons/fi";
+import { PageDescription } from "src/components/PageDescription";
+import { PageTitle } from "src/components/PageTitle";
 
 export default () => {
   return (
     /*TODO: Description*/
-    <CombinedPage title={t`Contact us`} description={""}>
-      <div className="container mx-auto max-w-5xl sm:px-10 lg:px-0 mt-24 lg:mt-20">
+    <CombinedPage disableXPadding title={t`Contact us`} description={""}>
+      <div className="container mx-auto max-w-5xl sm:px-10 lg:px-0 lg:mt-20">
         <div className="flex flex-col items-center lg:items-start lg:flex-row gap-20 justify-between sm:px-4">
-          <div className="">
-            <Title as={"h1"} className={"title-xl"}>
+          <div>
+            <PageTitle className={"text-left"} center={false}>
               <Trans>Contact us</Trans>
-            </Title>
-            <p className="text-xl mt-8">
+            </PageTitle>
+            <PageDescription>
               <Trans>
                 Got a problem? A question? Or just want to say hi? We are here for you.
               </Trans>
-            </p>
+            </PageDescription>
             <Socials className={"mt-8"} />
           </div>
 
@@ -40,6 +42,7 @@ export default () => {
 function Socials(props: { className?: string }) {
   return (
     <div className={`${props.className} text-lg`}>
+      {/*TODO: EXtract out the mail into constants perhaps.*/}
       <ContactInfoItem icon={<FiMail />} href="mailto:info@waifuu.com">
         info@waifuu.com
       </ContactInfoItem>
@@ -71,9 +74,7 @@ function ContactInfoItem(props: {
   return (
     <div className="flex flex-row items-center gap-4">
       {props.icon}
-      <a href={props.href} className={"text-[#529BAB] hover:text-blue-400"}>
-        {props.children}
-      </a>
+      <Link href={props.href}>{props.children}</Link>
     </div>
   );
 }

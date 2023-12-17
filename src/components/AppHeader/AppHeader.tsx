@@ -1,47 +1,59 @@
 import { UserDropdown } from "@components/AppHeader/UserDropdown";
+import { useIsOnline } from "@hooks/useIsOnline";
 import { Button } from "@nextui-org/react";
-import { PropsWithChildren } from "react";
-import { BiArrowBack } from "react-icons/bi";
+import { PropsWithChildren, ReactNode } from "react";
+import { IoChevronBack } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 
-/**
- * Unifies page headers. Contains a back button and page title.
- * Back button can be configured to either navigate to a path, navigate to the previous page ("previous"),
- * or do nothing (null).
- */
-export const AppHeader = (
-  props: PropsWithChildren<{
-    onBackButtonPressed: () => void;
-    backButtonEnabled: boolean;
-  }>,
-) => {
+export type AppHeaderInput = PropsWithChildren<{
+  onBackButtonPressed: () => void;
+  backButtonEnabled: boolean;
+  endContent?: ReactNode;
+}>;
+
+export const AppHeader = (props: AppHeaderInput) => {
+  const isOnline = useIsOnline();
+
   return (
     <div
-      className={
-        "z-[100] h-[55px] fixed top-0 left-0 right-0 " +
-        "backdrop-blur-md bg-background/50 border-b-1 border-foreground-100 shadow"
-      }
+      className={twMerge(
+        "z-[100] h-[55px] fixed top-0 left-0 right-0",
+        "backdrop-blur-md bg-background/50 border-b-1 border-foreground-100 shadow",
+        "lg:top-4 lg:rounded-full lg:max-w-[700px] lg:mx-auto lg:border-2 lg:background-blur-xl",
+      )}
     >
-      <div className={"flex flex-row items-center gap-5 h-full px-1"}>
-        {/*Back button, on the left*/}
-        <Button
-          variant={"light"}
-          isIconOnly
-          onClick={props.backButtonEnabled ? props.onBackButtonPressed : undefined}
-          className={twMerge("p-0 mr-auto", !props.backButtonEnabled && "invisible")}
-        >
-          <BiArrowBack size={25} />
-        </Button>
+      <div className={"flex flex-row items-center justify-between h-full px-4 gap-4"}>
+        {/* Left-aligned back button */}
+        {props.backButtonEnabled && (
+          <Button
+            isDisabled={!isOnline}
+            variant={"light"}
+            isIconOnly
+            onClick={props.onBackButtonPressed}
+            className={"flex-shrink-0"}
+          >
+            <IoChevronBack size={25} />
+          </Button>
+        )}
 
-        {/*Text, absolute, centered*/}
-        <h2 className={twMerge("my-auto mx-auto text-center text-xl line-clamp-1 flex-1", "")}>
+        {/* Center text, allow it to take remaining space */}
+        <h2
+          className={twMerge(
+            "text-[19px] font-semibold flex-grow",
+            "overflow-hidden overflow-ellipsis whitespace-nowrap",
+            props.backButtonEnabled && "-ml-2",
+          )}
+        >
           {props.children}
         </h2>
 
-        {/*mr-2 to offset the dropdown, because it is natively slightly off.*/}
-        {/*min-w-max to make it NOT shrink when title is too long*/}
-        {/*User button, on the right*/}
-        <UserDropdown className={"ml-auto mr-2 min-w-max"} />
+        {/* Spacer to maintain layout when back button is disabled */}
+        {!props.backButtonEnabled && <div className={"flex-grow"} />}
+
+        {/* Right-aligned user dropdown */}
+
+        {props.endContent}
+        <UserDropdown className={"flex-shrink-0"} />
       </div>
     </div>
   );

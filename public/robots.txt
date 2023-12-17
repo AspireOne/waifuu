@@ -1,0 +1,27 @@
+User-agent: *
+Disallow: /
+
+# Directories
+Allow: /assets/
+Allow: /favicon/
+Allow: /_next/static/css
+Allow: /_next/static/chunks
+Allow: /images/
+Allow: /css/
+Allow: /js/
+
+# Pages
+Allow: /$
+Allow: /pricing$
+Allow: /contact$
+Allow: /login$
+Allow: /privacy-policy$
+Allow: /privacy$
+Allow: /sign-up$
+Allow: /signup$
+Allow: /signin$
+Allow: /sign-in$
+Allow: /forum # Omit $ to allow all /forum pages.
+
+# Explanation: Disallow all pages, except the ones listed above.
+# When adding a new public page, it must be added manually to the list above to be indexed by search engines.

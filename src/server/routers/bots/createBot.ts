@@ -1,8 +1,10 @@
 import { getInitialMessagePrompt, getSystemPrompt } from "@/server/ai/character-chat/prompts";
 
-import { openRouterModel } from "@/server/ai/models/openRouterModel";
+import { mainLlm } from "@/server/ai/mainLlm";
+import { langfuse } from "@/server/clients/langfuse";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
 import { TRPCError } from "@/server/lib/TRPCError";
+import { getModelToUse } from "@/server/lib/models";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { t } from "@lingui/macro";
 import {
@@ -15,11 +17,12 @@ import {
   PrismaClient,
   User,
 } from "@prisma/client";
+import { LangfuseTraceClient } from "langfuse";
 import { z } from "zod";
 
 const botCreationInput = z.object({
   title: z.string().min(1, t`Title is required`).max(50, t`Title is too long`),
-  description: z.string().max(1200, t`Description is too long`),
+  description: z.string().max(700, t`Description is too long`),
   visibility: z.nativeEnum(BotVisibility),
   tags: z.array(z.nativeEnum(CharacterTag)).default([]),
 
@@ -78,10 +81,16 @@ export default protectedProcedure.input(botCreationInput).mutation(async ({ inpu
   });
 
   // Create initial messages.
+  const trace = langfuse.trace({
+    name: "initial-message-generation",
+    userId: ctx.user.id,
+    metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
+  });
+
   await Promise.all([
-    createInitialMessage(ChatMode.ROLEPLAY, bot, ctx.user, ctx.prisma),
-    createInitialMessage(ChatMode.CHAT, bot, ctx.user, ctx.prisma),
-    createInitialMessage(ChatMode.ADVENTURE, bot, ctx.user, ctx.prisma),
+    createInitialMessage(ChatMode.ROLEPLAY, bot, ctx.user, ctx.prisma, trace),
+    createInitialMessage(ChatMode.CHAT, bot, ctx.user, ctx.prisma, trace),
+    createInitialMessage(ChatMode.ADVENTURE, bot, ctx.user, ctx.prisma, trace),
   ]);
 
   // TODO(1): Do it async after request.
@@ -114,17 +123,18 @@ async function ensureNotDuplicateOrThrow(
   }
 }
 
-async function createInitialMessage(mode: ChatMode, bot: Bot, user: User, db: PrismaClient) {
-  const systemPrompt = await getSystemPrompt(mode, bot.persona, bot.name);
-  const initialMessagePrompt = getInitialMessagePrompt(
-    mode,
-    user.addressedAs,
-    user.botContext,
-  );
+async function createInitialMessage(
+  mode: ChatMode,
+  bot: Bot,
+  user: User,
+  db: PrismaClient,
+  trace: LangfuseTraceClient,
+) {
+  const systemPrompt = await getSystemPrompt(mode, bot.persona, bot.name, user.addressedAs);
+  const initialMessagePrompt = getInitialMessagePrompt(mode, user.botContext);
   console.debug({ systemPrompt, initialMessagePrompt });
 
-  const output = await openRouterModel.run({
-    model: "jebcarter/psyfighter-13b",
+  const output = await mainLlm.run({
     system_prompt: systemPrompt,
     messages: [
       {
@@ -132,11 +142,13 @@ async function createInitialMessage(mode: ChatMode, bot: Bot, user: User, db: Pr
         content: initialMessagePrompt,
       },
     ],
+    trace,
+    model: getModelToUse(mode),
   });
 
   return await db.initialMessage.create({
     data: {
-      message: output,
+      message: output.text,
       chatMode: mode,
       botId: bot.id,
     },

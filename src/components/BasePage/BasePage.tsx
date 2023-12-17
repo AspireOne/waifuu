@@ -1,9 +1,12 @@
 import { ActionBar } from "@components/ActionBar";
-import { AppHeader } from "@components/AppHeader";
+import { AppHeader, AppHeaderInput } from "@components/AppHeader";
 import PageHead from "@components/BasePage/PageHead";
+import Footer from "@components/Footer/Footer";
+import { Navbar } from "@components/Navbar";
 import { useSession } from "@hooks/useSession";
 import { paths } from "@lib/paths";
 import { normalizePath } from "@lib/utils";
+import { Spacer } from "@nextui-org/react";
 import { useCustomHistory } from "@providers/CustomHistoryProvider";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -16,12 +19,11 @@ export type PageProps = {
   title: string;
   /** Meta description of the page. */
   description?: string;
-  /** Default: false */
-  unprotected?: boolean;
-  /** Default: false */
-  showActionBar?: boolean;
-  /** Default enabled: true */
-  showHeader?: boolean;
+  unprotected: boolean;
+  topBar: "navbar" | "app-header";
+  showActionBar: boolean;
+  appHeaderEndContent?: AppHeaderInput["endContent"];
+  showFooter: boolean;
 
   /** Explicit path to a page that will be loaded on back button click IF autoBack === true || there is no previous path on the stack. */
   backPath?: string | null;
@@ -44,12 +46,8 @@ export type PageProps = {
  * @constructor
  */
 export const BasePage = (props: PropsWithChildren<PageProps>) => {
-  // Set default values for props.
-  const unprotected = props.unprotected ?? false;
-  const showActionBar = false; // TODO: THIS HARDCODES IT TO FALSE. Change it back when sites are ready.
-  const showHeader = props.showHeader ?? true;
-  const autoBack = props.autoBack ?? true;
-  const backPath = props.backPath;
+  let { unprotected, showActionBar, showFooter, topBar, autoBack, backPath } = props;
+  showActionBar = false;
 
   const { historyStack } = useCustomHistory();
   const prevPathExists = historyStack.length > 1;
@@ -59,8 +57,6 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
   // TODO: HAndle hardware back button using Capacitor.
   function handleBackClick() {
     if (!backPath && !autoBack) return;
-
-    console.debug("history stack: ", historyStack);
 
     if (autoBack && prevPathExists) {
       // or use this?: customHistoryStack[customHistoryStack.length - 2]
@@ -84,21 +80,22 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
     >
       <PageHead title={props.title} description={props.description} />
 
-      {/*TODO: PC Navbar.*/}
-
-      {showHeader && (
+      {topBar === "app-header" && (
         <AppHeader
           backButtonEnabled={(autoBack && prevPathExists) || !!backPath}
           onBackButtonPressed={handleBackClick}
+          endContent={props.appHeaderEndContent}
         >
           {props.title}
         </AppHeader>
       )}
 
+      {topBar === "navbar" && <Navbar />}
+
       <PageWrapper
         unprotected={unprotected}
-        showingBottomNav={showActionBar}
-        showingHeader={showHeader}
+        showingActionBar={showActionBar}
+        showingTopBar={!!topBar}
         noPadding={props.noPadding}
         className={twMerge("flex-1", props.className)}
       >
@@ -106,6 +103,11 @@ export const BasePage = (props: PropsWithChildren<PageProps>) => {
       </PageWrapper>
 
       {showActionBar && <ActionBar />}
+      {showFooter && (
+        <>
+          <Spacer y={8} /> <Footer />
+        </>
+      )}
     </div>
   );
 };
@@ -114,16 +116,16 @@ function PageWrapper(
   props: PropsWithChildren<{
     className?: string;
     unprotected: boolean;
-    showingBottomNav: boolean;
-    showingHeader: boolean;
+    showingActionBar: boolean;
+    showingTopBar: boolean;
     noPadding?: boolean;
   }>,
 ) {
   const router = useRouter();
   const { status } = useSession();
 
-  const paddingBottom = props.showingBottomNav ? "pb-20" : "pb-4";
-  const paddingTop = props.showingHeader ? "pt-20" : "pt-4";
+  const paddingBottom = props.showingActionBar ? "pb-20" : "pb-4";
+  const paddingTop = props.showingTopBar ? "pt-20" : "pt-4";
 
   useEffect(() => {
     if (!props.unprotected && status === "unauthenticated") {
@@ -150,7 +152,7 @@ function PageWrapper(
       >
         <div
           className={twMerge(
-            !props.noPadding && "mx-auto px-4 sm:px-8 md:px-14 lg:px-14",
+            !props.noPadding && "mx-auto px-4 sm:px-8 md:px-14 lg:px-14 min-h-[99vh]",
             !props.noPadding && paddingTop,
             !props.noPadding && paddingBottom,
             props.className,

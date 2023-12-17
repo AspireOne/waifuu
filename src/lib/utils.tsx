@@ -5,6 +5,7 @@ import { baseS3Url } from "./paths";
  * Takes in a string and applies markdown: *italic*, **bold**, `code`.
  * @example "Hello *world*! I am **Kate**" -> ["Hello ", <i>world</i>, "!", " I am ", <b>Kate</b>]
  */
+// TODO: Use the packagr we r using.
 export function applyMarkdown(text: string): React.ReactNode[] {
   const result: (string | React.ReactNode)[] = [];
 
@@ -100,4 +101,11 @@ export function isUrl(str: string): boolean {
   } catch (_) {
     return false;
   }
+}
+
+export function getCsrfToken() {
+  return document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("csrfToken"))
+    ?.split("=")[1];
 }

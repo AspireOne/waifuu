@@ -54,4 +54,5 @@ volumes
 
 .flaskenv*
 !.env.project
+
 !.env.vault

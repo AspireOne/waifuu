@@ -1,11 +1,11 @@
-import { PublicPage } from "@components/PublicPage";
+import { CombinedPage } from "@components/CombinedPage";
 import Title from "@components/ui/Title";
 import { t } from "@lingui/macro";
 
 // TODO: Change this privacy policy with new data on release.
 export default () => {
   return (
-    <PublicPage title={t`Privacy Policy`} description={"TODO desc"}>
+    <CombinedPage title={t`Privacy Policy`} description={"TODO desc"}>
       <Title className={"my-3"} size={"xl"}>
         {t`Privacy Policy`}
       </Title>
@@ -574,6 +574,6 @@ export default () => {
       <ul>
         <li>By email: info@waifuu.com</li>
       </ul>
-    </PublicPage>
+    </CombinedPage>
   );
 };

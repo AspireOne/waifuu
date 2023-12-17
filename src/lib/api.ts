@@ -1,4 +1,10 @@
-import { TRPCLink, httpLink, loggerLink } from "@trpc/client";
+import {
+  TRPCLink,
+  createTRPCProxyClient,
+  httpBatchLink,
+  httpLink,
+  loggerLink,
+} from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
@@ -8,6 +14,7 @@ import { type AppRouter } from "@/server/routers/root";
 import { Capacitor } from "@capacitor/core";
 
 import { ClientTRPCError } from "@/server/lib/trpc";
+import { getIsOnline } from "@hooks/useIsOnline";
 import { hmacEncode } from "@lib/hmacEncode";
 import { getCurrentLocale } from "@lib/i18n";
 import { baseApiUrl } from "@lib/paths";
@@ -25,6 +32,14 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
         error(err) {
           // This already logs the error to the console.
           observer.error(err);
+
+          // If not online, do not make the request so that there are not errors.
+          // The query WILL be refetched when the user comes back online,
+          // as per tRPC's default behaviour.
+          if (!getIsOnline()) {
+            console.log("Not showing toast errors, because user is offline.");
+            return;
+          }
 
           // Get the custom data we sent from the server.
           const trpcErrData = (err.meta?.responseJSON as any)?.error?.json as
@@ -63,6 +78,32 @@ export const customErrorLink: TRPCLink<AppRouter> = () => {
     });
   };
 };
+
+export const proxyApi = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: baseApiUrl("/trpc"),
+      async fetch(url, options) {
+        const idToken = await getIdToken();
+        const locale = getCurrentLocale();
+        const encoded = hmacEncode(options?.body);
+
+        return fetch(url, {
+          ...options,
+          // 'include' is required for cookies to be sent to the server.
+          credentials: Capacitor.isNativePlatform() ? "include" : undefined,
+          headers: {
+            ...options?.headers,
+            ...encoded.headers,
+            Authorization: idToken ? `Bearer ${idToken}` : "",
+            locale: locale,
+          },
+        });
+      },
+    }),
+  ],
+  transformer: superjson,
+});
 
 export const api = createTRPCNext<AppRouter>({
   config() {

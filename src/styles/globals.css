@@ -1,23 +1,78 @@
 @tailwind base;
 
-.Toastify__toast, .Toastify__toast-body, .Toastify__toast-container {
-    @apply rounded-3xl;
-}
-
+/* Common Toast Styles */
 .Toastify__toast {
-    @apply border-neutral-800 border-2 bg-content1;
+    border-radius: 10px !important;
+    padding-left: 20px; /* Adjust this if necessary */
+    margin-bottom: 15px; /* Space between toasts if stacked */
 }
 
-@keyframes slide-fade {
-    0% {
-        transform: translateX(28%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
 }
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.Toastify__toast::before {
+    position: relative;
+    z-index: 100000;
+    left: 12px;
+    top: 6px;
+}
+
+.Toastify__toast::after {
+    position: absolute;
+    color: #333333;
+    font-size: 15px;
+    font-weight: 700;
+    left: 265px;
+    padding-top: 14px !important;
+}
+
+.Toastify__toast-body {
+    color: #444C63;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 0px;
+    padding-top: 25px;
+    width: 100%;
+    font-weight: 400;
+    margin-left: 25px !important;
+}
+
+.Toastify__toast > button > svg {
+    display: none; /* Hide default close button */
+}
+
+/* Type-specific Styles (only specify differences here) */
+.Toastify__toast--error {
+    border: 1px solid #EB5757 !important;
+    background: #FAE1E2 !important;
+}
+
+.Toastify__toast--success {
+    border: 1px solid #3A9EA5 !important;
+    background: #F0F9FA !important;
+}
+
+.Toastify__toast--warning {
+    border: 1px solid #E78326 !important;
+    background: #FADFC5 !important;
+}
+
+.Toastify__toast--info {
+    border: 1px solid #2F80ED !important;
+    background: #DAE4FD !important;
+}
+
+.Toastify__toast--default {
+    border: 1px solid #BDBDBD !important;
+    background: #E0E0E0 !important;
+}
+
 
 .animation-slide-fade {
     animation: slide-fade 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;

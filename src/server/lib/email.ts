@@ -1,37 +1,46 @@
-import { emailClient } from "@/server/clients/emailClient";
 import { env } from "@/server/env";
 import { render } from "@jsx-email/render";
+import nodemailer from "nodemailer";
 
-const client = emailClient;
 const from = {
-  test: `Waifuu Test <test@${env.MAILGUN_DOMAIN}>`,
-  info: `Waifuu <info@${env.MAILGUN_DOMAIN}>`,
+  info: `Waifuu ${env.MAIL_INFO_ADDRESS}`,
 };
+
+// Configure the SMTP transporter
+const transporter = nodemailer.createTransport({
+  // @ts-ignore bad nodemailer types
+  host: env.MAIL_HOST,
+  port: env.MAIL_PORT,
+  secure: env.MAIL_ENCRYPTION === "ssl", // If using SSL (port 465), set to true; for STARTTLS (port 587), set to false
+  auth: {
+    user: env.MAIL_USERNAME,
+    pass: env.MAIL_PASSWORD,
+  },
+});
 
 type SendProps = {
   template: JSX.Element;
-  to: string[];
+  to: string | string[];
   subject: string;
-  from: string;
+  from?: string;
 };
 
 const send = async (props: SendProps) => {
-  await client.messages.create(env.MAILGUN_DOMAIN, {
-    from: props.from,
+  const htmlContent = await render(props.template, { minify: true });
+  const textContent = await render(props.template, { plainText: true, minify: true });
+
+  const mailOptions = {
+    from: props.from ?? from.info,
     to: props.to,
     subject: props.subject,
-    text: await render(props.template, {
-      plainText: true,
-      minify: true,
-    }),
-    html: await render(props.template, {
-      minify: true,
-    }),
-  });
+    text: textContent,
+    html: htmlContent,
+  };
+
+  await transporter.sendMail(mailOptions);
 };
 
 export const email = {
-  client,
-  from,
   send,
+  from,
 };

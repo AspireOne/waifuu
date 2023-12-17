@@ -7,9 +7,13 @@ import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
 import { getSystemPrompt } from "@/server/ai/character-chat/prompts";
-import { openRouterModel } from "@/server/ai/models/openRouterModel";
+import { mainLlm } from "@/server/ai/mainLlm";
+import { langfuse } from "@/server/clients/langfuse";
+import { tokensToMessages } from "@/server/helpers/helpers";
 import { ensureWithinQuotaOrThrow, incrementQuotaUsage } from "@/server/helpers/quota";
+import { Model, ModelId, getModelById, getModelToUse } from "@/server/lib/models";
 import { t } from "@lingui/macro";
+import { LangfuseTraceClient } from "langfuse";
 
 const Input = z.object({
   chatId: z.string(),
@@ -19,34 +23,90 @@ const Input = z.object({
 export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) => {
   await ensureWithinQuotaOrThrow("messagesSent", ctx.prisma, ctx.user.id, ctx.user.planId);
 
-  // TODO: Get amount of messages based on the model's context window length.
-  // For now we hardcode it.
-  const chat = await retrieveChatOrThrow(input.chatId, ctx.prisma, 30);
+  const trace = langfuse.trace({
+    name: `chat_${input.chatId}`,
+    id: generateRandomId(10),
+    userId: ctx.user.id,
+    sessionId: input.chatId,
+    metadata: { env: process.env.NODE_ENV, user: ctx.user.email },
+  });
+
+  const execution = trace.span({
+    name: "chat_reply",
+    input: input.message,
+  });
+
+  const chatRetrievalSpan = execution.span({
+    name: "chat_retrieval",
+    input: input.chatId,
+  });
+
+  const chat = await retrieveChatOrThrow(input.chatId, ctx.prisma);
+
+  chatRetrievalSpan.end({
+    output: {
+      mode: chat.mode,
+      model: getModelToUse(chat.mode, ctx.user.preferredModelId),
+    },
+  });
 
   // Push the new message to the msg history so that it is included in the prompt without saving them just yet.
   chat.messages.push(createPlaceholderMessage(input));
 
-  console.log(
-    "messages total text length: ",
-    chat.messages.reduce((acc, msg) => acc + msg.content.length, 0),
-  );
-  //console.log("messages total token count: ", llamaTokenizer.encode(chat.messages.map((msg) => msg.content)).length);
+  // If the user has a preferred model but the id does not exist, remove the preferred model.
+  if (ctx.user.preferredModelId && !getModelById(ctx.user.preferredModelId)) {
+    execution.event({
+      name: "preferred_model_not_found",
+      input: {
+        preferredModelId: ctx.user.preferredModelId,
+      },
+    });
 
-  const output = await genOutput(chat);
-  const msgs = await saveMessages(input, output, ctx.prisma);
+    await ctx.prisma.user.update({
+      where: { id: ctx.user.id },
+      data: { preferredModelId: null },
+    });
+  }
+
+  const model = getModelToUse(
+    chat.mode,
+    ctx.user.preferredModelId as ModelId | null | undefined,
+  );
+
+  const output = await genOutput(chat, execution, model);
+
+  execution.end({
+    output: output.text,
+  });
+
   // TODO(1): Do it async after request.
-  await incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma);
+  const [newMessages, _, __] = await Promise.all([
+    saveMessages(input, output.text, ctx.prisma),
+    incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma),
+    langfuse.flush(),
+  ]);
 
   return {
-    message: msgs.botMsg,
-    userMessage: msgs.userMsg,
+    message: newMessages.botMsg,
+    userMessage: newMessages.userMsg,
   };
 });
+
+function generateRandomId(length: number) {
+  let result = "";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
 function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
   return {
     content: input.message,
     chatId: input.chatId,
+    feedback: null,
 
     // Bogus data (not important):
     role: "USER",
@@ -58,21 +118,32 @@ function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
   };
 }
 
+/**
+ * Just a wrapper around running the llm.
+ * */
 async function genOutput(
   chat: Chat & { bot: Bot } & { user: User } & { messages: Message[] },
+  trace: LangfuseTraceClient,
+  model: Model,
 ) {
   try {
-    return await openRouterModel.run({
-      model: "jebcarter/psyfighter-13b",
-      system_prompt: await getSystemPrompt(chat.mode, chat.bot.persona, chat.bot.name),
+    return await mainLlm.run({
+      system_prompt: await getSystemPrompt(
+        chat.mode,
+        chat.bot.persona,
+        chat.bot.name,
+        chat.user.addressedAs,
+      ),
       messages: chat.messages,
+      trace,
+      model,
     });
   } catch (e) {
     console.error(e);
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "Failed to generate a reply.",
-      toast: t`Error replying, please try again later`,
+      toast: t`Failed to reply, please try again later.`,
       cause: e,
     });
   }
@@ -104,7 +175,7 @@ async function saveMessages(input: z.infer<typeof Input>, output: string, db: Pr
   };
 }
 
-async function retrieveChatOrThrow(chatId: string, db: PrismaClient, numOfMessages: number) {
+async function retrieveChatOrThrow(chatId: string, db: PrismaClient) {
   const chat = await db.chat.findUnique({
     where: {
       id: chatId,
@@ -112,9 +183,6 @@ async function retrieveChatOrThrow(chatId: string, db: PrismaClient, numOfMessag
     include: {
       bot: true,
       user: true,
-      messages: {
-        take: numOfMessages,
-      },
     },
   });
 
@@ -125,5 +193,15 @@ async function retrieveChatOrThrow(chatId: string, db: PrismaClient, numOfMessag
     });
   }
 
-  return chat;
+  const usedModel = getModelToUse(chat.mode, chat.user.preferredModelId);
+  const messageNumber = tokensToMessages(usedModel.tokens);
+
+  const messages = await db.message.findMany({
+    where: {
+      chatId: chatId,
+    },
+    take: messageNumber,
+  });
+
+  return { ...chat, messages };
 }

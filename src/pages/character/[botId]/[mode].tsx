@@ -3,6 +3,7 @@ import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
 import useBotChat, { Message } from "@/hooks/useBotChat";
 import { makeDownloadUrl } from "@/lib/utils";
+import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import { AppPage } from "@components/AppPage";
 import { BotChatContent } from "@components/BotChatContent";
 import { paths } from "@lib/paths";
@@ -23,8 +24,6 @@ const BotChat = () => {
   // Workaround - it returns this for the first few render cycles before it renders the actual path.
   if (chatId === "[botId]") chatId = "";
 
-  console.log(chatId);
-
   const bot = useBot(chatId);
   const chat = useBotChat(chatId);
 
@@ -32,6 +31,7 @@ const BotChat = () => {
     <AppPage
       backPath={paths.discover}
       noPadding={true}
+      appHeaderEndContent={<AppHeaderCharSettingsButton />}
       title={bot?.name || _(msg`Loading...`)}
     >
       {/*TODO: Make character image only the png of the char.*/}

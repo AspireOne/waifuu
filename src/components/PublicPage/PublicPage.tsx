@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import { BasePage } from "src/components/BasePage";
+import { PagePadding } from "src/components/PagePadding";
 
 /**
  * Public page that is NOT part of the app itself.
@@ -10,18 +11,29 @@ import { BasePage } from "src/components/BasePage";
  * @constructor
  */
 export const PublicPage = (
-  props: PropsWithChildren<{ title: string; description: string; className?: string }>,
+  props: PropsWithChildren<{
+    title: string;
+    description: string;
+    className?: string;
+    disableXPadding?: boolean;
+    disableYPadding?: boolean;
+  }>,
 ) => {
   return (
     <BasePage
       unprotected={true}
-      showHeader={false}
+      topBar={"navbar"}
       showActionBar={false}
       autoBack={true}
+      showFooter={true}
       {...props}
     >
-      {/*TODO: Navbar*/}
-      {props.children}
+      <PagePadding
+        disableXPadding={props.disableXPadding}
+        disableYPadding={props.disableYPadding}
+      >
+        {props.children}
+      </PagePadding>
     </BasePage>
   );
 };

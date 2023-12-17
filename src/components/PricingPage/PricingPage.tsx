@@ -59,12 +59,13 @@ export const PricingPage = () => {
     /*TODO: Desc...*/
     <CombinedPage
       title={_(msg`Subscriptions`)}
+      disableXPadding
       backPath={auth.status === "authenticated" ? paths.discover : paths.index}
     >
       <div className="mx-auto">
         <PricingPageHeader />
         <Spacer y={8} />
-        <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <div className="flex flex-row flex-wrap gap-6 justify-center">
           <PricingPlanCard
             onClick={onChoosePlanClick}
             onUnsubscribeClick={onUnsubscribeClick}
@@ -81,6 +82,14 @@ export const PricingPage = () => {
             {...subscriptionPlans().plus}
             gradient={"from-yellow-400 to-red-500"}
             glow={true}
+          />
+          <PricingPlanCard
+            onClick={onChoosePlanClick}
+            onUnsubscribeClick={onUnsubscribeClick}
+            currentPlan={auth.user?.plan}
+            submittingPlan={submittingPlan}
+            {...subscriptionPlans().pro}
+            gradient={"from-green-400 to-yellow-500"}
           />
         </div>
       </div>

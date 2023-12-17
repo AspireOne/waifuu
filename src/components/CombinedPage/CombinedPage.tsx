@@ -2,8 +2,15 @@ import { SessionStatus, useSession } from "@/providers/SessionProvider";
 import * as React from "react";
 import { PropsWithChildren, useEffect } from "react";
 import { BasePage, PageProps } from "src/components/BasePage";
+import { PagePadding } from "src/components/PagePadding";
 
-type Props = Pick<PageProps, "title" | "description" | "className" | "backPath" | "autoBack">;
+type Props = Pick<
+  PageProps,
+  "title" | "description" | "className" | "backPath" | "autoBack"
+> & {
+  disableXPadding?: boolean;
+  disableYPadding?: boolean;
+};
 /**
  * A combination of public/app page
  * - Does NOT require authentication
@@ -28,18 +35,22 @@ export const CombinedPage = (props: PropsWithChildren<Props>) => {
 
   return (
     <BasePage
-      unprotected={true}
-      showActionBar={false}
-      showHeader={status === "authenticated"}
-      /*TODO: Show navbar*/
       title={props.title}
       description={props.description}
       className={props.className}
+      unprotected={true}
+      showActionBar={false}
+      topBar={status === "authenticated" ? "app-header" : "navbar"}
+      showFooter={status === "unauthenticated"}
       backPath={props.backPath}
       autoBack={props.autoBack === undefined ? true : props.autoBack}
     >
-      {/*TODO: Navbar*/}
-      {props.children}
+      <PagePadding
+        disableXPadding={props.disableXPadding}
+        disableYPadding={props.disableYPadding}
+      >
+        {props.children}
+      </PagePadding>
     </BasePage>
   );
 };

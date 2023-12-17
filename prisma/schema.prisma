@@ -10,6 +10,7 @@ datasource db {
 enum PlanId {
   SUBSCRIPTION_PLAN_FREE_V1
   SUBSCRIPTION_PLAN_PLUS_V1
+  SUBSCRIPTION_PLAN_PRO_V1
 }
 
 enum Currency {
@@ -83,6 +84,29 @@ enum ChatMode {
   CHAT
 }
 
+model AdminEmail {
+  email String @id
+}
+
+enum Feedback {
+  LIKE
+  DISLIKE
+}
+
+model EarlyAccess {
+  email       String  @unique
+  name        String
+  age         Int?
+  hearAboutUs String
+  granted     Boolean @default(false)
+  ip          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([email])
+}
+
 model User {
   // User uid.
   id               String  @id @unique
@@ -92,10 +116,12 @@ model User {
   image            String  @default("https://github-production-user-asset-6210df.s3.amazonaws.com/57546404/280538836-8c16b1b3-391f-4cdf-889c-e2e279f3167b.png")
   username         String  @unique
   stripeCustomerId String? @unique
+  // Not making this an enum yet, because models will be changed a lot.
+  preferredModelId String?
 
   bio         String?
   botContext  String?
-  addressedAs String?         @default("Senpai")
+  addressedAs String?
   Quota       PlanQuotaUsage?
   planId      PlanId?
 
@@ -171,8 +197,9 @@ model PlanQuotaUsage {
 }
 
 enum CharacterTag {
-  GIRLFRIEND
-  BOYFRIEND
+  MOVIE
+  ANIME
+  PRACTICAL
   ROMANCE
   FANTASY
   SUPERNATURAL
@@ -184,10 +211,8 @@ enum CharacterTag {
   NERD
   SHY
   BAD
-  ANIME
   GAME_CHARACTER
   HISTORY
-  MOVIE
   MONSTER
   BOOKS
   OC
@@ -305,15 +330,17 @@ model Chat {
 }
 
 model Message {
-  id         Int      @id @default(autoincrement())
-  chatId     String
-  chat       Chat     @relation(fields: [chatId], references: [id])
-  content    String
-  mood       Mood     @default(NEUTRAL)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  role       ChatRole
-  remembered Boolean  @default(false)
+  id                      Int                       @id @default(autoincrement())
+  chatId                  String
+  chat                    Chat                      @relation(fields: [chatId], references: [id])
+  content                 String
+  mood                    Mood                      @default(NEUTRAL)
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  role                    ChatRole
+  remembered              Boolean                   @default(false)
+  MessageFeedbackMetadata MessageFeedbackMetadata[]
+  feedback                Feedback?
 
   @@index([chatId])
 }
@@ -388,6 +415,19 @@ model ForumPostLike {
   createdAt DateTime  @default(now())
 
   @@index([postId])
+}
+
+model MessageFeedbackMetadata {
+  messageId         Int      @id
+  message           Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  previousMessageId Int?
+  modelId           String
+  feedback          Feedback
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([messageId])
 }
 
 model IpInfo {

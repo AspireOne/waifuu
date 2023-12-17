@@ -1,9 +1,11 @@
 import { Capacitor } from "@capacitor/core";
+import { t } from "@lingui/macro";
 import { toast } from "react-toastify";
 
 /**
  * Contains all paths/routes for the app.
  */
+// Note IMPORTANT: When adding a new path that should be public, you must add it to robots.txt!
 export const paths = {
   index: "/",
   home: "/home",
@@ -15,6 +17,9 @@ export const paths = {
   pricing: "/pricing",
   createBot: "/character/create",
   forum: "/forum",
+  privacyPolicy: "/privacy-policy",
+  requestAccess: "/early-access",
+  adminPanel: "/admin",
   subscriptionSuccess: "/pricing", // TODO: Success page.
   subscriptionCancel: "/pricing", // TODO: Cancel page.
   login: (redirect?: string) => `/login${redirect ? `?redirect=${redirect}` : ""}`,
@@ -23,6 +28,22 @@ export const paths = {
   botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,
   forumPost: (id: string) => `/forum/${id}`,
 };
+
+export const getNavbarPaths = () => [
+  { title: t`Home`, href: paths.index },
+  /*{ title: t`Pricing`, href: paths.pricing },*/
+  /*{ title: t`Forum`, href: paths.forum },*/
+  { title: t`Contact`, href: paths.contact },
+];
+
+export const getFooterPaths = () => [
+  { title: t`Home`, href: paths.index },
+  { title: t`Pricing`, href: paths.pricing },
+  /*{ title: t`Forum`, href: paths.forum },*/
+  { title: t`Contact us`, href: paths.contact },
+  { title: t`Privacy policy`, href: paths.privacyPolicy },
+  { title: t`Sign In`, href: paths.login() },
+];
 
 /**
  * Contains paths that have a specific meaning.
