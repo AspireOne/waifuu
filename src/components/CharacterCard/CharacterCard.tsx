@@ -59,9 +59,9 @@ export const CharacterCard = ({
             {chatType ? (
               <Chip className="bg-opacity-70 w-fit mt-2 mx-auto">{chatType}</Chip>
             ) : null}
-            {!bottom && (
+            {!bottom && bot.nsfw && (
               <Chip variant="flat" className="mx-auto mt-2 w-fit">
-                {bot.nsfw ? "NSFW" : "SFW"}
+                NSFW
               </Chip>
             )}
           </div>
@@ -75,9 +75,11 @@ export const CharacterCard = ({
 
         {bottom && (
           <div className={cx(["flex flex-row px-4 items-end", !likes && "mx-auto w-fit"])}>
-            <div className="mx-auto ml-0 w-fit">
-              <Chip variant="flat">{bot.nsfw ? "NSFW" : "SFW"}</Chip>
-            </div>
+            {bot.nsfw && (
+              <div className="mx-auto ml-0 w-fit">
+                <Chip variant="flat">NSFW</Chip>
+              </div>
+            )}
 
             {likes && (
               <div className="mx-auto mr-0 w-fit flex flex-row gap-2">
