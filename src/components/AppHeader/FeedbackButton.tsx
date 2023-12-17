@@ -10,6 +10,7 @@ import {
   Textarea,
   useDisclosure,
 } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/tooltip";
 import { useSession } from "@providers/SessionProvider";
 import { useState } from "react";
 import { MdOutlineFeedback } from "react-icons/md";
@@ -35,15 +36,17 @@ export const FeedbackButton = () => {
 
   return (
     <>
-      <Button
-        isIconOnly
-        // @ts-ignore
-        variant={null}
-        className={"p-0 m-0 text-warning-200"}
-        onClick={() => (isOpen ? onClose() : onOpen())}
-      >
-        <MdOutlineFeedback className={"p-0 m-0"} size={28} />
-      </Button>
+      <Tooltip content={t`Feedback`} closeDelay={0}>
+        <Button
+          isIconOnly
+          // @ts-ignore
+          variant={null}
+          className={"p-0 m-0 text-warning-200"}
+          onClick={() => (isOpen ? onClose() : onOpen())}
+        >
+          <MdOutlineFeedback className={"p-0 m-0"} size={28} />
+        </Button>
+      </Tooltip>
 
       <Modal
         className={"z-[300]"}

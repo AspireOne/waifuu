@@ -17,6 +17,7 @@ import {
   Textarea,
   useDisclosure,
 } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/tooltip";
 import { useSession } from "@providers/SessionProvider";
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
@@ -57,15 +58,17 @@ export const AppHeaderCharSettingsButton = () => {
 
   return (
     <>
-      <Button
-        isIconOnly
-        // @ts-ignore
-        variant={null}
-        className={"p-0 m-0 text-primary-200"}
-        onClick={() => (isOpen ? onClose() : onOpen())}
-      >
-        <GrUserSettings className={"p-0 m-0"} size={25} />
-      </Button>
+      <Tooltip content={t`Character settings`} closeDelay={0}>
+        <Button
+          isIconOnly
+          // @ts-ignore
+          variant={null}
+          className={"p-0 m-0 text-primary-200"}
+          onClick={() => (isOpen ? onClose() : onOpen())}
+        >
+          <GrUserSettings className={"p-0 m-0"} size={25} />
+        </Button>
+      </Tooltip>
 
       <Modal
         className={"z-[300]"}
