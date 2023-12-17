@@ -1,5 +1,5 @@
-import { baseApiUrl } from "@lib/paths";
 import React from "react";
+import { baseS3Url } from "./paths";
 
 /**
  * Takes in a string and applies markdown: *italic*, **bold**, `code`.
@@ -84,16 +84,14 @@ export function normalizePath(path: string, keepSlash = false): string {
  *
  * @param {string | null} pathOrId - The url or ID of the image.
  */
-export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T): T {
-  if (!pathOrId && pathOrId !== "") return null as T;
-
-  if (pathOrId === "") return "" as T;
+export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T): string {
+  if (!pathOrId && pathOrId !== "" || pathOrId === "") return "";
 
   if (isUrl(pathOrId)) {
     return pathOrId;
   }
 
-  return baseApiUrl(`/api/images/download?id=${pathOrId}`) as T;
+  return `${baseS3Url()}/${pathOrId}`
 }
 
 export function isUrl(str: string): boolean {

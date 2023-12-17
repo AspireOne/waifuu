@@ -1,15 +1,8 @@
 import { prisma } from "@/server/clients/db";
+import { s3Client, s3DefaultBucket } from "@/server/clients/s3Client";
 import { env } from "@/server/env";
 import metaHandler from "@/server/lib/metaHandler";
 import { DeleteObjectCommand, S3Client } from "@aws-sdk/client-s3";
-
-const s3Client = new S3Client({
-  region: env.S3_REGION,
-  credentials: {
-    accessKeyId: env.S3_ACCESS_KEY,
-    secretAccessKey: env.S3_SECRET_KEY,
-  },
-});
 
 export default metaHandler.protected(async (req, res, ctx) => {
   if (req.method !== "DELETE") return res.status(405).send("Method not allowed");
@@ -28,7 +21,7 @@ export default metaHandler.protected(async (req, res, ctx) => {
 
   try {
     const deleteParams = {
-      Bucket: env.S3_DEFAULT_BUCKET,
+      Bucket: s3DefaultBucket,
       Key: params.id,
     };
     await s3Client.send(new DeleteObjectCommand(deleteParams));

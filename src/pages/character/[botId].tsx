@@ -63,7 +63,7 @@ function Header(props: {
   return (
     <div className="relative">
       <img
-        src={props.bot?.backgroundImage ?? ""}
+        src={makeDownloadUrl(props.bot?.backgroundImage) ?? ""}
         alt="background"
         // loading strategy
         loading="eager"
