@@ -20,9 +20,8 @@ const getInitialMessagePrompt = (mode: ChatMode, userContext?: string | null) =>
     return "{{Set the evironment, scene, and engage the user.}}";
   }
 
-  return `{{Welcome and engage the user with something fun. Stay in your character.${
-    userContext ? ` Note this additional info about the user: '${userContext}'.` : ""
-  }}}`;
+  return "{{Welcome and engage the user with something fun. Stay in your character.}}";
+  // ${userContext ? ` Note this additional info about the user: '${userContext}'.` : ""}
 };
 
 // TODO: Model-specific finetuning. For example 'gryphe/mythomax-l2-13b-8k' needs "Do not prepend messages with any prefix. Write just raw message."

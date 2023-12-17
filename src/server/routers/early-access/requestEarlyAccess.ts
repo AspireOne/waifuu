@@ -1,11 +1,18 @@
+import { rateLimiter } from "@/server/clients/rateLimiter";
 import { retrieveIp } from "@/server/helpers/helpers";
 import { publicProcedure } from "@/server/lib/trpc";
 import { requestEarlyAccessFormValues } from "@/server/shared/requestEarlyAccessFormValuesSchema";
+import parse from "parse-duration";
 
 export default publicProcedure
   .input(requestEarlyAccessFormValues)
   .mutation(async ({ ctx, input }) => {
-    // TODO: Rate limiting for IP.
+    rateLimiter.ensureWithinLimitOrThrow({
+      id: "request-early-access",
+      ip: retrieveIp(ctx.req),
+      ipLimits: [{ maxHits: 20, ms: parse("12h")! }],
+    });
+
     const { prisma } = ctx;
 
     if (await prisma.earlyAccess.findFirst({ where: { email: input.email } })) {

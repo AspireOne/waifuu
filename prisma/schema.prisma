@@ -447,3 +447,12 @@ model IpInfo {
   loc      String?
   timezone String?
 }
+
+model ContactForm {
+  id        String   @id @default(cuid())
+  email     String
+  phone     String?
+  name      String?
+  message   String
+  createdAt DateTime @default(now())
+}
