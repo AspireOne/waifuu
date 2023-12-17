@@ -18,8 +18,6 @@ export const useScrollToLatest = (props: {
     const currY = container.current.scrollTop;
     const maxY = container.current.scrollHeight - container.current.clientHeight - 1;
 
-    if (maxY - currY < 220) {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat.messages]);
 };
