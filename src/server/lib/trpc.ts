@@ -17,6 +17,7 @@ import { ZodError, typeToFlattenedError } from "zod";
 
 import { prisma } from "@/server/clients/db";
 import { ipThrottler } from "@/server/clients/ipThrottler";
+import { retrieveIp } from "@/server/helpers/helpers";
 import { retrieveUser } from "@/server/helpers/retrieveUser";
 import { verifyHmac } from "@/server/lib/verifyHmac";
 import { LocaleCode, locales } from "@lib/i18n";
@@ -145,8 +146,8 @@ const hmacMiddleware = t.middleware(({ ctx, next }) => {
   if (!nonce || !timestamp || !signature) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: "Missing HMAC headers.",
-      toast: "Missing HMAC headers.",
+      message: "Missing signature headers.",
+      toast: "Missing signature headers.",
     });
   }
 
@@ -163,8 +164,8 @@ const hmacMiddleware = t.middleware(({ ctx, next }) => {
   if (!verified) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
-      message: "Invalid HMAC signature.",
-      toast: "Invalid HMAC signature.",
+      message: "Invalid signature.",
+      toast: "Invalid signature.",
     });
   }
 
@@ -185,7 +186,8 @@ const authMiddleware = t.middleware(({ ctx, next }) => {
 });
 
 const throttleMiddleware = t.middleware(({ ctx, next }) => {
-  const ip = ctx.req?.socket.remoteAddress;
+  const ip = retrieveIp(ctx.req);
+
   if (!ip) {
     console.error("No IP address found for request in throttle middleware.");
     return next();
