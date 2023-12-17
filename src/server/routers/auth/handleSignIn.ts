@@ -1,3 +1,5 @@
+import { rateLimiter } from "@/server/clients/rateLimiter";
+import { retrieveIp } from "@/server/helpers/helpers";
 import { sendWelcomeEmail } from "@/server/jobs/auth/sendWelcomeEmail";
 import { upsertUser } from "@/server/jobs/auth/upsertUser";
 import { verifyRequest } from "@/server/jobs/auth/verifyIdToken";
@@ -6,6 +8,7 @@ import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
 import { t } from "@lingui/macro";
 import { NextApiResponse } from "next";
+import parse from "parse-duration";
 import { z } from "zod";
 
 export default publicProcedure
@@ -16,6 +19,15 @@ export default publicProcedure
     }),
   )
   .mutation(async ({ input, ctx }) => {
+    rateLimiter.ensureWithinLimitOrThrow({
+      id: "sign-in",
+      ip: retrieveIp(ctx.req),
+      ipLimits: [
+        { maxHits: 30, ms: parse("1h")! },
+        { maxHits: 50, ms: parse("1d")! },
+      ],
+    });
+
     const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
     await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
 
