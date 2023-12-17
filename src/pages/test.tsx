@@ -13,7 +13,7 @@ export default function Test() {
   const dbHealth = api.general.dbHealth.useQuery();
   const session = useSession();
 
-  const sendTestEmailMut = api.general.sendTestEmail.useMutation();
+  const sendTestEmailMut = api.testing.sendTestEmail.useMutation();
 
   return (
     <CombinedPage title={"Test Page"}>

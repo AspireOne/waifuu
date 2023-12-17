@@ -21,7 +21,7 @@ export default () => {
 
   const [tabsVisible, setTabsVisible] = useState<boolean>(true);
 
-  const { data, refetch, isLoading, isRefetching } = api.general.getEmailTemplates.useQuery(
+  const { data, refetch, isLoading, isRefetching } = api.testing.getEmailTemplates.useQuery(
     undefined,
     {
       onSuccess: (data) => {

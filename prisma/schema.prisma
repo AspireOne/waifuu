@@ -136,8 +136,9 @@ model User {
   ForumPostLikes   ForumPostLike[]
   Subscription     Subscription[]
 
-  createdAt     DateTime        @default(now())
-  StripeSession StripeSession[]
+  createdAt       DateTime          @default(now())
+  StripeSession   StripeSession[]
+  GeneralFeedback GeneralFeedback[]
 }
 
 // This only stores the information about an user's current plan.
@@ -428,6 +429,14 @@ model MessageFeedbackMetadata {
   updatedAt DateTime @updatedAt
 
   @@index([messageId])
+}
+
+model GeneralFeedback {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
 }
 
 model IpInfo {

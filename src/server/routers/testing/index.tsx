@@ -8,27 +8,7 @@ import { email } from "@/server/lib/email";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "@/server/lib/trpc";
 import { render } from "@jsx-email/render";
 
-export const generalRouter = createTRPCRouter({
-  health: publicProcedure.meta({ openapi: { method: "GET", path: "/health" } }).query(() => {
-    return "ok";
-  }),
-
-  dbHealth: publicProcedure
-    .meta({ openapi: { method: "GET", path: "/db-health" } })
-    .query(async ({ input, ctx }) => {
-      // Check that prisma db works. Do not use rawQuery.
-      const res = await ctx.prisma.user.findMany();
-      if (res) {
-        return "ok";
-      }
-    }),
-
-  protectedHealth: protectedProcedure
-    .meta({ openapi: { method: "GET", path: "/protected-health" } })
-    .query(() => {
-      return "ok";
-    }),
-
+export const testingRouter = createTRPCRouter({
   sendTestEmail: protectedProcedure.mutation(async ({ input, ctx }) => {
     if (process.env.NODE_ENV !== "development") {
       throw new Error("This endpoint is only available in development mode.");

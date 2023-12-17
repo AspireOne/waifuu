@@ -1,6 +1,8 @@
+import { FeedbackButton } from "@components/AppHeader/FeedbackButton";
 import { UserDropdown } from "@components/AppHeader/UserDropdown";
 import { useIsOnline } from "@hooks/useIsOnline";
 import { Button } from "@nextui-org/react";
+import { useSession } from "@providers/SessionProvider";
 import { PropsWithChildren, ReactNode } from "react";
 import { IoChevronBack } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
@@ -12,6 +14,7 @@ export type AppHeaderInput = PropsWithChildren<{
 }>;
 
 export const AppHeader = (props: AppHeaderInput) => {
+  const session = useSession();
   const isOnline = useIsOnline();
 
   return (
@@ -51,6 +54,8 @@ export const AppHeader = (props: AppHeaderInput) => {
         {!props.backButtonEnabled && <div className={"flex-grow"} />}
 
         {/* Right-aligned user dropdown */}
+
+        {session.status === "authenticated" && <FeedbackButton />}
 
         {props.endContent}
         <UserDropdown className={"flex-shrink-0"} />
