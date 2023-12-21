@@ -13,6 +13,7 @@ import { cx } from "class-variance-authority";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
+import { twMerge } from "tailwind-merge";
 import { LargeText } from "../ui/LargeText";
 
 type CharacterCardProps = {
@@ -22,6 +23,7 @@ type CharacterCardProps = {
   chatType?: ChatMode;
   bottom?: boolean;
   showVisibility?: boolean;
+  className?: string;
 };
 
 export const CharacterCard = ({
@@ -31,13 +33,19 @@ export const CharacterCard = ({
   bottom,
   likes,
   showVisibility,
+  className,
 }: CharacterCardProps) => {
   const { _ } = useLingui();
   const VisibilityIcon = getBotVisibilityIcon(character.visibility);
 
   return (
     /*Margin bottom so that scrollbar is not glitched.*/
-    <Card className={"w-full min-w-[220px] sm:max-w-[220px] hover:bg-zinc-800 mb-2 relative"}>
+    <Card
+      className={twMerge(
+        "w-full min-w-[220px] sm:max-w-[220px] hover:bg-zinc-800 mb-2 relative",
+        className,
+      )}
+    >
       {showVisibility && (
         <Tooltip closeDelay={0} content={getVisibilityIconTitle(character.visibility)}>
           <div className="absolute top-2 right-2">

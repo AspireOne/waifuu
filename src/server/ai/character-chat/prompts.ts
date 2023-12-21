@@ -17,11 +17,11 @@ const getSystemPrompt = (
 // TODO: Change the system prompt based on mode.
 const getInitialMessagePrompt = (mode: ChatMode, userContext?: string | null) => {
   if (mode === ChatMode.ADVENTURE) {
-    return "{{Set the evironment, scene, and engage the user. Make it short - 3 sentences max.}}";
+    return "{{Set the evironment, an open-ended scene, and engage the user. Make it short - 4 sentences max.}}";
   }
 
   if (mode === ChatMode.ROLEPLAY) {
-    return "{{Create an initial situation (very short, max 3 sentences), put it in asterisks (*), and then engage the user shortly in character (in first person perspective!). Do not prepend text with any prefix.}}";
+    return "{{Create an initial situation (very short, max 3 sentences), put it in asterisks (*), and then engage the user shortly in character (write in first-person perspective).}}";
   }
 
   if (mode === ChatMode.CHAT) {

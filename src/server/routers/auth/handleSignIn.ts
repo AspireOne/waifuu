@@ -39,7 +39,7 @@ export default publicProcedure
       },
     });
 
-    if (!hasEarlyAccess) {
+    if (!hasEarlyAccess && process.env.NODE_ENV !== "development") {
       const isAdmin = await ctx.prisma.adminEmail.findUnique({
         where: {
           email: decodedIdToken.email,

@@ -67,6 +67,7 @@ const CreateChatPage = () => {
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [cover, setCover] = useState<string | undefined>(undefined);
   const [background, setBackground] = useState<string | undefined>(undefined);
+  const utils = api.useUtils();
 
   // Mood states
   const [moodImagesEnabled, setMoodImagesEnabled] = useState(false);
@@ -80,6 +81,8 @@ const CreateChatPage = () => {
 
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
+      utils.bots.getUserBots.invalidate();
+      utils.bots.getAllBots.invalidate();
       Router.replace(paths.botChatMainMenu(data.id));
     },
   });

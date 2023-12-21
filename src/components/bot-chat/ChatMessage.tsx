@@ -33,8 +33,9 @@ const ChatMessage = ({
   feedback,
 }: Props) => {
   const logFeedbackMutation = api.chat.logFeedback.useMutation({
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       console.log("Feedback logged!");
+      if (variables.feedback === null) return;
       toast("Thank you for your feedback!", {
         type: "success",
         autoClose: 1500,

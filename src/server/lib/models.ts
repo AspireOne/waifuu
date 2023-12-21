@@ -67,8 +67,8 @@ export const models: Record<ModelKey, Model> = {
 
 export const defaultModels = {
   roleplay: models.psyfighter,
-  adventure: models.mixtral,
-  chat: models.mixtral,
+  adventure: models.mythomax, // TODO: use mixtral later because of memory. It is just harder to prompt.
+  chat: models.psyfighter,
 };
 
 export const getModelToUse = (

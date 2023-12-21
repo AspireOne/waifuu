@@ -31,9 +31,11 @@ export const ActiveChatsDiscoverCategory = () => {
       </Title>
 
       {bots && bots.length === 0 && (
-        <p className="text-foreground-700 mt-3">
-          <Trans>You haven't started any chats yet. Start one now!</Trans>
-        </p>
+        <div className={"flex flex-col justify-center items-center h-full"}>
+          <p className="text-neutral-500 mt-3">
+            <Trans>Chats you start will show up here.</Trans>
+          </p>
+        </div>
       )}
 
       <CharacterList bots={bots} />
