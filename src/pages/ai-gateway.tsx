@@ -24,7 +24,7 @@ export default function AiGateway() {
             DALL-E 3
           </Title>
           <p>
-            <Link href={"designer.microsoft.com/image-creator"}>
+            <Link href={"https://designer.microsoft.com/image-creator"}>
               designer.microsoft.com/image-creator
             </Link>
           </p>
@@ -42,22 +42,35 @@ export default function AiGateway() {
       <Spacer y={14}/>
 
       <div className={"flex flex-col lg:flex-row gap-12 lg:gap-4"}>
-        <div className={"w-full"}>
-          <Title description={"Nejlepší A.I. na převedení textu do řeči"}>
-            Eleven Labs
-          </Title>
-          <p className={"whitespace-pre-wrap"}>
-            <Link href={"elevenlabs.io"}>elevenlabs.io</Link>
-            <br />- Výběr hlasů, neuvěřitelně realistické
-            <br />- Použitelné na marketing, na informační sdělení, na funny videa...
-            <br />- Umožňuje naklonování hlasu (stačí minuta audia)
-          </p>
+        <div className={"w-full flex flex-col gap-14"}>
+          <div className={""}>
+            <Title description={"Druhé Nejlepší A.I."}>
+              Claude
+            </Title>
+            <p className={"whitespace-pre-wrap"}>
+              <Link href={"https://claude.ai"}>claude.ai</Link>
+              <br />- Paměť až 300 stran A4
+              <br />- Umožňuje nahrát soubory, PDFka...
+              <br />- Exceluje mimo jiné i v kreativních endeavors
+            </p>
+          </div>
+          <div>
+            <Title description={"Nejlepší A.I. na převedení textu do řeči"}>
+              Eleven Labs
+            </Title>
+            <p className={"whitespace-pre-wrap"}>
+              <Link href={"https://elevenlabs.io"}>elevenlabs.io</Link>
+              <br />- Výběr hlasů, neuvěřitelně realistické
+              <br />- Použitelné na marketing, na informační sdělení, na funny videa...
+              <br />- Umožňuje naklonování hlasu (stačí minuta audia)
+            </p>
+          </div>
         </div>
 
         <div className={"w-full"}>
           <Title description={"Na všechno"}>Runway</Title>
           <p className={"whitespace-pre-wrap"}>
-            <Link href={"runwayml.com"}>runwayml.com</Link>
+            <Link href={"https://runwayml.com"}>runwayml.com</Link>
             <br />- Jedna z nejvýznamějších společností v oblasti A.I. vůbec, udělala převrat
             především v generování videí
             <br />- Obsahuje mrdu A.I. nástrojů na zarábání s fotkama, videama, i zvukem
