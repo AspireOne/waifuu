@@ -1,0 +1,74 @@
+import React from "react";
+import { PublicPage } from "@components/PublicPage";
+import { PageTitle } from "@components/PageTitle";
+import { Trans } from "@lingui/macro";
+import { PageDescription } from "@components/PageDescription";
+import Title from "@components/ui/Title";
+import { Link, Spacer } from "@nextui-org/react";
+
+export default function AiGateway() {
+  return (
+    <PublicPage title={"A.I. Gateway"} description={""}>
+      <div className={"flex flex-col items-center justify-center mx-auto"}>
+        <PageTitle className={"text-left"} center={true}>
+          A.I. Gateway
+        </PageTitle>
+        <PageDescription className={"text-center"}>
+          Ty nejdůležitější A.I. toolky současnosti
+        </PageDescription>
+      </div>
+
+      <Title description={"V současnosti nejlepší A.I. na generování obrázků"}>DALL-E 3</Title>
+      <p>
+        <Link href={"designer.microsoft.com/image-creator"}>
+          designer.microsoft.com/image-creator
+        </Link>
+      </p>
+
+      <Spacer y={8} />
+
+      <Title description={"Nejlepší A.I. v existenci"}>GPT-4</Title>
+      <p>
+        - Nastavení je trošku cumbersome (ale i tak jen na 2 minutky) - kdyby tě to zajímalo,
+        dáme to dohromady.
+      </p>
+
+      <Spacer y={8} />
+
+      <Title description={"Nejlepší A.I. na převedení textu do řeči"}>Eleven Labs</Title>
+      <p className={"whitespace-pre-wrap"}>
+        <Link href={"elevenlabs.io"}>
+          elevenlabs.io
+        </Link><br/>
+        - Výběr hlasů, neuvěřitelně realistické<br/>
+        - Použitelné na marketing, na informační sdělení, na funny videa...<br/>
+        - Umožňuje naklonování hlasu (stačí minuta audia)
+      </p>
+
+      <Spacer y={8} />
+
+      <Title description={"Na všechno"}>Runway</Title>
+      <p className={"whitespace-pre-wrap"}>
+        <Link href={"runwayml.com"}>
+          runwayml.com
+        </Link><br/>
+        - Jedna z nejvýznamějších společností v oblasti A.I. vůbec, udělala převrat především v generování videí<br/>
+        - Obsahuje mrdu A.I. nástrojů na zarábání s fotkama, videama, i zvukem<br/>
+        <br/>
+        <b>Obrázky/Fotky:</b><br/>
+        - Text to image (stejně jako Dall-E)<br/>
+        - image-to-image (úprava existující fotky jen na základě promptu)<br/>
+        - rozšíření fotky / obrázku<br/>
+        - generování variant, vytvoření animace z fotky, změna pozadí...<br/>
+        <br/>
+        <b>Videa:</b><br/>
+        - video-to-video<br/>
+        - generování na základě promptu<br/>
+        - převedení do slow motion<br/>
+        - přidání titulků<br/>
+        - převedení do textu<br/>
+        - ...
+      </p>
+    </PublicPage>
+  );
+}
