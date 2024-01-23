@@ -83,9 +83,10 @@ export const SessionProvider = (props: PropsWithChildren) => {
 
   useEffect(() => {
     if (userQuery.data) {
+      // @ts-ignore
       setUser({
         ...userQuery.data,
-        image: userQuery.data.image,
+        image: userQuery.data.image ?? "",
         plan: userQuery.data.planId
           ? getPlan(userQuery.data.planId)
           : subscriptionPlans().free,

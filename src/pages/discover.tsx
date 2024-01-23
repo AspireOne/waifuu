@@ -6,6 +6,7 @@ import { ActiveChatsDiscoverCategory } from "src/components/ActiveChatsDiscoverC
 
 import { CharsDiscoverCategory } from "src/components/CharsDiscoverCategory";
 
+import { ForumPostsDiscoverCategory } from "@/components/ForumPostsDiscoverCategory";
 import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import { MyCharactersDiscoverCategory } from "@components/MyCharactersDiscoverCategory";
 import { usePersistedScrollPositionHandler } from "@hooks/usePersistedScrollPositionHandler";
@@ -41,6 +42,7 @@ const Discover = () => {
 
         {/*<Divider className={"my-16"}/>*/}
         <CharsDiscoverCategory />
+        <ForumPostsDiscoverCategory />
         {/*Comment it out for now - it is not done yet.*/}
         {/*<ForumPostsDiscoverCategory />*/}
       </div>

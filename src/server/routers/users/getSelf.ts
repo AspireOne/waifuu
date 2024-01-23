@@ -29,5 +29,15 @@ export default publicProcedure
       user.image =
         "https://user-images.githubusercontent.com/57546404/275817598-fd2c2c4b-108a-4ea3-a451-614d79afd405.jpg";
     }
-    return user;
+
+    const adminEmail = ctx.prisma.adminEmail.findFirst({
+      where: {
+        email: user?.email,
+      },
+    });
+
+    return {
+      ...user,
+      isAdmin: !!adminEmail,
+    };
   });

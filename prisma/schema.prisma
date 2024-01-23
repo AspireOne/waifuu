@@ -391,6 +391,7 @@ model Asset {
 model ForumPost {
   id           String          @id @default(cuid())
   bannerImage  String?
+  pinned       Boolean?        @default(false)
   categoryname String?
   category     Category?       @relation(fields: [categoryname], references: [name])
   title        String?

@@ -9,9 +9,9 @@ import { useLingui } from "@lingui/react";
 import { Button, Chip, Image, Modal, ModalContent, Textarea } from "@nextui-org/react";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaHeart, FaReply } from "react-icons/fa";
+import { FaHeart, FaMapPin, FaReply } from "react-icons/fa";
 
 type CreateFormPostForm = {
   content: string;
@@ -49,7 +49,10 @@ export default function ForumPostPage() {
     cursor: 0,
   });
 
+  const { data: user } = api.users.getSelf.useQuery({ includeBots: false });
+
   const [isLiked, setIsLiked] = useState(post.data?.liked ?? false);
+  useEffect(() => setIsLiked(post.data?.liked ?? false), [post.data]);
   const likeMutation = api.forum.like.useMutation({
     onSuccess: () => setIsLiked(true),
   });
@@ -62,6 +65,15 @@ export default function ForumPostPage() {
     } else {
       likeMutation.mutateAsync({ id: postId });
     }
+  };
+
+  const [isPinned, setIsPinned] = useState(post.data?.pinned ?? false);
+  useEffect(() => setIsPinned(post.data?.pinned ?? false), [post.data]);
+
+  const { mutateAsync: pinPost, isLoading: isPinning } = api.forum.pin.useMutation();
+  const onPin = async (postId: string) => {
+    await pinPost(postId);
+    setIsPinned(!isPinned);
   };
 
   return (
@@ -100,6 +112,17 @@ export default function ForumPostPage() {
           >
             <FaHeart />
           </Button>
+
+          {user?.isAdmin && (
+            <Button
+              isLoading={isPinning}
+              variant={isPinned ? "solid" : "bordered"}
+              color="secondary"
+              onClick={() => onPin(post.data?.id ?? "")}
+            >
+              <FaMapPin />
+            </Button>
+          )}
 
           <Button onClick={() => setCommentInputOpen(true)} color="primary">
             <FaReply />

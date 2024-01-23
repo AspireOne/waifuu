@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { FaEye, FaHeart } from "react-icons/fa";
 import { LargeText } from "../ui/LargeText";
 
-export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
+export const ForumPostDetailedHighlight = (post: ForumPost & { author: User }) => {
   const router = useRouter();
   function onClick() {
     if (Capacitor.isNativePlatform()) {
@@ -18,7 +18,7 @@ export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
   }
 
   return (
-    <Card className="w-full md:max-w-[400px]">
+    <Card className="w-full">
       <CardBody onClick={onClick} className={"cursor-pointer hover:bg-default-100"}>
         <div className="flex flex-row gap-2 mb-2">
           <h1 className="text-lg text-left font-bold">{post.title}</h1>

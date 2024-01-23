@@ -136,7 +136,7 @@ export const CharsDiscoverCategory = () => {
 
       <Spacer y={6} />
 
-      <div className="flex w-full flex-wrap gap-5 min-h-[60vh]">
+      <div className="flex w-full flex-wrap gap-5 h-fit">
         {/*{isRefetching && <CharacterCardSkeleton inline count={5} />}*/}
 
         {/*&& !isRefetching*/}
