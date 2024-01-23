@@ -40,7 +40,7 @@ export default function ForumPage() {
           <div className="flex flex-col gap-3 mb-5">
             <div className="flex flex-col gap-1 max-w-[300px]">
               <Title>
-                <Trans>Categories</Trans>
+                <Trans>Pages</Trans>
               </Title>
 
               <button onClick={() => toggleCardOpen("OVERVIEW")}>
@@ -71,7 +71,7 @@ export default function ForumPage() {
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1 max-w-[300px]">
               <Title>
-                <Trans>Overview</Trans>
+                <Trans>Categories</Trans>
               </Title>
             </div>
 

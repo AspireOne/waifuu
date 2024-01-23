@@ -12,7 +12,7 @@ export default () => {
       {posts.isLoading || !posts.data ? (
         <p>Loading... </p>
       ) : (
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-wrap gap-4 w-full">
           {posts.data.map((item) => {
             return <ForumPostDetailedHighlight key={item.id} {...item} />;
           })}

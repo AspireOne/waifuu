@@ -8,8 +8,11 @@ import { Trans, msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { CardBody } from "@nextui-org/card";
 import {
+  Accordion,
+  AccordionItem,
   Button,
   Card,
+  Checkbox,
   Divider,
   Input,
   Select,
@@ -262,11 +265,9 @@ const CreateChatPage = () => {
               />
             </div>
 
-            {/*compensate for the file upload having a large marginh*/}
             <CategoryDivider className={"my-7"} />
 
-            {/*Comment it out for now since we do not have it implemented yet.*/}
-            {/*<Accordion>
+            <Accordion>
               <AccordionItem
                 key="1"
                 aria-label={_(msg`Advanced mood settings`)}
@@ -281,27 +282,22 @@ const CreateChatPage = () => {
                 }
                 title={_(msg`Advanced mood settings`)}
               >
-                <FileUploadRaw
-                  label={_(msg`Image for mood 'neutral'`)}
-                  onUpload={(id) => setNeutral(id)}
-                />
-                <FileUploadRaw
-                  label={_(msg`Image for mood 'sad'`)}
-                  onUpload={(id) => setSad(id)}
-                />
-                <FileUploadRaw
-                  label={_(msg`Image for mood 'blushed'`)}
-                  onUpload={(id) => setBlushed(id)}
-                />
-                <FileUploadRaw
-                  label={_(msg`Image for mood 'happy'`)}
-                  onUpload={(id) => setHappy(id)}
-                />
+                <div className="flex flex-wrap gap-5">
+                  <FileUploadRaw
+                    label={_(msg`Neutral mood`)}
+                    onUpload={(id) => setNeutral(id)}
+                  />
+                  <FileUploadRaw label={_(msg`Sad mood`)} onUpload={(id) => setSad(id)} />
+                  <FileUploadRaw
+                    label={_(msg`Blushed mood`)}
+                    onUpload={(id) => setBlushed(id)}
+                  />
+                  <FileUploadRaw label={_(msg`Happy mood`)} onUpload={(id) => setHappy(id)} />
+                </div>
               </AccordionItem>
             </Accordion>
 
-            <CategoryDivider/>
-            */}
+            <CategoryDivider />
 
             <div className="flex flex-row justify-between w-full items-center">
               <Switch isSelected={isSelected} onValueChange={setIsSelected}>
