@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import { BotVisibility } from "@prisma/client";
+import { BotVisibility, Mood } from "@prisma/client";
 import React from "react";
 import { IconType } from "react-icons";
 import { FaUserFriends } from "react-icons/fa";
@@ -31,7 +31,7 @@ export function applyMarkdown(text: string): React.ReactNode[] {
           {"\n"}
           {split.slice(1, -1)}
           {"\n"}
-        </i>,
+        </i>
       );
     } else if (split.startsWith("`") && split.endsWith("`")) {
       result.push(<code key={split}>{split.slice(1, -1)}</code>);
@@ -44,7 +44,10 @@ export function applyMarkdown(text: string): React.ReactNode[] {
   return result;
 }
 
-export function addQueryParams(path: string, ...params: [key: string, value: string][]) {
+export function addQueryParams(
+  path: string,
+  ...params: [key: string, value: string][]
+) {
   const url = new URL(path, window.location.origin);
 
   for (const param of params) {
@@ -89,7 +92,9 @@ export function normalizePath(path: string, keepSlash = false): string {
  *
  * @param {string | null} pathOrId - The url or ID of the image.
  */
-export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T): string {
+export function makeDownloadUrl<T extends string | null | undefined>(
+  pathOrId: T
+): string {
   if ((!pathOrId && pathOrId !== "") || pathOrId === "") return "";
 
   if (isUrl(pathOrId)) {
@@ -116,7 +121,7 @@ export function getCsrfToken() {
 }
 
 export const getBotVisibilityIcon = (
-  visibility: BotVisibility,
+  visibility: BotVisibility
 ): React.FC<React.ComponentProps<IconType>> => {
   const icons = {
     [BotVisibility.PUBLIC]: IoLockOpenOutline,
@@ -139,4 +144,211 @@ export const getVisibilityIconTitle = (visibility: BotVisibility) => {
 
   if (!titles[visibility]) throw new Error(`Invalid visibility: ${visibility}`);
   return titles[visibility];
+};
+
+export const determineMood = (input: string) => {
+  const moodWords = {
+    [Mood.HAPPY]: [
+      "happy",
+      "joyful",
+      "cheerful",
+      "content",
+      "pleased",
+      "satisfied",
+      "contented",
+      "delighted",
+      "elated",
+      "exuberant",
+      "ecstatic",
+      "radiant",
+      "blissful",
+      "gleeful",
+      "lighthearted",
+      "merry",
+      "jovial",
+      "upbeat",
+      "jubilant",
+      "carefree",
+      "buoyant",
+      "high-spirited",
+      "vibrant",
+      "mirthful",
+      "overjoyed",
+      "thrilled",
+      "euphoric",
+      "grateful",
+      "sunny",
+      "smiling",
+      "laughing",
+      "joyous",
+      "festive",
+      "animated",
+      "festive",
+      "playful",
+      "sprightly",
+      "jocular",
+      "blithe",
+      "exhilarated",
+      "jolly",
+      "sparkling",
+      "optimistic",
+      "uplifting",
+      "sanguine",
+      "enthusiastic",
+      "cheery",
+    ],
+    [Mood.SAD]: [
+      "sad",
+      "unhappy",
+      "depressed",
+      "melancholy",
+      "gloomy",
+      "downcast",
+      "downhearted",
+      "mournful",
+      "woeful",
+      "forlorn",
+      "blue",
+      "despondent",
+      "disconsolate",
+      "dismal",
+      "downhearted",
+      "low-spirited",
+      "down",
+      "sorrowful",
+      "heartbroken",
+      "tearful",
+      "crying",
+      "weepy",
+      "lamenting",
+      "regretful",
+      "miserable",
+      "wretched",
+      "pathetic",
+      "pitiful",
+      "sorry",
+      "unfortunate",
+      "tragic",
+      "bereaved",
+      "grief-stricken",
+      "anguished",
+      "despairing",
+      "hopeless",
+      "disheartened",
+      "downtrodden",
+      "crestfallen",
+      "dejected",
+      "defeated",
+      "sullen",
+      "somber",
+      "morose",
+      "sombre",
+      "lugubrious",
+      "woebegone",
+      "heavy-hearted",
+    ],
+    [Mood.BLUSHED]: [
+      "blushed",
+      "shy",
+      "embarrassed",
+      "bashful",
+      "self-conscious",
+      "coy",
+      "nervous",
+      "timid",
+      "reserved",
+      "uncomfortable",
+      "awkward",
+      "modest",
+      "demure",
+      "flustered",
+      "flushed",
+      "discomfited",
+      "abashed",
+      "inhibited",
+      "chagrined",
+      "guilt-ridden",
+      "ashamed",
+      "confused",
+      "humbled",
+      "self-effacing",
+      "apologetic",
+      "contrite",
+      "penitent",
+      "regretful",
+      "remorseful",
+      "disconcerted",
+      "sheepish",
+      "timorous",
+      "trepidatious",
+      "apprehensive",
+      "fearful",
+      "anxious",
+      "timorously",
+      "blushing",
+      "flushing",
+      "red-faced",
+      "pink",
+      "rosy",
+      "crimson",
+      "ruby",
+      "rubicund",
+      "blushful",
+    ],
+    [Mood.NEUTRAL]: [
+      "neutral",
+      "calm",
+      "composed",
+      "indifferent",
+      "unaffected",
+      "unemotional",
+      "detached",
+      "nonchalant",
+      "objective",
+      "reserved",
+      "balanced",
+      "even-tempered",
+      "unperturbed",
+      "impartial",
+      "level-headed",
+      "dispassionate",
+      "unresponsive",
+      "aloof",
+      "unimpressed",
+      "unruffled",
+      "unbothered",
+      "cool",
+      "collected",
+      "impersonal",
+      "unconcerned",
+      "undisturbed",
+      "stoic",
+      "matter-of-fact",
+      "unflappable",
+      "undemonstrative",
+      "unexcited",
+      "unexpressive",
+      "unmoved",
+      "phlegmatic",
+      "unagitated",
+      "unenthusiastic",
+      "unpassionate",
+      "uninspired",
+      "disinterested",
+      "uninterested",
+      "uninvolved",
+      "emotionless",
+      "apathetic",
+      "unfeeling",
+      "unemotive",
+    ],
+  };
+
+  const inputWords = input.split(" ");
+
+  const mood = Object.keys(moodWords).find((mood) =>
+    moodWords[mood as Mood].some((word) => inputWords.includes(word))
+  );
+
+  return mood ? (mood as Mood) : Mood.NEUTRAL;
 };

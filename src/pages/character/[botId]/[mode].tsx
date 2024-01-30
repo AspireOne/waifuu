@@ -1,3 +1,4 @@
+import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
 import ChatGradientOverlay from "@/components/bot-chat/ChatGradientOverlay";
 import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
@@ -10,7 +11,7 @@ import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
-import { Bot } from "@prisma/client";
+import { Bot, Mood } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
@@ -34,8 +35,11 @@ const BotChat = () => {
       appHeaderEndContent={<AppHeaderCharSettingsButton />}
       title={bot?.name || _(msg`Loading...`)}
     >
-      {/*TODO: Make character image only the png of the char.*/}
-
+      {bot && (
+        <AudioPlayer
+          mood={chat.messages[chat.messages.length - 1]?.mood ?? "NEUTRAL"}
+        />
+      )}
       {bot && <CharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
       <BotChatContent chat={chat} bot={bot} />
@@ -66,18 +70,18 @@ const CharacterImage = ({
       <Image
         alt="character image"
         loading="eager"
-        src={makeDownloadUrl(bot.characterImage)}
+        src={makeDownloadUrl(image ?? bot.characterImage)}
         className={twMerge(
           "animation-slide-fade fixed object-cover",
           "bottom-0 h-[90%]", // set height
           "w-auto", // set width
-          "left-0 right-0 mx-auto", // center it horizontally
+          "left-0 right-0 mx-auto" // center it horizontally
         )}
         width={1920}
         height={1080}
       />
     ),
-    [bot, messages],
+    [bot, messages]
   );
 };
 

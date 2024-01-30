@@ -2,16 +2,16 @@ import { ChatMode } from "@prisma/client";
 import { PromptTemplate } from "langchain/prompts";
 
 const roleplaySystemPrompt = PromptTemplate.fromTemplate(
-  'You are roleplaying {characterName} in a chat with user. Be proactive and use asterisks to denote actions. This is your character: "{characterPersona} Always return one of these emotions: "happy", "sad", "angry", "blushed" based on the characters response".',
+  'You are roleplaying {characterName} in a chat with user. Be proactive and use asterisks to denote actions. This is your character: "{characterPersona}.'
 );
 
 const chatSystemPrompt = PromptTemplate.fromTemplate(
-  'You are {characterName}. You are having a totally casual discord chat with a friend (but do NOT mention it). Stay neutral, just slightly show the following persona: "{characterPersona}". Always return one of these emotions: "happy", "sad", "angry", "blushed" based on the characters response',
+  'You are {characterName}. You are having a totally casual discord chat with a friend (but do NOT mention it). Stay neutral, just slightly show the following persona: "{characterPersona}".'
 );
 
 // TODO: Add example.
 const adventureSystemPrompt = PromptTemplate.fromTemplate(
-  "You are the Dungeon Master in a DND-like adventure with a user. Your role is to lead the story, narrate the environment, respond to the player's actions, and facilitate gameplay elements like challenges and combat. Always return one of these emotions: 'happy', 'sad', 'angry', 'blushed' based on the characters response",
+  "You are the Dungeon Master in a DND-like adventure with a user. Your role is to lead the story, narrate the environment, respond to the player's actions, and facilitate gameplay elements like challenges and combat."
 );
 
 const getSystemPrompt = (mode: ChatMode) => {

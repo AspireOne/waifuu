@@ -49,10 +49,7 @@ export const BotChatContent = (props: {
   );
 };
 
-const Messages = (props: {
-  chat: ReturnType<typeof useBotChat>;
-  bot: Bot;
-}) => {
+const Messages = (props: { chat: ReturnType<typeof useBotChat>; bot: Bot }) => {
   const { user } = useSession();
   const { chat } = props;
 
