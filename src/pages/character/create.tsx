@@ -82,6 +82,9 @@ const CreateChatPage = () => {
 
   const [visibilityIcon, setVisibilityIcon] = useState<React.ReactNode>();
 
+  const [dynamicBackgroundsEnabled, setDynamicBackgroundsEnabled] =
+    useState(false);
+
   const createBot = api.bots.create.useMutation({
     onSuccess: (data) => {
       utils.bots.getUserBots.invalidate();
@@ -111,6 +114,7 @@ const CreateChatPage = () => {
       tags: data.tags,
       cover: cover,
       moodImagesEnabled: moodImagesEnabled,
+      dynamicBackgroundsEnabled: dynamicBackgroundsEnabled,
       sadImageId: sad,
       happyImageId: happy,
       neutralImageId: neutral,
@@ -120,7 +124,10 @@ const CreateChatPage = () => {
 
   return (
     <AppPage title={_(msg`Create New Character`)} backPath={paths.discover}>
-      <form className="md:w-[600px] mx-auto" onSubmit={handleSubmit(submitHandler)}>
+      <form
+        className="md:w-[600px] mx-auto"
+        onSubmit={handleSubmit(submitHandler)}
+      >
         <Card>
           <CardBody>
             <Title
@@ -199,7 +206,9 @@ const CreateChatPage = () => {
 
             <Title
               as={"h2"}
-              description={_(msg`Define how the character will act and respond.`)}
+              description={_(
+                msg`Define how the character will act and respond.`
+              )}
             >
               <Trans>Persona</Trans>
             </Title>
@@ -225,7 +234,7 @@ const CreateChatPage = () => {
                 maxLength={500}
                 maxRows={3}
                 description={_(
-                  msg`The personality of your character. Keep it short and simple. Our AI can infer a lot.`,
+                  msg`The personality of your character. Keep it short and simple. Our AI can infer a lot.`
                 )}
               />
 
@@ -235,18 +244,25 @@ const CreateChatPage = () => {
                 label={_(msg`Example dialogue`)}
                 placeholder={_(msg`User: Hello! Bot: Hi!`)}
                 description={_(
-                  msg`If you want to specify your character's behavior even more precisely, you can provide an example dialogue.`,
+                  msg`If you want to specify your character's behavior even more precisely, you can provide an example dialogue.`
                 )}
               />
             </div>
 
             <CategoryDivider />
 
-            <Title as={"h2"} description={_(msg`Now the really important part!`)}>
+            <Title
+              as={"h2"}
+              description={_(msg`Now the really important part!`)}
+            >
               Images
             </Title>
             {/*TODO: Add descriptions, improve design.s*/}
-            <div className={"flex flex-row flex-wrap gap-8 sm:justify-center sm:gap-8"}>
+            <div
+              className={
+                "flex flex-row flex-wrap gap-8 sm:justify-center sm:gap-8"
+              }
+            >
               <FileUploadRaw
                 required
                 onUpload={(id) => setAvatar(id)}
@@ -256,7 +272,9 @@ const CreateChatPage = () => {
               <FileUploadRaw
                 onUpload={(id) => setCover(id)}
                 label={_(msg`Character image`)}
-                description={_(msg`should be a transparent image of the character`)}
+                description={_(
+                  msg`should be a transparent image of the character`
+                )}
               />
               <FileUploadRaw
                 onUpload={(id) => setBackground(id)}
@@ -266,6 +284,18 @@ const CreateChatPage = () => {
             </div>
 
             <CategoryDivider className={"my-7"} />
+
+            <div className="flex flex-row gap-3">
+              <Checkbox
+                checked={dynamicBackgroundsEnabled}
+                onChange={() =>
+                  setDynamicBackgroundsEnabled(!dynamicBackgroundsEnabled)
+                }
+              />
+              <Trans>Click to enable dynamic backgrounds</Trans>
+            </div>
+
+            <CategoryDivider />
 
             <Accordion>
               <AccordionItem
@@ -287,12 +317,18 @@ const CreateChatPage = () => {
                     label={_(msg`Neutral mood`)}
                     onUpload={(id) => setNeutral(id)}
                   />
-                  <FileUploadRaw label={_(msg`Sad mood`)} onUpload={(id) => setSad(id)} />
+                  <FileUploadRaw
+                    label={_(msg`Sad mood`)}
+                    onUpload={(id) => setSad(id)}
+                  />
                   <FileUploadRaw
                     label={_(msg`Blushed mood`)}
                     onUpload={(id) => setBlushed(id)}
                   />
-                  <FileUploadRaw label={_(msg`Happy mood`)} onUpload={(id) => setHappy(id)} />
+                  <FileUploadRaw
+                    label={_(msg`Happy mood`)}
+                    onUpload={(id) => setHappy(id)}
+                  />
                 </div>
               </AccordionItem>
             </Accordion>

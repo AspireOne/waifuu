@@ -62,6 +62,12 @@ enum Mood {
   BLUSHED
 }
 
+enum Place {
+  WORK
+  PARK 
+  HOME
+}
+
 enum BotVisibility {
   PUBLIC
   LINK
@@ -260,6 +266,9 @@ model Bot {
   neutralImageId    String?
   happyImageId      String?
 
+  // Dynamic backgrounds
+  dynamicBackgroundsEnabled Boolean @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -335,7 +344,10 @@ model Message {
   chatId                  String
   chat                    Chat                      @relation(fields: [chatId], references: [id])
   content                 String
+  
   mood                    Mood                      @default(NEUTRAL)
+  place                   Place?                    @default(WORK)
+
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @updatedAt
   role                    ChatRole

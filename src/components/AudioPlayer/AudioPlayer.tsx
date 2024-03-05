@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import { HiMiniSpeakerWave, HiMiniSpeakerXMark } from "react-icons/hi2";
-import ReactAudioPlayer from "react-audio-player";
 import { Mood } from "@prisma/client";
 
 interface AudioPlayerProps {
@@ -8,21 +7,21 @@ interface AudioPlayerProps {
 }
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ mood }) => {
-  const audioPlayerRef = useRef<ReactAudioPlayer>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const audioPlayerRef = useRef<HTMLAudioElement>(null);
 
-  const togglePlaying = () => {
-    setIsPlaying((prev) => !prev);
-  };
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (!isPlaying) {
-      audioPlayerRef.current?.updateVolume(0);
+  const onClickToggle = () => {
+    if (!audioPlayerRef.current) return;
+
+    if (audioPlayerRef.current.paused) {
+      audioPlayerRef.current.play();
+      setIsPlaying(true);
     } else {
-      audioPlayerRef.current?.updateVolume(1);
-      audioPlayerRef.current?.clearListenTrack();
+      audioPlayerRef.current.pause();
+      setIsPlaying(false);
     }
-  }, [isPlaying]);
+  };
 
   const tracks: { mood: Mood; src: string }[] = [
     {
@@ -45,13 +44,21 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ mood }) => {
 
   return (
     <>
-      <ReactAudioPlayer
+      <audio
         src={tracks.find((item) => item.mood === mood)?.src ?? ""}
         ref={audioPlayerRef}
-        autoPlay
+        onLoadedData={() => {
+          if (audioPlayerRef.current && isPlaying) {
+            audioPlayerRef.current.play();
+            setIsPlaying(true);
+          }
+        }}
         loop
-      />
-      <button className="fixed top-0 right-2 z-[50]" onClick={togglePlaying}>
+      >
+        <track kind="captions" />
+      </audio>
+
+      <button className="fixed top-0 right-2 z-[50]" onClick={onClickToggle}>
         {isPlaying ? (
           <HiMiniSpeakerWave color="white" className="w-[50px] h-[50px]" />
         ) : (

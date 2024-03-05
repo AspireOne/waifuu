@@ -11,7 +11,7 @@ import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
-import { Bot, Mood } from "@prisma/client";
+import { Bot } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";

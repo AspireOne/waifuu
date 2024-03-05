@@ -7,6 +7,7 @@ import Langfuse from "langfuse";
 import PusherServer from "pusher";
 import Replicate from "replicate";
 import Stripe from "stripe";
+import OpenAi from "openai";
 
 // Values are currently defined in src/server/clients. Might change.
 export type Global = {
@@ -19,6 +20,7 @@ export type Global = {
   s3Client?: S3Client;
   stripe?: Stripe;
   langfuse?: Langfuse;
+  openai?: OpenAi;
   nonces?: string[];
 };
 

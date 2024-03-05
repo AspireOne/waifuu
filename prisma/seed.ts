@@ -12,7 +12,8 @@ const prisma = new PrismaClient();
 const adminEmails = [
   "matejpesl1@gmail.com",
   "dornicakkuba@gmail.com",
-  "jakubdornicak@gmail.com",
+  "jakub.dornicak@seznam.cz",
+  "jakub.dornicak@blindspot.ai",
 ];
 
 type BotProps = {
@@ -41,7 +42,9 @@ async function main() {
   if (isProd === isDev) {
     isProd = false;
     isDev = true;
-    console.warn("seed: NODE_ENV is not specified. Defaulting to development mode.");
+    console.warn(
+      "seed: NODE_ENV is not specified. Defaulting to development mode."
+    );
   }
 
   isProd ? await seedProduction() : await seedDevelopment();
@@ -72,7 +75,6 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
-
 
 async function upsertAdminEmail(email: string) {
   await prisma.adminEmail.upsert({

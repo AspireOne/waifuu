@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { ChatRole, Mood } from "@prisma/client";
+import { ChatRole, Mood, Place } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 type MessageStatus = "error" | "temp";
@@ -8,6 +8,7 @@ export type Message = {
   role: ChatRole;
   content: string;
   mood?: Mood;
+  place: Place;
   type?: MessageStatus;
   id: number;
 };

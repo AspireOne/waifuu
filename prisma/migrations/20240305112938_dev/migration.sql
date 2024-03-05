@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "PlanId" AS ENUM ('SUBSCRIPTION_PLAN_FREE_V1', 'SUBSCRIPTION_PLAN_PLUS_V1');
+CREATE TYPE "PlanId" AS ENUM ('SUBSCRIPTION_PLAN_FREE_V1', 'SUBSCRIPTION_PLAN_PLUS_V1', 'SUBSCRIPTION_PLAN_PRO_V1');
 
 -- CreateEnum
 CREATE TYPE "Currency" AS ENUM ('USD', 'CZK', 'EUR');
@@ -17,6 +17,9 @@ CREATE TYPE "SubscriptionInterval" AS ENUM ('month', 'year');
 CREATE TYPE "Mood" AS ENUM ('NEUTRAL', 'HAPPY', 'SAD', 'BLUSHED');
 
 -- CreateEnum
+CREATE TYPE "Place" AS ENUM ('WORK', 'PARK', 'HOME');
+
+-- CreateEnum
 CREATE TYPE "BotVisibility" AS ENUM ('PUBLIC', 'LINK', 'PRIVATE');
 
 -- CreateEnum
@@ -29,7 +32,31 @@ CREATE TYPE "ChatRole" AS ENUM ('USER', 'BOT');
 CREATE TYPE "ChatMode" AS ENUM ('ROLEPLAY', 'ADVENTURE', 'CHAT');
 
 -- CreateEnum
-CREATE TYPE "CharacterTag" AS ENUM ('GIRLFRIEND', 'BOYFRIEND', 'ROMANCE', 'FANTASY', 'SUPERNATURAL', 'FEMALE', 'MALE', 'HORROR', 'HERO', 'COMEDY', 'NERD', 'SHY', 'BAD', 'ANIME', 'GAME_CHARACTER', 'HISTORY', 'MOVIE', 'MONSTER', 'BOOKS', 'OC');
+CREATE TYPE "Feedback" AS ENUM ('LIKE', 'DISLIKE');
+
+-- CreateEnum
+CREATE TYPE "CharacterTag" AS ENUM ('MOVIE', 'ANIME', 'PRACTICAL', 'ROMANCE', 'FANTASY', 'SUPERNATURAL', 'FEMALE', 'MALE', 'HORROR', 'HERO', 'COMEDY', 'NERD', 'SHY', 'BAD', 'GAME_CHARACTER', 'HISTORY', 'MONSTER', 'BOOKS', 'OC');
+
+-- CreateTable
+CREATE TABLE "AdminEmail" (
+    "email" TEXT NOT NULL,
+
+    CONSTRAINT "AdminEmail_pkey" PRIMARY KEY ("email")
+);
+
+-- CreateTable
+CREATE TABLE "EarlyAccess" (
+    "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "age" INTEGER,
+    "hearAboutUs" TEXT NOT NULL,
+    "granted" BOOLEAN NOT NULL DEFAULT false,
+    "ip" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "EarlyAccess_pkey" PRIMARY KEY ("email")
+);
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -39,9 +66,10 @@ CREATE TABLE "User" (
     "image" TEXT NOT NULL DEFAULT 'https://github-production-user-asset-6210df.s3.amazonaws.com/57546404/280538836-8c16b1b3-391f-4cdf-889c-e2e279f3167b.png',
     "username" TEXT NOT NULL,
     "stripeCustomerId" TEXT,
+    "preferredModelId" TEXT,
     "bio" TEXT,
     "botContext" TEXT,
-    "addressedAs" TEXT DEFAULT 'Senpai',
+    "addressedAs" TEXT,
     "planId" "PlanId",
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -194,10 +222,12 @@ CREATE TABLE "Message" (
     "chatId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "mood" "Mood" NOT NULL DEFAULT 'NEUTRAL',
+    "place" "Place" DEFAULT 'WORK',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "role" "ChatRole" NOT NULL,
     "remembered" BOOLEAN NOT NULL DEFAULT false,
+    "feedback" "Feedback",
 
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
@@ -247,6 +277,7 @@ CREATE TABLE "Asset" (
 CREATE TABLE "ForumPost" (
     "id" TEXT NOT NULL,
     "bannerImage" TEXT,
+    "pinned" BOOLEAN DEFAULT false,
     "categoryname" TEXT,
     "title" TEXT,
     "content" TEXT NOT NULL,
@@ -271,6 +302,28 @@ CREATE TABLE "ForumPostLike" (
 );
 
 -- CreateTable
+CREATE TABLE "MessageFeedbackMetadata" (
+    "messageId" INTEGER NOT NULL,
+    "previousMessageId" INTEGER,
+    "modelId" TEXT NOT NULL,
+    "feedback" "Feedback" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "MessageFeedbackMetadata_pkey" PRIMARY KEY ("messageId")
+);
+
+-- CreateTable
+CREATE TABLE "GeneralFeedback" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "GeneralFeedback_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "IpInfo" (
     "ip" TEXT NOT NULL,
     "country" TEXT NOT NULL,
@@ -281,6 +334,21 @@ CREATE TABLE "IpInfo" (
 
     CONSTRAINT "IpInfo_pkey" PRIMARY KEY ("ip")
 );
+
+-- CreateTable
+CREATE TABLE "ContactForm" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT,
+    "name" TEXT,
+    "message" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ContactForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EarlyAccess_email_key" ON "EarlyAccess"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
@@ -348,6 +416,9 @@ CREATE INDEX "Asset_authorId_idx" ON "Asset"("authorId");
 -- CreateIndex
 CREATE INDEX "ForumPostLike_postId_idx" ON "ForumPostLike"("postId");
 
+-- CreateIndex
+CREATE INDEX "MessageFeedbackMetadata_messageId_idx" ON "MessageFeedbackMetadata"("messageId");
+
 -- AddForeignKey
 ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -413,3 +484,9 @@ ALTER TABLE "ForumPostLike" ADD CONSTRAINT "ForumPostLike_postId_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "ForumPostLike" ADD CONSTRAINT "ForumPostLike_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MessageFeedbackMetadata" ADD CONSTRAINT "MessageFeedbackMetadata_messageId_fkey" FOREIGN KEY ("messageId") REFERENCES "Message"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GeneralFeedback" ADD CONSTRAINT "GeneralFeedback_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

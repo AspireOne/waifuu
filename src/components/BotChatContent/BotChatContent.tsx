@@ -7,8 +7,19 @@ import { ChatTypingIndicator } from "@components/bot-chat/ChatTypingIndicator";
 import useBotChat from "@hooks/useBotChat";
 import { makeDownloadUrl } from "@lib/utils";
 import { Image, ScrollShadow } from "@nextui-org/react";
-import { Bot } from "@prisma/client";
+import { Bot, Place } from "@prisma/client";
 import { useRef } from "react";
+
+const placeToUrl = (place: Place): string => {
+  switch (place) {
+    case "HOME":
+      return "/assets/place_home.jpg";
+    case "WORK":
+      return "/assets/place_work.jpeg";
+    case "PARK":
+      return "/assets/place_park.webp";
+  }
+};
 
 export const BotChatContent = (props: {
   chat: ReturnType<typeof useBotChat>;
@@ -27,10 +38,19 @@ export const BotChatContent = (props: {
 
   return (
     <div>
-      <Image
-        className="z-0 w-full h-full object-cover fixed top-0"
-        src={makeDownloadUrl(props.bot.backgroundImage)}
-      />
+      {props.bot.dynamicBackgroundsEnabled ? (
+        <Image
+          className="z-0 w-full h-full object-cover fixed top-0"
+          src={placeToUrl(
+            props.chat.messages[props.chat.messages.length - 1]?.place ?? "HOME"
+          )}
+        />
+      ) : (
+        <Image
+          className="z-0 w-full h-full object-cover fixed top-0"
+          src={makeDownloadUrl(props.bot.backgroundImage)}
+        />
+      )}
 
       <div className="fixed left-0 bottom-14 md:w-full z-30">
         <ScrollShadow
