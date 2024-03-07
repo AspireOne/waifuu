@@ -12,7 +12,7 @@ import { RiSearch2Fill, RiSearch2Line } from "react-icons/ri";
 import { twMerge } from "tailwind-merge";
 // import svg assets/icons/history.svg
 
-// Mapping of paths and their icons.
+//// Mapping of paths and their icons.
 type ButtonProp = {
   path: string;
   title: string;
