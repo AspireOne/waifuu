@@ -123,16 +123,23 @@ function ActionButton(props: ButtonProp & { isActive: boolean }) {
         className={twMerge(
           "m-0 bg-transparent hover:bg-none h-12",
           "flex flex-col items-center justify-center gap-0",
-          props.isActive ? "text-foreground-900" : "text-foreground-400",
+          props.isActive ? "text-foreground-900" : "text-foreground-400"
         )}
       >
         {props.isActive && (
-          <props.iconFilled className={`flex-1 ${transitionDuration}`} size={26} />
+          <props.iconFilled
+            className={`flex-1 ${transitionDuration}`}
+            size={26}
+          />
         )}
         {!props.isActive && (
           <props.icon className={`flex-1 ${transitionDuration}`} size={26} />
         )}
-        {<p className={`text-sm font-semibold ${transitionDuration}`}>{props.title}</p>}
+        {
+          <p className={`text-sm font-semibold ${transitionDuration}`}>
+            {props.title}
+          </p>
+        }
       </Button>
     </div>
   );
