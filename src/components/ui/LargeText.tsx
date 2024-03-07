@@ -16,19 +16,14 @@ const LargeTextVariants = cva(["line-clamp"], {
       4: "line-clamp-4",
       5: "line-clamp-5",
       6: "line-clamp-6",
-    }
-  }
+    },
+  },
 });
 
-export const LargeText = ({
-  content,
-  maxLength,
-  lines = 2,
-  ...props
-}: LargeTextProps) => {
+export const LargeText = ({ content, maxLength, lines = 2, ...props }: LargeTextProps) => {
   return (
     <p className={LargeTextVariants({ lines })} {...props}>
-      {content.length > maxLength ? content.slice(0, maxLength) + "..." : content}
+      {content.length > maxLength ? `${content.slice(0, maxLength)}...` : content}
     </p>
   );
 };

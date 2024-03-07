@@ -1,8 +1,6 @@
-import React from "react";
-import { PublicPage } from "@components/PublicPage";
-import { PageTitle } from "@components/PageTitle";
-import { Trans } from "@lingui/macro";
 import { PageDescription } from "@components/PageDescription";
+import { PageTitle } from "@components/PageTitle";
+import { PublicPage } from "@components/PublicPage";
 import Title from "@components/ui/Title";
 import { Link, Spacer } from "@nextui-org/react";
 
@@ -39,14 +37,12 @@ export default function AiGateway() {
         </div>
       </div>
 
-      <Spacer y={14}/>
+      <Spacer y={14} />
 
       <div className={"flex flex-col lg:flex-row gap-12 lg:gap-4"}>
         <div className={"w-full flex flex-col gap-14"}>
           <div className={""}>
-            <Title description={"Druhé Nejlepší A.I."}>
-              Claude
-            </Title>
+            <Title description={"Druhé Nejlepší A.I."}>Claude</Title>
             <p className={"whitespace-pre-wrap"}>
               <Link href={"https://claude.ai"}>claude.ai</Link>
               <br />- Paměť až 300 stran A4
@@ -55,9 +51,7 @@ export default function AiGateway() {
             </p>
           </div>
           <div>
-            <Title description={"Nejlepší A.I. na převedení textu do řeči"}>
-              Eleven Labs
-            </Title>
+            <Title description={"Nejlepší A.I. na převedení textu do řeči"}>Eleven Labs</Title>
             <p className={"whitespace-pre-wrap"}>
               <Link href={"https://elevenlabs.io"}>elevenlabs.io</Link>
               <br />- Výběr hlasů, neuvěřitelně realistické

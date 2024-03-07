@@ -4,9 +4,9 @@ import { prisma } from "@/server/clients/db";
 import metaHandler from "@/server/lib/metaHandler";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 
+import { randomUUID } from "crypto";
 import { s3Client, s3DefaultBucket } from "@/server/clients/s3Client";
 import * as formidable from "formidable";
-import { randomUUID } from "crypto";
 
 type ProcessedFiles = [string, formidable.File][];
 type ResultData = {
@@ -65,30 +65,28 @@ export default metaHandler.protected(async (req, res, ctx) => {
   let status = 200;
   let resultBody: Response = { status: ResponseCode.OK, message: null };
 
-  const files = await new Promise<ProcessedFiles | undefined>(
-    (resolve, reject) => {
-      const form = new formidable.IncomingForm();
-      const files: ProcessedFiles = [];
+  const files = await new Promise<ProcessedFiles | undefined>((resolve, reject) => {
+    const form = new formidable.IncomingForm();
+    const files: ProcessedFiles = [];
 
-      form.on("file", (field, file) => {
-        files.push([field, file]);
-      });
+    form.on("file", (field, file) => {
+      files.push([field, file]);
+    });
 
-      form.on("end", () => resolve(files));
-      form.on("error", (err) => reject(err));
+    form.on("end", () => resolve(files));
+    form.on("error", (err) => reject(err));
 
-      form.parse(req, () => {
-        if (!files.length) {
-          status = 400;
-          resultBody = {
-            status: ResponseCode.BAD_REQUEST,
-            message: "No files were uploaded",
-          };
-          reject();
-        }
-      });
-    }
-  ).catch(() => {
+    form.parse(req, () => {
+      if (!files.length) {
+        status = 400;
+        resultBody = {
+          status: ResponseCode.BAD_REQUEST,
+          message: "No files were uploaded",
+        };
+        reject();
+      }
+    });
+  }).catch(() => {
     status = 500;
     resultBody = {
       status: ResponseCode.SERVER_ERROR,
@@ -141,11 +139,9 @@ export default metaHandler.protected(async (req, res, ctx) => {
     });
 
     resultBody = { status: ResponseCode.OK, message: result };
-    
+
     return res.status(status).json(resultBody);
   } catch (err) {
-    return res
-      .status(500)
-      .json({ status: 500, message: "Error uploading image" });
+    return res.status(500).json({ status: 500, message: "Error uploading image" });
   }
 });

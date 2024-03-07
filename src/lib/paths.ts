@@ -86,17 +86,14 @@ export const baseUrl = () => {
 
 export const baseS3Url = () => {
   if (!process.env.NEXT_PUBLIC_S3_BASE_PATH && !process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH) {
-    throw new Error(
-      "NEXT_PUBLIC_S3_BASE_PATH is not set!"
-    );
-  };
+    throw new Error("NEXT_PUBLIC_S3_BASE_PATH is not set!");
+  }
 
   if (process.env.NODE_ENV === "production") {
     return process.env.NEXT_PUBLIC_S3_BASE_PATH;
-  } else {
-    return process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH;
   }
-}
+  return process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH;
+};
 
 /**
  * Adds base API path in front of the given path.

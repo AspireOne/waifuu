@@ -226,8 +226,8 @@ function UsernameInput(props: {
           usernameAvailable === undefined || usernameAvailability.isLoading
             ? "default"
             : usernameAvailable
-            ? "success"
-            : "warning"
+              ? "success"
+              : "warning"
         }
       >
         {usernameAvailability.isLoading && "Checking..."}
