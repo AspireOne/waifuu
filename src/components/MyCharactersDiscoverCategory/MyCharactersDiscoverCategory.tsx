@@ -58,7 +58,7 @@ export const MyCharactersDiscoverCategory = () => {
               as={NextLink}
               href={paths.createBot}
               color={"primary"}
-              className={"ml-auto md:ml-1 mr-1 text-primary-500 font-bold"}
+              className={"font-boldtext-primary-500"}
               size="sm"
               // @ts-ignore
               variant={null}

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 // Note IMPORTANT: When adding a new path that should be public, you must add it to robots.txt!
 export const paths = {
   index: "/",
+  friends: "/friends",
   home: "/home",
   RR: "/roulette",
   RRChat: "/roulette/chat",

@@ -5,17 +5,20 @@ import { z } from "zod";
 export default protectedProcedure
   .input(
     z.object({
-      friendId: z.string(),
+      friendUsername: z.string(),
     }),
   )
   .mutation(async ({ input, ctx }) => {
-    const { friendId } = input;
+    const { friendUsername } = input;
     const userId = ctx.user.id;
 
     // Check if the friend exists
-    const friend = await ctx.prisma.user.findUnique({
+    const friend = await ctx.prisma.user.findFirst({
       where: {
-        id: friendId,
+        username: {
+          endsWith: friendUsername,
+          mode: "insensitive",
+        },
       },
     });
 
@@ -31,7 +34,7 @@ export default protectedProcedure
       where: {
         userId_friendId: {
           userId,
-          friendId,
+          friendId: friend.id,
         },
       },
     });
@@ -47,7 +50,7 @@ export default protectedProcedure
     await ctx.prisma.friendship.create({
       data: {
         userId,
-        friendId,
+        friendId: friend.id,
       },
     });
 

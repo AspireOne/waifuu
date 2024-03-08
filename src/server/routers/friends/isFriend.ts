@@ -5,16 +5,17 @@ import { z } from "zod";
 export default protectedProcedure
   .input(
     z.object({
-      username: z.string(),
+      userUsername: z.string(),
     }),
   )
-  .mutation(async ({ input, ctx }) => {
-    const { username } = input;
+  .query(async ({ input, ctx }) => {
+    const { userUsername } = input;
+    const currentUserId = ctx.user.id;
 
     const friend = await ctx.prisma.user.findFirst({
       where: {
         username: {
-          endsWith: username,
+          endsWith: userUsername,
           mode: "insensitive",
         },
       },
@@ -27,35 +28,19 @@ export default protectedProcedure
       });
     }
 
-    // Check if the friendship exists
+    // Check if the given user is a friend of the authenticated user
     const friendship = await ctx.prisma.friendship.findUnique({
       where: {
         userId_friendId: {
-          userId: ctx.user.id,
+          userId: currentUserId,
           friendId: friend.id,
         },
       },
     });
 
-    if (!friendship) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "Friendship not found.",
-      });
-    }
-
-    // Remove the friendship
-    await ctx.prisma.friendship.delete({
-      where: {
-        userId_friendId: {
-          userId: ctx.user.id,
-          friendId: friend.id,
-        },
-      },
-    });
+    const isFriend = !!friendship;
 
     return {
-      success: true,
-      message: "Friend removed successfully.",
+      isFriend,
     };
   });

@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 
 import { Capacitor } from "@capacitor/core";
 import Title from "@components/ui/Title";
+import { api } from "@lib/api";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 
@@ -23,24 +24,21 @@ function Avatar(props: { image: string | null | undefined }) {
   );
 }
 
-function Buttons(props: { onShare: () => void }) {
-  // TODO: Implement follow button.
-  return (
-    <div className={"flex flex-row justify-center gap-4"}>
-      {/*<Button className={"w-32"}>Follow</Button>*/}
-      <Button className={"w-32"} variant={"bordered"} onClick={props.onShare}>
-        <Trans>Share</Trans>
-      </Button>
-    </div>
-  );
-}
-
-export default function Header(props: {
-  image?: string | null;
-  username?: string | null;
-  className?: string;
-}) {
+function Buttons(props: { username?: string | null }) {
   const { _ } = useLingui();
+  const utils = api.useUtils();
+  const { data: friendData } = api.friends.isFriend.useQuery(
+    { userUsername: props.username! },
+    { enabled: !!props.username },
+  );
+
+  const befriendMutation = api.friends.add.useMutation({
+    onSuccess: () => utils.friends.isFriend.invalidate(),
+  });
+
+  const unfriendMutation = api.friends.remove.useMutation({
+    onSuccess: () => utils.friends.isFriend.invalidate(),
+  });
 
   async function handleShare() {
     const url = fullUrl(paths.userProfile(props.username!));
@@ -63,6 +61,40 @@ export default function Header(props: {
     });
   }
 
+  async function handleBefriend() {
+    if (!props.username) {
+      console.warn("No username provided");
+      return;
+    }
+
+    if (friendData?.isFriend) unfriendMutation.mutate({ username: props.username! });
+    else befriendMutation.mutate({ friendUsername: props.username! });
+  }
+
+  return (
+    <div className={"flex flex-row justify-center gap-4"}>
+      {/*<Button className={"w-32"}>Follow</Button>*/}
+      <Button className={"w-32"} variant={"bordered"} onClick={handleShare}>
+        <Trans>Share</Trans>
+      </Button>
+      <Button
+        className={"w-32"}
+        variant={friendData?.isFriend ? "solid" : "bordered"}
+        onClick={handleBefriend}
+      >
+        {friendData?.isFriend ? <Trans>Unfriend</Trans> : <Trans>Add Friend</Trans>}
+      </Button>
+    </div>
+  );
+}
+
+export default function Header(props: {
+  image?: string | null;
+  username?: string | null;
+  className?: string;
+}) {
+  const { _ } = useLingui();
+
   return (
     <div className={twMerge("", props.className)}>
       <Avatar image={props.image} />
@@ -73,7 +105,7 @@ export default function Header(props: {
         </Title>
       </div>
 
-      <Buttons onShare={handleShare} />
+      <Buttons username={props.username!} />
     </div>
   );
 }

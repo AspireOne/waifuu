@@ -7,7 +7,6 @@
   },
   "scripts": {
     "start": "next start",
-    "type-check": "tsc --noEmit",
     "prisma": "prisma",
     "nc": "new-component",
     "build:production": "cross-env NODE_ENV=production prisma migrate deploy && prisma db seed && npx lingui extract && npx lingui compile && next build",

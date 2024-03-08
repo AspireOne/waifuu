@@ -31,7 +31,7 @@ const Discover = () => {
               <ActiveChatsDiscoverCategory />
             </CardBody>
           </Card>
-          {/*<Divider className={"my-16"}/>*/}
+          <Spacer y={5} />
           <Card className={"w-full"}>
             <CardBody>
               <MyCharactersDiscoverCategory />

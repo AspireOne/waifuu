@@ -5,6 +5,7 @@ export default function Home() {
   return (
     <AppPage backPath={null} title={t`Home`} topLevel>
       <div />
+      d{" "}
     </AppPage>
   );
 }

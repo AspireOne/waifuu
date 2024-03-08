@@ -63,7 +63,7 @@ export const AppHeaderCharSettingsButton = () => {
           isIconOnly
           // @ts-ignore
           variant={null}
-          className={"p-0 m-0 text-primary-200"}
+          className={"p-0 m-0 text-gray-400"}
           onClick={() => (isOpen ? onClose() : onOpen())}
         >
           <GrUserSettings className={"p-0 m-0"} size={25} />

@@ -8,9 +8,12 @@ export default publicProcedure
     }),
   )
   .query(async ({ input, ctx }) => {
-    const user = await ctx.prisma.user.findUnique({
+    const user = await ctx.prisma.user.findFirst({
       where: {
-        username: input.username,
+        username: {
+          mode: "insensitive",
+          endsWith: input.username,
+        },
       },
       include: {
         Bot: {
