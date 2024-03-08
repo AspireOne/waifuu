@@ -58,3 +58,5 @@ volumes
 !.env.project
 
 !.env.vault
+
+service.account.json
