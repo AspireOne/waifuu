@@ -139,6 +139,9 @@ model User {
   createdAt       DateTime          @default(now())
   StripeSession   StripeSession[]
   GeneralFeedback GeneralFeedback[]
+
+  friendships         Friendship[] @relation("UserFriendships")
+  friendshipsOfFriend Friendship[] @relation("FriendFriendships")
 }
 
 // This only stores the information about an user's current plan.
@@ -455,4 +458,15 @@ model ContactForm {
   name      String?
   message   String
   createdAt DateTime @default(now())
+}
+
+model Friendship {
+  id        String   @id @default(cuid())
+  userId    String
+  friendId  String
+  user      User     @relation("UserFriendships", fields: [userId], references: [id])
+  friend    User     @relation("FriendFriendships", fields: [friendId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, friendId])
 }
