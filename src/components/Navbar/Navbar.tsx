@@ -1,4 +1,3 @@
-import { useEarlyAccessStore } from "@/stores";
 import { getNavbarPaths, paths } from "@lib/paths";
 import { Trans } from "@lingui/macro";
 import { NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/navbar";
@@ -18,7 +17,7 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false);
   const [activeHref, setActiveHref] = React.useState<string>(paths.index);
   const router = useRouter();
-  const { requested: requestedEarlyAccess } = useEarlyAccessStore();
+  // const { requested: requestedEarlyAccess } = useEarlyAccessStore();
 
   useEffect(() => {
     if (!router?.isReady) return;
@@ -61,8 +60,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        {/*TODO: This will be used when we are out of early access*/}
-        {/*<NavbarItem className="hidden lg:flex">
+        <NavbarItem className="hidden lg:flex">
           <Link href={paths.login()}>
             <Trans>Login</Trans>
           </Link>
@@ -71,8 +69,8 @@ export const Navbar = () => {
           <Button as={Link} color="primary" href={paths.login()} variant="flat">
             <Trans>Sign Up</Trans>
           </Button>
-        </NavbarItem>*/}
-        <NavbarItem>
+        </NavbarItem>
+        {/*<NavbarItem>
           {!requestedEarlyAccess && (
             <Button as={Link} color="primary" href={paths.requestAccess} variant="shadow">
               <Trans>Request Access</Trans>
@@ -83,7 +81,7 @@ export const Navbar = () => {
               <Trans>Requested access</Trans>
             </Chip>
           )}
-        </NavbarItem>
+        </NavbarItem>*/}
       </NavbarContent>
 
       <NavbarMenu>

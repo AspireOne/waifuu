@@ -3,10 +3,8 @@ import { retrieveIp } from "@/server/helpers/helpers";
 import { sendWelcomeEmail } from "@/server/jobs/auth/sendWelcomeEmail";
 import { upsertUser } from "@/server/jobs/auth/upsertUser";
 import { verifyRequest } from "@/server/jobs/auth/verifyIdToken";
-import { TRPCError } from "@/server/lib/TRPCError";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
-import { t } from "@lingui/macro";
 import { NextApiResponse } from "next";
 import parse from "parse-duration";
 import { z } from "zod";
@@ -31,8 +29,8 @@ export default publicProcedure
     const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
     await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
 
-    // TODO: Remove early access.
-    const hasEarlyAccess = await ctx.prisma.earlyAccess.findUnique({
+    // Uncomment to get early access.
+    /*const hasEarlyAccess = await ctx.prisma.earlyAccess.findUnique({
       where: {
         email: decodedIdToken.email,
         granted: true,
@@ -53,7 +51,7 @@ export default publicProcedure
           toast: t`You don't have early access.`,
         });
       }
-    }
+    }*/
 
     const { alreadyExisted } = await upsertUser(ctx.prisma, decodedIdToken);
 
