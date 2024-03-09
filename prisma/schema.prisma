@@ -263,6 +263,10 @@ model Bot {
   neutralImageId    String?
   happyImageId      String?
 
+  viewCount Int @default(0)
+  likes     Int @default(0)
+  dislikes  Int @default(0)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

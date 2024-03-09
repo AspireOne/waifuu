@@ -7,7 +7,7 @@ import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg, t } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card } from "@nextui-org/card";
-import { Button, Image, Link, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
+import { Button, Divider, Image, Link, RadioGroup, Spacer, Textarea } from "@nextui-org/react";
 import { Bot, BotVisibility, ChatMode } from "@prisma/client";
 import { useRouter } from "next/router";
 
@@ -16,9 +16,11 @@ import { Share } from "@capacitor/share";
 import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import Title from "@components/ui/Title";
 import { Tooltip } from "@nextui-org/tooltip";
+import { motion, useAnimation } from "framer-motion";
 import NextLink from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaEye, FaThumbsDown, FaThumbsUp } from "react-icons/fa";
 import { IoChatbubbleEllipsesSharp, IoShareSocialOutline } from "react-icons/io5";
 import Skeleton from "react-loading-skeleton";
 import { toast } from "react-toastify";
@@ -144,6 +146,7 @@ const ChatMainMenu = () => {
     },
   });
   const bot = api.bots.getBot.useQuery({ botId: botId }, { enabled: !!botId });
+
   const { data: usedChatModes } = api.bots.getUsedChatModes.useQuery(
     { botId: botId },
     { enabled: !!botId },
@@ -207,6 +210,8 @@ const ChatMainMenu = () => {
             </Button>
           </Tooltip>
         )}
+
+        <LikeDislikeButtons botId={botId} />
 
         {/* TODO: Implement edit. */}
         {/*{
@@ -275,10 +280,147 @@ const ChatMainMenu = () => {
                 </Trans>
               )}
             </Button>
+
+            <Divider className={"my-8"} />
+            <Stats
+              viewCount={bot?.data?.viewCount || 0}
+              dislikeCount={bot.data?.likes || 0}
+              likeCount={bot.data?.dislikes || 0}
+            />
           </div>
         </form>
       </Card>
     </AppPage>
+  );
+};
+
+const LikeDislikeButtons = (props: {
+  botId?: string | undefined;
+}) => {
+  const utils = api.useUtils();
+  const thumbsUpControls = useAnimation();
+  const thumbsDownControls = useAnimation();
+
+  const rateMutation = api.bots.rateBot.useMutation({
+    onSuccess: () => utils.bots.getBot.invalidate(),
+  });
+
+  const buttonVariants = {
+    hover: {
+      scale: 1.2,
+      transition: {
+        duration: 0.2,
+        yoyo: Infinity,
+      },
+    },
+    tap: {
+      scale: 0.8,
+    },
+  };
+
+  const thumbsUpVariants = {
+    liked: () => ({
+      color: getRandomColors(4, "#73b47e"),
+      scale: [1, 1.5, 1],
+      rotate: [0, getRandomRotation(), -getRandomRotation(), 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.5, 1],
+      },
+    }),
+  };
+
+  const thumbsDownVariants = {
+    disliked: () => ({
+      color: getRandomColors(3, "#f36395"),
+      scale: [1, 1.5, 1],
+      rotate: [0, -getRandomRotation(), getRandomRotation(), 0],
+      transition: {
+        duration: 0.5,
+        times: [0, 0.5, 1],
+      },
+    }),
+  };
+
+  const getRandomRotation = () => {
+    return Math.random() * 20 - 25; // Random rotation between -10 and 10 degrees
+  };
+
+  const getRandomColors = (count: number, endColor: string) => {
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+      colors.push(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+    }
+    colors.push(endColor);
+    return colors;
+  };
+
+  const handleThumbsUpClick = async () => {
+    thumbsUpControls.stop();
+    await thumbsUpControls.start("liked");
+    if (!props.botId) return;
+    rateMutation.mutate({ botId: props.botId, rate: "dislike" });
+  };
+
+  const handleThumbsDownClick = async () => {
+    thumbsDownControls.stop();
+    await thumbsDownControls.start("disliked");
+    if (!props.botId) return;
+    rateMutation.mutate({ botId: props.botId, rate: "like" });
+  };
+
+  return (
+    <div className="z-20 absolute right-4 top-5 flex flex-row gap-4">
+      <motion.button
+        variants={buttonVariants}
+        whileHover="hover"
+        whileTap="tap"
+        onClick={handleThumbsUpClick}
+      >
+        <motion.div
+          variants={thumbsUpVariants}
+          initial={{ color: "#9ca3af" }}
+          animate={thumbsUpControls}
+        >
+          <FaThumbsUp size="23px" />
+        </motion.div>
+      </motion.button>
+      <motion.button
+        variants={buttonVariants}
+        whileHover="hover"
+        whileTap="tap"
+        onClick={handleThumbsDownClick}
+      >
+        <motion.div
+          variants={thumbsDownVariants}
+          initial={{ color: "#9ca3af" }}
+          animate={thumbsDownControls}
+        >
+          <FaThumbsDown size="23px" />
+        </motion.div>
+      </motion.button>
+    </div>
+  );
+};
+
+const Stats = (props: { viewCount: number; likeCount: number; dislikeCount: number }) => {
+  const { viewCount, likeCount, dislikeCount } = props;
+
+  return (
+    <div className="flex items-center justify-center gap-8">
+      <div className="flex items-center gap-2">
+        <FaEye className="text-gray-400" size={"20px"} />
+        <span>{viewCount}</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <FaThumbsUp className="text-gray-400" size={"20px"} />
+        <span>{likeCount}</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <FaThumbsDown className="text-gray-400" size={"20px"} />
+        <span>{dislikeCount}</span>
+      </div>
+    </div>
   );
 };
 

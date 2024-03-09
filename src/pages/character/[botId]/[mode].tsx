@@ -6,6 +6,7 @@ import { makeDownloadUrl } from "@/lib/utils";
 import { AppHeaderCharSettingsButton } from "@components/AppHeaderCharSettingsButton";
 import { AppPage } from "@components/AppPage";
 import { BotChatContent } from "@components/BotChatContent";
+import { api } from "@lib/api";
 import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
@@ -26,6 +27,18 @@ const BotChat = () => {
 
   const bot = useBot(chatId);
   const chat = useBotChat(chatId);
+
+  api.bots.markView.useQuery(
+    { botId: bot?.id ?? "" },
+    {
+      enabled: !!bot?.id,
+      cacheTime: Infinity,
+      staleTime: Infinity,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  );
 
   return (
     <AppPage

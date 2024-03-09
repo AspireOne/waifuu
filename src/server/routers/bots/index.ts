@@ -7,6 +7,8 @@ import getBotByChatId from "@/server/routers/bots/getBotByChatId";
 import getPopularTags from "@/server/routers/bots/getPopularTags";
 import getUsedChatModes from "@/server/routers/bots/getUsedChatModes";
 import getUserBots from "@/server/routers/bots/getUserBots";
+import markView from "@/server/routers/bots/markView";
+import rateBot from "@/server/routers/bots/rateBot";
 
 export const botsRouter = createTRPCRouter({
   getAllBots,
@@ -17,6 +19,8 @@ export const botsRouter = createTRPCRouter({
   create: createBot,
   getPopularTags,
   getUsedChatModes,
+  markView,
+  rateBot,
 });
 
 function delay(ms: number) {
