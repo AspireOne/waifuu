@@ -3,6 +3,7 @@ import { api } from "@lib/api";
 import { Card, CardBody } from "@nextui-org/card";
 import { Avatar, Button } from "@nextui-org/react";
 import { Feedback, Mood } from "@prisma/client";
+import { useLongPress } from "@react-aria/interactions";
 import Markdown from "markdown-to-jsx";
 import { PropsWithChildren, useState } from "react";
 import { AiFillDislike, AiFillLike } from "react-icons/ai";
@@ -21,6 +22,10 @@ type Props = {
     name: string;
   };
   mood?: Mood;
+
+  selected?: boolean;
+  onClick?: () => void;
+  onLongClick?: () => void;
 };
 
 const ChatMessage = ({
@@ -31,6 +36,9 @@ const ChatMessage = ({
   messageId,
   chatId,
   feedback,
+  selected,
+  onClick,
+  onLongClick,
 }: Props) => {
   const logFeedbackMutation = api.chat.logFeedback.useMutation({
     onSuccess: (data, variables, context) => {
@@ -63,6 +71,15 @@ const ChatMessage = ({
     if (currFeedback !== type) return "text-default-200";
   };
 
+  const { longPressProps } = useLongPress({
+    accessibilityDescription: "Long press to activate hyper speed",
+    onLongPressStart: () => {},
+    onLongPressEnd: () => {},
+    onLongPress: () => {
+      onLongClick?.();
+    },
+  });
+
   return (
     <div
       className={twMerge(
@@ -70,10 +87,13 @@ const ChatMessage = ({
         author.bot ? "ml-0" : "mr-0 flex-row",
         className,
       )}
+      {...longPressProps}
+      onClick={onClick}
     >
       <Card
         className={twMerge(
           "w-full rounded-lg p-3 bg-neutral-900/80 backdrop-blur-lg relative",
+          selected && "bg-primary-500/20",
         )}
       >
         <div

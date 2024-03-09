@@ -69,6 +69,7 @@
     "@nextui-org/react": "^2.2.9",
     "@pinecone-database/pinecone": "^1.1.2",
     "@prisma/client": "^5.7.0",
+    "@react-aria/interactions": "^3.21.1",
     "@sentry/capacitor": "^0.14.0",
     "@sentry/nextjs": "7.73.0",
     "@stripe/stripe-js": "^2.2.1",
