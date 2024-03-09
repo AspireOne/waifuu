@@ -10,7 +10,7 @@ import { AiFillDislike, AiFillLike } from "react-icons/ai";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 
-type Props = {
+export type ChatMessageProps = {
   message: string;
   messageId: number;
   chatId: string;
@@ -39,7 +39,7 @@ const ChatMessage = ({
   selected,
   onClick,
   onLongClick,
-}: Props) => {
+}: ChatMessageProps) => {
   const logFeedbackMutation = api.chat.logFeedback.useMutation({
     onSuccess: (data, variables, context) => {
       console.log("Feedback logged!");

@@ -1,5 +1,8 @@
 import { useSession } from "@/providers/SessionProvider";
-import { MessageSelection } from "@components/BotChatContent/MessageSelection";
+import {
+  MessageSelection,
+  SelectedMessage,
+} from "@components/BotChatContent/MessageSelection";
 import { useFixLoadMoreScrollJitter } from "@components/BotChatContent/useFixLoadMoreScrollJitter";
 import { useLoadMore } from "@components/BotChatContent/useLoadMore";
 import { useScrollToLatest } from "@components/BotChatContent/useScrollToLatest";
@@ -15,7 +18,7 @@ import { atom, useAtom } from "jotai";
 import { useRef } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 
-export const selectedMessagesAtom = atom<number[]>([]);
+export const selectedMessagesAtom = atom<SelectedMessage[]>([]);
 
 export const BotChatContent = (props: {
   chat: ReturnType<typeof useBotChat>;
@@ -69,7 +72,7 @@ const Messages = (props: {
 
   const [selectedMessages, setSelectedMessages] = useAtom(selectedMessagesAtom);
 
-  const handleSelectionChange = (selectedMessages: number[]) => {
+  const handleSelectionChange = (selectedMessages: SelectedMessage[]) => {
     console.log(selectedMessages);
     setSelectedMessages(selectedMessages);
   };
@@ -109,7 +112,7 @@ function SelectionToolbar() {
     setSelectedMessages([]);
   };
 
-  const handleExport = () => {
+  const handleShare = () => {
     // Export logic here
     console.log("Exporting selected messages:", selectedMessages);
   };
@@ -126,8 +129,8 @@ function SelectionToolbar() {
             <IoCloseOutline className={""} size={"38px"} />
           </button>
         </Tooltip>
-        <Button color={"secondary"} onClick={handleExport}>
-          Export
+        <Button color={"secondary"} onClick={handleShare}>
+          Share
         </Button>
       </div>
     </div>
