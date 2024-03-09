@@ -1,4 +1,6 @@
 import { useSession } from "@/providers/SessionProvider";
+import { Capacitor } from "@capacitor/core";
+import { Share } from "@capacitor/share";
 import {
   MessageSelection,
   SelectedMessage,
@@ -11,12 +13,14 @@ import { ChatTypingIndicator } from "@components/bot-chat/ChatTypingIndicator";
 import Title from "@components/ui/Title";
 import useBotChat from "@hooks/useBotChat";
 import { makeDownloadUrl } from "@lib/utils";
+import { t } from "@lingui/macro";
 import { Button, Image, ScrollShadow } from "@nextui-org/react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Bot } from "@prisma/client";
 import { atom, useAtom } from "jotai";
 import { useRef } from "react";
 import { IoCloseOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 export const selectedMessagesAtom = atom<SelectedMessage[]>([]);
 
@@ -112,8 +116,37 @@ function SelectionToolbar() {
     setSelectedMessages([]);
   };
 
-  const handleShare = () => {
-    // Each selectedMessage contains messageId and message (the message's content
+  const handleShare = async () => {
+    // Each selectedMessage contains messageId: string, message: string (the message's content), and author: { bot: boolean;
+    //     avatar?: string | null;
+    //     name: string; }
+    //
+    // I need to put it in a string in the format of
+    // "{author.name}:\n{message}\n\n"
+    // for each message, and then copy it to the clipboard.
+
+    const messagesString = selectedMessages.reduce((acc, curr) => {
+      const { author, message } = curr;
+      const authorName = author.name;
+      return `${acc}${authorName}:\n${message}\n\n`;
+    }, "");
+
+    if (!Capacitor.isNativePlatform()) {
+      await navigator.clipboard.writeText(messagesString);
+      toast(t`Copied messages to clipboard!`, {
+        type: "success",
+        autoClose: 2000,
+        pauseOnHover: false,
+      });
+    } else {
+      await Share.share({
+        title: "Waifuu chat",
+        text: messagesString,
+        dialogTitle: "Share this chat with a friend!",
+      });
+    }
+
+    setSelectedMessages([]);
   };
 
   return (

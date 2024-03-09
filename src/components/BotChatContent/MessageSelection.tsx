@@ -1,7 +1,7 @@
 import { selectedMessagesAtom } from "@components/BotChatContent/BotChatContent";
 import { ChatMessageProps } from "@components/bot-chat/ChatMessage";
 import { useAtom } from "jotai";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export type SelectedMessage = {
   messageId: number;
@@ -16,6 +16,10 @@ type MessageSelectionProps = {
 export const MessageSelection = ({ onSelectionChange, children }: MessageSelectionProps) => {
   const [selectedMessages, setSelectedMessages] = useAtom(selectedMessagesAtom);
   const [isSelecting, setIsSelecting] = useState(false);
+
+  useEffect(() => {
+    if (selectedMessages.length === 0 && isSelecting) setIsSelecting(false);
+  }, [selectedMessages]);
 
   const handleMessageClick = (props: ChatMessageProps) => {
     if (isSelecting) {
