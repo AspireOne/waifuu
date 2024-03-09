@@ -8,7 +8,9 @@ import { NextApiRequest } from "next";
  * */
 export async function retrieveUser(req: NextApiRequest): Promise<User | null> {
   // Get Authorization header.
-  const idToken = req.headers.authorization?.split(" ")[1];
+  const idToken =
+    req.headers.authorization?.split(" ")[1] ?? (req.query.idToken as string | undefined);
+
   if (!idToken) return null;
 
   try {

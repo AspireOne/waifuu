@@ -34,7 +34,7 @@ const Message = (props: { message: RRMessage }) => (
 );
 
 const SystemMessage = (props: { message: RRSystemMessage }) => (
-  <Card key={props.message.id} className={"bg-secondary-200"}>
+  <Card key={props.message.id} className={"bg-primary-500"}>
     {props.message.title && (
       <CardHeader>
         <p className={"text-xl font-semibold"}>{props.message.title}</p>

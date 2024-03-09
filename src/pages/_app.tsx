@@ -12,7 +12,6 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import { ToastContainer } from "react-toastify";
 
 import { SessionProvider } from "@/providers/SessionProvider";
-import { useInitializeEarlyAccess } from "@/stores";
 import Title from "@components/ui/Title";
 import useIsMobile from "@hooks/useIsMobile";
 import { useIsOnline } from "@hooks/useIsOnline";
@@ -33,7 +32,7 @@ initGlobalLocale();
 const Waifuu: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
-  useInitializeEarlyAccess();
+  //useInitializeEarlyAccess();
   const isOnline = useIsOnline();
 
   // Initialize app.
