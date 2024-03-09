@@ -113,8 +113,7 @@ function SelectionToolbar() {
   };
 
   const handleShare = () => {
-    // Export logic here
-    console.log("Exporting selected messages:", selectedMessages);
+    // Each selectedMessage contains messageId and message (the message's content
   };
 
   return (

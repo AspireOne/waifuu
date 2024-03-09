@@ -6,6 +6,7 @@ import React, { useState } from "react";
 export type SelectedMessage = {
   messageId: number;
   message: string;
+  author: ChatMessageProps["author"];
 };
 type MessageSelectionProps = {
   onSelectionChange: (selectedMessages: SelectedMessage[]) => void;
@@ -34,6 +35,7 @@ export const MessageSelection = ({ onSelectionChange, children }: MessageSelecti
     const data: SelectedMessage = {
       messageId: props.messageId,
       message: props.message,
+      author: props.author,
     };
     setIsSelecting(true);
     setSelectedMessages([data]);
