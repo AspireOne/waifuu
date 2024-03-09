@@ -1,5 +1,5 @@
-import UserProfile from "@/pages/user/[username]";
 import PresenceChannelMember from "@/server/shared/presenceChannelMember";
+import { UserProfileModal } from "@components/UserProfileModal";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Avatar } from "@nextui-org/avatar";
@@ -10,9 +10,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Modal,
-  ModalBody,
-  ModalContent,
 } from "@nextui-org/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -98,30 +95,5 @@ function HeaderUserDropdown(props: {
         </DropdownItem>*/}
       </DropdownMenu>
     </Dropdown>
-  );
-}
-
-function UserProfileModal(props: {
-  username: string;
-  isOpen: boolean;
-  onOpenChange: (isOpen: boolean) => void;
-}) {
-  return (
-    <>
-      <Modal
-        isDismissable={true}
-        isOpen={props.isOpen}
-        onOpenChange={props.onOpenChange}
-        scrollBehavior={"inside"}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <ModalBody className={"p-0 rounded-xl overscroll-contain"}>
-              <UserProfile username={props.username} />
-            </ModalBody>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
   );
 }

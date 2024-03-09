@@ -1,5 +1,6 @@
 import { paths } from "@/lib/paths";
 import { AppPage } from "@components/AppPage";
+import { UserProfileModal } from "@components/UserProfileModal";
 import ChatInput from "@components/bot-chat/ChatInput";
 import Title from "@components/ui/Title";
 import { api } from "@lib/api";
@@ -7,6 +8,7 @@ import { getPusherClient } from "@lib/pusherClient";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Card, CardBody } from "@nextui-org/card";
+import { Avatar } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/spinner";
 import { useSession } from "@providers/SessionProvider";
 import { useEffect, useRef, useState } from "react";
@@ -24,7 +26,7 @@ type Message = {
 export default function RoleplayRoulette() {
   const { _ } = useLingui();
   return (
-    <AppPage title={_(msg`Character Roulette`)} backPath={paths.RR}>
+    <AppPage title={_(msg`Public Chat`)} backPath={paths.discover}>
       <Chat />
     </AppPage>
   );
@@ -84,8 +86,6 @@ function Chat() {
   }, []);
 
   async function handleSendMessage(message: string) {
-    const pusher = await getPusherClient();
-
     const newMessage: Message = {
       user: {
         id: user?.id || "",
@@ -110,7 +110,7 @@ function Chat() {
       {showLoading && <LoadingScreen />}
 
       {!showLoading && (
-        <div className={"flex flex-col gap-4"}>
+        <div className={"flex flex-col gap-4 max-w-[800px] w-full mx-auto"}>
           <Card className={"p-4"}>
             <Title size={"md"}>Welcome to the public chat!</Title>
             <p className={"text-lg"}>Here are the rules:</p>
@@ -135,16 +135,27 @@ function Chat() {
 }
 
 function Messages(props: { data: Message[] }) {
+  const [isProfileOpen, setProfileOpen] = useState<boolean>(false);
   return (
-    <div className={"flex flex-col gap-4 mb-20 mt-28"}>
+    <div className={"flex flex-col gap-4 mb-20 mt-24"}>
       {props.data.map((message, index) => (
-        <Card key={message.timestamp}>
+        <Card
+          key={message.timestamp}
+          className={"bg-transparent border-content2 rounded-xl border shadow-none"}
+        >
+          <UserProfileModal
+            username={message.user.username}
+            isOpen={isProfileOpen}
+            onOpenChange={setProfileOpen}
+          />
           <CardBody>
             <div className="flex items-center gap-2">
-              <img
+              <Avatar
+                onClick={() => setProfileOpen(true)}
                 src={message.user?.avatar}
                 alt="User Avatar"
-                className="w-8 h-8 rounded-full"
+                isBordered={true}
+                className="w-8 h-8 rounded-full m-1"
               />
               <p className="font-bold">{message.user.username}</p>
               <p className="text-gray-500 text-sm">
