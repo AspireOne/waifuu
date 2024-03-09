@@ -3,7 +3,7 @@ import { protectedProcedure } from "@/server/lib/trpc";
 import { z } from "zod";
 
 export default protectedProcedure
-  .input(z.object({ channel: z.string(), message: z.string() }))
+  .input(z.object({ channel: z.string(), message: z.any() }))
   .mutation(async ({ ctx, input }) => {
     await pusherServer.trigger(input.channel, "message", {
       message: input.message,

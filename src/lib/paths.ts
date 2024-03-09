@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 export const paths = {
   index: "/",
   friends: "/friends",
+  publicChat: "/global-chat",
   home: "/home",
   RR: "/roulette",
   RRChat: "/roulette/chat",
