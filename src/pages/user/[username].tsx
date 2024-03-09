@@ -15,7 +15,7 @@ import { useEffect } from "react";
 export default function UserProfile(props: { username?: string }) {
   const { _ } = useLingui();
   const router = useRouter();
-  const username = router.query.username as string | undefined;
+  const username = props.username || (router.query.username as string | undefined);
 
   if (!username && router.isReady) {
     return <ErrorPage message={_(msg`No username specified`)} />;

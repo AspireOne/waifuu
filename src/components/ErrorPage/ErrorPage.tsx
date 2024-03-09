@@ -4,7 +4,6 @@ import Title from "@components/ui/Title";
 import { paths } from "@lib/paths";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Button, Spacer } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 export const ErrorPage = (props: { message?: string }) => {
@@ -43,10 +42,10 @@ export const ErrorPage = (props: { message?: string }) => {
             <Trans>Unknown error</Trans>
           )}
         </p>
-        <Spacer y={2} />
+        {/*<Spacer y={2} />
         <Button onClick={handleBack} href={href}>
           <Trans>Go back</Trans>
-        </Button>
+        </Button>*/}
       </div>
     </CombinedPage>
   );
