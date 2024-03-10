@@ -6,6 +6,18 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoLockClosed, IoLockOpenOutline } from "react-icons/io5";
 import { baseS3Url } from "./paths";
 
+export function isAnUrl(str: string) {
+  const pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "(([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}" + // domain name and extension
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i",
+  ); // fragment locator
+  return pattern.test(str);
+}
+
 /**
  * Takes in a string and applies markdown: *italic*, **bold**, `code`.
  * @example "Hello *world*! I am **Kate**" -> ["Hello ", <i>world</i>, "!", " I am ", <b>Kate</b>]

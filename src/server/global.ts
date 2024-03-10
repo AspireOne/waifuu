@@ -11,7 +11,14 @@ import Stripe from "stripe";
 // Values are currently defined in src/server/clients. Might change.
 export type Global = {
   prisma?: PrismaClient;
-  pusher?: PusherServer;
+  pusher?: {
+    instance: PusherServer;
+    appId: string;
+    key: string;
+    secret: string;
+    host: string;
+    port?: string;
+  };
   ioredis?: Redis;
   ipThrottler?: IPThrottler;
   rateLimiter?: RateLimiterClass;
