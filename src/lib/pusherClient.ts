@@ -9,7 +9,7 @@ async function getPusherClient() {
 
   const pusher = new Pusher("app-key", {
     wsHost: process.env.NEXT_PUBLIC_PUSHER_HOST as string,
-    wsPort: 6001,
+    wsPort: Number(process.env.NEXT_PUBLIC_PUSHER_PORT) as number,
     forceTLS: false,
     disableStats: true,
     enabledTransports: ["ws", "wss"],
