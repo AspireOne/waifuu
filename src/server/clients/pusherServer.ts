@@ -8,6 +8,6 @@ export default (global.pusher ??= new PusherServer({
   secret: "app-secret",
   //cluster: "EU",
   host: process.env.NEXT_PUBLIC_PUSHER_HOST as string,
-  port: "6001",
+  port: process.env.NEXT_PUBLIC_PUSHER_PORT,
   useTLS: false, // idk? TODO: SOCKETI_SSL_CERT? https://docs.soketi.app/getting-started/ssl-configuration
 }));
