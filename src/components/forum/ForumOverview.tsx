@@ -5,19 +5,15 @@ import { FaPlus } from "react-icons/fa";
 import Title from "../ui/Title";
 import { ForumPostHighlight } from "./ForumPostHighlight";
 import { PinnedPost } from "./PinnedPost";
+import { ForumPost, User } from "@prisma/client";
 
 type Props = {
-  selectedCategories: string[];
   onToggleCreatePostOpen: VoidFunction;
+  posts: (ForumPost & { author: User })[];
 };
 
-export default ({ selectedCategories, onToggleCreatePostOpen }: Props) => {
+export default ({ onToggleCreatePostOpen, posts }: Props) => {
   const pinnedPosts = api.forum.getPinned.useQuery();
-  const posts = api.forum.getAll.useQuery({
-    take: 10,
-    skip: 0,
-    includesCategories: selectedCategories,
-  });
 
   return (
     <div>
@@ -53,13 +49,9 @@ export default ({ selectedCategories, onToggleCreatePostOpen }: Props) => {
             </Button>
           </Title>
 
-          {posts.isLoading || !posts.data ? (
-            <p>
-              <Trans>Loading...</Trans>
-            </p>
-          ) : (
+          {posts && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-fit">
-              {posts.data.map((item) => {
+              {posts.map((item) => {
                 return <ForumPostHighlight key={item.id} {...item} />;
               })}
             </div>

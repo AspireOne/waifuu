@@ -1,23 +1,18 @@
-import { api } from "@/lib/api";
 import { ForumPostDetailedHighlight } from "./ForumPostDetailedHighlight";
+import { ForumPost, User } from "@prisma/client";
 
-export default () => {
-  const posts = api.forum.getAll.useQuery({
-    take: 10,
-    skip: 0,
-  });
+type Props = {
+  posts?: (ForumPost & { author: User })[];
+};
 
+export default ({ posts }: Props) => {
   return (
     <div className="flex flex-col gap-2">
-      {posts.isLoading || !posts.data ? (
-        <p>Loading... </p>
-      ) : (
-        <div className="flex flex-wrap gap-4 w-full">
-          {posts.data.map((item) => {
-            return <ForumPostDetailedHighlight key={item.id} {...item} />;
-          })}
-        </div>
-      )}
+      <div className="flex flex-wrap gap-4 w-full">
+        {posts?.map((item) => {
+          return <ForumPostDetailedHighlight key={item.id} {...item} />;
+        })}
+      </div>
     </div>
   );
 };

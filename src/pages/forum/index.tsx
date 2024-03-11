@@ -31,7 +31,14 @@ export default function ForumPage() {
       setSelectedCategories([...selectedCategories, name]);
     }
   };
-  const isSelectedCategory = (name: string) => selectedCategories.find((el) => el === name);
+  const isSelectedCategory = (name: string) =>
+    selectedCategories.find((el) => el === name);
+
+  const posts = api.forum.getAll.useQuery({
+    take: 10,
+    skip: 0,
+    includesCategories: cardOpen === "RECENT" ? [] : selectedCategories,
+  });
 
   return (
     <AppPage backPath={paths.discover} title={t`Forum`}>
@@ -83,11 +90,15 @@ export default function ForumPage() {
                   {categories.data.map((item) => {
                     return (
                       // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                      <div key={item.name} onClick={() => toggleCategory(item.name)}>
+                      <div
+                        key={item.name}
+                        onClick={() => toggleCategory(item.name)}
+                      >
                         <Card
                           className={cx([
                             "p-3 hover:bg-opacity-50 hover:cursor-pointer",
-                            isSelectedCategory(item.name) && "bg-primary-500 bg-opacity-50",
+                            isSelectedCategory(item.name) &&
+                              "bg-primary-500 bg-opacity-50",
                           ])}
                         >
                           {item.name}
@@ -102,20 +113,25 @@ export default function ForumPage() {
         </div>
 
         <div className="w-full">
-          {cardOpen === "OVERVIEW" && (
+          {posts.isLoading && <Trans>Posts are loading...</Trans>}
+          {cardOpen === "OVERVIEW" && posts.data && (
             <ForumOverview
-              selectedCategories={selectedCategories}
+              posts={posts.data}
               onToggleCreatePostOpen={toggleCreatePostOpen}
             />
           )}
 
-          {cardOpen === "RECENT" && <ForumRecentPosts />}
+          {cardOpen === "RECENT" && <ForumRecentPosts posts={posts.data} />}
         </div>
       </div>
 
       <Spacer y={6} />
 
-      <CreateForumPostModal isOpen={isCreatePostOpen} onToggle={toggleCreatePostOpen} />
+      <CreateForumPostModal
+        onCreate={() => posts.refetch()}
+        isOpen={isCreatePostOpen}
+        onToggle={toggleCreatePostOpen}
+      />
     </AppPage>
   );
 }

@@ -16,6 +16,7 @@ import { FileUploadRaw } from "../ui/FileUploadRaw";
 type CreateForumPostModalProps = {
   isOpen: boolean;
   onToggle: VoidFunction;
+  onCreate: VoidFunction;
 };
 
 type FormContentType = {
@@ -24,7 +25,11 @@ type FormContentType = {
   category: string;
 };
 
-export const CreateForumPostModal = ({ isOpen, onToggle }: CreateForumPostModalProps) => {
+export const CreateForumPostModal = ({
+  isOpen,
+  onToggle,
+  onCreate,
+}: CreateForumPostModalProps) => {
   const { register, handleSubmit } = useForm<FormContentType>();
   const createPostMutation = api.forum.create.useMutation();
 
@@ -38,6 +43,7 @@ export const CreateForumPostModal = ({ isOpen, onToggle }: CreateForumPostModalP
     });
 
     onToggle();
+    onCreate();
   };
 
   return (
@@ -49,7 +55,10 @@ export const CreateForumPostModal = ({ isOpen, onToggle }: CreateForumPostModalP
           </ModalHeader>
 
           <ModalBody>
-            <FileUploadRaw label="Post banner image" onUpload={(id) => setBannerId(id)} />
+            <FileUploadRaw
+              label="Post banner image"
+              onUpload={(id) => setBannerId(id)}
+            />
             <Input {...register("title")} autoFocus placeholder="Title" />
             <Textarea {...register("content")} placeholder="Content" />
             <Input label="Post category" {...register("category")} />
