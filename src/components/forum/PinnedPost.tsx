@@ -3,6 +3,7 @@ import { Card } from "@nextui-org/react";
 import { ForumPost } from "@prisma/client";
 import Link from "next/link";
 import { AiFillPushpin } from "react-icons/ai";
+import { LargeText } from "../ui/LargeText";
 
 export const PinnedPost = (data: ForumPost) => {
   return (
@@ -14,7 +15,11 @@ export const PinnedPost = (data: ForumPost) => {
 
         <div className="flex flex-col gap-1">
           <h1 className="text-lg font-bold">{data.title}</h1>
-          <p className="text-gray-500 text-md">{data.content}</p>
+          <LargeText
+            content={data.content}
+            maxLength={50}
+            className="text-gray-500 text-md"
+          />
         </div>
       </Card>
     </Link>

@@ -8,7 +8,7 @@ import useBotChat from "@hooks/useBotChat";
 import { makeDownloadUrl } from "@lib/utils";
 import { Image, ScrollShadow } from "@nextui-org/react";
 import { Bot, Place } from "@prisma/client";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 
 const placeToUrl = (place: Place): string => {
   switch (place) {
@@ -36,14 +36,26 @@ export const BotChatContent = (props: {
 
   if (!props.bot) return <div />;
 
+  const getLastPlace = () => {
+    const {
+      chat: { messages },
+    } = props;
+
+    const lastMessage = messages[messages.length - 1];
+
+    if (lastMessage?.role === "USER") {
+      return messages[messages.length - 2]?.place ?? "HOME";
+    }
+
+    return lastMessage?.place ?? "HOME";
+  };
+
   return (
     <div>
       {props.bot.dynamicBackgroundsEnabled ? (
         <Image
           className="z-0 w-full h-full object-cover fixed top-0"
-          src={placeToUrl(
-            props.chat.messages[props.chat.messages.length - 1]?.place ?? "HOME"
-          )}
+          src={placeToUrl(getLastPlace())}
         />
       ) : (
         <Image

@@ -6,7 +6,14 @@ import { paths } from "@lib/paths";
 import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Button, Chip, Image, Modal, ModalContent, Textarea } from "@nextui-org/react";
+import {
+  Button,
+  Chip,
+  Image,
+  Modal,
+  ModalContent,
+  Textarea,
+} from "@nextui-org/react";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -70,14 +77,19 @@ export default function ForumPostPage() {
   const [isPinned, setIsPinned] = useState(post.data?.pinned ?? false);
   useEffect(() => setIsPinned(post.data?.pinned ?? false), [post.data]);
 
-  const { mutateAsync: pinPost, isLoading: isPinning } = api.forum.pin.useMutation();
+  const { mutateAsync: pinPost, isLoading: isPinning } =
+    api.forum.pin.useMutation();
   const onPin = async (postId: string) => {
     await pinPost(postId);
     setIsPinned(!isPinned);
   };
 
   return (
-    <AppPage backPath={paths.forum} title={_(msg`Forum Post`)} className="space-y-4">
+    <AppPage
+      backPath={paths.forum}
+      title={_(msg`Forum Post`)}
+      className="space-y-4"
+    >
       <header className="w-full">
         <Image
           isLoading={post.isLoading}
@@ -93,10 +105,16 @@ export default function ForumPostPage() {
         <div className="mt-2">
           <Flex orientation="col" className="align-center">
             <h1 className="text-2xl font-bold">{post.data?.title}</h1>
-            <p className="text-gray-500">{moment(post.data?.createdAt).fromNow()}</p>
+            <p className="text-gray-500">
+              {moment(post.data?.createdAt).fromNow()}
+            </p>
           </Flex>
 
-          <Chip key={post.data?.category?.name} className="mt-2 mb-2" color="default">
+          <Chip
+            key={post.data?.category?.name}
+            className="mt-2 mb-2"
+            color="default"
+          >
             {post.data?.category?.name}
           </Chip>
 
@@ -141,13 +159,22 @@ export default function ForumPostPage() {
           </label>
         </div>
 
-        <Modal isOpen={commentInputOpen} onClose={() => setCommentInputOpen(false)}>
+        <Modal
+          isOpen={commentInputOpen}
+          onClose={() => setCommentInputOpen(false)}
+        >
           <ModalContent className="p-3">
             <h1 className="text-lg font-bold">
               <Trans>Create a new comment</Trans>
             </h1>
-            <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
-              <Textarea {...register("content")} placeholder={_(msg`Comment`)} />
+            <form
+              className="flex flex-col gap-2"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Textarea
+                {...register("content")}
+                placeholder={_(msg`Comment`)}
+              />
               <Button isLoading={createCommentMutation.isLoading} type="submit">
                 <Trans>Submit</Trans>
               </Button>
@@ -158,6 +185,8 @@ export default function ForumPostPage() {
         <div className="flex flex-col gap-6 p-2">
           {postComments.data?.map((comment) => (
             <ForumPostComment
+              // @ts-ignore TODO: Fix this type error later
+              parentPost={post.data!}
               onCommentToggle={() => openComment(comment.id)}
               onLikeToggle={() => onLike(comment.id)}
               // @ts-ignore TODO: Fix this type error later

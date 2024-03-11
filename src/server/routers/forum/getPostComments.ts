@@ -7,7 +7,7 @@ export default protectedProcedure
     z.object({
       id: z.string(),
       cursor: z.number(),
-    }),
+    })
   )
   .query(async ({ input, ctx }) => {
     const res = await ctx.prisma.forumPost.findMany({
