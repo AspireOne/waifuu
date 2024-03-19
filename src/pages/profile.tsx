@@ -62,7 +62,7 @@ export default function Profile() {
   }
 
   const onSubmit: SubmitHandler<z.infer<typeof updateSelfSchema>> = (
-    data: z.infer<typeof updateSelfSchema>,
+    data: z.infer<typeof updateSelfSchema>
   ) => {
     updateUserMutation.mutate(data);
   };
@@ -190,7 +190,9 @@ function UsernameInput(props: {
   value?: string;
   register: (name: "username") => UseFormRegisterReturn;
 }) {
-  const [usernameAvailable, setUsernameAvailable] = useState<undefined | boolean>(undefined);
+  const [usernameAvailable, setUsernameAvailable] = useState<
+    undefined | boolean
+  >(undefined);
 
   useEffect(() => setUsernameAvailable(undefined), [props.value]);
 
@@ -218,7 +220,9 @@ function UsernameInput(props: {
 
       <Button
         onClick={checkAvailability}
-        isDisabled={!props.isDirty || usernameAvailability.isLoading || props.isInvalid}
+        isDisabled={
+          !props.isDirty || usernameAvailability.isLoading || props.isInvalid
+        }
         size={"sm"}
         className={twMerge("text-left", !props.isDirty && "hidden")}
         variant={"flat"}

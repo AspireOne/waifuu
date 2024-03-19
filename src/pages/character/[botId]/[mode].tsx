@@ -22,7 +22,6 @@ const BotChat = () => {
   const { _ } = useLingui();
 
   let chatId = router.asPath.split("/")[2] as string;
-  // Workaround - it returns this for the first few render cycles before it renders the actual path.
   if (chatId === "[botId]") chatId = "";
 
   const bot = useBot(chatId);

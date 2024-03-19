@@ -32,7 +32,6 @@ const Discover = () => {
               <ActiveChatsDiscoverCategory />
             </CardBody>
           </Card>
-          {/*<Divider className={"my-16"}/>*/}
           <Card className={"w-full"}>
             <CardBody>
               <MyCharactersDiscoverCategory />
@@ -40,11 +39,8 @@ const Discover = () => {
           </Card>
         </div>
 
-        {/*<Divider className={"my-16"}/>*/}
         <CharsDiscoverCategory />
         <ForumPostsDiscoverCategory />
-        {/*Comment it out for now - it is not done yet.*/}
-        {/*<ForumPostsDiscoverCategory />*/}
       </div>
     </AppPage>
   );
