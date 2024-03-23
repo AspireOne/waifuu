@@ -219,7 +219,7 @@ msgstr "Cancel"
 msgid "Casually chat with the character. Hey, how r u?"
 msgstr "Casually chat with the character. Hey, how r u?"
 
-#: src/pages/forum/index.tsx:74
+#: src/pages/forum/index.tsx:81
 msgid "Categories"
 msgstr "Categories"
 
@@ -303,16 +303,16 @@ msgstr "Click to enable dynamic backgrounds"
 #~ msgid "Close"
 #~ msgstr "Close"
 
-#: src/pages/forum/[id].tsx:129
+#: src/components/ForumPostHeader/ForumPostHeader.tsx:98
 msgctxt "Create a new comment"
 msgid "Comment"
 msgstr "Comment"
 
-#: src/pages/forum/[id].tsx:150
+#: src/pages/forum/[id].tsx:103
 msgid "Comment"
 msgstr "Comment"
 
-#: src/pages/forum/[id].tsx:137
+#: src/pages/forum/[id].tsx:82
 msgid "Comments"
 msgstr "Comments"
 
@@ -363,11 +363,11 @@ msgstr "Create"
 msgid "Create a new character"
 msgstr "Create a new character"
 
-#: src/pages/forum/[id].tsx:147
+#: src/pages/forum/[id].tsx:95
 msgid "Create a new comment"
 msgstr "Create a new comment"
 
-#: src/components/forum/ForumOverview.tsx:52
+#: src/components/forum/ForumOverview.tsx:48
 msgid "Create a new post"
 msgstr "Create a new post"
 
@@ -544,11 +544,11 @@ msgstr "Following"
 msgid "Form submitted!"
 msgstr "Form submitted!"
 
-#: src/pages/forum/index.tsx:37
+#: src/pages/forum/index.tsx:44
 msgid "Forum"
 msgstr "Forum"
 
-#: src/pages/forum/[id].tsx:80
+#: src/pages/forum/[id].tsx:70
 msgid "Forum Post"
 msgstr "Forum Post"
 
@@ -693,10 +693,9 @@ msgstr "Load more"
 msgid "Loading.."
 msgstr "Loading.."
 
-#: src/components/forum/ForumOverview.tsx:31
-#: src/components/forum/ForumOverview.tsx:58
+#: src/components/forum/ForumOverview.tsx:27
 #: src/pages/character/[botId].tsx:193
-#: src/pages/character/[botId]/[mode].tsx:36
+#: src/pages/character/[botId]/[mode].tsx:35
 msgid "Loading..."
 msgstr "Loading..."
 
@@ -799,11 +798,11 @@ msgstr "Only you can view or access the character."
 msgid "Our best A.I. engine"
 msgstr "Our best A.I. engine"
 
-#: src/pages/forum/index.tsx:53
+#: src/pages/forum/index.tsx:60
 msgid "Overview"
 msgstr "Overview"
 
-#: src/pages/forum/index.tsx:43
+#: src/pages/forum/index.tsx:50
 msgid "Pages"
 msgstr "Pages"
 
@@ -832,7 +831,7 @@ msgstr "Persona"
 msgid "Persona is too long"
 msgstr "Persona is too long"
 
-#: src/components/forum/ForumOverview.tsx:27
+#: src/components/forum/ForumOverview.tsx:23
 msgid "Pinned posts"
 msgstr "Pinned posts"
 
@@ -852,6 +851,10 @@ msgstr "Popular Characters"
 #: src/components/ForumPostsDiscoverCategory/ForumPostsDiscoverCategory.tsx:18
 msgid "Popular forum posts"
 msgstr "Popular forum posts"
+
+#: src/pages/forum/index.tsx:116
+msgid "Posts are loading..."
+msgstr "Posts are loading..."
 
 #: src/lib/paths.ts:41
 msgid "Pricing"
@@ -906,11 +909,11 @@ msgstr "Public"
 msgid "Ready to take it to the next level? Immerse yourself in a whole new world of imagination."
 msgstr "Ready to take it to the next level? Immerse yourself in a whole new world of imagination."
 
-#: src/components/forum/ForumOverview.tsx:44
+#: src/components/forum/ForumOverview.tsx:40
 msgid "Recent"
 msgstr "Recent"
 
-#: src/pages/forum/index.tsx:65
+#: src/pages/forum/index.tsx:72
 msgid "Recent posts"
 msgstr "Recent posts"
 
@@ -918,7 +921,7 @@ msgstr "Recent posts"
 msgid "Remove chat"
 msgstr "Remove chat"
 
-#: src/pages/forum/[id].tsx:140
+#: src/pages/forum/[id].tsx:85
 msgid "replies"
 msgstr "replies"
 
@@ -1091,7 +1094,7 @@ msgstr "Start conversation"
 msgid "Stripe did not load"
 msgstr "Stripe did not load"
 
-#: src/pages/forum/[id].tsx:152
+#: src/pages/forum/[id].tsx:106
 msgid "Submit"
 msgstr "Submit"
 
@@ -1256,8 +1259,8 @@ msgstr "User left."
 msgid "User: Hello! Bot: Hi!"
 msgstr "User: Hello! Bot: Hi!"
 
-#: src/pages/profile.tsx:211
-#: src/pages/profile.tsx:212
+#: src/pages/profile.tsx:213
+#: src/pages/profile.tsx:214
 msgid "Username"
 msgstr "Username"
 

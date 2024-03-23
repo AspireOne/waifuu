@@ -224,7 +224,7 @@ msgstr "Zrušit"
 msgid "Casually chat with the character. Hey, how r u?"
 msgstr "Ležérně s postavou chatujte. Čau, jak je?"
 
-#: src/pages/forum/index.tsx:74
+#: src/pages/forum/index.tsx:81
 msgid "Categories"
 msgstr ""
 
@@ -308,16 +308,16 @@ msgstr ""
 #~ msgid "Close"
 #~ msgstr "Zavřít"
 
-#: src/pages/forum/[id].tsx:129
+#: src/components/ForumPostHeader/ForumPostHeader.tsx:98
 msgctxt "Create a new comment"
 msgid "Comment"
 msgstr "Komentovat"
 
-#: src/pages/forum/[id].tsx:150
+#: src/pages/forum/[id].tsx:103
 msgid "Comment"
 msgstr "Komentovat"
 
-#: src/pages/forum/[id].tsx:137
+#: src/pages/forum/[id].tsx:82
 msgid "Comments"
 msgstr "Komentáře"
 
@@ -368,11 +368,11 @@ msgstr "Vytvořit"
 msgid "Create a new character"
 msgstr ""
 
-#: src/pages/forum/[id].tsx:147
+#: src/pages/forum/[id].tsx:95
 msgid "Create a new comment"
 msgstr "Napsat nový komentář"
 
-#: src/components/forum/ForumOverview.tsx:52
+#: src/components/forum/ForumOverview.tsx:48
 msgid "Create a new post"
 msgstr "Vytvořit nový příspěvek"
 
@@ -540,11 +540,11 @@ msgstr "Sleduje"
 msgid "Form submitted!"
 msgstr "Formulář odeslán!"
 
-#: src/pages/forum/index.tsx:37
+#: src/pages/forum/index.tsx:44
 msgid "Forum"
 msgstr "Fórum"
 
-#: src/pages/forum/[id].tsx:80
+#: src/pages/forum/[id].tsx:70
 msgid "Forum Post"
 msgstr "Příspěvek na fóru"
 
@@ -689,10 +689,9 @@ msgstr "Načíst víc"
 msgid "Loading.."
 msgstr ""
 
-#: src/components/forum/ForumOverview.tsx:31
-#: src/components/forum/ForumOverview.tsx:58
+#: src/components/forum/ForumOverview.tsx:27
 #: src/pages/character/[botId].tsx:193
-#: src/pages/character/[botId]/[mode].tsx:36
+#: src/pages/character/[botId]/[mode].tsx:35
 msgid "Loading..."
 msgstr "Načítání..."
 
@@ -795,11 +794,11 @@ msgstr ""
 msgid "Our best A.I. engine"
 msgstr ""
 
-#: src/pages/forum/index.tsx:53
+#: src/pages/forum/index.tsx:60
 msgid "Overview"
 msgstr ""
 
-#: src/pages/forum/index.tsx:43
+#: src/pages/forum/index.tsx:50
 msgid "Pages"
 msgstr ""
 
@@ -828,7 +827,7 @@ msgstr "Osobnost"
 msgid "Persona is too long"
 msgstr ""
 
-#: src/components/forum/ForumOverview.tsx:27
+#: src/components/forum/ForumOverview.tsx:23
 msgid "Pinned posts"
 msgstr ""
 
@@ -848,6 +847,10 @@ msgstr "Populární postavy"
 #: src/components/ForumPostsDiscoverCategory/ForumPostsDiscoverCategory.tsx:18
 msgid "Popular forum posts"
 msgstr "Populární příspěvky na fóru"
+
+#: src/pages/forum/index.tsx:116
+msgid "Posts are loading..."
+msgstr ""
 
 #: src/lib/paths.ts:41
 msgid "Pricing"
@@ -902,11 +905,11 @@ msgstr "Veřejné"
 msgid "Ready to take it to the next level? Immerse yourself in a whole new world of imagination."
 msgstr ""
 
-#: src/components/forum/ForumOverview.tsx:44
+#: src/components/forum/ForumOverview.tsx:40
 msgid "Recent"
 msgstr ""
 
-#: src/pages/forum/index.tsx:65
+#: src/pages/forum/index.tsx:72
 msgid "Recent posts"
 msgstr ""
 
@@ -914,7 +917,7 @@ msgstr ""
 msgid "Remove chat"
 msgstr "Odstranit chat"
 
-#: src/pages/forum/[id].tsx:140
+#: src/pages/forum/[id].tsx:85
 msgid "replies"
 msgstr "odpovědi"
 
@@ -1087,7 +1090,7 @@ msgstr "Zahájit konverzaci"
 msgid "Stripe did not load"
 msgstr ""
 
-#: src/pages/forum/[id].tsx:152
+#: src/pages/forum/[id].tsx:106
 msgid "Submit"
 msgstr "Odeslat"
 
@@ -1252,8 +1255,8 @@ msgstr "Uživatel se odpojil."
 msgid "User: Hello! Bot: Hi!"
 msgstr ""
 
-#: src/pages/profile.tsx:211
-#: src/pages/profile.tsx:212
+#: src/pages/profile.tsx:213
+#: src/pages/profile.tsx:214
 msgid "Username"
 msgstr "Uživatelské jméno"
 
