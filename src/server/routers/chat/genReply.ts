@@ -1,11 +1,12 @@
 import { protectedProcedure } from "@/server/lib/trpc";
-import { Bot, Chat, Message, PrismaClient, User } from "@prisma/client";
+import { Bot, Chat, Message, Mood, Place, PrismaClient, User } from "@prisma/client";
 // Yes, this does show error. There is no typescript version.
 // @ts-ignore
 
 import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
+import { OpenAI } from "@/lib/openai";
 import { getSystemPrompt } from "@/server/ai/character-chat/prompts";
 import { mainLlm } from "@/server/ai/mainLlm";
 import { langfuse } from "@/server/clients/langfuse";
@@ -19,6 +20,12 @@ const Input = z.object({
   chatId: z.string(),
   message: z.string(),
 });
+
+const DetermineMetadata = z.object({
+  MOOD: z.nativeEnum(Mood),
+  PLACE: z.nativeEnum(Place),
+});
+type Metadata = z.infer<typeof DetermineMetadata>;
 
 export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) => {
   await ensureWithinQuotaOrThrow("messagesSent", ctx.prisma, ctx.user.id, ctx.user.planId);
@@ -75,13 +82,27 @@ export default protectedProcedure.input(Input).mutation(async ({ ctx, input }) =
 
   const output = await genOutput(chat, execution, model);
 
+  const response = await OpenAI.completions.create({
+    model: "gpt-3.5-turbo-instruct",
+    prompt: `"Here is a sentence: "${output.text}" Based on the sentence, create a json that has the following parameters:1. MOOD: Choose from following: "HAPPY", "BLUSHED", "SAD", "NEUTRAL"2. PLACE: Choose from following: "WORK", "HOME", "PARK""`,
+    max_tokens: 150,
+  });
+
+  let metadata: Metadata = {
+    MOOD: "NEUTRAL",
+    PLACE: "HOME",
+  };
+  try {
+    metadata = JSON.parse(response.choices[0]?.text ?? "");
+  } catch (_) {}
+
   execution.end({
     output: output.text,
   });
 
   // TODO(1): Do it async after request.
   const [newMessages, _, __] = await Promise.all([
-    saveMessages(input, output.text, ctx.prisma),
+    saveMessages(input, output.text, ctx.prisma, metadata),
     incrementQuotaUsage("messagesSent", ctx.user.id, ctx.prisma),
     langfuse.flush(),
   ]);
@@ -115,6 +136,7 @@ function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
     createdAt: new Date(),
     updatedAt: new Date(),
     mood: "HAPPY",
+    place: "HOME",
   };
 }
 
@@ -149,7 +171,12 @@ async function genOutput(
   }
 }
 
-async function saveMessages(input: z.infer<typeof Input>, output: string, db: PrismaClient) {
+async function saveMessages(
+  input: z.infer<typeof Input>,
+  output: string,
+  db: PrismaClient,
+  metadata: Metadata,
+) {
   // Use Prisma's $transaction to ensure operations are executed in order
   const [userMsg, botMsg] = await db.$transaction([
     db.message.create({
@@ -163,7 +190,8 @@ async function saveMessages(input: z.infer<typeof Input>, output: string, db: Pr
       data: {
         chatId: input.chatId,
         content: output,
-        mood: "HAPPY",
+        mood: metadata.MOOD,
+        place: metadata.PLACE,
         role: "BOT",
       },
     }),

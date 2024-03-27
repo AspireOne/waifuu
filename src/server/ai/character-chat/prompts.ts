@@ -15,7 +15,7 @@ const getSystemPrompt = (
   });
 
 // TODO: Change the system prompt based on mode.
-const getInitialMessagePrompt = (mode: ChatMode, userContext?: string | null) => {
+const getInitialMessagePrompt = (mode: ChatMode, ctx: string | undefined | null) => {
   if (mode === ChatMode.ADVENTURE) {
     return "{{Set the evironment, an open-ended scene, and engage the user. Make it short - 4 sentences max.}}";
   }
@@ -29,10 +29,6 @@ const getInitialMessagePrompt = (mode: ChatMode, userContext?: string | null) =>
   }
 
   throw new Error(`Unknown mode: ${mode}`);
-
-  // ${userContext ? ` Note this additional info about the user: '${userContext}'.` : ""}
 };
-
-// TODO: Model-specific finetuning. For example 'gryphe/mythomax-l2-13b-8k' needs "Do not prepend messages with any prefix. Write just raw message."
 
 export { getSystemPrompt, getInitialMessagePrompt };

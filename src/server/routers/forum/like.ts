@@ -29,7 +29,7 @@ export default protectedProcedure
         },
         data: {
           likeCount: {
-            decrement: 1,
+            increment: 1,
           },
         },
       });

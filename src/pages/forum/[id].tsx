@@ -1,17 +1,14 @@
+import { ForumPostHeader } from "@/components/ForumPostHeader";
 import { ForumPostComment } from "@/components/forum/ForumPostComment";
-import { Flex } from "@/components/ui/Flex";
 import { api } from "@/lib/api";
 import { AppPage } from "@components/AppPage";
 import { paths } from "@lib/paths";
-import { makeDownloadUrl } from "@lib/utils";
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Button, Chip, Image, Modal, ModalContent, Textarea } from "@nextui-org/react";
-import moment from "moment";
+import { Button, Modal, ModalContent, Textarea } from "@nextui-org/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaHeart, FaReply } from "react-icons/fa";
 
 type CreateFormPostForm = {
   content: string;
@@ -49,7 +46,10 @@ export default function ForumPostPage() {
     cursor: 0,
   });
 
+  const { data: user } = api.users.getSelf.useQuery({ includeBots: false });
+
   const [isLiked, setIsLiked] = useState(post.data?.liked ?? false);
+  useEffect(() => setIsLiked(post.data?.liked ?? false), [post.data]);
   const likeMutation = api.forum.like.useMutation({
     onSuccess: () => setIsLiked(true),
   });
@@ -66,47 +66,11 @@ export default function ForumPostPage() {
 
   return (
     <AppPage backPath={paths.forum} title={_(msg`Forum Post`)} className="space-y-4">
-      <header className="w-full">
-        <Image
-          isLoading={post.isLoading}
-          alt="Card example background"
-          className="z-0 w-screen h-36 object-cover"
-          src={
-            post.data?.bannerImage
-              ? makeDownloadUrl(post.data.bannerImage)
-              : "/default-banner.png"
-          }
-        />
-
-        <div className="mt-2">
-          <Flex orientation="col" className="align-center">
-            <h1 className="text-2xl font-bold">{post.data?.title}</h1>
-            <p className="text-gray-500">{moment(post.data?.createdAt).fromNow()}</p>
-          </Flex>
-
-          <Chip key={post.data?.category?.name} className="mt-2 mb-2" color="default">
-            {post.data?.category?.name}
-          </Chip>
-
-          <p className="mt-3">{post.data?.content}</p>
-        </div>
-
-        <div className="mt-2 flex flex-row gap-2">
-          <Button
-            onClick={() => onLike(post.data?.id!)}
-            variant={isLiked ? "solid" : "bordered"}
-            isLoading={likeMutation.isLoading || dislikeMutation.isLoading}
-            color="danger"
-          >
-            <FaHeart />
-          </Button>
-
-          <Button onClick={() => setCommentInputOpen(true)} color="primary">
-            <FaReply />
-            <Trans context={"Create a new comment"}>Comment</Trans>
-          </Button>
-        </div>
-      </header>
+      <ForumPostHeader
+        post={post}
+        user={user}
+        onOpenComment={() => setCommentInputOpen(true)}
+      />
 
       <section className="flex flex-col gap-2">
         <div className="flex flex-row gap-2 align-center mt-4">
@@ -135,6 +99,8 @@ export default function ForumPostPage() {
         <div className="flex flex-col gap-6 p-2">
           {postComments.data?.map((comment) => (
             <ForumPostComment
+              // @ts-ignore TODO: Fix this type error later
+              parentPost={post.data!}
               onCommentToggle={() => openComment(comment.id)}
               onLikeToggle={() => onLike(comment.id)}
               // @ts-ignore TODO: Fix this type error later

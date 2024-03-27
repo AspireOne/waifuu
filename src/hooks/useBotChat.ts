@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { ChatRole, Mood } from "@prisma/client";
+import { ChatRole, Mood, Place } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 type MessageStatus = "error" | "temp";
@@ -8,6 +8,7 @@ export type Message = {
   role: ChatRole;
   content: string;
   mood?: Mood;
+  place?: Place | undefined;
   type?: MessageStatus;
   id: number;
 };
@@ -29,7 +30,7 @@ export default function useBotChat(chatId: string, enabled = true) {
   const fetchMore = api.chat.messages.useMutation({
     onSuccess: async (data) => {
       setCursor(data.nextCursor);
-      addMessages(data.messages.reverse());
+      addMessages((data.messages as Message[]).reverse());
     },
   });
 
@@ -71,13 +72,16 @@ export default function useBotChat(chatId: string, enabled = true) {
       // });
     },
 
-    onSuccess: (data) => {
+    onSuccess: (data: unknown) => {
       setMessages((prevState) => {
         const messageMap: Map<number, Message> = new Map();
 
         const messageData = prevState
           .filter((message) => message.id !== Number.MAX_SAFE_INTEGER)
-          .concat([data.userMessage, data.message]);
+          .concat([
+            (data as { userMessage: Message }).userMessage,
+            (data as { message: Message }).message,
+          ]);
 
         for (const message of messageData) {
           messageMap.set(message.id, message);

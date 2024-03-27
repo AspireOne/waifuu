@@ -1,3 +1,4 @@
+import AudioPlayer from "@/components/AudioPlayer/AudioPlayer";
 import ChatGradientOverlay from "@/components/bot-chat/ChatGradientOverlay";
 import ChatInput from "@/components/bot-chat/ChatInput";
 import { useBot } from "@/hooks/useBot";
@@ -22,7 +23,6 @@ const BotChat = () => {
   const { _ } = useLingui();
 
   let chatId = router.asPath.split("/")[2] as string;
-  // Workaround - it returns this for the first few render cycles before it renders the actual path.
   if (chatId === "[botId]") chatId = "";
 
   const bot = useBot(chatId);
@@ -47,8 +47,9 @@ const BotChat = () => {
       appHeaderEndContent={<AppHeaderCharSettingsButton />}
       title={bot?.name || _(msg`Loading...`)}
     >
-      {/*TODO: Make character image only the png of the char.*/}
-
+      {bot && (
+        <AudioPlayer mood={chat.messages[chat.messages.length - 1]?.mood ?? "NEUTRAL"} />
+      )}
       {bot && <CharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
       <BotChatContent chat={chat} bot={bot} />
@@ -79,7 +80,7 @@ const CharacterImage = ({
       <Image
         alt="character image"
         loading="eager"
-        src={makeDownloadUrl(bot.characterImage)}
+        src={makeDownloadUrl(image ?? bot.characterImage)}
         className={twMerge(
           "animation-slide-fade fixed object-cover",
           "bottom-0 h-[90%]", // set height

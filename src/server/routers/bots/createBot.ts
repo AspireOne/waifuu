@@ -40,6 +40,9 @@ const botCreationInput = z.object({
   neutralImageId: z.string().optional(),
   blushedImageId: z.string().optional(),
   happyImageId: z.string().optional(),
+
+  // Dynamic backgrounds
+  dynamicBackgroundsEnabled: z.boolean().default(false),
 });
 
 export default protectedProcedure.input(botCreationInput).mutation(async ({ input, ctx }) => {
@@ -74,6 +77,9 @@ export default protectedProcedure.input(botCreationInput).mutation(async ({ inpu
       neutralImageId: input.neutralImageId,
       blushedImageId: input.blushedImageId,
       happyImageId: input.happyImageId,
+
+      // Dynamic backgrounds.
+      dynamicBackgroundsEnabled: input.dynamicBackgroundsEnabled,
 
       // Other.
       tags: input.tags,
