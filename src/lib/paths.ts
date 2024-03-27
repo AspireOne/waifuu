@@ -22,7 +22,8 @@ export const paths = {
   adminPanel: "/admin",
   subscriptionSuccess: "/pricing", // TODO: Success page.
   subscriptionCancel: "/pricing", // TODO: Cancel page.
-  login: (redirect?: string) => `/login${redirect ? `?redirect=${redirect}` : ""}`,
+  login: (redirect?: string) =>
+    `/login${redirect ? `?redirect=${redirect}` : ""}`,
   userProfile: (username: string) => `/user/${username}`,
   botChatMainMenu: (botId: string) => `/character/${botId}`,
   botChat: (chatId: string, botId: string) => `/character/${chatId}/${botId}`,
@@ -31,17 +32,12 @@ export const paths = {
 
 export const getNavbarPaths = () => [
   { title: t`Home`, href: paths.index },
-  /*{ title: t`Pricing`, href: paths.pricing },*/
-  /*{ title: t`Forum`, href: paths.forum },*/
-  { title: t`Contact`, href: paths.contact },
+  { title: t`Forum`, href: paths.forum },
 ];
 
 export const getFooterPaths = () => [
   { title: t`Home`, href: paths.index },
-  { title: t`Pricing`, href: paths.pricing },
-  /*{ title: t`Forum`, href: paths.forum },*/
-  { title: t`Contact us`, href: paths.contact },
-  { title: t`Privacy policy`, href: paths.privacyPolicy },
+  { title: t`Forum`, href: paths.forum },
   { title: t`Sign In`, href: paths.login() },
 ];
 
@@ -85,18 +81,19 @@ export const baseUrl = () => {
 };
 
 export const baseS3Url = () => {
-  if (!process.env.NEXT_PUBLIC_S3_BASE_PATH && !process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH) {
-    throw new Error(
-      "NEXT_PUBLIC_S3_BASE_PATH is not set!"
-    );
-  };
+  if (
+    !process.env.NEXT_PUBLIC_S3_BASE_PATH &&
+    !process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH
+  ) {
+    throw new Error("NEXT_PUBLIC_S3_BASE_PATH is not set!");
+  }
 
   if (process.env.NODE_ENV === "production") {
     return process.env.NEXT_PUBLIC_S3_BASE_PATH;
   } else {
     return process.env.NEXT_PUBLIC_DEV_S3_BASE_PATH;
   }
-}
+};
 
 /**
  * Adds base API path in front of the given path.
