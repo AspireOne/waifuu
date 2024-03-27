@@ -24,6 +24,7 @@ const Footer: React.FC = () => {
         ))}
       </div>
 
+      
       {/*TODO: Link to social media*/}
       <div className={"mx-auto flex flex-row gap-4 items-center"}>
         <Icon href={""}>
