@@ -35,7 +35,9 @@ const Footer: React.FC = () => {
       </div>
 
       <div className={"text-center text-foreground-500"}>
-        <p color="">&copy; {new Date().getFullYear()} Waifuu. All rights reserved.</p>
+        <p color="">
+          &copy; {new Date().getFullYear()} Waifuu. All rights reserved.
+        </p>
       </div>
     </footer>
   );

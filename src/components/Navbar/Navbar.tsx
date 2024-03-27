@@ -65,21 +65,7 @@ export const Navbar = () => {
       <NavbarContent justify="end">
         <NavbarItem className="flex flex-row gap-9">
           {getNavbarPaths().map((path) => {
-            const isActive =
-              path.href === paths.index
-                ? activeHref === paths.index
-                : activeHref.includes(path.href);
-
-            return (
-              <NavbarItem key={path.href} isActive={isActive}>
-                <Link
-                  color={isActive ? undefined : "foreground"}
-                  href={path.href}
-                >
-                  {path.title}
-                </Link>
-              </NavbarItem>
-            );
+            return <Link href={path.href}>{path.title}</Link>;
           })}
         </NavbarItem>
       </NavbarContent>
@@ -89,11 +75,7 @@ export const Navbar = () => {
           const isActive = activeHref.includes(path.href);
           return (
             <NavbarMenuItem key={path.href} isActive={isActive}>
-              <Link
-                className={"w-full"}
-                color={isActive ? undefined : "foreground"}
-                href={path.href}
-              >
+              <Link className={"w-full"} href={path.href}>
                 {path.title}
               </Link>
             </NavbarMenuItem>
