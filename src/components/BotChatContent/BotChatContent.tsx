@@ -117,14 +117,6 @@ function SelectionToolbar() {
   };
 
   const handleShare = async () => {
-    // Each selectedMessage contains messageId: string, message: string (the message's content), and author: { bot: boolean;
-    //     avatar?: string | null;
-    //     name: string; }
-    //
-    // I need to put it in a string in the format of
-    // "{author.name}:\n{message}\n\n"
-    // for each message, and then copy it to the clipboard.
-
     const messagesString = selectedMessages.reduce((acc, curr) => {
       const { author, message } = curr;
       const authorName = author.name;
