@@ -3,6 +3,7 @@ import { retrieveIp } from "@/server/helpers/helpers";
 import { sendWelcomeEmail } from "@/server/jobs/auth/sendWelcomeEmail";
 import { upsertUser } from "@/server/jobs/auth/upsertUser";
 import { verifyRequest } from "@/server/jobs/auth/verifyIdToken";
+import { TRPCError } from "@/server/lib/TRPCError";
 import { serverFirebaseAuth } from "@/server/lib/serverFirebaseAuth";
 import { publicProcedure } from "@/server/lib/trpc";
 import { NextApiResponse } from "next";
@@ -26,8 +27,29 @@ export default publicProcedure
       ],
     });
 
-    const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
-    await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
+    let decodedIdToken;
+    try {
+      decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
+    } catch (e) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid ID token.",
+        toast: "Invalid ID token or error verifying firebase ID token.",
+      });
+    }
+    try {
+      await verifyRequest(
+        decodedIdToken.auth_time,
+        input.csrfToken,
+        ctx.req?.cookies.csrfToken,
+      );
+    } catch (e) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid CSRF token.",
+        toast: "Invalid CSRF token.",
+      });
+    }
 
     // Uncomment to get early access.
     /*const hasEarlyAccess = await ctx.prisma.earlyAccess.findUnique({

@@ -12,6 +12,7 @@ import { useGoogleSignIn } from "@components/LoginPage/useGoogleSignIn";
 import { CardBody } from "@nextui-org/card";
 import { useSession } from "@providers/SessionProvider";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export type SignInMode = "sign-in" | "sign-up";
 
@@ -32,6 +33,7 @@ export const LoginPage = () => {
   }
 
   async function onSignInError() {
+    toast("There was a backend error signing in.", { type: "error" });
     try {
       await FirebaseAuthentication.signOut();
       await signOut(getOrInitFirebaseAuth());

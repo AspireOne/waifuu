@@ -53,7 +53,7 @@ const getIdToken = async (): Promise<string | undefined> => {
     // If the user is not signed in, it is correct that we cannot get the token.
     // so do not throw error.
     if (e.message === "No user is signed in.") return undefined;
-    else throw e;
+    throw e;
   }
 };
 

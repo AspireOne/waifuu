@@ -48,7 +48,7 @@ async function signIn(creds: { email: string; password: string }) {
     ) {
       toast(t`Wrong email/password.`, { type: "error" });
     } else {
-      toast(t`There was an error signing in.`, { type: "error" });
+      toast(t`There was a firebase error signing in.`, { type: "error" });
     }
 
     return false;
@@ -67,7 +67,7 @@ async function signUp(creds: { email: string; password: string }) {
     else if (error.code === "auth/operation-not-allowed") toast(t`Disallowed.`, { type: "error" });
     else if (error.code === "auth/invalid-email") toast(t`Invalid email.`, { type: "error" });
 
-    else toast(t`There was an error signing up.`, { type: "error" });
+    else toast(t`There was a firebase error signing up.`, { type: "error" });
     return false;
   }
 }
