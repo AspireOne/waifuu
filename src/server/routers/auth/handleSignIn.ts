@@ -28,12 +28,27 @@ export default publicProcedure
     });
 
     let decodedIdToken;
+    let firebaseAuth;
+
     try {
-      decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
+      firebaseAuth = serverFirebaseAuth();
+    } catch (e) {
+      console.error("Error getting firebase auth: ", e);
+
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        cause: e,
+        message: "Error initializing firebase auth.",
+        toast: "Error initializing firebase auth.",
+      });
+    }
+
+    try {
+      decodedIdToken = await firebaseAuth.verifyIdToken(input.idToken);
     } catch (e) {
       console.error(e);
       throw new TRPCError({
-        code: "BAD_REQUEST",
+        code: "INTERNAL_SERVER_ERROR",
         cause: e,
         message: "Invalid ID token or error verifying firebase ID token.",
         toast: "Invalid ID token or error verifying firebase ID token.",

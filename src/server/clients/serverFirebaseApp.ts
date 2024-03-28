@@ -9,6 +9,10 @@ import { initializeApp } from "firebase-admin/app";
 export const serverFirebaseApp = () => {
   if (admin.apps.length > 0) return admin.apps[0]!;
 
+  console.log("Parsing service account json: ", env.SERVICE_ACCOUNT_JSON);
+  const json = JSON.parse(env.SERVICE_ACCOUNT_JSON);
+  console.log("parsed service account json: ", json);
+
   return initializeApp({
     credential: admin.credential.cert(JSON.parse(env.SERVICE_ACCOUNT_JSON)),
   });
