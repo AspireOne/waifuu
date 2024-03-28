@@ -17,9 +17,7 @@ const Header = () => {
   return (
     <header className="text-center">
       <h1 className="lg:text-8xl text-5xl w-fit mx-auto font-black flex flex-row gap-6">
-        <p>Meet</p>
-        <Emoji className="lg:w-[100px] lg:h-[100px] h-[50px] w-[50px]" name="chat" />
-        <p>Waifuu</p>
+        Meet 💬 Waifuu
       </h1>
 
       <Spacer y={5} />
@@ -31,8 +29,7 @@ const Header = () => {
 
       <Spacer className="my-5 lg:my-10" />
       <button className="mx-auto border-2 flex flex-row gap-2 bg-[#8D8D8D] bg-opacity-20 lg:px-10 px-7 border-[#A0A0A0] rounded-full p-1.5 lg:p-2">
-        <Emoji name="sparkles" className="h-7 w-7" />
-        <p className="mt-0.5 font-semibold">Try it out</p>
+        <p className="mt-0.5 font-semibold">✨ Try it out</p>
       </button>
     </header>
   );
@@ -48,8 +45,8 @@ const Feature = (props: {
       <props.icon className="lg:w-28 lg:h-28 lg:align-middle w-16 h-16 mx-auto text-pink-400" />
 
       <div className="flex flex-col lg:flex-wrap gap-2">
-        <h1 className="font-bold text-3xl">{props.title}</h1>
-        <p className="w-[400px]">{props.description}</p>
+        <h1 className="font-bold text-2xl">{props.title}</h1>
+        <p className="w-[300px] text-md table">{props.description}</p>
       </div>
     </div>
   );
@@ -81,15 +78,12 @@ const MiniFooter = () => {
   return (
     <footer className="text-center">
       <p className="font-bold text-lg text-pink-400">Enough talking...</p>
-      <div className="w-fit mx-auto flex text-4xl font-bold flex-row gap-2">
-        <h1>Let's begin</h1>
-        <Emoji name="sparkles" />
-        <h1>your journey</h1>
+      <div className="w-fit mx-auto flex text-2xl lg:text-4xl font-bold flex-row gap-2">
+        <h1>Let's begin ✨ your journey</h1>
       </div>
 
-      <button className="bg-gray-500 flex flex-row gap-2 mx-auto px-8 font-semibold p-3 rounded-full mt-5">
-        <Emoji name="globe" className="h-7 w-7" />
-        Open app
+      <button className="bg-gray-500 align-middle justify-center flex flex-row gap-2 mx-auto px-8 font-semibold p-3 rounded-full mt-5">
+        💬 Open app
       </button>
     </footer>
   );
