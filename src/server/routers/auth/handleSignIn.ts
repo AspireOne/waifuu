@@ -31,9 +31,11 @@ export default publicProcedure
     try {
       decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
     } catch (e) {
+      console.error(e);
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: "Invalid ID token.",
+        cause: e,
+        message: "Invalid ID token or error verifying firebase ID token.",
         toast: "Invalid ID token or error verifying firebase ID token.",
       });
     }
