@@ -36,14 +36,16 @@ export const models: Record<ModelKey, Model> = {
   psyfighter: {
     id: "jebcarter/psyfighter-13b",
     friendlyName: "Psyfighter",
-    description: "Good overall capabilities - high in roleplaying and output consistency.",
+    description:
+      "Good overall capabilities - high in roleplaying and output consistency.",
     tokens: 4096,
     params: { ...universalParams, max_tokens: 3996 },
   },
   mythomax: {
     id: "gryphe/mythomax-l2-13b",
     friendlyName: "MythoMax",
-    description: "Good overall capabilities - high in roleplaying and storytelling.",
+    description:
+      "Good overall capabilities - high in roleplaying and storytelling.",
     tokens: 4096,
     params: { ...universalParams, max_tokens: 3996 },
   },
@@ -73,10 +75,12 @@ export const defaultModels = {
 
 export const getModelToUse = (
   mode: ChatMode,
-  preferredModelId?: ModelId | string | null,
+  preferredModelId?: ModelId | string | null
 ): Model => {
   const hasPreferredModel = preferredModelId && getModelById(preferredModelId);
-  const preferredModel = hasPreferredModel ? getModelById(preferredModelId)! : null;
+  const preferredModel = hasPreferredModel
+    ? getModelById(preferredModelId)!
+    : null;
 
   if (ChatMode.ROLEPLAY) return preferredModel ?? defaultModels.roleplay;
   if (ChatMode.CHAT) return preferredModel ?? defaultModels.chat;

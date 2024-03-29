@@ -106,7 +106,7 @@ const run = async (input: Input) => {
     `https://openrouter.ai/api/v1/generation?id=${response.id}`,
     {
       headers,
-    },
+    }
   );
 
   const stats = (await statsResponse.json())?.data as OpenRouterStatsJsonOutput;
