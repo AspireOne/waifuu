@@ -130,7 +130,7 @@ export default protectedProcedure
 async function determineMetadata(outText: string): Promise<Metadata> {
   const response = await OpenAI.completions.create({
     model: "gpt-3.5-turbo-instruct",
-    prompt: `"Here is a sentence: "${outText}" Based on the sentence, create a json that has the following parameters:1. MOOD: Choose from following: "HAPPY", "BLUSHED", "SAD", "NEUTRAL"2. PLACE: Choose from following: "WORK", "HOME", "PARK""`,
+    prompt: `"Here is a sentence: "${outText}" Based on the sentence, create a json that has the following parameters (do not return the sentence only the JSON with mood and place): 1. MOOD: Choose from following: "HAPPY", "BLUSHED", "SAD", "NEUTRAL"2. PLACE: Choose from following: "WORK", "HOME", "PARK""`,
     max_tokens: 150,
   });
 
