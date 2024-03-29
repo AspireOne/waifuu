@@ -12,7 +12,7 @@ import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Image } from "@nextui-org/react";
-import { Bot } from "@prisma/client";
+import { Bot, Mood } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
@@ -37,8 +37,18 @@ const BotChat = () => {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
-    },
+    }
   );
+
+  const lastMood = useMemo(() => {
+    const lastMessage = chat.messages[chat.messages.length - 1];
+
+    if (lastMessage?.role === "USER") {
+      return chat.messages[chat.messages.length - 2]?.mood ?? "NEUTRAL";
+    }
+
+    return lastMessage?.mood ?? "NEUTRAL";
+  }, [chat.messages]);
 
   return (
     <AppPage
@@ -47,9 +57,7 @@ const BotChat = () => {
       appHeaderEndContent={<AppHeaderCharSettingsButton />}
       title={bot?.name || _(msg`Loading...`)}
     >
-      {bot && (
-        <AudioPlayer mood={chat.messages[chat.messages.length - 1]?.mood ?? "NEUTRAL"} />
-      )}
+      {bot && <AudioPlayer mood={lastMood} />}
       {bot && <CharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
       <BotChatContent chat={chat} bot={bot} />
@@ -85,13 +93,13 @@ const CharacterImage = ({
           "animation-slide-fade fixed object-cover",
           "bottom-0 h-[90%]", // set height
           "w-auto", // set width
-          "left-0 right-0 mx-auto", // center it horizontally
+          "left-0 right-0 mx-auto" // center it horizontally
         )}
         width={1920}
         height={1080}
       />
     ),
-    [bot, messages],
+    [bot, messages]
   );
 };
 
