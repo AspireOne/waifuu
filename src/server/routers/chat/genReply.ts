@@ -8,9 +8,6 @@ import {
   PrismaClient,
   User,
 } from "@prisma/client";
-// Yes, this does show error. There is no typescript version.
-// @ts-ignore
-
 import { TRPCError } from "@/server/lib/TRPCError";
 import { z } from "zod";
 
@@ -132,6 +129,7 @@ async function determineMetadata(outText: string): Promise<Metadata> {
     model: "gpt-3.5-turbo-instruct",
     prompt: `"Here is a sentence: "${outText}" Based on the sentence, create a json that has the following parameters (do not return the sentence only the JSON with mood and place): 1. MOOD: Choose from following: "HAPPY", "BLUSHED", "SAD", "NEUTRAL"2. PLACE: Choose from following: "WORK", "HOME", "PARK""`,
     max_tokens: 150,
+    temperature: 0.2,
   });
 
   let metadata: Metadata = {
