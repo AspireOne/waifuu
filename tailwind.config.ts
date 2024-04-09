@@ -3,7 +3,7 @@ import { type Config } from "tailwindcss";
 const { nextui } = require("@nextui-org/react");
 const plugin = require("tailwindcss/plugin");
 
-export default ({
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -46,7 +46,7 @@ export default ({
               // "#18181a"
               DEFAULT: "#111113",
               "50": "#111113",
-              ...Array(9).map((_, i) => ({[`${(i + 1) * 100}`]: "#1b1b1e"})),
+              ...Array(9).map((_, i) => ({ [`${(i + 1) * 100}`]: "#1b1b1e" })),
             },
             secondary: {
               "100": "#D5F4FF",
@@ -90,4 +90,4 @@ export default ({
       },
     }),
   ],
-} satisfies Config);
+} satisfies Config;

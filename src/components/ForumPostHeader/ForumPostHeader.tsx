@@ -33,7 +33,8 @@ export const ForumPostHeader = ({ post, user, onOpenComment }: Props) => {
   const [isPinned, setIsPinned] = useState(post.data?.pinned ?? false);
   useEffect(() => setIsPinned(post.data?.pinned ?? false), [post.data]);
 
-  const { mutateAsync: pinPost, isLoading: isPinning } = api.forum.pin.useMutation();
+  const { mutateAsync: pinPost, isLoading: isPinning } =
+    api.forum.pin.useMutation();
   const onPin = async (postId: string) => {
     await pinPost(postId);
     setIsPinned(!isPinned);
@@ -55,10 +56,16 @@ export const ForumPostHeader = ({ post, user, onOpenComment }: Props) => {
       <div className="mt-2">
         <Flex orientation="col" className="align-center">
           <h1 className="text-2xl font-bold">{post.data?.title}</h1>
-          <p className="text-gray-500">{moment(post.data?.createdAt).fromNow()}</p>
+          <p className="text-gray-500">
+            {moment(post.data?.createdAt).fromNow()}
+          </p>
         </Flex>
 
-        <Chip key={post.data?.category?.name} className="mt-2 mb-2" color="default">
+        <Chip
+          key={post.data?.category?.name}
+          className="mt-2 mb-2"
+          color="default"
+        >
           {post.data?.category?.name}
         </Chip>
 

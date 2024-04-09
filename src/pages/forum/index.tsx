@@ -31,7 +31,8 @@ export default function ForumPage() {
       setSelectedCategories([...selectedCategories, name]);
     }
   };
-  const isSelectedCategory = (name: string) => selectedCategories.find((el) => el === name);
+  const isSelectedCategory = (name: string) =>
+    selectedCategories.find((el) => el === name);
 
   const posts = api.forum.getAll.useQuery({
     take: 10,
@@ -89,11 +90,15 @@ export default function ForumPage() {
                   {categories.data.map((item) => {
                     return (
                       // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                      <div key={item.name} onClick={() => toggleCategory(item.name)}>
+                      <div
+                        key={item.name}
+                        onClick={() => toggleCategory(item.name)}
+                      >
                         <Card
                           className={cx([
                             "p-3 hover:bg-opacity-50 hover:cursor-pointer",
-                            isSelectedCategory(item.name) && "bg-primary-500 bg-opacity-50",
+                            isSelectedCategory(item.name) &&
+                              "bg-primary-500 bg-opacity-50",
                           ])}
                         >
                           {item.name}
@@ -110,7 +115,10 @@ export default function ForumPage() {
         <div className="w-full">
           {posts.isLoading && <Trans>Posts are loading...</Trans>}
           {cardOpen === "OVERVIEW" && posts.data && (
-            <ForumOverview posts={posts.data} onToggleCreatePostOpen={toggleCreatePostOpen} />
+            <ForumOverview
+              posts={posts.data}
+              onToggleCreatePostOpen={toggleCreatePostOpen}
+            />
           )}
 
           {cardOpen === "RECENT" && <ForumRecentPosts posts={posts.data} />}
