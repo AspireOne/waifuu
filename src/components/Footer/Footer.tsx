@@ -24,7 +24,6 @@ const Footer: React.FC = () => {
         ))}
       </div>
 
-      
       {/*TODO: Link to social media*/}
       <div className={"mx-auto flex flex-row gap-4 items-center"}>
         <Icon href={""}>
@@ -36,7 +35,9 @@ const Footer: React.FC = () => {
       </div>
 
       <div className={"text-center text-foreground-500"}>
-        <p color="">&copy; {new Date().getFullYear()} Waifuu. All rights reserved.</p>
+        <p color="">
+          &copy; {new Date().getFullYear()} Waifuu. All rights reserved.
+        </p>
       </div>
     </footer>
   );

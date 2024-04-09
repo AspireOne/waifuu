@@ -46,7 +46,8 @@ export type PageProps = {
  * @constructor
  */
 export const BasePage = (props: PropsWithChildren<PageProps>) => {
-  let { unprotected, showActionBar, showFooter, topBar, autoBack, backPath } = props;
+  let { unprotected, showActionBar, showFooter, topBar, autoBack, backPath } =
+    props;
   showActionBar = false;
 
   const { historyStack } = useCustomHistory();
@@ -119,7 +120,7 @@ function PageWrapper(
     showingActionBar: boolean;
     showingTopBar: boolean;
     noPadding?: boolean;
-  }>,
+  }>
 ) {
   const router = useRouter();
   const { status } = useSession();
@@ -152,10 +153,11 @@ function PageWrapper(
       >
         <div
           className={twMerge(
-            !props.noPadding && "mx-auto px-4 sm:px-8 md:px-14 lg:px-14 min-h-[99vh]",
+            !props.noPadding &&
+              "mx-auto px-4 sm:px-8 md:px-14 lg:px-14 min-h-[99vh]",
             !props.noPadding && paddingTop,
             !props.noPadding && paddingBottom,
-            props.className,
+            props.className
           )}
         >
           {props.children}
