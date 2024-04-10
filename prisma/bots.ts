@@ -13,6 +13,12 @@ export default [
     backgroundImage: "https://waifuu.s3.eu-central-1.amazonaws.com/maru_background.jpg",
     tags: ["FEMALE", "FANTASY"],
     initialMessage: "Hewwo there :3 I'm Maru, let's have wholesome and lovely chat together!",
+    dynamicBackgroundsEnabled: true,
+    moodImagesEnabled: true,
+    sadImageId: "maru_sad.png",
+    blushedImageId: "maru_blushed.png",
+    neutralImageId: "maru.png",
+    happyImageId: "maru_happy.png",
   },
   {
     id: "naida-public-id-100091",

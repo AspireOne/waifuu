@@ -1,12 +1,12 @@
-import { Mood } from "@prisma/client";
+import { Place } from "@prisma/client";
 import React, { useRef, useState } from "react";
 import { HiMiniSpeakerWave, HiMiniSpeakerXMark } from "react-icons/hi2";
 
 interface AudioPlayerProps {
-  mood: Mood;
+  place: Place;
 }
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ mood }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ place }) => {
   const audioPlayerRef = useRef<HTMLAudioElement>(null);
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -23,29 +23,25 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ mood }) => {
     }
   };
 
-  const tracks: { mood: Mood; src: string }[] = [
+  const tracks: { place: Place; src: string }[] = [
     {
-      mood: Mood.BLUSHED,
-      src: "/music/blushed.mp3",
+      place: Place.HOME,
+      src: "/music/place_home.mp3",
     },
     {
-      mood: Mood.HAPPY,
-      src: "/music/happy.mp3",
+      place: Place.PARK,
+      src: "/music/place_park.mp3",
     },
     {
-      mood: Mood.NEUTRAL,
-      src: "/music/neutral.mp3",
-    },
-    {
-      mood: Mood.SAD,
-      src: "/music/sad.mp3",
+      place: Place.WORK,
+      src: "/music/place_office.mp3",
     },
   ];
 
   return (
     <>
       <audio
-        src={tracks.find((item) => item.mood === mood)?.src ?? ""}
+        src={tracks.find((item) => item.place === place)?.src ?? ""}
         ref={audioPlayerRef}
         onLoadedData={() => {
           if (audioPlayerRef.current && isPlaying) {

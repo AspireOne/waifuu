@@ -106,7 +106,7 @@ const run = async (input: Input) => {
     `https://openrouter.ai/api/v1/generation?id=${response.id}`,
     {
       headers,
-    }
+    },
   );
 
   const stats = (await statsResponse.json())?.data as OpenRouterStatsJsonOutput;
@@ -124,17 +124,21 @@ const run = async (input: Input) => {
 
   const textOutput = response.choices[0]!.message.content;
 
-  generation.end({
-    usage: {
-      promptTokens: stats.tokens_prompt,
-      completionTokens: stats.tokens_completion,
-      totalTokens: stats.tokens_prompt + stats.tokens_completion,
-    },
-    metadata: {
-      price: stats.usage,
-    },
-    completion: textOutput,
-  });
+  try {
+    generation.end({
+      usage: {
+        promptTokens: stats.tokens_prompt ?? 0,
+        completionTokens: stats.tokens_completion ?? 0,
+        totalTokens: (stats.tokens_prompt ?? 0) + stats.tokens_completion,
+      },
+      metadata: {
+        price: stats.usage,
+      },
+      completion: textOutput,
+    });
+  } catch (err) {
+    console.error("Failed to end generation");
+  }
 
   return {
     text: textOutput,

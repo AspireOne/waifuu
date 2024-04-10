@@ -28,6 +28,12 @@ type BotProps = {
   initialMessage: string;
   backgroundImage: string;
   tags: CharacterTag[];
+  blushedImageId?: string;
+  sadImageId?: string;
+  neutralImageId?: string;
+  happyImageId?: string;
+  dynamicBackgroundsEnabled?: boolean;
+  moodImagesEnabled?: boolean;
 };
 
 async function main() {
@@ -42,9 +48,7 @@ async function main() {
   if (isProd === isDev) {
     isProd = false;
     isDev = true;
-    console.warn(
-      "seed: NODE_ENV is not specified. Defaulting to development mode."
-    );
+    console.warn("seed: NODE_ENV is not specified. Defaulting to development mode.");
   }
 
   isProd ? await seedProduction() : await seedDevelopment();
@@ -101,6 +105,13 @@ async function upsertBot(props: BotProps) {
       avatar: props.avatar,
       characterImage: props.characterImage,
       tags: props.tags,
+      // add dynamic mood images if present and other options related to optional content
+      blushedImageId: props.blushedImageId,
+      sadImageId: props.sadImageId,
+      neutralImageId: props.neutralImageId,
+      happyImageId: props.happyImageId,
+      dynamicBackgroundsEnabled: props.dynamicBackgroundsEnabled ?? false,
+      moodImagesEnabled: props.moodImagesEnabled ?? false,
     },
   });
 
