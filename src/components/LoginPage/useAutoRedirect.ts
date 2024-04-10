@@ -29,7 +29,7 @@ export const useAutoRedirect = () => {
   // IMPORTANT: Check for session.user instead of session.status.
   useEffect(() => {
     // Just a safety handle, because there was some rare cycling issues.
-    if (redirectCount > 4) {
+    if (redirectCount > 2) {
       window.location.replace(semanticPaths.appIndex);
       return;
     }

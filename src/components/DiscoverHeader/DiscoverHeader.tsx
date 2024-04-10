@@ -14,7 +14,7 @@ export const DiscoverHeader = (props: { className?: string }) => {
         alt="background"
         loading="eager"
         className="opacity-30 h-full w-full object-cover z-10 absolute"
-        src={"/assets/background.png"}
+        src={"/assets/background.jpg"}
         width={1920}
         height={1080}
       />

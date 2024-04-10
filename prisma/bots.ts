@@ -10,11 +10,9 @@ export default [
     nsfw: false,
     avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/maru.png",
     characterImage: "https://waifuu.s3.eu-central-1.amazonaws.com/maru.png",
-    backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/maru_background.png",
+    backgroundImage: "https://waifuu.s3.eu-central-1.amazonaws.com/maru_background.jpg",
     tags: ["FEMALE", "FANTASY"],
-    initialMessage:
-      "Hewwo there :3 I'm Maru, let's have wholesome and lovely chat together!",
+    initialMessage: "Hewwo there :3 I'm Maru, let's have wholesome and lovely chat together!",
   },
   {
     id: "naida-public-id-100091",
@@ -26,8 +24,7 @@ export default [
       "Naida is a cute and shy girl, she likes to talk with people but hides it because of her shyness.",
     avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/naida.png",
     characterImage: "https://waifuu.s3.eu-central-1.amazonaws.com/naida.png",
-    backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/naida_background.png",
+    backgroundImage: "https://waifuu.s3.eu-central-1.amazonaws.com/naida_background.jpg",
     tags: ["FEMALE", "FANTASY"],
     initialMessage: "Hey~ Um~ Wanna chat to-gether?",
   },

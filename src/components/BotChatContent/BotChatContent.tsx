@@ -29,9 +29,9 @@ const placeToUrl = (place: Place): string => {
     case "HOME":
       return "/assets/place_home.jpg";
     case "WORK":
-      return "/assets/place_work.jpeg";
+      return "/assets/place_work.jpg";
     case "PARK":
-      return "/assets/place_park.webp";
+      return "/assets/place_park.jpg";
   }
 };
 

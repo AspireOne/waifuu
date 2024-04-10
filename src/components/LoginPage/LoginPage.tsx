@@ -64,7 +64,7 @@ export const LoginPage = () => {
       <img
         alt="background"
         loading="eager"
-        src={"/assets/background.png"}
+        src={"/assets/background.jpg"}
         className="fixed left-0 top-0 h-full w-full object-cover z-[0]"
         style={{ filter: "brightness(0.3)" }}
         width={1920}
