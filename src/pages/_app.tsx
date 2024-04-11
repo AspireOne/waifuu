@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import "filepond/dist/filepond.min.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "react-quill/dist/quill.snow.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { api } from "@/lib/api";

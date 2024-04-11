@@ -6,7 +6,6 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FaEye, FaHeart } from "react-icons/fa";
-import { LargeText } from "../ui/LargeText";
 
 export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
   const router = useRouter();
@@ -34,8 +33,6 @@ export const ForumPostHighlight = (post: ForumPost & { author: User }) => {
             </section>
           </div>
         </div>
-
-        <LargeText className="text-gray-400 text-md" content={post.content} maxLength={100} />
 
         <div className="flex mt-2 mb-2 flex-row gap-1 align-center">
           <Image

@@ -7,10 +7,10 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Textarea,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Wysiwyg } from "../Wysiwyg";
 import { FileUploadRaw } from "../ui/FileUploadRaw";
 
 type CreateForumPostModalProps = {
@@ -30,7 +30,7 @@ export const CreateForumPostModal = ({
   onToggle,
   onCreate,
 }: CreateForumPostModalProps) => {
-  const { register, handleSubmit } = useForm<FormContentType>();
+  const { register, handleSubmit, setValue, getValues } = useForm<FormContentType>();
   const createPostMutation = api.forum.create.useMutation();
 
   const [bannerId, setBannerId] = useState<string | null | undefined>(null);
@@ -57,8 +57,11 @@ export const CreateForumPostModal = ({
           <ModalBody>
             <FileUploadRaw label="Post banner image" onUpload={(id) => setBannerId(id)} />
             <Input {...register("title")} autoFocus placeholder="Title" />
-            <Textarea {...register("content")} placeholder="Content" />
             <Input label="Post category" {...register("category")} />
+            <Wysiwyg
+              onChange={(value) => setValue("content", value)}
+              value={getValues("content")}
+            />
           </ModalBody>
 
           <ModalFooter>

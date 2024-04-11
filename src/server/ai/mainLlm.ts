@@ -124,22 +124,6 @@ const run = async (input: Input) => {
 
   const textOutput = response.choices[0]!.message.content;
 
-  try {
-    generation.end({
-      usage: {
-        promptTokens: stats.tokens_prompt ?? 0,
-        completionTokens: stats.tokens_completion ?? 0,
-        totalTokens: (stats.tokens_prompt ?? 0) + stats.tokens_completion,
-      },
-      metadata: {
-        price: stats.usage,
-      },
-      completion: textOutput,
-    });
-  } catch (err) {
-    console.error("Failed to end generation");
-  }
-
   return {
     text: textOutput,
     price: stats.usage,

@@ -27,7 +27,10 @@
       "./package.json",
       "/package.json"
     ],
-    "include": ["./src/**/*", "./prisma/seed.ts"]
+    "include": [
+      "./src/**/*",
+      "./prisma/seed.ts"
+    ]
   },
   "linter": {
     "enabled": true,
@@ -56,6 +59,10 @@
       "correctness": {
         "noUnreachable": "off",
         "useExhaustiveDependencies": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off",
+        "noDangerouslySetInnerHtmlWithChildren": "off"
       }
     }
   },

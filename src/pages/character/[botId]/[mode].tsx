@@ -11,11 +11,39 @@ import { api } from "@lib/api";
 import { paths } from "@lib/paths";
 import { msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Image } from "@nextui-org/react";
-import { Bot } from "@prisma/client";
+import { Chip, Image } from "@nextui-org/react";
+import { Bot, Mood, Place } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { twMerge } from "tailwind-merge";
+
+const translateMood = (mood: Mood): string => {
+  switch (mood) {
+    case Mood.NEUTRAL:
+      return "Feels neutral";
+    case Mood.HAPPY:
+      return "Feels happy";
+    case Mood.SAD:
+      return "Feels sad";
+    case Mood.BLUSHED:
+      return "Blushing";
+    default:
+      return "Feels normal";
+  }
+};
+
+const translatePlace = (place: Place): string => {
+  switch (place) {
+    case Place.HOME:
+      return "home.";
+    case Place.WORK:
+      return "work.";
+    case Place.PARK:
+      return "park.";
+    default:
+      return "unknown place.";
+  }
+};
 
 /** This is the actual chat page (e.g. chat with Aqua on mode Roleplay). */
 const BotChat = () => {
@@ -40,14 +68,26 @@ const BotChat = () => {
     },
   );
 
-  const lastPlace = useMemo(() => {
+  const lastMetadata = useMemo(() => {
     const lastMessage = chat.messages[chat.messages.length - 1];
+    let metadata: { mood: Mood; place: Place } = {
+      mood: Mood.NEUTRAL,
+      place: Place.HOME,
+    };
 
-    if (lastMessage?.role === "USER") {
-      return chat.messages[chat.messages.length - 2]?.place ?? "HOME";
+    if (lastMessage?.role === "BOT") {
+      metadata = {
+        mood: lastMessage.mood ?? "NEUTRAL",
+        place: lastMessage.place ?? "HOME",
+      };
+    } else {
+      metadata = {
+        mood: chat.messages[chat.messages.length - 2]?.mood ?? "NEUTRAL",
+        place: chat.messages[chat.messages.length - 2]?.place ?? "HOME",
+      };
     }
 
-    return lastMessage?.place ?? "HOME";
+    return metadata;
   }, [chat.messages]);
 
   return (
@@ -55,9 +95,19 @@ const BotChat = () => {
       backPath={paths.discover}
       noPadding={true}
       appHeaderEndContent={<AppHeaderCharSettingsButton />}
-      title={bot?.name || _(msg`Loading...`)}
+      titleBarContent={
+        (
+          <div className="flex flex-row gap-3">
+            {bot?.name}
+            <Chip variant="flat" color="secondary">
+              {translateMood(lastMetadata.mood)} at {translatePlace(lastMetadata.place)}
+            </Chip>
+          </div>
+        ) || _(msg`Loading...`)
+      }
+      title={bot?.name}
     >
-      {bot && <AudioPlayer place={lastPlace} />}
+      {bot && <AudioPlayer place={lastMetadata.place} />}
       {bot && <CharacterImage bot={bot} messages={chat.messages} />}
       <ChatGradientOverlay />
       <BotChatContent chat={chat} bot={bot} />

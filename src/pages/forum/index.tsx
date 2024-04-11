@@ -31,8 +31,7 @@ export default function ForumPage() {
       setSelectedCategories([...selectedCategories, name]);
     }
   };
-  const isSelectedCategory = (name: string) =>
-    selectedCategories.find((el) => el === name);
+  const isSelectedCategory = (name: string) => selectedCategories.find((el) => el === name);
 
   const posts = api.forum.getAll.useQuery({
     take: 10,
@@ -43,7 +42,7 @@ export default function ForumPage() {
   return (
     <AppPage backPath={paths.discover} title={t`Forum`}>
       <div className="flex xl:flex-row flex-col gap-8 mt-5">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 min-w-[200px]">
           <div className="flex flex-col gap-3 mb-5">
             <div className="flex flex-col gap-1 max-w-[300px]">
               <Title>
@@ -76,49 +75,47 @@ export default function ForumPage() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-1 max-w-[300px]">
-              <Title>
-                <Trans>Categories</Trans>
-              </Title>
-            </div>
-
-            <div className="flex flex-col gap-1 max-w-[300px]">
-              {categories.isLoading || !categories.data ? (
-                <p>Loading...</p>
-              ) : (
-                <div className="flex flex-col gap-2 min-w-[200px]">
-                  {categories.data.map((item) => {
-                    return (
-                      // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                      <div
-                        key={item.name}
-                        onClick={() => toggleCategory(item.name)}
-                      >
-                        <Card
-                          className={cx([
-                            "p-3 hover:bg-opacity-50 hover:cursor-pointer",
-                            isSelectedCategory(item.name) &&
-                              "bg-primary-500 bg-opacity-50",
-                          ])}
-                        >
-                          {item.name}
-                        </Card>
-                      </div>
-                    );
-                  })}
+            {cardOpen === "OVERVIEW" && (
+              <div>
+                <div className="flex flex-col gap-1 max-w-[300px]">
+                  <Title>
+                    <Trans>Categories</Trans>
+                  </Title>
                 </div>
-              )}
-            </div>
+
+                <div className="flex flex-col gap-1 max-w-[300px]">
+                  {categories.isLoading || !categories.data ? (
+                    <p>Loading...</p>
+                  ) : (
+                    <div className="flex flex-col gap-2 min-w-[200px]">
+                      {categories.data.map((item) => {
+                        return (
+                          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                          <div key={item.name} onClick={() => toggleCategory(item.name)}>
+                            <Card
+                              className={cx([
+                                "p-3 hover:bg-opacity-50 hover:cursor-pointer",
+                                isSelectedCategory(item.name) &&
+                                  "bg-primary-500 bg-opacity-50",
+                              ])}
+                            >
+                              {item.name}
+                            </Card>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="w-full">
           {posts.isLoading && <Trans>Posts are loading...</Trans>}
           {cardOpen === "OVERVIEW" && posts.data && (
-            <ForumOverview
-              posts={posts.data}
-              onToggleCreatePostOpen={toggleCreatePostOpen}
-            />
+            <ForumOverview posts={posts.data} onToggleCreatePostOpen={toggleCreatePostOpen} />
           )}
 
           {cardOpen === "RECENT" && <ForumRecentPosts posts={posts.data} />}

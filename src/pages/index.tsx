@@ -1,4 +1,3 @@
-import { Emoji } from "@/components/ui/Emoji";
 import Discover from "@/pages/discover";
 import { Spacer } from "@nextui-org/react";
 

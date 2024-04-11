@@ -15,7 +15,12 @@ export const PinnedPost = (data: ForumPost) => {
 
         <div className="flex flex-col gap-1">
           <h1 className="text-lg font-bold">{data.title}</h1>
-          <LargeText content={data.content} maxLength={50} className="text-gray-500 text-md" />
+          <LargeText
+            evaluateHtml
+            content={data.content}
+            maxLength={50}
+            className="text-gray-500 text-md"
+          />
         </div>
       </Card>
     </Link>

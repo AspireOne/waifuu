@@ -123,11 +123,17 @@ async function determineMetadata(outText: string): Promise<Metadata> {
     PLACE: "HOME",
   };
   try {
-    const content: any = await response.json();
+    const content = await response.json();
     metadata = JSON.parse(content.choices[0]?.message.content ?? "");
   } catch (_) {}
 
-  console.log(metadata);
+  // Perform any checks in case AI generated weird output
+  if (!["NEUTRAL", "HAPPY", "BLUSHED", "SAD"].includes(metadata.MOOD)) {
+    metadata.MOOD = "NEUTRAL";
+  }
+  if (!["HOME", "WORK", "PARK"].includes(metadata.PLACE)) {
+    metadata.PLACE = "HOME";
+  }
 
   return metadata;
 }

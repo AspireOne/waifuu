@@ -1,10 +1,11 @@
 import { cva } from "class-variance-authority";
-import React from "react";
+import React, { useMemo } from "react";
 
 type LargeTextProps = {
   content: string;
   maxLength: number;
   lines?: 1 | 2 | 3 | 4 | 5 | 6;
+  evaluateHtml?: boolean;
 } & React.HTMLProps<HTMLParagraphElement>;
 
 const LargeTextVariants = cva(["line-clamp"], {
@@ -20,10 +21,21 @@ const LargeTextVariants = cva(["line-clamp"], {
   },
 });
 
-export const LargeText = ({ content, maxLength, lines = 2, ...props }: LargeTextProps) => {
+export const LargeText = ({
+  content,
+  maxLength,
+  lines = 2,
+  evaluateHtml,
+  ...props
+}: LargeTextProps) => {
+  const contentValue = useMemo(() => {
+    return content.length > maxLength ? `${content.slice(0, maxLength)}...` : content;
+  }, [content, maxLength]);
+
   return (
-    <p className={LargeTextVariants({ lines })} {...props}>
-      {content.length > maxLength ? `${content.slice(0, maxLength)}...` : content}
-    </p>
+    <div className={LargeTextVariants({ lines })} {...props}>
+      {evaluateHtml && <p dangerouslySetInnerHTML={{ __html: contentValue }} />}
+      <p>{!evaluateHtml && contentValue}</p>
+    </div>
   );
 };

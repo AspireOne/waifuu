@@ -1,7 +1,7 @@
 import { Image, Spacer } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/spinner";
 import { apiPostImage } from "@services/imageService";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { MdImage } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
 
@@ -10,6 +10,7 @@ type FileUploadRawProps = {
   label: string;
   description?: string;
   required?: boolean;
+  className?: string;
 };
 
 export const FileUploadRaw = ({
@@ -17,17 +18,13 @@ export const FileUploadRaw = ({
   label,
   description,
   required,
+  className,
 }: FileUploadRawProps) => {
   const [uploading, setUploading] = useState(false);
   const [responseSuccessful, setResponseSuccessful] = useState<boolean | undefined>(undefined);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    // The state "showLoadingOverlay" is not used elsewhere, so it can be derived directly from "uploading".
-    // No need to have a separate state for it.
-  }, [uploading]);
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target?.files?.[0];
@@ -55,7 +52,7 @@ export const FileUploadRaw = ({
     <div
       onClick={() => inputRef.current?.click()}
       onKeyUp={() => inputRef.current?.click()}
-      className="max-w-36 w-36 cursor-pointer"
+      className={twMerge(["max-w-36 w-36 cursor-pointer", className])}
     >
       <Label
         description={description}

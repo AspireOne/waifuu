@@ -21,7 +21,16 @@ export default protectedProcedure
         comments: {
           include: {
             author: true,
-            comments: true,
+            comments: {
+              include: {
+                author: true,
+                comments: {
+                  include: {
+                    author: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -32,7 +41,7 @@ export default protectedProcedure
       posts.map((post) => {
         ids.push(post.id);
 
-        recursivePostIds((post as any).comments);
+        recursivePostIds((post as any).comments ?? []);
       });
     };
     recursivePostIds(res);
@@ -46,14 +55,15 @@ export default protectedProcedure
       },
     });
 
-    const recursivePostMap = (posts: ForumPost[]): ForumPost[] => {
-      return posts.map((post) => {
-        // TODO: Fix later, little bit of typescript will be needed here
-        (post as any).liked = !!likes.find((like) => like.postId === post.id);
-        (post as any).comments = recursivePostMap((post as any).comments);
+    const recursivePostMap = (posts?: ForumPost[]): ForumPost[] => {
+      return (
+        posts?.map((post) => {
+          (post as any).liked = !!likes.find((like) => like.postId === post.id);
+          (post as any).comments = recursivePostMap((post as any).comments ?? []);
 
-        return post;
-      });
+          return post;
+        }) ?? []
+      );
     };
 
     return recursivePostMap(res);

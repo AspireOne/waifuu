@@ -2,9 +2,8 @@ import Head from "next/head";
 import { PropsWithChildren } from "react";
 
 export default function PageHead(
-  props: PropsWithChildren<{ title: string | null; description?: string }>,
+  props: PropsWithChildren<{ title: string | null | undefined; description?: string }>,
 ) {
-  // TODO: Change this shit meta description.
   return (
     <Head>
       <title key={"page-title"}>{props.title ? `${props.title} | Waifuu` : "Waifuu"}</title>

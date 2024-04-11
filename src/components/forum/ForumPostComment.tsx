@@ -77,8 +77,8 @@ export const ForumPostComment = ({
         <div className="flex flex-row gap-5">
           <div className="flex flex-row gap-2">
             <div className="flex flex-col spacing-2">
-              <p>{comment.author.name}</p>
-              <p className="text-gray-400">@{comment.author.username}</p>
+              <p>{comment.author?.name}</p>
+              <p className="text-gray-400">@{comment.author?.username}</p>
             </div>
           </div>
 
