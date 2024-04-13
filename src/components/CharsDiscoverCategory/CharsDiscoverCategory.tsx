@@ -6,7 +6,14 @@ import { api } from "@lib/api";
 
 import { Trans, msg } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Button, Divider, Input, Spacer, Switch, useDisclosure } from "@nextui-org/react";
+import {
+  Button,
+  Divider,
+  Input,
+  Spacer,
+  Switch,
+  useDisclosure,
+} from "@nextui-org/react";
 
 import { BotSource, CharacterTag } from "@prisma/client";
 import { useRouter } from "next/router";
@@ -81,7 +88,9 @@ export const CharsDiscoverCategory = () => {
 
         discoveredBots.setCacheData(stringifyFilters(filters), {
           page: filters.cursor + 1,
-          characters: existingCache ? [...existingCache.characters, ...data.bots] : data.bots,
+          characters: existingCache
+            ? [...existingCache.characters, ...data.bots]
+            : data.bots,
           hasNextPage: data.hasNextPage,
         });
       },
@@ -92,7 +101,7 @@ export const CharsDiscoverCategory = () => {
       staleTime: parse("1h"),
       enabled: session.status !== "unauthenticated",
       retry: 2,
-    },
+    }
   );
 
   const { register, watch } = useForm<SearchBotsFilters>();
@@ -149,14 +158,28 @@ export const CharsDiscoverCategory = () => {
           </div>
         )}
 
-        <div className={twMerge("gap-4 flex flex-wrap w-full mx-auto self-baseline")}>
+        <div
+          className={twMerge(
+            "gap-4 flex flex-wrap w-full mx-auto self-baseline"
+          )}
+        >
           {discoveredBots.cache[filtersStr]?.characters.map((bot) => {
-            return <CharacterCard bottom key={`discover_${bot.id}`} character={bot} />;
+            return (
+              <CharacterCard
+                bottom
+                key={`discover_${bot.id}`}
+                character={bot}
+              />
+            );
           })}
         </div>
 
         {discoveredBots.cache[filtersStr]?.hasNextPage && (
-          <Button onClick={skipPage} variant="faded" className="w-full sm:w-[200px] mx-auto">
+          <Button
+            onClick={skipPage}
+            variant="faded"
+            className="w-full sm:w-[200px] mx-auto"
+          >
             <Trans>Load more</Trans>
           </Button>
         )}
@@ -175,7 +198,8 @@ const ParametersHeader = (props: {
   const router = useRouter();
   const { _ } = useLingui();
 
-  const { isOpen: isNsfwOpen, onOpenChange: onNsfwOpenChange } = useDisclosure();
+  const { isOpen: isNsfwOpen, onOpenChange: onNsfwOpenChange } =
+    useDisclosure();
 
   return (
     <div>
@@ -214,8 +238,12 @@ const ParametersHeader = (props: {
               isSelected={props.searchData.nsfw}
               onValueChange={async (value) => {
                 if (!value) return props.onNsfwChange(false);
-                const { value: nsfwAllowed } = await Preferences.get({ key: "allow-nsfw" });
-                nsfwAllowed === "true" ? props.onNsfwChange(true) : onNsfwOpenChange();
+                const { value: nsfwAllowed } = await Preferences.get({
+                  key: "allow-nsfw",
+                });
+                nsfwAllowed === "true"
+                  ? props.onNsfwChange(true)
+                  : onNsfwOpenChange();
               }}
             >
               NSFW

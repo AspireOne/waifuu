@@ -6,7 +6,7 @@ const getSystemPrompt = (
   mode: ChatMode,
   persona: string,
   characterName: string,
-  addressedAs: string | null,
+  addressedAs: string | null
 ) =>
   _getSystemPrompt(mode).format({
     characterPersona: persona,
@@ -15,7 +15,10 @@ const getSystemPrompt = (
   });
 
 // TODO: Change the system prompt based on mode.
-const getInitialMessagePrompt = (mode: ChatMode, ctx: string | undefined | null) => {
+const getInitialMessagePrompt = (
+  mode: ChatMode,
+  ctx: string | undefined | null
+) => {
   if (mode === ChatMode.ADVENTURE) {
     return "{{Set the evironment, an open-ended scene, and engage the user. Make it short - 4 sentences max.}}";
   }
