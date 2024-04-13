@@ -2,17 +2,17 @@ import Discover from "@/pages/discover";
 import { Spacer } from "@nextui-org/react";
 
 import { PublicPage } from "@components/PublicPage";
-import { semanticPaths } from "@lib/paths";
+import { paths, semanticPaths } from "@lib/paths";
 import { useSession } from "@providers/SessionProvider";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { IconType } from "react-icons";
 
 import { CgGhostCharacter } from "react-icons/cg";
 import { Fa42Group } from "react-icons/fa6";
 import { MdOutlineEmojiPeople } from "react-icons/md";
 
-const Header = () => {
+const Header = ({ onRedirect }: { onRedirect: VoidFunction }) => {
   return (
     <header className="text-center">
       <h1 className="lg:text-8xl text-5xl w-fit mx-auto font-black flex flex-row gap-6">
@@ -27,7 +27,10 @@ const Header = () => {
       </h2>
 
       <Spacer className="my-5 lg:my-10" />
-      <button className="mx-auto border-2 flex flex-row gap-2 bg-[#8D8D8D] bg-opacity-20 lg:px-10 px-7 border-[#A0A0A0] rounded-full p-1.5 lg:p-2">
+      <button
+        onClick={() => onRedirect()}
+        className="mx-auto border-2 flex flex-row gap-2 bg-[#8D8D8D] bg-opacity-20 lg:px-10 px-7 border-[#A0A0A0] rounded-full p-1.5 lg:p-2"
+      >
         <p className="mt-0.5 font-semibold">✨ Try it out</p>
       </button>
     </header>
@@ -73,7 +76,7 @@ const Features = () => {
   );
 };
 
-const MiniFooter = () => {
+const MiniFooter = ({ onRedirect }: { onRedirect: VoidFunction }) => {
   return (
     <footer className="text-center">
       <p className="font-bold text-lg text-pink-400">Enough talking...</p>
@@ -81,7 +84,10 @@ const MiniFooter = () => {
         <h1>Let's begin ✨ your journey</h1>
       </div>
 
-      <button className="bg-gray-500 align-middle justify-center flex flex-row gap-2 mx-auto px-8 font-semibold p-3 rounded-full mt-5">
+      <button
+        onClick={() => onRedirect()}
+        className="bg-gray-500 align-middle justify-center flex flex-row gap-2 mx-auto px-8 font-semibold p-3 rounded-full mt-5"
+      >
         💬 Open app
       </button>
     </footer>
@@ -94,8 +100,18 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
       const { status } = useSession();
       const router = useRouter();
 
-      React.useEffect(() => {
-        if (status === "authenticated") router.replace(semanticPaths.appIndex);
+      const conditionalRedirect = (onLoad?: boolean) => {
+        console.log(onLoad);
+        if (status === "authenticated")
+          return router.replace(semanticPaths.appIndex);
+
+        if (!onLoad) {
+          return router.replace(paths.login("discover"));
+        }
+      };
+
+      useEffect(() => {
+        conditionalRedirect(true);
       }, [status]);
 
       // Todo: meta description.
@@ -107,11 +123,11 @@ export default process.env.NEXT_PUBLIC_BUILDING_NATIVE
           description={""}
         >
           <Spacer y={40} />
-          <Header />
+          <Header onRedirect={conditionalRedirect} />
           <Spacer y={40} />
           <Features />
           <Spacer y={40} />
-          <MiniFooter />
+          <MiniFooter onRedirect={conditionalRedirect} />
           <Spacer y={40} />
         </PublicPage>
       );
