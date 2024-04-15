@@ -62,6 +62,9 @@ export const envSchema = z.object({
 
   // OpenAI
   OPENAI_API_KEY: z.string().min(1),
+
+  // Default admin email, set primarily for development purposes
+  ADMIN_EMAIL: z.string().email().optional(),
 });
 
 export const env = envSchema.parse(process.env);

@@ -16,11 +16,5 @@ RUN pnpm install
 # Copy the rest of the application
 COPY . .
 
-# Build the application
-RUN pnpm run build:production
-
 # Expose port 3000 (or any other port your application uses)
 EXPOSE 3000
-
-# Command to run the application
-CMD ["pnpm", "start"]

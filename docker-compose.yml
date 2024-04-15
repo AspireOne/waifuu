@@ -14,8 +14,7 @@ services:
   #       condition: service_healthy
   #     postgres:
   #       condition: service_healthy
-  #     soketi:
-  #       condition: service_healthy
+  #   command: ["pnpm", "run", "build:production", "&&", "pnpm", "run", "start"]
   #   networks:
   #     - default
 
@@ -68,8 +67,6 @@ services:
       SOKETI_DEFAULT_APP_ID: app-id
       SOKETI_DEFAULT_APP_KEY: app-key
       SOKETI_DEFAULT_APP_SECRET: app-secret
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:6001"]
     ports:
       - "6001:6001"
     depends_on:
