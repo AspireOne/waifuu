@@ -1,6 +1,24 @@
 version: "3"
 
 services:
+  # Docker-compose not supporting multi-stage build so we'll pull the image from docker hub
+  # app:
+  #   build: .
+  #   container_name: app
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     redis:
+  #       condition: service_healthy
+  #     postgres:
+  #       condition: service_healthy
+  #     soketi:
+  #       condition: service_healthy
+  #   networks:
+  #     - default
+
   redis:
     image: redis:latest
     container_name: cachze
@@ -14,6 +32,8 @@ services:
       timeout: 5s
       retries: 3
     command: --requirepass ${REDIS_PASSWORD}
+    networks:
+      - default
 
   postgres:
     image: postgres
@@ -22,6 +42,7 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_DB}
+      POSTGRES_DEBUG: 1
     volumes:
       - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/postgres:/var/lib/postgresql/data
     ports:
@@ -31,6 +52,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - default
 
   soketi:
     image: quay.io/soketi/soketi:latest
@@ -45,10 +68,14 @@ services:
       SOKETI_DEFAULT_APP_ID: app-id
       SOKETI_DEFAULT_APP_KEY: app-key
       SOKETI_DEFAULT_APP_SECRET: app-secret
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:6001"]
     ports:
       - "6001:6001"
     depends_on:
       - postgres
+    networks:
+      - default
 
 networks:
   default:
