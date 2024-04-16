@@ -21,7 +21,10 @@ export const LoginPage = () => {
   const [selectedMode, setSelectedMode] = useState<SignInMode>("sign-up");
   const { redirectOnSuccessfulSignIn } = useAutoRedirect();
   const { handleGoogleSign } = useGoogleSignIn(onSignedIn, onSignInError);
-  const { handleCredentialsSign } = useCredentialsSignIn(onSignedIn, onSignInError);
+  const { handleCredentialsSign } = useCredentialsSignIn(
+    onSignedIn,
+    onSignInError
+  );
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => setLoading(user ? true : loading), [user]);
@@ -105,6 +108,13 @@ export const LoginPage = () => {
                 <Ui {...uiProps} />
               </Tab>
             </Tabs>
+
+            <p className="text-gray-300 w-fit mx-auto text-xs">
+              By logging in you're accepting our{" "}
+              <a className="text-pink-400 underline" href="/privacy-policy">
+                Privacy policy
+              </a>
+            </p>
           </CardBody>
         </Card>
       </div>
