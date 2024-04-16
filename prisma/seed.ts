@@ -13,6 +13,7 @@ const adminEmails = [
   "matejpesl1@gmail.com",
   "jakub.dornicak@seznam.cz",
   "jakub.dornicak@blindspot.ai",
+  "administrator@administrator.cz",
   process.env["ADMIN_EMAIL"] ?? "test@seznam.cz",
 ];
 
