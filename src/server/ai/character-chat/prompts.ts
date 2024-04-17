@@ -6,12 +6,14 @@ const getSystemPrompt = (
   mode: ChatMode,
   persona: string,
   characterName: string,
-  addressedAs: string | null
+  addressedAs: string | null,
+  botContext: string | null
 ) =>
   _getSystemPrompt(mode).format({
     characterPersona: persona,
     characterName: characterName,
     addressedAs: addressedAs ? ` addressed '${addressedAs}` : "",
+    botContext: botContext ? ` in context '${botContext}'` : "",
   });
 
 // TODO: Change the system prompt based on mode.
