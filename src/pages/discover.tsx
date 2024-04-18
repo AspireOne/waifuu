@@ -28,7 +28,7 @@ const Discover = () => {
       <Spacer className={"h-[210px] lg:h-[150px]"} />
 
       <div className="w-full mx-auto flex flex-col gap-16">
-        <div className={"grid sm:flex grid-cols-2 gap-4"}>
+        <div className={"grid sm:flex grid-cols-2 sm:grid-cols-3 gap-4"}>
           <Link href={paths.friends}>
             <Button color={"primary"} variant={"bordered"} className={"w-full sm:w-[130px]"}>
               <Trans>Friends</Trans>
@@ -38,6 +38,12 @@ const Discover = () => {
           <Link href={paths.publicChat}>
             <Button color={"primary"} variant={"bordered"} className={"w-full sm:w-[130px]"}>
               <Trans>Public Chat</Trans>
+            </Button>
+          </Link>
+
+          <Link href={paths.RR}>
+            <Button color={"primary"} variant={"bordered"} className={"w-full sm:w-[130px]"}>
+              <Trans>Character Roulette</Trans>
             </Button>
           </Link>
         </div>
