@@ -126,7 +126,7 @@ const run = async (input: Input) => {
 
   return {
     text: textOutput,
-    price: stats.usage,
+    price: stats?.usage || 0,
   };
 };
 
