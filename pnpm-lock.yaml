@@ -4198,7 +4198,7 @@ packages:
       clean-stack: 3.0.1
       cli-progress: 3.12.0
       debug: 4.3.4(supports-color@8.1.1)
-      ejs: 3.1.9
+      ejs: 3.1.10
       fs-extra: 9.1.0
       get-package-type: 0.1.0
       globby: 11.1.0
@@ -4231,7 +4231,7 @@ packages:
       clean-stack: 3.0.1
       cli-progress: 3.12.0
       debug: 4.3.4(supports-color@8.1.1)
-      ejs: 3.1.9
+      ejs: 3.1.10
       get-package-type: 0.1.0
       globby: 11.1.0
       hyperlinker: 1.0.0
@@ -7607,8 +7607,8 @@ packages:
       minimatch: 9.0.1
       semver: 7.5.4
 
-  /ejs@3.1.9:
-    resolution: {integrity: sha512-rC+QVNMJWv+MtPgkt0y+0rVEIdbtxVADApW9JXrUVlzHetgcyczP/E7DJmWJ4fJCZF2cPcBk0laWO9ZHMG3DmQ==}
+  /ejs@3.1.10:
+    resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
     engines: {node: '>=0.10.0'}
     hasBin: true
     dependencies:
