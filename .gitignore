@@ -60,3 +60,5 @@ volumes
 !.env.vault
 
 service.account.json
+.aider*
+.env
