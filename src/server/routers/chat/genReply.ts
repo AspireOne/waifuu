@@ -107,7 +107,7 @@ function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
     content: input.message,
     chatId: input.chatId,
     feedback: null,
-
+    place: null,
     // Bogus data (not important):
     role: "USER",
     id: 1,
