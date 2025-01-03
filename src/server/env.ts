@@ -19,7 +19,6 @@ export const envSchema = z.object({
 
   // AI SERVICE API KEYSS
   REPLICATE_API_KEY: z.string().min(1),
-  HUGGINGFACEHUB_API_KEY: z.string().min(1),
 
   // CROWDIN
   CROWDIN_API_TOKEN: z.string().min(1),

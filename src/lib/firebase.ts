@@ -11,7 +11,7 @@ const globalForAuth = globalThis as unknown as {
   auth: Auth | undefined;
 };
 
-const options: FirebaseOptions = process.env.NEXT_PUBLIC_FIREBASE_CONFIG as FirebaseOptions;
+const options: FirebaseOptions = JSON.parse(process.env.NEXT_PUBLIC_FIREBASE_CONFIG as string) as FirebaseOptions;
 
 const getOrInitFirebaseApp = () => {
   // biome-ignore lint: Shut up this is beatiful.
@@ -28,7 +28,7 @@ const getOrInitFirebaseAuth = () => {
       persistence: indexedDBLocalPersistence,
     });
   } else {
-    globalForAuth.auth = getAuth();
+    globalForAuth.auth = getAuth(getApp());
     globalForAuth.auth.setPersistence(indexedDBLocalPersistence);
   }
 
