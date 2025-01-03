@@ -15,6 +15,8 @@ import { Model, ModelId, getModelById, getModelToUse } from "@/server/lib/models
 import { t } from "@lingui/macro";
 import { LangfuseTraceClient } from "langfuse";
 
+type OverridenMessage = Message & { place: string | null; };
+
 const Input = z.object({
   chatId: z.string(),
   message: z.string(),
@@ -102,7 +104,7 @@ function generateRandomId(length: number) {
   return result;
 }
 
-function createPlaceholderMessage(input: z.infer<typeof Input>): Message {
+function createPlaceholderMessage(input: z.infer<typeof Input>): OverridenMessage {
   return {
     content: input.message,
     chatId: input.chatId,
