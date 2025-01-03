@@ -25,13 +25,6 @@ export const envSchema = z.object({
   CROWDIN_API_TOKEN: z.string().min(1),
   CROWDIN_PROJECT_ID: z.string().min(1),
 
-  // PUSHER
-  // PUSHER_APP_ID: z.string(),
-  // PUSHER_SECRET: z.string(),
-  // NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
-  // NEXT_PUBLIC_PUSHER_CLUSTER: z.string(),
-  // NEXT_PUBLIC_PUSHER_HOST: z.string(),
-
   // MINIO
   S3_ACCESS_KEY: z.string().min(1),
   S3_SECRET_KEY: z.string().min(1),
@@ -59,6 +52,7 @@ export const envSchema = z.object({
 
   LANGFUSE_SK: z.string().min(1),
   NEXT_PUBLIC_LANGFUSE_PK: z.string().min(1),
+  NEXT_PUBLIC_FIREBASE_CONFIG: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

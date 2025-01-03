@@ -11,15 +11,7 @@ const globalForAuth = globalThis as unknown as {
   auth: Auth | undefined;
 };
 
-const options: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_API_KEY as string,
-  authDomain: "companion-400217.firebaseapp.com",
-  projectId: "companion-400217",
-  storageBucket: "companion-400217.appspot.com",
-  messagingSenderId: "24288336305",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_APP_ID as string,
-  measurementId: "G-N3WCYQ93GT",
-};
+const options: FirebaseOptions = process.env.NEXT_PUBLIC_FIREBASE_CONFIG as FirebaseOptions;
 
 const getOrInitFirebaseApp = () => {
   // biome-ignore lint: Shut up this is beatiful.
@@ -53,7 +45,7 @@ const getIdToken = async (): Promise<string | undefined> => {
     // If the user is not signed in, it is correct that we cannot get the token.
     // so do not throw error.
     if (e.message === "No user is signed in.") return undefined;
-    else throw e;
+    throw e;
   }
 };
 
