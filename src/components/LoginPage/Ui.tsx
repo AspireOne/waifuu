@@ -1,9 +1,9 @@
-import { SignInMode } from "@components/LoginPage/LoginPage";
-import { Trans, t } from "@lingui/macro";
-import { Button, Input, Link } from "@nextui-org/react";
-import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { toast } from "react-toastify";
+import {SignInMode} from "@components/LoginPage/LoginPage";
+import {Trans, t} from "@lingui/macro";
+import {Button, Input, Link} from "@nextui-org/react";
+import {useState} from "react";
+import {FcGoogle} from "react-icons/fc";
+import {toast} from "react-toastify";
 
 export type UiProps = {
   mode: SignInMode;
@@ -25,7 +25,7 @@ export const Ui = (props: UiProps) => {
   function handleSubmit() {
     // check validity.
     if (isSignUpMode && password !== passwordConfirm) {
-      toast(t`Passwords do not match.`, { type: "warning" });
+      toast(t`Passwords do not match.`, {type: "warning"});
       return;
     }
 
@@ -87,19 +87,23 @@ export const Ui = (props: UiProps) => {
       )}
 
       <Button
-        onClick={handleSubmit}
+        onClick={(e) => {
+          e.preventDefault();
+          handleSubmit()
+        }}
         color={"secondary"}
         className={"mt-4"}
+        type={"button"}
         isDisabled={props.loading}
       >
         {isSignUpMode ? <Trans>Sign Up</Trans> : <Trans>Sign In</Trans>}
       </Button>
 
-      <OauthDivider />
+      <OauthDivider/>
 
       <Button
         isDisabled={props.loading}
-        startContent={<FcGoogle />}
+        startContent={<FcGoogle/>}
         onClick={props.onGoogleSignTriggered}
       >
         {isSignUpMode ? (
@@ -115,9 +119,9 @@ export const Ui = (props: UiProps) => {
 const OauthDivider = () => {
   return (
     <div className="flex flex-row gap-3 items-center my-3">
-      <div className="h-[1px] bg-zinc-600 w-full" />
+      <div className="h-[1px] bg-zinc-600 w-full"/>
       <p className="text-foreground-500">or</p>
-      <div className="h-[1px] bg-zinc-600 w-full" />
+      <div className="h-[1px] bg-zinc-600 w-full"/>
     </div>
   );
 };
