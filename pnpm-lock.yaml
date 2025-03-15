@@ -50,9 +50,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.3.2
         version: 3.3.2(react-hook-form@7.49.2(react@18.2.0))
-      '@huggingface/inference':
-        specifier: ^2.6.4
-        version: 2.6.4
       '@jsx-email/all':
         specifier: ^2.2.3
         version: 2.2.3(@types/react@18.2.45)(react@18.2.0)(ts-node@10.9.2(@types/node@18.19.3)(typescript@5.3.3))
@@ -157,7 +154,7 @@ importers:
         version: 2.6.0(@types/react@18.2.45)(react@18.2.0)
       langchain:
         specifier: ^0.0.171
-        version: 0.0.171(@aws-sdk/client-s3@3.474.0)(@aws-sdk/credential-provider-node@3.474.0)(@google-cloud/storage@6.12.0(encoding@0.1.13))(@huggingface/inference@2.6.4)(@pinecone-database/pinecone@1.1.2)(@smithy/eventstream-codec@2.0.15)(@smithy/protocol-http@3.0.11)(@smithy/signature-v4@2.0.18)(@smithy/util-utf8@2.0.2)(axios@1.6.2)(encoding@0.1.13)(fast-xml-parser@4.3.2)(firebase-admin@11.11.1(encoding@0.1.13))(google-auth-library@8.9.0(encoding@0.1.13))(html-to-text@9.0.5)(ignore@5.3.0)(ioredis@5.3.2)(jsdom@22.1.0)(lodash@4.17.21)
+        version: 0.0.171(@aws-sdk/client-s3@3.474.0)(@aws-sdk/credential-provider-node@3.474.0)(@google-cloud/storage@6.12.0(encoding@0.1.13))(@pinecone-database/pinecone@1.1.2)(@smithy/eventstream-codec@2.0.15)(@smithy/protocol-http@3.0.11)(@smithy/signature-v4@2.0.18)(@smithy/util-utf8@2.0.2)(axios@1.6.2)(encoding@0.1.13)(fast-xml-parser@4.3.2)(firebase-admin@11.11.1(encoding@0.1.13))(google-auth-library@8.9.0(encoding@0.1.13))(html-to-text@9.0.5)(ignore@5.3.0)(ioredis@5.3.2)(jsdom@22.1.0)(lodash@4.17.21)
       langfuse:
         specifier: ^1.3.0
         version: 1.3.0
@@ -1130,10 +1127,6 @@ packages:
     resolution: {integrity: sha512-Tw+GGPnBp+5DOsSg4ek3LCPgkBOuOgS5DsDV7qsWNH9LZc433kgsWICjlsh2J9p04H2K66hsXPPb9qn9ILdUtA==}
     peerDependencies:
       react-hook-form: ^7.0.0
-
-  '@huggingface/inference@2.6.4':
-    resolution: {integrity: sha512-Xna7arltBSBoKaH3diGi3sYvkExgJMd/pF4T6vl2YbmDccbr1G/X5EPZ2048p+YgrJYG1jTYFCtY6Dr3HvJaow==}
-    engines: {node: '>=18'}
 
   '@internationalized/date@3.5.0':
     resolution: {integrity: sha512-nw0Q+oRkizBWMioseI8+2TeUPEyopJVz5YxoYVzR0W1v+2YytiYah7s/ot35F149q/xAg4F1gT/6eTd+tsUpFQ==}
@@ -7998,8 +7991,6 @@ snapshots:
     dependencies:
       react-hook-form: 7.49.2(react@18.2.0)
 
-  '@huggingface/inference@2.6.4': {}
-
   '@internationalized/date@3.5.0':
     dependencies:
       '@swc/helpers': 0.5.3
@@ -12651,7 +12642,7 @@ snapshots:
 
   kleur@4.1.5: {}
 
-  langchain@0.0.171(@aws-sdk/client-s3@3.474.0)(@aws-sdk/credential-provider-node@3.474.0)(@google-cloud/storage@6.12.0(encoding@0.1.13))(@huggingface/inference@2.6.4)(@pinecone-database/pinecone@1.1.2)(@smithy/eventstream-codec@2.0.15)(@smithy/protocol-http@3.0.11)(@smithy/signature-v4@2.0.18)(@smithy/util-utf8@2.0.2)(axios@1.6.2)(encoding@0.1.13)(fast-xml-parser@4.3.2)(firebase-admin@11.11.1(encoding@0.1.13))(google-auth-library@8.9.0(encoding@0.1.13))(html-to-text@9.0.5)(ignore@5.3.0)(ioredis@5.3.2)(jsdom@22.1.0)(lodash@4.17.21):
+  langchain@0.0.171(@aws-sdk/client-s3@3.474.0)(@aws-sdk/credential-provider-node@3.474.0)(@google-cloud/storage@6.12.0(encoding@0.1.13))(@pinecone-database/pinecone@1.1.2)(@smithy/eventstream-codec@2.0.15)(@smithy/protocol-http@3.0.11)(@smithy/signature-v4@2.0.18)(@smithy/util-utf8@2.0.2)(axios@1.6.2)(encoding@0.1.13)(fast-xml-parser@4.3.2)(firebase-admin@11.11.1(encoding@0.1.13))(google-auth-library@8.9.0(encoding@0.1.13))(html-to-text@9.0.5)(ignore@5.3.0)(ioredis@5.3.2)(jsdom@22.1.0)(lodash@4.17.21):
     dependencies:
       '@anthropic-ai/sdk': 0.6.8(encoding@0.1.13)
       ansi-styles: 5.2.0
@@ -12679,7 +12670,6 @@ snapshots:
       '@aws-sdk/client-s3': 3.474.0
       '@aws-sdk/credential-provider-node': 3.474.0
       '@google-cloud/storage': 6.12.0(encoding@0.1.13)
-      '@huggingface/inference': 2.6.4
       '@pinecone-database/pinecone': 1.1.2
       '@smithy/eventstream-codec': 2.0.15
       '@smithy/protocol-http': 3.0.11

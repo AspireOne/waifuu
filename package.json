@@ -61,7 +61,6 @@
     "@capacitor/status-bar": "^5.0.6",
     "@emotion/react": "^11.11.1",
     "@hookform/resolvers": "^3.3.2",
-    "@huggingface/inference": "^2.6.4",
     "@jsx-email/all": "^2.2.3",
     "@lingui/conf": "^4.6.0",
     "@lingui/core": "^4.6.0",

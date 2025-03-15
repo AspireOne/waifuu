@@ -2,7 +2,6 @@ import { preProcess } from "@/server/ai/vectordb/vectorDb";
 import { protectedProcedure } from "@/server/lib/trpc";
 import { ChatMode, Message } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { HuggingFaceInferenceEmbeddings } from "langchain/embeddings/hf";
 import { z } from "zod";
 
 export default protectedProcedure
