@@ -1,7 +1,6 @@
 import { env } from "@/server/env";
 import { Model, models } from "@/server/lib/models";
 import { ChatRole } from "@prisma/client";
-import axios from "axios";
 import { LangfuseTraceClient } from "langfuse";
 
 type Message = {
@@ -45,16 +44,12 @@ type Input = {
   model: Model;
 };
 
-const fallbacks = [
-  models.mixtral.id,
-  models.mythomax.id,
-  models.openhermes25.id,
-];
+const fallbacks = [models.mixtral.id, models.mythomax.id, models.openhermes25.id];
 
 const headers = {
   Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
-  "HTTP-Referer": `${"https://waifuu.com"}`,
-  "X-Title": `${"Waifuu"}`,
+  "HTTP-Referer": "https://waifuu.com",
+  "X-Title": "Waifuu",
   "Content-Type": "application/json",
 };
 
@@ -78,12 +73,11 @@ const run = async (input: Input) => {
   });
 
   // Make the actual fetch.
-  const { data: response } = (await axios({
-    method: "post",
-    url: "https://openrouter.ai/api/v1/chat/completions",
+  const response = (await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
     headers: headers,
-    data: {
-      model: [input.model.id, ...fallbacks],
+    body: JSON.stringify({
+      model: input.model.id,
       ...input.model.params,
       messages: [
         {
@@ -92,8 +86,8 @@ const run = async (input: Input) => {
         },
         ...msgsTransformed,
       ],
-    },
-  })) as { data: OpenRouterOutput };
+    }),
+  }).then((res) => res.json())) as OpenRouterOutput;
 
   const statsRetrievalSpan = generation.span({
     name: "stats_retrieval",

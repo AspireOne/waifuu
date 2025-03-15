@@ -15,7 +15,7 @@ import { Model, ModelId, getModelById, getModelToUse } from "@/server/lib/models
 import { t } from "@lingui/macro";
 import { LangfuseTraceClient } from "langfuse";
 
-type OverridenMessage = Message & { place: string | null; };
+type OverridenMessage = Message & { place: string | null };
 
 const Input = z.object({
   chatId: z.string(),
@@ -130,7 +130,7 @@ async function genOutput(
 ) {
   try {
     return await mainLlm.run({
-      system_prompt: await getSystemPrompt(
+      system_prompt: getSystemPrompt(
         chat.mode,
         chat.bot.persona,
         chat.bot.name,
