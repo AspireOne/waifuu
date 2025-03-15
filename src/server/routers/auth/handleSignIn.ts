@@ -27,7 +27,9 @@ export default publicProcedure
     });
 
     const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
+    console.log("HEY, SUCCESFULLY DECODED ID TOKEN");
     await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
+    console.log("HEY, SUCCESFULLY VERIFIED REQUEST");
 
     // Uncomment to get early access.
     /*const hasEarlyAccess = await ctx.prisma.earlyAccess.findUnique({
@@ -54,6 +56,7 @@ export default publicProcedure
     }*/
 
     const { alreadyExisted } = await upsertUser(ctx.prisma, decodedIdToken);
+    console.log("HEY, SUCCESFULLY UPSERTED USER");
 
     if (!alreadyExisted && decodedIdToken.email) {
       // TODO(1): Send it asynchronously!.
