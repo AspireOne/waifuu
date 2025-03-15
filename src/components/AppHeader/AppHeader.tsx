@@ -25,7 +25,7 @@ export const AppHeader = (props: AppHeaderInput) => {
         "lg:top-4 lg:rounded-full lg:max-w-[700px] lg:mx-auto lg:border-2 lg:background-blur-xl",
       )}
     >
-      <div className={"flex flex-row items-center justify-between h-full px-4 gap-4"}>
+      <div className={"flex flex-row items-center justify-between h-full py-4 px-3 gap-4"}>
         {/* Left-aligned back button */}
         {props.backButtonEnabled && (
           <Button
@@ -34,6 +34,7 @@ export const AppHeader = (props: AppHeaderInput) => {
             isIconOnly
             onClick={props.onBackButtonPressed}
             className={"flex-shrink-0"}
+            radius={"full"}
           >
             <IoChevronBack size={25} />
           </Button>

@@ -5,7 +5,6 @@ export const CustomRadio = (props: RadioProps & { className?: string }) => {
   const {
     Component,
     children,
-    isSelected,
     description,
     getBaseProps,
     getWrapperProps,
