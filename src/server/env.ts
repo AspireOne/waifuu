@@ -20,10 +20,6 @@ export const envSchema = z.object({
   // AI SERVICE API KEYSS
   REPLICATE_API_KEY: z.string().min(1),
 
-  // CROWDIN
-  CROWDIN_API_TOKEN: z.string().min(1),
-  CROWDIN_PROJECT_ID: z.string().min(1),
-
   // MINIO
   S3_ACCESS_KEY: z.string().min(1),
   S3_SECRET_KEY: z.string().min(1),
