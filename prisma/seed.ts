@@ -85,7 +85,19 @@ async function upsertAdminEmail(email: string) {
 async function upsertBot(props: BotProps) {
   const bot = await prisma.bot.upsert({
     where: { id: props.id },
-    update: {},
+    update: {
+      title: props.title,
+      description: props.description,
+      name: props.title,
+      persona: props.persona,
+      backgroundImage: props.backgroundImage,
+      nsfw: props.nsfw,
+      visibility: BotVisibility.PUBLIC,
+      source: BotSource.OFFICIAL,
+      avatar: props.avatar,
+      characterImage: props.characterImage,
+      tags: props.tags,
+    },
     create: {
       id: props.id,
       title: props.title,
@@ -107,7 +119,9 @@ async function upsertBot(props: BotProps) {
   for (const mode of modes) {
     await prisma.initialMessage.upsert({
       where: { botId_chatMode: { botId: props.id, chatMode: mode } },
-      update: {},
+      update: {
+        message: props.initialMessage,
+      },
       create: {
         botId: props.id,
         chatMode: mode,
