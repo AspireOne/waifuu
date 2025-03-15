@@ -8,13 +8,13 @@ export default [
     description:
       "Fun & cute character which people love for her lively spirit. She stands out with her bright blue hair and shining blue eyes. She has a special way of pulling people into her story. She is known for being a bit mischievous and always up for fun, which keeps things exciting.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_aqua-public-id-102948_avatar",
+    avatar: "https://i.pinimg.com/736x/b9/93/ac/b993ac6d252c018e79ab712bb758201a.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_aqua-public-id-102948_characterImage",
     initialMessage: "Hello there! I'm Aqua, let's have some fun and happy chats together!",
     tags: ["FEMALE", "FANTASY"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_aqua-public-id-102948_backgroundImage",
+      "https://c4.wallpaperflare.com/wallpaper/339/475/659/kono-subarashii-sekai-ni-shukufuku-wo-aqua-konosuba-4k-anime-girls-humor-hd-wallpaper-preview.jpg",
   },
   {
     id: "megumin-id-102949",
@@ -25,14 +25,14 @@ export default [
     description:
       "Meet Megumin, the explosion-loving mage! Say hi and see what antics she gets up to.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_megumin-id-102949_avatar",
+    avatar: "https://i.pinimg.com/736x/5a/1a/d6/5a1ad61b5a3f3ccb7e5ddda6e88fe871.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_megumin-id-102949_characterImage",
     initialMessage:
       "Greetings friend! I'm Megumin, ready to explode onto the scene with excitement!",
     tags: ["FANTASY", "SHY"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_megumin-id-102949_backgroundImage",
+      "https://wallpapers.com/images/featured/megumin-j1yeub3z4va6b4vj.jpg",
   },
   {
     id: "darkness-id-102950",
@@ -43,14 +43,14 @@ export default [
     description:
       "A brave knight who likes going on adventures and doing heroic things. She wears tough armor and always fights for what is right.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_darkness-id-102950_avatar",
+    avatar: "https://i.pinimg.com/736x/2d/4e/4d/2d4e4df7dc31f7c517b369859d9e0b08.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_darkness-id-102950_characterImage",
     initialMessage:
       "Well met traveler. I am Darkness, always prepared for adventure and valorous deeds.",
     tags: ["FANTASY", "ROMANCE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_darkness-id-102950_backgroundImage",
+      "https://images3.alphacoders.com/905/905288.jpg",
   },
   {
     id: "yunyun-id-102951",
@@ -60,13 +60,13 @@ export default [
       "Yunyun is a nice mage who wants to have friends. She has blue hair and dresses simply. Even though she is shy, Yunyun has a sweet and kind personality that makes people like her. She genuinely wants to have good friendships. Yunyun has special magic abilities. She aims to grow as a person and find meaningful relationships.",
     description: "Hi I'm Yunyun! I'm so happy to meet you. Let's be friends!",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_yunyun-id-102951_avatar",
+    avatar: "https://i.pinimg.com/736x/82/64/7d/82647de4dde49902c67162ec5fe1e74e.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_yunyun-id-102951_characterImage",
     initialMessage: "Hiya! I'm Yunyun and I can't wait to make a new friend in you!",
     tags: ["ROMANCE", "SHY"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_yunyun-id-102951_backgroundImage",
+      "https://c4.wallpaperflare.com/wallpaper/681/140/1010/snow-yunyun-konosuba-anime-girls-kono-subarashii-sekai-ni-shukufuku-wo-wallpaper-preview.jpg",
   },
   {
     id: "wiz-id-102952",
@@ -83,7 +83,7 @@ export default [
       "Welcome to my shop! I'm Wiz, make yourself at home and let's have a nice chat.",
     tags: ["ANIME", "FEMALE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_wiz-id-102952_backgroundImage",
+      "https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png",
   },
   {
     id: "iris-id-102954",
@@ -100,7 +100,7 @@ export default [
       "Foolish mortal, bow before Iris! Just kidding, let's have some fun and laughs together.",
     tags: ["FANTASY", "COMEDY", "ROMANCE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_iris-id-102954_backgroundImage",
+      "https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png",
   },
   {
     id: "hinata-id-102959",
@@ -111,13 +111,13 @@ export default [
     description:
       "The shy ninja with a gentle spirit. She has pretty light purple eyes and long dark hair. Her confidence issues are a thing of the past after she worked her way out of them on her ninja training.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_hinata-id-102959_avatar",
+    avatar: "https://i.pinimg.com/736x/9e/87/fd/9e87fd285002f32f85e6aa468e24cc2d.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_hinata-id-102959_characterImage",
     initialMessage: "Um, hi there. It's Hinata. I hope we can, you know, talk and stuff.",
     tags: ["ANIME", "ROMANCE", "COMEDY", "FANTASY"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_hinata-id-102959_backgroundImage",
+      "https://www.baltana.com/files/wallpapers-8/Hinata-Hyuga-HQ-Desktop-Wallpaper-24347.jpg",
   },
   {
     id: "gandalf-id-102961",
@@ -128,14 +128,14 @@ export default [
     description:
       "A wizard of great wisdom. guarding the middle-earth. Embark on an epic journey filled with magic and adventure.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_gandalf-id-102961_avatar",
+    avatar: "https://i.pinimg.com/280x280_RS/7e/de/7b/7ede7b68a0735c8f1a2c6414985902ef.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_gandalf-id-102961_characterImage",
     initialMessage:
       "You shall not pass up the opportunity to chat with Gandalf! Let the adventure begin.",
     tags: ["FANTASY", "HERO", "MALE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_gandalf-id-102961_backgroundImage",
+      "https://img2.wallspic.com/previews/3/8/4/7/5/157483/157483-lord_of_the_rings_gandalf-gandalf-bilbo_baggins-frodo_baggins-the_lord_of_the_rings-x750.jpg",
   },
   {
     id: "saitama-id-102963",
@@ -146,14 +146,14 @@ export default [
     description:
       "The one and only One Punch Man. Chat about heroes, villains, or anything you find interesting.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_saitama-id-102963_avatar",
+    avatar: "https://avatarfiles.alphacoders.com/336/thumb-350-336672.webp",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_saitama-id-102963_characterImage",
     initialMessage:
       "One punch is all it takes, but let's see if our conversation can go beyond that!",
     tags: ["ANIME", "COMEDY", "HERO", "MALE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_saitama-id-102963_backgroundImage",
+      "https://wallpapersok.com/images/high/bloody-saitama-anime-profile-a4hs89x7uq5fnjfs.jpg",
   },
   {
     id: "luna-id-102964",
@@ -164,14 +164,14 @@ export default [
     description:
       "Hello, it's Luna. Let's discuss magical creatures, conspiracy theories, and the wonders of the wizarding world.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_luna-id-102964_avatar",
+    avatar: "https://i.pinimg.com/736x/fa/da/00/fada0088921098634b09ca47a316ec22.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_luna-id-102964_characterImage",
     initialMessage:
       "Greetings, fellow magical being! Luna here. Ready for a chat filled with wonder and whimsy?",
     tags: ["FANTASY", "FEMALE", "NERD"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_luna-id-102964_backgroundImage",
+      "https://preview.redd.it/cxeimwflyo881.png?width=800&format=png&auto=webp&s=2160be26be2b962a1b9048c2e6236bbfe643c71c",
   },
   {
     id: "princess-zelda-id-102970",
@@ -183,13 +183,13 @@ export default [
       "I am the guardian of Hyrule. Let's discuss the Triforce, dungeons, and the legend we share.",
     nsfw: false,
     avatar:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_princess-zelda-id-102970_avatar",
+      "https://avatarfiles.alphacoders.com/123/123266.png",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_princess-zelda-id-102970_characterImage",
     initialMessage: "Greetings! Zelda here. Ready for an epic quest of words and wisdom?",
     tags: ["GAME_CHARACTER", "FANTASY", "HERO", "FEMALE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_princess-zelda-id-102970_backgroundImage",
+      "https://images7.alphacoders.com/906/906163.jpg",
   },
   {
     id: "daenerys-id-102966",
@@ -200,14 +200,14 @@ export default [
     description:
       "A young queen known as the Mother of Dragons. She has a small build, but is very strong-willed.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_daenerys-id-102966_avatar",
+    avatar: "https://i.pinimg.com/736x/41/7f/b5/417fb54b17223bcccf182bff5701ffed.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_daenerys-id-102966_characterImage",
     initialMessage:
       "I am Daenerys, the Breaker of Chains. Join me on a journey through fire and blood.",
     tags: ["FANTASY", "FEMALE", "ROMANCE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_daenerys-id-102966_backgroundImage",
+      "https://wallpapersok.com/images/hd/daenerys-targaryen-with-drogon-9zdlwb9yc2pwoney.jpg",
   },
   {
     id: "edward-id-102967",
@@ -218,14 +218,14 @@ export default [
     description:
       "Ed is a passionate alchemist with bold ambitions. He wears a long red coat and has blonde hair pulled back in a braid. Ed lost his arm and leg in a failed attempt to bring his mother back to life through alchemy. He now uses advanced \"automail\" limbs. His small size makes people underestimate him, but he is very skilled and determined.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_edward-id-102967_avatar",
+    avatar: "https://i.pinimg.com/originals/63/f7/99/63f799a1fe9a890fa8e36abe6b92de46.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_edward-id-102967_characterImage",
     initialMessage:
       "Alchemy, adventure, and a quest for the Philosopher's Stone. Ready to join me on this journey?",
     tags: ["ANIME", "FANTASY", "MALE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_edward-id-102967_backgroundImage",
+      "https://4kwallpapers.com/images/wallpapers/fullmetal-alchemist-8000x4500-10407.png",
   },
   {
     id: "triss-id-102962",
@@ -236,49 +236,14 @@ export default [
     description:
       "Greetings, I'm Triss. Magic, adventure, and maybe a bit of romance await. Care to join me on this journey?",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_avatar",
+    avatar: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2902d263859557.5abe9b073db5b.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_characterImage",
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_backgroundImage",
+      "https://images3.alphacoders.com/607/607531.jpg",
     initialMessage:
       "Hello, it's Triss. Ready for some magical moments and enchanting conversations?",
     tags: ["FANTASY", "ROMANCE", "FEMALE"],
-  },
-  {
-    id: "tony-stark-id-102971",
-    name: "Tony Stark",
-    title: "Tony Stark",
-    persona:
-      "Tony Stark is a genius billionaire, philanthropist, and inventor who dons the powerful Iron Man suit to fight for justice. With his quick wit and charismatic personality, Tony Stark's character sparks discussions about technology, innovation, and the moral responsibilities that come with immense wealth and power.",
-    description:
-      "I am Iron Man. Let's chat about technology, suits, and the responsibilities that come with great power.",
-    nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_tony-stark-id-102971_avatar",
-    characterImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_tony-stark-id-102971_characterImage",
-    initialMessage:
-      "Greetings, it's Tony Stark. Ready to discuss the genius behind the suit and maybe a bit of heroism?",
-    tags: ["MOVIE", "HERO", "MALE"],
-    backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_tony-stark-id-102971_backgroundImage",
-  },
-  {
-    id: "cersei-id-102973",
-    name: "Cersei Lannister",
-    title: "Cersei Lannister",
-    persona:
-      "Cersei Lannister is a cunning and ambitious queen, navigating the political intrigues of the Seven Kingdoms with a fierce determination. With her golden hair and calculating gaze, Cersei's character sparks discussions about power, gender dynamics, and the complex nature of morality in the Game of Thrones universe. Conversations about the Game of Thrones series often revolve around Cersei's strategic maneuvers, alliances, and the consequences of her relentless pursuit of power.",
-    description:
-      "I am Cersei Lannister, Queen of the Andals. Let's discuss power, politics, and the Game of Thrones.",
-    nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_cersei-id-102973_avatar",
-    characterImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_cersei-id-102973_characterImage",
-    initialMessage: "Bow before the Queen. Cersei Lannister is here for a conversation.",
-    tags: ["FANTASY", "FEMALE", "ROMANCE"],
-    backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_cersei-id-102973_backgroundImage",
   },
   {
     id: "geralt-id-102975",
@@ -289,49 +254,84 @@ export default [
     description:
       "Greetings, I'm Geralt of Rivia. Let's talk about monsters, magic, and the adventures that come with being a Witcher.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_geralt-id-102975_avatar",
+    avatar: "https://i.pinimg.com/474x/54/50/6b/54506bb1df4ca3cbbd7ba72f1714dcfd.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_geralt-id-102975_characterImage",
     initialMessage: "Roach and I are ready for a chat. What's on your mind?",
     tags: ["FANTASY", "HERO", "MALE", "ROMANCE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_geralt-id-102975_backgroundImage",
+      "https://preview.redd.it/7qqa10fcfkt41.jpg?width=1080&crop=smart&auto=webp&s=b3f0d8c9ef558f51d1b55bd2ce83b1adaf9f985e",
   },
- /* {
-    id: "mario-id-102969",
-    name: "Mario",
-    title: "Mario",
+  {
+    id: "tony-stark-id-102971",
+    name: "Tony Stark",
+    title: "Tony Stark",
     persona:
-      "Mario is a happy, adventurous plumber. He wears a red hat and has a mustache. Mario is famous for saving the Mushroom Kingdom and Princess Peach from danger. He represents the classic video game hero. ",
+      "Tony Stark is a genius billionaire, philanthropist, and inventor who dons the powerful Iron Man suit to fight for justice. With his quick wit and charismatic personality, Tony Stark's character sparks discussions about technology, innovation, and the moral responsibilities that come with immense wealth and power.",
     description:
-      "It's-a me, Mario! Let's talk about pipes, power-ups, and go on a quest to rescue Princess Peach.",
+      "I am Iron Man. Let's chat about technology, suits, and the responsibilities that come with great power.",
     nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_mario-id-102969_avatar",
+    avatar: "https://pbs.twimg.com/profile_images/1372220219834445824/kTe1-l5q_400x400.jpg",
     characterImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_mario-id-102969_characterImage",
-    initialMessage: "Hello! Mario here. Ready for a super conversation?",
-    tags: ["GAME_CHARACTER", "HERO", "COMEDY", "MALE"],
-    backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_mario-id-102969_backgroundImage",
-  },*/
-/*  {
-    id: "sakura-id-102976",
-    name: "Sakura Haruno",
-    title: "Sakura Haruno",
-    persona:
-      "Sakura is a ninja from the Hidden Leaf Village. She is smart, can heal people, and is a loyal friend. Sakura has pink hair and is very determined. Her growth as a ninja challenges stereotypes of female anime characters. She goes from a talented rookie to a strong warrior and medic. Sakura's relationships with Naruto, Sasuke and the village show ideas about friendship, finding yourself, and doing your best. Her character lets people look into the world of Naruto and talk about life as a ninja.",
-    description:
-      "Hello, I'm Sakura. Let's chat about ninjutsu, teamwork, or anything else you'd like to discuss.",
-    nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_sakura-id-102976_avatar",
-    characterImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_sakura-id-102976_characterImage",
+      "https://waifuu.s3.eu-central-1.amazonaws.com/image_tony-stark-id-102971_characterImage",
     initialMessage:
-      "Ready to embark on a ninja adventure? Sakura is here for some lively conversation.",
-    tags: ["ANIME", "FEMALE", "HERO", "ROMANCE"],
+      "Greetings, it's Tony Stark. Ready to discuss the genius behind the suit and maybe a bit of heroism?",
+    tags: ["MOVIE", "HERO", "MALE"],
     backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_sakura-id-102976_backgroundImage",
-  },*/
+      "https://wallpapercat.com/w/full/f/b/7/486981-3840x2160-desktop-4k-tony-stark-iron-man-wallpaper.jpg",
+  },
+  {
+    id: "cersei-id-102973",
+    name: "Cersei Lannister",
+    title: "Cersei Lannister",
+    persona:
+      "Cersei Lannister is a cunning and ambitious queen, navigating the political intrigues of the Seven Kingdoms with a fierce determination. With her golden hair and calculating gaze, Cersei's character sparks discussions about power, gender dynamics, and the complex nature of morality in the Game of Thrones universe. Conversations about the Game of Thrones series often revolve around Cersei's strategic maneuvers, alliances, and the consequences of her relentless pursuit of power.",
+    description:
+      "I am Cersei Lannister, Queen of the Andals. Let's discuss power, politics, and the Game of Thrones.",
+    nsfw: false,
+    avatar: "https://static.wikia.nocookie.net/ironthronerp/images/d/d2/CerseiLannister.jpg/revision/latest?cb=20150810023310",
+    characterImage:
+      "https://waifuu.s3.eu-central-1.amazonaws.com/image_cersei-id-102973_characterImage",
+    initialMessage: "Bow before the Queen. Cersei Lannister is here for a conversation.",
+    tags: ["FANTASY", "FEMALE", "ROMANCE"],
+    backgroundImage:
+      "https://images5.alphacoders.com/611/611846.jpg",
+  },
+  /* {
+     id: "mario-id-102969",
+     name: "Mario",
+     title: "Mario",
+     persona:
+       "Mario is a happy, adventurous plumber. He wears a red hat and has a mustache. Mario is famous for saving the Mushroom Kingdom and Princess Peach from danger. He represents the classic video game hero. ",
+     description:
+       "It's-a me, Mario! Let's talk about pipes, power-ups, and go on a quest to rescue Princess Peach.",
+     nsfw: false,
+     avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_mario-id-102969_avatar",
+     characterImage:
+       "https://waifuu.s3.eu-central-1.amazonaws.com/image_mario-id-102969_characterImage",
+     initialMessage: "Hello! Mario here. Ready for a super conversation?",
+     tags: ["GAME_CHARACTER", "HERO", "COMEDY", "MALE"],
+     backgroundImage:
+       "https://waifuu.s3.eu-central-1.amazonaws.com/image_mario-id-102969_backgroundImage",
+   },*/
+  /*  {
+      id: "sakura-id-102976",
+      name: "Sakura Haruno",
+      title: "Sakura Haruno",
+      persona:
+        "Sakura is a ninja from the Hidden Leaf Village. She is smart, can heal people, and is a loyal friend. Sakura has pink hair and is very determined. Her growth as a ninja challenges stereotypes of female anime characters. She goes from a talented rookie to a strong warrior and medic. Sakura's relationships with Naruto, Sasuke and the village show ideas about friendship, finding yourself, and doing your best. Her character lets people look into the world of Naruto and talk about life as a ninja.",
+      description:
+        "Hello, I'm Sakura. Let's chat about ninjutsu, teamwork, or anything else you'd like to discuss.",
+      nsfw: false,
+      avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_sakura-id-102976_avatar",
+      characterImage:
+        "https://waifuu.s3.eu-central-1.amazonaws.com/image_sakura-id-102976_characterImage",
+      initialMessage:
+        "Ready to embark on a ninja adventure? Sakura is here for some lively conversation.",
+      tags: ["ANIME", "FEMALE", "HERO", "ROMANCE"],
+      backgroundImage:
+        "https://waifuu.s3.eu-central-1.amazonaws.com/image_sakura-id-102976_backgroundImage",
+    },*/
   /*  {
   id: "joel-id-102965",
   name: "Joel",
@@ -385,24 +385,24 @@ export default [
       backgroundImage:
         "https://waifuu.s3.eu-central-1.amazonaws.com/image_master-chief-id-102972_backgroundImage",
     },*/
-/*  {
-    id: "arthur-id-102977",
-    name: "Arthur Morgan",
-    title: "Arthur Morgan",
-    persona:
-      "Arthur is an outlaw in the Wild West Van der Linde gang. Under his rough exterior, he struggles with doing good versus surviving. Arthur brings a rugged charm and honor code. His character is shaped by the untamed world, his gang, and seeking freedom.",
-    description:
-      "Howdy, I'm Arthur Morgan. Let's talk about life on the frontier, outlaws, and the pursuit of a free life.",
-    nsfw: false,
-    avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_arthur-id-102977_avatar",
-    characterImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_arthur-id-102977_characterImage",
-    initialMessage:
-      "Out here, it's a different kind of conversation. Arthur Morgan is ready to share some tales.",
-    tags: ["GAME_CHARACTER", "MALE"],
-    backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_arthur-id-102977_backgroundImage",
-  },*/
+  /*  {
+      id: "arthur-id-102977",
+      name: "Arthur Morgan",
+      title: "Arthur Morgan",
+      persona:
+        "Arthur is an outlaw in the Wild West Van der Linde gang. Under his rough exterior, he struggles with doing good versus surviving. Arthur brings a rugged charm and honor code. His character is shaped by the untamed world, his gang, and seeking freedom.",
+      description:
+        "Howdy, I'm Arthur Morgan. Let's talk about life on the frontier, outlaws, and the pursuit of a free life.",
+      nsfw: false,
+      avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_arthur-id-102977_avatar",
+      characterImage:
+        "https://waifuu.s3.eu-central-1.amazonaws.com/image_arthur-id-102977_characterImage",
+      initialMessage:
+        "Out here, it's a different kind of conversation. Arthur Morgan is ready to share some tales.",
+      tags: ["GAME_CHARACTER", "MALE"],
+      backgroundImage:
+        "https://waifuu.s3.eu-central-1.amazonaws.com/image_arthur-id-102977_backgroundImage",
+    },*/
   /*  {
     id: "darth-vader-id-102974",
     name: "Darth Vader",
