@@ -1,6 +1,17 @@
 import { ChatMode } from "@prisma/client";
 import { PromptTemplate } from "langchain/prompts";
 
+// Let's get rid of the PromptTemplate from langchain/prompts. When .fromTemplate is called, it creates an object
+// that  has a .format method (examaple below), and requires the variables from the template to be passed in as an object.
+// Let's implement this ourselves. AI!
+// 
+// Example usage: 
+// getSystemPrompt(mode).format({
+//     characterPersona: persona,
+//     characterName: characterName,
+//     addressedAs: addressedAs ? ` addressed '${addressedAs}` : "",
+// });
+
 const roleplaySystemPrompt = PromptTemplate.fromTemplate(
   'You are roleplaying {characterName} in a chat with user. Be proactive and use asterisks to denote actions. This is your character: "{characterPersona}".',
 );

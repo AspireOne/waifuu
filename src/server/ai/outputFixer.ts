@@ -1,4 +1,4 @@
-import { OpenAI } from "langchain/llms/openai";
+/*import { OpenAI } from "langchain/llms/openai";
 
 const outputFixer = new OpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY,
@@ -6,4 +6,4 @@ const outputFixer = new OpenAI({
   temperature: 0.1,
 });
 
-export { outputFixer };
+export { outputFixer };*/
