@@ -1,17 +1,18 @@
-import { paths } from "@/lib/paths";
-import { AppPage } from "@components/AppPage";
-import { UserProfileModal } from "@components/UserProfileModal";
+import {paths} from "@/lib/paths";
+import {AppPage} from "@components/AppPage";
+import {UserProfileModal} from "@components/UserProfileModal";
 import ChatInput from "@components/bot-chat/ChatInput";
 import Title from "@components/ui/Title";
-import { api } from "@lib/api";
-import { getPusherClient } from "@lib/pusherClient";
-import { msg } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
-import { Card, CardBody } from "@nextui-org/card";
-import { Avatar } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/spinner";
-import { useSession } from "@providers/SessionProvider";
-import { useEffect, useRef, useState } from "react";
+import {api} from "@lib/api";
+import {getPusherClient} from "@lib/pusherClient";
+import {msg} from "@lingui/macro";
+import {useLingui} from "@lingui/react";
+import {Card, CardBody} from "@nextui-org/card";
+import {Avatar, Divider} from "@nextui-org/react";
+import {Spinner} from "@nextui-org/spinner";
+import {useSession} from "@providers/SessionProvider";
+import {useEffect, useRef, useState} from "react";
+import {BiSolidError} from "react-icons/bi";
 
 type Message = {
   user: {
@@ -24,10 +25,10 @@ type Message = {
 };
 
 export default function RoleplayRoulette() {
-  const { _ } = useLingui();
+  const {_} = useLingui();
   return (
     <AppPage title={_(msg`Public Chat`)} backPath={paths.discover}>
-      <Chat />
+      <Chat/>
     </AppPage>
   );
 }
@@ -37,10 +38,10 @@ function Chat() {
   const [onlineUsers, setOnlineUsers] = useState(0);
   const [showLoading, setShowLoading] = useState(true);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const { user } = useSession();
+  const {user} = useSession();
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({behavior: "smooth"});
   }, [messages]);
 
   const sendMessageMutation = api.RRChat.sendMessage.useMutation({
@@ -96,7 +97,7 @@ function Chat() {
       timestamp: new Date().toISOString(),
     };
 
-    sendMessageMutation.mutate({ channel: "presence-global-chat", message: newMessage });
+    sendMessageMutation.mutate({channel: "presence-global-chat", message: newMessage});
   }
 
   return (
@@ -107,7 +108,7 @@ function Chat() {
         </CardBody>
       </Card>*/}
 
-      {showLoading && <LoadingScreen />}
+      {showLoading && <LoadingScreen/>}
 
       {!showLoading && (
         <div className={"flex flex-col gap-4 max-w-[800px] w-full mx-auto"}>
@@ -120,15 +121,23 @@ function Chat() {
               <li>3. No spamming</li>
               <li>4. Be nice to each other!</li>
             </ul>
-            <p className={"text-lg text-primary"}>Say hello!</p>
+            <Divider className={"my-2"}/>
+            <Card className={"bg-red-500/40 mt-2"}>
+              <CardBody>
+                <div className="flex items-center gap-2">
+                  <BiSolidError className="text-xl"/>
+                  <p>The public chat has been disabled indefinitely. Thank you for your support!</p>
+                </div>
+              </CardBody>
+            </Card>
           </Card>
-          <Messages data={messages} />
-          <div ref={bottomRef} />
+          <Messages data={messages}/>
+          <div ref={bottomRef}/>
         </div>
       )}
 
       <div className="fixed bottom-0 left-0 right-0 p-3 z-30 bg-gradient-to-t from-black via-black/95 to-black/10">
-        <ChatInput placeholder={"Send a message..."} onSend={handleSendMessage} />
+        <ChatInput placeholder={"Send a message..."} onSend={handleSendMessage}/>
       </div>
     </div>
   );
@@ -173,7 +182,7 @@ function Messages(props: { data: Message[] }) {
 function LoadingScreen() {
   return (
     <div className={"flex justify-center h-[90dvh] items-center"}>
-      <Spinner />
+      <Spinner/>
     </div>
   );
 }
