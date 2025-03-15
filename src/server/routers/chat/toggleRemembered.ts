@@ -1,9 +1,7 @@
 import { preProcess } from "@/server/ai/vectordb/vectorDb";
 import { protectedProcedure } from "@/server/lib/trpc";
-import { Pinecone } from "@pinecone-database/pinecone";
 import { ChatMode, Message } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import { PineconeStore } from "langchain/dist/vectorstores/pinecone";
 import { HuggingFaceInferenceEmbeddings } from "langchain/embeddings/hf";
 import { z } from "zod";
 
@@ -69,7 +67,8 @@ async function saveToVectorDb(props: {
   botId: string;
   chatMode: ChatMode;
 }) {
-  const pinecone = new Pinecone({
+  // REMOVED FOR NOW.
+  /*const pinecone = new Pinecone({
     environment: "gcp-starter",
     apiKey: process.env.PINECONE_API_KEY as string,
   });
@@ -95,7 +94,7 @@ async function saveToVectorDb(props: {
         messageId: props.message.id,
       },
     },
-  ]);
+  ]);*/
 }
 
 function validate(message: Message | null) {

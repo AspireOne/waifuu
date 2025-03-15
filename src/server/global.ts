@@ -4,7 +4,6 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { PrismaClient } from "@prisma/client";
 import Langfuse from "langfuse";
 import PusherServer from "pusher";
-import Replicate from "replicate";
 import Stripe from "stripe";
 
 // Values are currently defined in src/server/clients. Might change.
@@ -20,7 +19,6 @@ export type Global = {
   };
   ipThrottler?: IPThrottler;
   rateLimiter?: RateLimiterClass;
-  replicate?: Replicate;
   s3Client?: S3Client;
   stripe?: Stripe;
   langfuse?: Langfuse;

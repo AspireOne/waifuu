@@ -17,9 +17,6 @@ export const envSchema = z.object({
   NEXT_PUBLIC_BASE_URL: z.string().url(),
   NEXT_PUBLIC_CAPACITOR_BASE_URL: z.string().url(),
 
-  // AI SERVICE API KEYSS
-  REPLICATE_API_KEY: z.string().min(1),
-
   // MINIO
   S3_ACCESS_KEY: z.string().min(1),
   S3_SECRET_KEY: z.string().min(1),
