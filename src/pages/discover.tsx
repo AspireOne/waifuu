@@ -32,8 +32,7 @@ const Discover = () => {
           <CardBody>
             <div className="flex items-center gap-2">
               <IoWarning size={24} className="text-warning-600"/>
-              <p>This project has been long-term deprecated. Some parts of the app (images, public chat...) may not work
-                at all.</p>
+              <p><b>Waifuu has been sunset</b> and is now in a maintanance mode with limited functionality. Some parts of the app may not work. Thank you for support!</p>
             </div>
           </CardBody>
         </Card>

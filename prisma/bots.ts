@@ -239,11 +239,11 @@ export default [
     avatar: "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_avatar",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_characterImage",
+    backgroundImage:
+      "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_backgroundImage",
     initialMessage:
       "Hello, it's Triss. Ready for some magical moments and enchanting conversations?",
     tags: ["FANTASY", "ROMANCE", "FEMALE"],
-    backgroundImage:
-      "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_backgroundImage",
   },
   {
     id: "tony-stark-id-102971",
