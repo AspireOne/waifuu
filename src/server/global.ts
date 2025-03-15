@@ -2,7 +2,6 @@ import { IPThrottler } from "@/server/lib/IPThrottler";
 import RateLimiterClass from "@/server/lib/RateLimiterClass";
 import { S3Client } from "@aws-sdk/client-s3";
 import { PrismaClient } from "@prisma/client";
-import Redis from "ioredis";
 import Langfuse from "langfuse";
 import PusherServer from "pusher";
 import Replicate from "replicate";
@@ -19,7 +18,6 @@ export type Global = {
     host: string;
     port?: string;
   };
-  ioredis?: Redis;
   ipThrottler?: IPThrottler;
   rateLimiter?: RateLimiterClass;
   replicate?: Replicate;
