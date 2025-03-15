@@ -46,10 +46,9 @@ type Input = {
 };
 
 const fallbacks = [
-  models.psyfighter.id,
+  models.mixtral.id,
   models.mythomax.id,
   models.openhermes25.id,
-  models.mixtral.id,
 ];
 
 const headers = {

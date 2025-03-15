@@ -9,10 +9,9 @@ const universalParams = {
 };
 
 export type ModelId =
-  | "jebcarter/psyfighter-13b"
   | "gryphe/mythomax-l2-13b"
   | "teknium/openhermes-2.5-mistral-7b"
-  | "mistralai/mixtral-8x7b-instruct";
+  | "mistralai/mixtral-8x22b-instruct";
 
 export type ModelParams = {
   temperature: number;
@@ -30,16 +29,9 @@ export type Model = {
   params: ModelParams;
 };
 
-type ModelKey = "psyfighter" | "mythomax" | "openhermes25" | "mixtral";
+type ModelKey = "mythomax" | "openhermes25" | "mixtral";
 
 export const models: Record<ModelKey, Model> = {
-  psyfighter: {
-    id: "jebcarter/psyfighter-13b",
-    friendlyName: "Psyfighter",
-    description: "Good overall capabilities - high in roleplaying and output consistency.",
-    tokens: 4096,
-    params: { ...universalParams, max_tokens: 3996 },
-  },
   mythomax: {
     id: "gryphe/mythomax-l2-13b",
     friendlyName: "MythoMax",
@@ -56,19 +48,19 @@ export const models: Record<ModelKey, Model> = {
     params: { ...universalParams, max_tokens: 3996 },
   },
   mixtral: {
-    id: "mistralai/mixtral-8x7b-instruct",
+    id: "mistralai/mixtral-8x22b-instruct",
     friendlyName: "Mixtral",
     description:
-      "Great memory, high in reasoning (on par with ChatGPT), good roleplaying capabilities, but might repeat itself a bit.",
+      "Great memory, high in reasoning, good roleplaying capabilities.",
     tokens: 32768,
     params: { ...universalParams, max_tokens: 32668 },
   },
 };
 
 export const defaultModels = {
-  roleplay: models.psyfighter,
-  adventure: models.mythomax, // TODO: use mixtral later because of memory. It is just harder to prompt.
-  chat: models.psyfighter,
+  roleplay: models.mixtral,
+  adventure: models.mixtral, // TODO: use mixtral later because of memory. It is just harder to prompt.
+  chat: models.mixtral,
 };
 
 export const getModelToUse = (
