@@ -1,12 +1,12 @@
-import { FileUploadRaw } from "@/components/ui/FileUploadRaw";
-import { api } from "@/lib/api";
-import { paths } from "@/lib/paths";
-import { AppPage } from "@components/AppPage";
-import { TagRowSelector } from "@components/TagRowSelector";
+import {FileUploadRaw} from "@/components/ui/FileUploadRaw";
+import {api} from "@/lib/api";
+import {paths} from "@/lib/paths";
+import {AppPage} from "@components/AppPage";
+import {TagRowSelector} from "@components/TagRowSelector";
 import Title from "@components/ui/Title";
-import { Trans, msg, t } from "@lingui/macro";
-import { useLingui } from "@lingui/react";
-import { CardBody } from "@nextui-org/card";
+import {Trans, msg, t} from "@lingui/macro";
+import {useLingui} from "@lingui/react";
+import {CardBody} from "@nextui-org/card";
 import {
   Button,
   Card,
@@ -17,14 +17,14 @@ import {
   Switch,
   Textarea,
 } from "@nextui-org/react";
-import { BotVisibility, CharacterTag } from "@prisma/client";
+import {BotVisibility, CharacterTag} from "@prisma/client";
 import Router from "next/router";
-import React, { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { FaUserFriends } from "react-icons/fa";
-import { IoLockClosed, IoLockOpenOutline } from "react-icons/io5";
-import { toast } from "react-toastify";
-import { twMerge } from "tailwind-merge";
+import React, {useEffect, useState} from "react";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {FaUserFriends} from "react-icons/fa";
+import {IoLockClosed, IoLockOpenOutline, IoWarning} from "react-icons/io5";
+import {toast} from "react-toastify";
+import {twMerge} from "tailwind-merge";
 
 type CreateInput = {
   title: string;
@@ -39,9 +39,9 @@ type CreateInput = {
 };
 
 const icons = {
-  [BotVisibility.PUBLIC]: <IoLockOpenOutline />,
-  [BotVisibility.PRIVATE]: <IoLockClosed />,
-  [BotVisibility.LINK]: <FaUserFriends />,
+  [BotVisibility.PUBLIC]: <IoLockOpenOutline/>,
+  [BotVisibility.PRIVATE]: <IoLockClosed/>,
+  [BotVisibility.LINK]: <FaUserFriends/>,
 };
 
 const getDescriptions = () => {
@@ -62,7 +62,7 @@ const getDescriptions = () => {
 } */
 
 const CreateChatPage = () => {
-  const { _ } = useLingui();
+  const {_} = useLingui();
   const [isSelected, setIsSelected] = useState(false);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [cover, setCover] = useState<string | undefined>(undefined);
@@ -87,7 +87,7 @@ const CreateChatPage = () => {
     },
   });
 
-  const { register, handleSubmit, setValue, watch } = useForm<CreateInput>();
+  const {register, handleSubmit, setValue, watch} = useForm<CreateInput>();
   const visibility = watch("visibility");
 
   useEffect(() => {
@@ -192,7 +192,7 @@ const CreateChatPage = () => {
               />
             </div>
 
-            <CategoryDivider />
+            <CategoryDivider/>
 
             <Title
               as={"h2"}
@@ -237,7 +237,7 @@ const CreateChatPage = () => {
               />
             </div>
 
-            <CategoryDivider />
+            <CategoryDivider/>
 
             <Title as={"h2"} description={_(msg`Now the really important part!`)}>
               Images
@@ -261,9 +261,17 @@ const CreateChatPage = () => {
                 description={_(msg`Shown in the background of the whole chat`)}
               />
             </div>
+            <Card className={"bg-warning-400/50 mt-4"}>
+              <CardBody>
+                <div className="flex items-center gap-2">
+                  <IoWarning size={24} className="text-warning-600"/>
+                  <p>Waifuu is in maintanance mode - uploading images is disabled.</p>
+                </div>
+              </CardBody>
+            </Card>
 
             {/*compensate for the file upload having a large marginh*/}
-            <CategoryDivider className={"my-7"} />
+            <CategoryDivider className={"my-7"}/>
 
             {/*Comment it out for now since we do not have it implemented yet.*/}
             {/*<Accordion>
@@ -326,7 +334,7 @@ const CreateChatPage = () => {
 
 const CategoryDivider = (props: { className?: string }) => {
   // specify mt bigger to compensate.
-  return <Divider className={twMerge("mb-4 mt-5", props.className)} />;
+  return <Divider className={twMerge("mb-4 mt-5", props.className)}/>;
 };
 
 export default CreateChatPage;
