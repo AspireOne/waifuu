@@ -13,10 +13,10 @@ export const serverFirebaseApp = () => {
   }
 
   console.log("Creating new firebase app (admin.apps.length === 0)");
-  console.log("JSON Parsed credential: ", JSON.parse(env.SERVICE_ACCOUNT_JSON));
-  console.log("JSON Parsed credential interpolated string: ", JSON.parse(env.SERVICE_ACCOUNT_JSON))
   console.log("Raw credential: ", env.SERVICE_ACCOUNT_JSON);
   console.log(`Raw credential interpolated string: ${env.SERVICE_ACCOUNT_JSON}`)
+  console.log("JSON Parsed credential: ", JSON.parse(env.SERVICE_ACCOUNT_JSON));
+  console.log("JSON Parsed credential interpolated string: ", JSON.parse(env.SERVICE_ACCOUNT_JSON))
   
   let credential: admin.credential.Credential;
   try {
