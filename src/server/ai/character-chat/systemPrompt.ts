@@ -1,27 +1,36 @@
 import { ChatMode } from "@prisma/client";
-import { PromptTemplate } from "langchain/prompts";
 
-// Let's get rid of the PromptTemplate from langchain/prompts. When .fromTemplate is called, it creates an object
-// that  has a .format method (examaple below), and requires the variables from the template to be passed in as an object.
-// Let's implement this ourselves. AI!
-// 
-// Example usage: 
-// getSystemPrompt(mode).format({
-//     characterPersona: persona,
-//     characterName: characterName,
-//     addressedAs: addressedAs ? ` addressed '${addressedAs}` : "",
-// });
+// Custom template class to replace PromptTemplate from langchain
+class CustomTemplate {
+  private readonly template: string;
 
-const roleplaySystemPrompt = PromptTemplate.fromTemplate(
+  constructor(template: string) {
+    this.template = template;
+  }
+
+  format(variables: Record<string, string>): string {
+    let result = this.template;
+    for (const [key, value] of Object.entries(variables)) {
+      result = result.replace(new RegExp(`{${key}}`, 'g'), value);
+    }
+    return result;
+  }
+
+  static fromTemplate(template: string): CustomTemplate {
+    return new CustomTemplate(template);
+  }
+}
+
+const roleplaySystemPrompt = CustomTemplate.fromTemplate(
   'You are roleplaying {characterName} in a chat with user. Be proactive and use asterisks to denote actions. This is your character: "{characterPersona}".',
 );
 
-const chatSystemPrompt = PromptTemplate.fromTemplate(
+const chatSystemPrompt = CustomTemplate.fromTemplate(
   'You are {characterName}. You are having a totally casual discord chat with a friend (but do NOT mention it). Stay neutral, just slightly show the following persona: "{characterPersona}".',
 );
 
 // TODO: Add example.
-const adventureSystemPrompt = PromptTemplate.fromTemplate(
+const adventureSystemPrompt = CustomTemplate.fromTemplate(
   "You are the Dungeon Master in a DND-like adventure with a user. Your role is to lead the story, narrate the environment, respond to the player's actions, and facilitate gameplay elements like challenges and combat.",
 );
 
@@ -36,7 +45,7 @@ const getSystemPrompt = (mode: ChatMode) => {
   }
 };
 
-export { getSystemPrompt };
+export { getSystemPrompt, CustomTemplate };
 
 /*
   Example chat:
