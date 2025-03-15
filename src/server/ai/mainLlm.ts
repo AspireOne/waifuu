@@ -43,8 +43,6 @@ type Input = {
   model: Model;
 };
 
-const fallbacks = [models.mixtral.id, models.mythomax.id, models.openhermes25.id];
-
 const headers = {
   Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
   "HTTP-Referer": "https://waifuu.com",

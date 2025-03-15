@@ -10,7 +10,7 @@ const universalParams = {
 
 export type ModelId =
   | "gryphe/mythomax-l2-13b"
-  | "teknium/openhermes-2.5-mistral-7b"
+  | "nothingiisreal/mn-celeste-12b"
   | "mistralai/mixtral-8x22b-instruct";
 
 export type ModelParams = {
@@ -29,23 +29,16 @@ export type Model = {
   params: ModelParams;
 };
 
-type ModelKey = "mythomax" | "openhermes25" | "mixtral";
+type ModelKey = "mythomax" | "mnCeleste" | "mixtral";
 
 export const models: Record<ModelKey, Model> = {
-  mythomax: {
-    id: "gryphe/mythomax-l2-13b",
-    friendlyName: "MythoMax",
-    description: "Good overall capabilities - high in roleplaying and storytelling.",
-    tokens: 4096,
-    params: { ...universalParams, max_tokens: 3996 },
-  },
-  openhermes25: {
-    id: "teknium/openhermes-2.5-mistral-7b",
-    friendlyName: "Open Hermes 2.5",
+  mnCeleste: {
+    id: "nothingiisreal/mn-celeste-12b",
+    friendlyName: "Mistral Nemo Celeste",
     description:
-      "Good roleplaying capabilities, fast replies, but output quality (consistency & repeating) may vary.",
-    tokens: 4096,
-    params: { ...universalParams, max_tokens: 3996 },
+      "Best roleplaying, output speed and reasoning might be on the slow side.",
+    tokens: 15000,
+    params: { ...universalParams, max_tokens: 15000 },
   },
   mixtral: {
     id: "mistralai/mixtral-8x22b-instruct",
@@ -55,12 +48,19 @@ export const models: Record<ModelKey, Model> = {
     tokens: 32768,
     params: { ...universalParams, max_tokens: 32668 },
   },
+  mythomax: {
+    id: "gryphe/mythomax-l2-13b",
+    friendlyName: "MythoMax",
+    description: "Good overall capabilities - high in roleplaying and storytelling, but bad memory.",
+    tokens: 4096,
+    params: { ...universalParams, max_tokens: 3996 },
+  },
 };
 
 export const defaultModels = {
-  roleplay: models.mixtral,
-  adventure: models.mixtral, // TODO: use mixtral later because of memory. It is just harder to prompt.
-  chat: models.mixtral,
+  roleplay: models.mnCeleste,
+  adventure: models.mnCeleste, // TODO: use mixtral later because of memory. It is just harder to prompt.
+  chat: models.mnCeleste,
 };
 
 export const getModelToUse = (
