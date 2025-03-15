@@ -95,10 +95,10 @@ const CreateChatPage = () => {
   }, [visibility]);
 
   const submitHandler: SubmitHandler<CreateInput> = (data) => {
-    if (!avatar) {
+    /*if (!avatar) {
       toast(_(msg`Avatar is required`), { type: "warning" });
       return;
-    }
+    }*/
 
     createBot.mutate({
       ...data,
@@ -242,10 +242,10 @@ const CreateChatPage = () => {
             <Title as={"h2"} description={_(msg`Now the really important part!`)}>
               Images
             </Title>
-            {/*TODO: Add descriptions, improve design.s*/}
             <div className={"flex flex-row flex-wrap gap-8 sm:justify-center sm:gap-8"}>
+              {/* Normally, this would be required, but the app is in maintanance mode and image upload might not work. */}
               <FileUploadRaw
-                required
+                required={false}
                 onUpload={(id) => setAvatar(id)}
                 label="Avatar"
                 description={_(msg`The character's avatar shown in chat`)}

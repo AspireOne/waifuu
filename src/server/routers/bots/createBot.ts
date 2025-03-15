@@ -27,7 +27,7 @@ const botCreationInput = z.object({
   tags: z.array(z.nativeEnum(CharacterTag)).default([]),
 
   cover: z.string().optional(),
-  avatar: z.string().min(1, t`Avatar is required`),
+  avatar: z.string().optional(),
   backgroundImage: z.string().optional(),
   name: z.string().min(1, t`Name is required`).max(50, t`Name is too long`),
   persona: z.string().max(500, t`Persona is too long`),
