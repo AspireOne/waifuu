@@ -149,7 +149,7 @@ export const CharsDiscoverCategory = () => {
           </div>
         )}
 
-        <div className={twMerge("gap-4 flex flex-wrap w-full mx-auto self-baseline")}>
+        <div className={twMerge("gap-4 flex flex-wrap w-full justify-center mx-auto self-baseline")}>
           {discoveredBots.cache[filtersStr]?.characters.map((bot) => {
             return <CharacterCard bottom key={`discover_${bot.id}`} character={bot} />;
           })}
