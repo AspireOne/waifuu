@@ -26,6 +26,7 @@ export default publicProcedure
       ],
     });
 
+    console.log("Decoding id token.");
     const decodedIdToken = await serverFirebaseAuth().verifyIdToken(input.idToken);
     console.log("HEY, SUCCESFULLY DECODED ID TOKEN");
     await verifyRequest(decodedIdToken.auth_time, input.csrfToken, ctx.req?.cookies.csrfToken);
