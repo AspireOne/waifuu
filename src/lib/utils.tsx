@@ -6,6 +6,10 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoLockClosed, IoLockOpenOutline } from "react-icons/io5";
 import { baseS3Url } from "./paths";
 
+export function unescapeQuotes(str: string) {
+  return str.replace(/\\"/g, '"');
+}
+
 export function isAnUrl(str: string) {
   const pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
