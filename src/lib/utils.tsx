@@ -6,8 +6,9 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoLockClosed, IoLockOpenOutline } from "react-icons/io5";
 import { baseS3Url } from "./paths";
 
-export function unescapeQuotes(str: string) {
-  return str.replace(/\\"/g, '"');
+export function unescape(str: string) {
+  // or remove newlines altogether?
+  return str.replace(/\\"/g, '"').replace(/\\n/g, '\n');
 }
 
 export function isAnUrl(str: string) {

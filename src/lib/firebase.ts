@@ -2,7 +2,7 @@ import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { Capacitor } from "@capacitor/core";
 import { FirebaseApp, FirebaseOptions, getApp, initializeApp } from "firebase/app";
 import { Auth, getAuth, indexedDBLocalPersistence, initializeAuth } from "firebase/auth";
-import {unescapeQuotes} from "@lib/utils";
+import {unescape} from "@lib/utils";
 
 const globalForApp = globalThis as unknown as {
   app: FirebaseApp | undefined;
@@ -12,7 +12,7 @@ const globalForAuth = globalThis as unknown as {
   auth: Auth | undefined;
 };
 
-const options: FirebaseOptions = JSON.parse(unescapeQuotes(process.env.NEXT_PUBLIC_FIREBASE_CONFIG as string)) as FirebaseOptions;
+const options: FirebaseOptions = JSON.parse(unescape(process.env.NEXT_PUBLIC_FIREBASE_CONFIG as string)) as FirebaseOptions;
 
 const getOrInitFirebaseApp = () => {
   // biome-ignore lint: Shut up this is beatiful.
