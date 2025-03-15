@@ -60,8 +60,8 @@ export default publicProcedure
     console.log("HEY, SUCCESFULLY UPSERTED USER");
 
     if (!alreadyExisted && decodedIdToken.email) {
-      // TODO(1): Send it asynchronously!.
-      await sendWelcomeEmail(decodedIdToken);
+      // TODO(1): Check if this is really sent without awaiting.
+      setTimeout(() => sendWelcomeEmail(decodedIdToken).catch((e) => console.error(e)), 1);
     }
 
     return {

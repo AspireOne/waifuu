@@ -236,7 +236,7 @@ model Bot {
   visibility      BotVisibility
 
   // Character images.
-  avatar          String  @default("https://github-production-user-asset-6210df.s3.amazonaws.com/57546404/280540176-f3d0aacb-e4f7-472c-9bf5-b19a4058581d.jpg")
+  avatar          String  @default("https://i.pinimg.com/originals/46/0b/19/460b194a8645b175bb4fb00de96d6b15.jpg")
   backgroundImage String  @default("https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png")
   characterImage  String?
 
