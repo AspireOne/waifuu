@@ -109,11 +109,13 @@ export function normalizePath(path: string, keepSlash = false): string {
 export function makeDownloadUrl<T extends string | null | undefined>(pathOrId: T): string {
   if ((!pathOrId && pathOrId !== "") || pathOrId === "") return "";
 
-  if (isUrl(pathOrId)) {
+  return pathOrId;
+
+  /*if (isUrl(pathOrId)) {
     return pathOrId;
   }
 
-  return `${baseS3Url()}/${pathOrId}`;
+  return `${baseS3Url()}/${pathOrId}`;*/
 }
 
 export function isUrl(str: string): boolean {

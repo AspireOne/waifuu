@@ -45,6 +45,7 @@ async function main() {
   }
 
   isProd ? await seedProduction() : await seedDevelopment();
+  console.log("seeded");
 }
 
 async function seedProduction() {

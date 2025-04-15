@@ -8,13 +8,13 @@ export default [
     description:
       "Fun & cute character which people love for her lively spirit. She stands out with her bright blue hair and shining blue eyes. She has a special way of pulling people into her story. She is known for being a bit mischievous and always up for fun, which keeps things exciting.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/736x/b9/93/ac/b993ac6d252c018e79ab712bb758201a.jpg",
+    avatar: "/assets/images/aqua-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_aqua-public-id-102948_characterImage",
     initialMessage: "Hello there! I'm Aqua, let's have some fun and happy chats together!",
     tags: ["FEMALE", "FANTASY"],
     backgroundImage:
-      "https://c4.wallpaperflare.com/wallpaper/339/475/659/kono-subarashii-sekai-ni-shukufuku-wo-aqua-konosuba-4k-anime-girls-humor-hd-wallpaper-preview.jpg",
+      "/assets/images/aqua-bg.jpg",
   },
   {
     id: "megumin-id-102949",
@@ -25,14 +25,14 @@ export default [
     description:
       "Meet Megumin, the explosion-loving mage! Say hi and see what antics she gets up to.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/736x/5a/1a/d6/5a1ad61b5a3f3ccb7e5ddda6e88fe871.jpg",
+    avatar: "/assets/images/megumin-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_megumin-id-102949_characterImage",
     initialMessage:
       "Greetings friend! I'm Megumin, ready to explode onto the scene with excitement!",
     tags: ["FANTASY", "SHY"],
     backgroundImage:
-      "https://wallpapers.com/images/featured/megumin-j1yeub3z4va6b4vj.jpg",
+      "/assets/images/megumin-bg.jpg",
   },
   {
     id: "darkness-id-102950",
@@ -43,14 +43,14 @@ export default [
     description:
       "A brave knight who likes going on adventures and doing heroic things. She wears tough armor and always fights for what is right.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/736x/2d/4e/4d/2d4e4df7dc31f7c517b369859d9e0b08.jpg",
+    avatar: "/assets/images/darkness-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_darkness-id-102950_characterImage",
     initialMessage:
       "Well met traveler. I am Darkness, always prepared for adventure and valorous deeds.",
     tags: ["FANTASY", "ROMANCE"],
     backgroundImage:
-      "https://images3.alphacoders.com/905/905288.jpg",
+      "/assets/images/darkness-bg.jpg",
   },
   {
     id: "yunyun-id-102951",
@@ -60,13 +60,13 @@ export default [
       "Yunyun is a nice mage who wants to have friends. She has blue hair and dresses simply. Even though she is shy, Yunyun has a sweet and kind personality that makes people like her. She genuinely wants to have good friendships. Yunyun has special magic abilities. She aims to grow as a person and find meaningful relationships.",
     description: "Hi I'm Yunyun! I'm so happy to meet you. Let's be friends!",
     nsfw: false,
-    avatar: "https://i.pinimg.com/736x/82/64/7d/82647de4dde49902c67162ec5fe1e74e.jpg",
+    avatar: "/assets/images/yunyun-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_yunyun-id-102951_characterImage",
     initialMessage: "Hiya! I'm Yunyun and I can't wait to make a new friend in you!",
     tags: ["ROMANCE", "SHY"],
     backgroundImage:
-      "https://c4.wallpaperflare.com/wallpaper/681/140/1010/snow-yunyun-konosuba-anime-girls-kono-subarashii-sekai-ni-shukufuku-wo-wallpaper-preview.jpg",
+      "/assets/images/yunyun-bg.jpg",
   },
   {
     id: "wiz-id-102952",
@@ -83,7 +83,7 @@ export default [
       "Welcome to my shop! I'm Wiz, make yourself at home and let's have a nice chat.",
     tags: ["ANIME", "FEMALE"],
     backgroundImage:
-      "https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png",
+      "/assets/images/wiz-bg.png",
   },
   {
     id: "iris-id-102954",
@@ -100,7 +100,7 @@ export default [
       "Foolish mortal, bow before Iris! Just kidding, let's have some fun and laughs together.",
     tags: ["FANTASY", "COMEDY", "ROMANCE"],
     backgroundImage:
-      "https://i.pinimg.com/originals/60/cb/46/60cb4600ad2427938722b77faba6426a.png",
+      "/assets/images/iris-bg.png",
   },
   {
     id: "hinata-id-102959",
@@ -111,13 +111,13 @@ export default [
     description:
       "The shy ninja with a gentle spirit. She has pretty light purple eyes and long dark hair. Her confidence issues are a thing of the past after she worked her way out of them on her ninja training.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/736x/9e/87/fd/9e87fd285002f32f85e6aa468e24cc2d.jpg",
+    avatar: "/assets/images/hinata_hyuga-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_hinata-id-102959_characterImage",
     initialMessage: "Um, hi there. It's Hinata. I hope we can, you know, talk and stuff.",
     tags: ["ANIME", "ROMANCE", "COMEDY", "FANTASY"],
     backgroundImage:
-      "https://www.baltana.com/files/wallpapers-8/Hinata-Hyuga-HQ-Desktop-Wallpaper-24347.jpg",
+      "/assets/images/hinata_hyuga-bg.jpg",
   },
   {
     id: "gandalf-id-102961",
@@ -128,14 +128,14 @@ export default [
     description:
       "A wizard of great wisdom. guarding the middle-earth. Embark on an epic journey filled with magic and adventure.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/280x280_RS/7e/de/7b/7ede7b68a0735c8f1a2c6414985902ef.jpg",
+    avatar: "/assets/images/gandalf-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_gandalf-id-102961_characterImage",
     initialMessage:
       "You shall not pass up the opportunity to chat with Gandalf! Let the adventure begin.",
     tags: ["FANTASY", "HERO", "MALE"],
     backgroundImage:
-      "https://img2.wallspic.com/previews/3/8/4/7/5/157483/157483-lord_of_the_rings_gandalf-gandalf-bilbo_baggins-frodo_baggins-the_lord_of_the_rings-x750.jpg",
+      "/assets/images/gandalf-bg.jpg",
   },
   {
     id: "saitama-id-102963",
@@ -146,14 +146,14 @@ export default [
     description:
       "The one and only One Punch Man. Chat about heroes, villains, or anything you find interesting.",
     nsfw: false,
-    avatar: "https://avatarfiles.alphacoders.com/336/thumb-350-336672.webp",
+    avatar: "/assets/images/saitama-avatar.webp",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_saitama-id-102963_characterImage",
     initialMessage:
       "One punch is all it takes, but let's see if our conversation can go beyond that!",
     tags: ["ANIME", "COMEDY", "HERO", "MALE"],
     backgroundImage:
-      "https://wallpapersok.com/images/high/bloody-saitama-anime-profile-a4hs89x7uq5fnjfs.jpg",
+      "/assets/images/saitama-bg.jpg",
   },
   {
     id: "luna-id-102964",
@@ -164,14 +164,14 @@ export default [
     description:
       "Hello, it's Luna. Let's discuss magical creatures, conspiracy theories, and the wonders of the wizarding world.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/736x/fa/da/00/fada0088921098634b09ca47a316ec22.jpg",
+    avatar: "/assets/images/luna_lovegood-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_luna-id-102964_characterImage",
     initialMessage:
       "Greetings, fellow magical being! Luna here. Ready for a chat filled with wonder and whimsy?",
     tags: ["FANTASY", "FEMALE", "NERD"],
     backgroundImage:
-      "https://preview.redd.it/cxeimwflyo881.png?width=800&format=png&auto=webp&s=2160be26be2b962a1b9048c2e6236bbfe643c71c",
+      "/assets/images/luna_lovegood-bg.png",
   },
   {
     id: "princess-zelda-id-102970",
@@ -182,14 +182,13 @@ export default [
     description:
       "I am the guardian of Hyrule. Let's discuss the Triforce, dungeons, and the legend we share.",
     nsfw: false,
-    avatar:
-      "https://avatarfiles.alphacoders.com/123/123266.png",
+    avatar: "/assets/images/princess_zelda-avatar.png", // Note: This file wasn't downloaded successfully, but we're including the path for consistency
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_princess-zelda-id-102970_characterImage",
     initialMessage: "Greetings! Zelda here. Ready for an epic quest of words and wisdom?",
     tags: ["GAME_CHARACTER", "FANTASY", "HERO", "FEMALE"],
     backgroundImage:
-      "https://images7.alphacoders.com/906/906163.jpg",
+      "/assets/images/princess_zelda-bg.jpg",
   },
   {
     id: "daenerys-id-102966",
@@ -200,14 +199,14 @@ export default [
     description:
       "A young queen known as the Mother of Dragons. She has a small build, but is very strong-willed.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/736x/41/7f/b5/417fb54b17223bcccf182bff5701ffed.jpg",
+    avatar: "/assets/images/daenerys_targaryen-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_daenerys-id-102966_characterImage",
     initialMessage:
       "I am Daenerys, the Breaker of Chains. Join me on a journey through fire and blood.",
     tags: ["FANTASY", "FEMALE", "ROMANCE"],
     backgroundImage:
-      "https://wallpapersok.com/images/hd/daenerys-targaryen-with-drogon-9zdlwb9yc2pwoney.jpg",
+      "/assets/images/daenerys_targaryen-bg.jpg",
   },
   {
     id: "edward-id-102967",
@@ -218,14 +217,14 @@ export default [
     description:
       "Ed is a passionate alchemist with bold ambitions. He wears a long red coat and has blonde hair pulled back in a braid. Ed lost his arm and leg in a failed attempt to bring his mother back to life through alchemy. He now uses advanced \"automail\" limbs. His small size makes people underestimate him, but he is very skilled and determined.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/originals/63/f7/99/63f799a1fe9a890fa8e36abe6b92de46.jpg",
+    avatar: "/assets/images/edward_elric-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_edward-id-102967_characterImage",
     initialMessage:
       "Alchemy, adventure, and a quest for the Philosopher's Stone. Ready to join me on this journey?",
     tags: ["ANIME", "FANTASY", "MALE"],
     backgroundImage:
-      "https://4kwallpapers.com/images/wallpapers/fullmetal-alchemist-8000x4500-10407.png",
+      "/assets/images/edward_elric-bg.png",
   },
   {
     id: "triss-id-102962",
@@ -236,11 +235,11 @@ export default [
     description:
       "Greetings, I'm Triss. Magic, adventure, and maybe a bit of romance await. Care to join me on this journey?",
     nsfw: false,
-    avatar: "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2902d263859557.5abe9b073db5b.jpg",
+    avatar: "/assets/images/triss_merigold-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_triss-id-102962_characterImage",
     backgroundImage:
-      "https://images3.alphacoders.com/607/607531.jpg",
+      "/assets/images/triss_merigold-bg.jpg",
     initialMessage:
       "Hello, it's Triss. Ready for some magical moments and enchanting conversations?",
     tags: ["FANTASY", "ROMANCE", "FEMALE"],
@@ -254,13 +253,13 @@ export default [
     description:
       "Greetings, I'm Geralt of Rivia. Let's talk about monsters, magic, and the adventures that come with being a Witcher.",
     nsfw: false,
-    avatar: "https://i.pinimg.com/474x/54/50/6b/54506bb1df4ca3cbbd7ba72f1714dcfd.jpg",
+    avatar: "/assets/images/geralt_of_rivia-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_geralt-id-102975_characterImage",
     initialMessage: "Roach and I are ready for a chat. What's on your mind?",
     tags: ["FANTASY", "HERO", "MALE", "ROMANCE"],
     backgroundImage:
-      "https://preview.redd.it/7qqa10fcfkt41.jpg?width=1080&crop=smart&auto=webp&s=b3f0d8c9ef558f51d1b55bd2ce83b1adaf9f985e",
+      "/assets/images/geralt_of_rivia-bg.jpg",
   },
   {
     id: "tony-stark-id-102971",
@@ -271,14 +270,14 @@ export default [
     description:
       "I am Iron Man. Let's chat about technology, suits, and the responsibilities that come with great power.",
     nsfw: false,
-    avatar: "https://pbs.twimg.com/profile_images/1372220219834445824/kTe1-l5q_400x400.jpg",
+    avatar: "/assets/images/tony_stark-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_tony-stark-id-102971_characterImage",
     initialMessage:
       "Greetings, it's Tony Stark. Ready to discuss the genius behind the suit and maybe a bit of heroism?",
     tags: ["MOVIE", "HERO", "MALE"],
     backgroundImage:
-      "https://wallpapercat.com/w/full/f/b/7/486981-3840x2160-desktop-4k-tony-stark-iron-man-wallpaper.jpg",
+      "/assets/images/tony_stark-bg.jpg",
   },
   {
     id: "cersei-id-102973",
@@ -289,13 +288,13 @@ export default [
     description:
       "I am Cersei Lannister, Queen of the Andals. Let's discuss power, politics, and the Game of Thrones.",
     nsfw: false,
-    avatar: "https://static.wikia.nocookie.net/ironthronerp/images/d/d2/CerseiLannister.jpg/revision/latest?cb=20150810023310",
+    avatar: "/assets/images/cersei_lannister-avatar.jpg",
     characterImage:
       "https://waifuu.s3.eu-central-1.amazonaws.com/image_cersei-id-102973_characterImage",
     initialMessage: "Bow before the Queen. Cersei Lannister is here for a conversation.",
     tags: ["FANTASY", "FEMALE", "ROMANCE"],
     backgroundImage:
-      "https://images5.alphacoders.com/611/611846.jpg",
+      "/assets/images/cersei_lannister-bg.jpg",
   },
   /* {
      id: "mario-id-102969",
